@@ -1,5 +1,7 @@
 #-*- coding:utf-8 -*
 objLooping = False
+gTimer = None
+lastKey = ""
 oCurFrame = None
 groupingIdx = 35 # index of child object of role grouping in the foregroundObject children  
 curFrame = curSubject = ""
@@ -16,7 +18,7 @@ FTnoNavLetter =FTnoSpace = TTnoSpace = TTnoFilterBar = False
 useKeyNav = True
 directKeyNav = True
 lockEditMenu = None
-scriptCategory = "ThunderbirdPlusG5"
+scriptCategory = "Thunderbird+G5"
 virtualSpellChk = False
 delayReadWnd = 99
 testMode = False
@@ -53,7 +55,7 @@ def setLooping(value) :
 	lastFunction = inspect.stack()[1][3]
 	debugLog = debugLog + "setLooping fonction :{0}, valeur : {1}".format(lastFunction, str(value)) + "\n"
 
-def tlog(msg) :
+def logte(msg) :
 	global debugLog
 	debugLog += msg + "\n" 
 

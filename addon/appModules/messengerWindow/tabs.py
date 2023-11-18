@@ -215,11 +215,11 @@ def activateTab(appMod,obj, newTabIdx) :
 	oTab = oTabCtrl.getChild(newTabIdx)
 	appMod.curTab = sharedVars.curTab = getTabType(oTab.name, newTabIdx, obj)
 	if activate  : 
-		speech.speakText(msgName.format(newTabIdx+1, lastIdx+1, "")) # oTab.name))
+		message(msgName.format(newTabIdx+1, lastIdx+1, "")) # oTab.name))
 		sleep(.5)
 		oTab.doAction()
 	else :
-		speech.speakText(msgName.format(newTabIdx+1, lastIdx+1, "")) # oTab.name))
+		message(msgName.format(newTabIdx+1, lastIdx+1, "")) # oTab.name))
 	return True
 def changeTab(appMod, obj, direct) : # control+tab
 	global msgName
@@ -236,7 +236,7 @@ def changeTab(appMod, obj, direct) : # control+tab
 		else : idx = lastIdx
 	oTab = oTabCtrl.getChild(idx)
 	appMod.curTab = sharedVars.curTab = getTabType(oTab.name, idx, obj)
-	speech.speakText(msgName.format(idx+1, lastIdx+1, "")) # oTab.name))
+	message(msgName.format(idx+1, lastIdx+1, "")) # oTab.name))
 	sleep(.5)
 	oTab.doAction() # selects the new tab
 	return True
@@ -271,7 +271,7 @@ def onMenuTabs(evt):
 	global tabObjects, appModule
 	idx = int(evt.Id)
 	oTab = tabObjects[idx]
-	#speech.speakText(u"Sélection de l'onglet " + tabObjects[idx].name)
+	#message(u"Sélection de l'onglet " + tabObjects[idx].name)
 	appModule.curTab = sharedVars.curTab = getTabType(oTab.name, idx, globalVars.focusObject)
 	tabObjects = None
 	appModule = None
@@ -281,6 +281,6 @@ def tabContextMenu(appMod, obj) :
 	oTab , curIdx, lastIdx = findCurTab(obj)
 	if not oTab : return
 	oTab.setFocus()
-	CallAfter(speech.speakText, _("Active tab {0} of {1} : {2}, ").format(curIdx+1, lastIdx+1, oTab.name))
+	CallAfter(message, _("Active tab {0} of {1} : {2}, ").format(curIdx+1, lastIdx+1, oTab.name))
 	CallLater(200, KeyboardInputGesture.fromName("shift+f10").send) # affiche menu contextuel
 

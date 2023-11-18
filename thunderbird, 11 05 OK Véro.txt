@@ -90,14 +90,13 @@ class AppModule(thunderbird.AppModule):
 			return
 		# reduce verbosity
 		if role == controlTypes.Role.GROUPING : obj.name = "" ; return 
+		# ligne ci-dessous déplacée dans gainfocus
 		# if  role == controlTypes.Role.DOCUMENT and  utils.hasID(obj.parent, "messagepane")  and obj.name: sharedVars.curSubject = obj.name ; obj.name = "" ; return
 		ID = str(utils.getIA2Attr(obj))
 		#  list of messages 
 		if role in (controlTypes.Role.LISTITEM, controlTypes.Role.TREEVIEWITEM) :
 			if ID.startswith("threadTree-row") :
-				# sharedVars.logte(" Overlay:" + obj.name)
 				sharedVars.curFrame = "messengerWindow" ; sharedVars.curTab = "main"
-				# if sharedVars.TTFillRow : self.fillRow(obj)
 				clsList.insert(0, messengerWindow.messageListItem.MessageListItem)
 				return
 			if role == controlTypes.Role.TREEVIEWITEM and utils.isFolderTreeItem(obj, ID) :
@@ -112,47 +111,22 @@ class AppModule(thunderbird.AppModule):
 		# nextHandler()
 
 	def event_NVDAObject_init(self, obj):
-		if not sharedVars.TTFillRow : return
-		if obj.role in (controlTypes.Role.LISTITEM, controlTypes.Role.TREEVIEWITEM) and  utils.hasID(obj, "threadTree-row") :
-			# sharedVars.logte("objectInit TTI:" + sharedVars.curTTRow)
-			try :  # 2023 11 05 necessary when quick deletions
-				sharedVars.curTTRowCleaned = self.buildColumnNames(obj)
-				obj.name = sharedVars.curTTRowCleaned 
-				sharedVars.curTTRow = sharedVars.curTTRowCleaned 
-			except : 
-				beep(100, 15)
-				sharedVars.curTTRowCleaned = "Error rebuilding row"
-
-	# def fillRow(self, obj) :
-			# try :  # 2023 11 05 necessary when quick deletions
-				# sharedVars.curTTRowCleaned = self.buildColumnNames(obj)
-				# obj.name = sharedVars.curTTRowCleaned 
-				# sharedVars.curTTRow = sharedVars.curTTRowCleaned 
-			# except : 
-				# beep(100, 15)
-				# sharedVars.curTTRowCleaned = "Error rebuilding row"
-			
-
-	def customizeRow(self, obj) :
-		sharedVars.curTTRow = str(obj.name)
-		if not sharedVars.TTClean  :
-			sharedVars.curTTRowCleaned = sharedVars.curTTRow 
-			return
-		try :  # 2023 11 05 necessary when quick deletions
-			sharedVars.curTTRowCleaned = self.buildColumnNames(obj)
-		except : 
-			beep(100, 15)
-			sharedVars.curTTRowCleaned = sharedVars.curTTRow
-
+		# if isinstance(obj, Window) and obj.windowClassName == "Edit" and obj.windowControlID == 106 :
+		if obj.role in (controlTypes.Role.LISTITEM, controlTypes.Role.TREEVIEWITEM) :   
+			if utils.hasID(obj, "threadTree-row") :
+				# sharedVars.tlog("objectInit TTI")
+				sharedVars.curTTRow = obj.name
+				try :  # 2023 11 05 necessary when quick deletions
+					if not	 sharedVars.TTnoClean :obj.name = self.buildColumnNames(obj)
+				except : return
 
 	def event_gainFocus (self,obj,nextHandler):
 		role = obj.role
-		if role in (controlTypes.Role.LISTITEM, controlTypes.Role.TREEVIEWITEM) and  utils.hasID(obj, "threadTree-row") : 
-			if sharedVars.lastKey == "" and sharedVars.TTClean :
-				self.customizeRow(obj)
-				return ui.message(sharedVars.curTTRowCleaned)
-			elif  sharedVars.TTFillRow :
-				return ui.message(sharedVars.curTTRowCleaned)
+		if role in (controlTypes.Role.LISTITEM, controlTypes.Role.TREEVIEWITEM) :   
+			if sharedVars.TTAltReading and utils.hasID(obj, "threadTree-row") :
+				speech.cancelSpeech()
+				speech.speakText(str(obj.name))
+				return
 			return nextHandler()
 		elif  role == controlTypes.Role.UNKNOWN :
 			if obj.parent and obj.parent.role in(controlTypes.Role.LIST, controlTypes.Role.TREEVIEW) :
@@ -201,7 +175,7 @@ class AppModule(thunderbird.AppModule):
 			# self.columnID =[e[1] for e in self.columnID]
 			# debug test
 			# for e in self.columnID  :
-				# sharedVars.logte("header left:{}, ID:{}, name:{}".format( str(e[0]), e[1], e[2]))
+				# sharedVars.tlog("header left:{}, ID:{}, name:{}".format( str(e[0]), e[1], e[2]))
 		finally :
 			# self.lenColID = len(self.columnID)
 			sharedVars.objLooping = False
@@ -212,98 +186,84 @@ class AppModule(thunderbird.AppModule):
 		listGroupName = options.as_bool ("listGroupName")
 		cleanNames = options.as_bool ("namesCleaned")
 		colSepar = (", " if options.as_bool ("separateCols") else "")
-		unread = _("Unread")
 		junkStatusCol = options.as_bool ("junkStatusCol")
-		# sharedVars.logte("Option junkStatusCol:" + str(junkStatusCol))
+		# sharedVars.tlog("Option junkStatusCol:" + str(junkStatusCol))
 		# playSound_unread = False #options.as_bool ("playsound_unread")
-		# sharedVars.logte("Original rowName:" + sharedVars.curTTRow)
+		# sharedVars.tlog("Original rowName:" + sharedVars.curTTRow)
 		# l is the line we are going to build
 		if controlTypes.State.COLLAPSED in oRow.states : l = _("Collapsed") + ", "
 		else : l = ""
 
 		# sharedVars.debugLog +="* Columns properties\n"
-		try : # finally
-			sharedVars.objLooping = True
-			oCell = oRow.firstChild
-			while oCell :
-				s = ""
-				longID = str(utils.getIA2Attr(oCell, False, "class"))
-				ID = longID.split(" ")
-				ID = str(ID[len(ID)-1])
-				ID = ID.split("-")[0]
-				# begin test
-				# nm = ", name:" +  str(oCell.name)
-				# testChild =", no children" 
-				# if oCell.firstChild :
-					# testChild = ", firstChild role:" + str(oCell.firstChild.role)
-					# if oCell.firstChild.name : testChild += ", cname:" +  oCell.firstChild.name
-				# sharedVars.logte(str(oCell.location.left) + ", short ID:" + ID + ", longID:" + longID + nm + testChild)
-				# end of test 
-				# if "unread" in longID == "statuscol" :
-					# s = oCell.FirstChild
-					# s = "col non lu, "
-				if ID == "statuscol" :
-					o = oCell.firstChild
-					if not o :
-						s =  unread if unread not in l else "" # 2023.11.15 
-					else :
-						s = o.name
-						if s == _("Read") : s = ""
-				elif "unreadbuttoncolheader" in longID :
-					if unread  + ", " in oRow.name : s = unread
-					else : s = ""
-				elif "flaggedcol" in longID :
-					if _("Starred") + ", " in oRow.name : s = _("Starred")
-				elif ID == "subjectcol" :
-					s = oCell.name
-					s=removeResponseMention (self, s,1).strip (" -_*#").replace(" - "," ")
-					if sharedVars.oSettings.regex_removeInSubject is not None : 
-						s =sharedVars.oSettings.regex_removeInSubject.sub ("", s)
+		
+		oCell = oRow.firstChild
+		while oCell :
+			s = ""
+			longID = str(utils.getIA2Attr(oCell, False, "class"))
+			ID = longID.split(" ")
+			ID = str(ID[len(ID)-1])
+			ID = ID.split("-")[0]
+			# begin test
+			# nm = ", name:" +  str(oCell.name)
+			# testChild =", no children" 
+			# if oCell.firstChild :
+				# testChild = ", firstChild role:" + str(oCell.firstChild.role)
+				# if oCell.firstChild.name : testChild += ", cname:" +  oCell.firstChild.name
+			# sharedVars.tlog(str(oCell.location.left) + ", short ID:" + ID + ", longID:" + longID + nm + testChild)
+			# end of test 
+			# if "unread" in longID == "statuscol" :
+				# s = oCell.FirstChild
+				# s = "col non lu, "
+			if ID == "statuscol" :
+				o = oCell.firstChild
+				if not o :
+					s = _("unread")
+				else :
+					s = o.name
+					if s == _("read") : s = ""
+			elif "unreadbuttoncolheader" in longID :
+				if _("Unread")  + ", " in oRow.name : s = _("Unread")
+			elif "flaggedcol" in longID :
+				if _("Starred") + ", " in oRow.name : s = _("Starred")
+			elif ID == "subjectcol" :
+				s = oCell.name
+				s=removeResponseMention (self, s,1).strip (" -_*#").replace(" - "," ")
+				if sharedVars.oSettings.regex_removeInSubject is not None : 
+					s =sharedVars.oSettings.regex_removeInSubject.sub ("", s)
 
-					# listgroup name repeats
-					grp = utis.strBetween(s, "[", "]")
-					# api.copyToClip("groupe " + grp)
-					if grp :
-						s= self.regExp_nameListGroup.sub (" ",s)
-						if  not listGroupName :
-							s =  grp + " : " +  s 
-					sharedVars.curSubject = s
-				elif ID in ("correspondentcol","sendercol","recipientcol") :  # clean
-					if  oCell.firstChild :
-						s 	=oCell.firstChild.name
-						if cleanNames : 
-							s = self.regExp_removeSymbols.sub (" ",s) 
-				elif "attachmentcol" in longID :
-					if oCell.firstChild :
-						s = _("attachment") 
-				elif ID =="junkstatuscol" :
-					# Translators : junk mail column in the list of messages : You dshould write here exactly what  Thunderbird says in your language.
-					if junkStatusCol :
-						s =  _("Spam")
-						if   s not in sharedVars.curTTRow :
-							s =""
+				# listgroup name repeats
+				grp = utis.strBetween(s, "[", "]")
+				# api.copyToClip("groupe " + grp)
+				if grp :
+					s= self.regExp_nameListGroup.sub (" ",s)
+					if  not listGroupName :
+						s =  grp + " : " +  s 
+				sharedVars.curSubject = s
+			elif ID in ("correspondentcol","sendercol","recipientcol") :  # clean
+				if  oCell.firstChild :
+					s 	=oCell.firstChild.name
+					if cleanNames : 
+						s = self.regExp_removeSymbols.sub (" ",s) 
+			elif "attachmentcol" in longID :
+				if oCell.firstChild :
+					s = _("attachment") 
+			elif ID =="junkstatuscol" :
+				# Translators : junk mail column in the list of messages : You dshould write here exactly what  Thunderbird says in your language.
+				if junkStatusCol :
+					s =  _("Spam")
+					if   s not in sharedVars.curTTRow :
+						s =""
 
-				else : #  elif ID in ("datecol, ","receivedcol, "tagscol", "sizecol", "accountcol", "totalcol", "locationcol", "idcol") :
-					try : s = oCell.firstChild.name
-					except : pass
-				if s : l += s + colSepar
-				oCell = oCell.next
-			return l  # + ", Original : " + oRow.name
-		finally :
-			sharedVars.objLooping = False
+			else : #  elif ID in ("datecol, ","receivedcol, "tagscol", "sizecol", "accountcol", "totalcol", "locationcol", "idcol") :
+				try : s = oCell.firstChild.name
+				except : pass
+			if s : l += s + colSepar
+			oCell = oCell.next
+		return l  # + ", Original : " + oRow.name
 
-	def event_nameChange(self,obj,nextHandler) :
-		# detects content change in the current row of the message liste. When m or s are  pressed for example
-		if obj.role in (controlTypes.Role.LISTITEM, controlTypes.Role.TREEVIEWITEM) and  utils.hasID(obj, "threadTree-row") :
-			# sharedVars.logte("nameChange" + str(obj.name))
-			sharedVars.curTTRow = obj.name
-			if sharedVars.TTClean :
-				try :  # 2023 11 05 necessary when quick deletions
-					sharedVars.curTTRowCleaned = self.buildColumnNames(obj)
-				except : 
-					beep(100, 15)
-					sharedVars.curTTRowCleaned = sharedVars.curTTRow
-					pass
+	def event_NameChange(self,obj,nextHandler) :
+		if obj.role in (controlTypes.Role.LISTITEM, controlTypes.Role.TREEVIEWITEM) :
+			beep(440, 20)
 		nextHandler()
 	def event_alert (self,obj,nextHandler):
 		fo = api.getFocusObject()
@@ -399,7 +359,7 @@ class AppModule(thunderbird.AppModule):
 		ID = str(utils.getIA2Attr(o))
 		if ID.startswith("threadTree-row") :
 			if hasFilter(o, ID) :
-				wx.CallAfter(ui.message, _("Filter removed"))
+				wx.CallAfter(speech.speakText, _("Filter removed"))
 				return gesture.send()
 			return utils.getFolderTreeFromFG(True)
 		elif  utils.isFolderTreeItem(o, ID) : 
@@ -426,7 +386,7 @@ class AppModule(thunderbird.AppModule):
 			if sharedVars.oSettings.getOption("compose", "closeMessageWithEscape") :
 				return KeyboardInputGesture.fromName ("control+w").send () 
 		# elif role == controlTypes.Role.EDITABLETEXT and utils.hasID(o.parent, "quickFilterBarContainer") :
-			# if o.value is not None : ui.message(_("Keyword removed."))
+			# if o.value is not None : speech.speakText(_("Keyword removed."))
 			# return gesture.send()
 		elif role == controlTypes.Role.EDITABLETEXT and utils.hasID(o.parent, "MsgHeadersToolbar") : # write window
 			if sharedVars.oSettings.getOption("compose", "closeMessageWithEscape") :
@@ -448,11 +408,11 @@ class AppModule(thunderbird.AppModule):
 			# utils.sayQFBInfos(o)
 			msg = utils.getMessageStatus()
 			if not msg  : msg = _("Blank")
-			ui.message(msg)
+			speech.speakText(msg)
 			return
 		msg = utis.getStatusBarText()
 		if not msg : msg = _("Status line without data")
-		return ui.message(msg)
+		return speech.speakText(msg)
 	script_sharedAltEnd.__doc__ = _("Announces abbreviated status line and message filtering information if applicable")
 	script_sharedAltEnd.category = sharedVars.scriptCategory
 
@@ -508,7 +468,7 @@ class AppModule(thunderbird.AppModule):
 		fo = api.getFocusObject()
 		ID = str(utils.getIA2Attr(fo))
 		parID = str(utils.getIA2Attr(fo.parent))
-		# sharedVars.logte("parentID=" + parID)
+		# sharedVars.tlog("parentID=" + parID)
 		rc = int(getLastScriptRepeatCount())
 		mk = int(gesture.mainKeyName)
 		if parID in ("MsgHeadersToolbar", "messageEditor") :
@@ -543,7 +503,7 @@ class AppModule(thunderbird.AppModule):
 			if ID.startswith("threadTree-row") :
 				if controlTypes.State.COLLAPSED in o.states : 
 					# sending right arrow after  a alt+downArrow does not work
-					return ui.message(_("Press right arrow and retry, please."))
+					return speech.speakText(_("Press right arrow and retry, please."))
 				utils.setMLIState(o) # select or expand
 				for i in range(0, 20) :
 					o2, retryNeeded = utils.getPreviewDoc()
@@ -589,20 +549,6 @@ class AppModule(thunderbird.AppModule):
 		else : return gesture.send()
 	script_sharedF4.__doc__ = _("Filtered reading of the document in the preview pane, reading tab, reading or Write window, from the list of messages or the document.")
 	script_sharedF4.category = sharedVars.scriptCategory
-
-	def script_sharedAltC(self, gesture) :
-		if sharedVars.curTab !=  "main" : return gesture.send()
-		# type 1 : read and unread
-		wx.CallLater(50, messengerWindow.folderTreeItem.fMenuAccounts, 1)
-	script_sharedAltC.__doc__ = _("Folders : displays the accounts menu then  the folders menu for the chosen account.")
-	script_sharedAltC.category = sharedVars.scriptCategory
-
-	def script_sharedAltCtrlC(self, gesture) :
-		if sharedVars.curTab !=  "main" : return gesture.send()
-		# type 2 : unread only
-		wx.CallLater(50, messengerWindow.folderTreeItem.fMenuAccounts, 2)
-	script_sharedAltCtrlC.__doc__ = _("Folders : displays the accounts menu then the unread folders menu for the chosen account.")
-	script_sharedAltCtrlC.category = sharedVars.scriptCategory
 
 	def script_sharedAltHome(self, gesture) :
 		# if sharedVars.curTab != "main" : return gesture.send()
@@ -773,8 +719,6 @@ class AppModule(thunderbird.AppModule):
 		"kb:alt+8": "sharedAltN",
 		# "kb:alt+9": "sharedAltPageDown", # attachments
 		"kb:alt+9": "sharedAltPageDown", # attachments
-		"kb:alt+c": "sharedAltC",
-		"kb:alt+control+c": "sharedAltCtrlC",
 		"kb:alt+home": "sharedAltHome",
 		"kb:alt+control+home": "sharedAltHome",
 		utis.gestureFromScanCode(41, "kb:control+") :"sharedControlGrave", # 41 is the scancode of the key above Tab
@@ -825,19 +769,16 @@ class AppModule(thunderbird.AppModule):
 def debugShow(appMod, auto) :
 	fo = api.getFocusObject()
 	if utils.hasID(fo, "threadTree-row"	) :
-		sharedVars.logte("Current row original name :\n" + sharedVars.curTTRow)
-		utils.listDescendants(fo, 0, "* List of descendants")
-		utils.listAscendants(-6)
+		sharedVars.tlog("Current row original name :\n" + sharedVars.curTTRow)
 		utils.listColumnNames(fo) 
-	else :
-		utils.listDescendants(fo, 0, "* List of descendants")
-		utils.listAscendants(-6)
+				
+	utils.listAscendants(-6)
 	#sharedVars.debugLog += "\ncurFrame : {0}, curTab : {1},".format(appMod.curFrame, sharedVars.curTab) + "\n"
 	sharedVars.debugLog += "\ncurTab : {0}, curFrame : {1},".format(sharedVars.curTab, sharedVars.curFrame) + "\n"
-	sharedVars.logte("sharedVars.curSubject :" + sharedVars.curSubject)
+	sharedVars.tlog("sharedVars.curSubject :" + sharedVars.curSubject)
 	if sharedVars.oQuoteNav :
-		sharedVars.logte("oQuoteNav.subject : " + sharedVars.oQuoteNav.subject)
-	ui.browseableMessage (message = sharedVars.debugLog, title = "TB+G5 log", isHtml = False)
+		sharedVars.tlog("oQuoteNav.subject : " + sharedVars.oQuoteNav.subject)
+	ui.browseableMessage (message = sharedVars.debugLog, title = _("TB+4 log"), isHtml = False)
 	if not auto : 
 		sharedVars.debugLog = ""
 

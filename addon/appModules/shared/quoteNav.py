@@ -3,6 +3,7 @@ import addonHandler
 addonHandler.initTranslation()
 
 import re, speech, winUser
+from ui import message
 from tones import beep
 from time import sleep
 from api import  getForegroundObject, getFocusObject, copyToClip, processPendingEvents
@@ -35,7 +36,7 @@ class QuoteNav() :
 		self.onEn = lbls[1]
 		self.wroteLg = lbls[2] 
 		self.wroteEn = lbls[3] 
-		# sharedVars.tlog("lblON, lblWrote: {} {} {} {}".format(self.onLg, self.wroteLg, self.onEn, self.wroteEn))
+		# sharedVars.logte("lblON, lblWrote: {} {} {} {}".format(self.onLg, self.wroteLg, self.onEn, self.wroteEn))
 		# reg expressions
 		self.regBrPLi = re.compile("\n|<br>|<p>|</p>|<li>|</li>|<p.+?>|<li.+?>")
 		s = "(( ||\w|\d){1,}(" + lbls[0] + ") .*?(" + lbls[1] + ")(:| :|:| :))"
@@ -97,7 +98,7 @@ class QuoteNav() :
 			self.subject = p[len(p)-1].strip()
 
 		o=oDoc.firstChild # section ou paragraph
-		# # sharedVars.tlog(u"après  o.firstChild " + str(o.role)  + ", " + str(o.name))
+		# # sharedVars.logte(u"après  o.firstChild " + str(o.role)  + ", " + str(o.name))
 		if not o : return False
 		cCount =  oDoc.childCount
 		
@@ -106,9 +107,9 @@ class QuoteNav() :
 			#html simple
 			# self.text = "\n---" 
 			i = 1
-			if cCount > 75 : speech.speakText(str(cCount) + _(" text elements. Press Control to stop."))
+			if cCount > 75 : message(str(cCount) + _(" text elements. Press Control to stop."))
 			while o :
-				# # sharedVars.tlog(u"HTML elem:" + str(o.role)  + ", " + str(o.name))
+				# # sharedVars.logte(u"HTML elem:" + str(o.role)  + ", " + str(o.name))
 				try : 
 					obj = o.IAccessibleObject.QueryInterface(ISimpleDOMNode)
 					s=obj.innerHTML 
@@ -133,7 +134,7 @@ class QuoteNav() :
 		else: # plain Text
 			# self.text = "\n---"
 			o = o.IAccessibleObject.QueryInterface(ISimpleDOMNode)
-			# # sharedVars.tlog("brut:" + str(o))
+			# # sharedVars.logte("brut:" + str(o))
 			self.text += str(o.innerHTML)
 		return True
 
@@ -210,12 +211,12 @@ class QuoteNav() :
 		# find first non emptuy line 
 		while self.lastItem > 0 and self.curItem < 20 :
 			# l =  str(self.lItems[self.curItem]).strip()
-			# # sharedVars.tlog("litem [" + str(self.lItems[self.curItem]) + "]")
+			# # sharedVars.logte("litem [" + str(self.lItems[self.curItem]) + "]")
 			if str(self.lItems[self.curItem]).strip() != "" :
 				break
 			self.curItem += 1
 		if speakMode  > 0 :
-			speech.speakText(msg + self.lItems[self.curItem])
+			message(msg + self.lItems[self.curItem])
 
 
 
@@ -227,7 +228,7 @@ class QuoteNav() :
 			copyToClip(self.text)
 			msg = _("Preview copied: ")
 		
-		speech.speakText(msg + self.text)
+		message(msg + self.text)
 
 	def deleteMetas(self) :
 		lbl = "<meta "
@@ -237,13 +238,13 @@ class QuoteNav() :
 			p2 = self.text.find('">', pEnd) 
 			if p2 == -1 : break
 			b = self.text[p:p2] + '">'
-			# # sharedVars.tlog("meta:" + b)
+			# # sharedVars.logte("meta:" + b)
 			metas.append(b)
 			# next block
 			p, pEnd = self.findWords(lbl, p2+2) # +2 is then len of ">
 		if len(metas) == 0 : return
 		for e in metas :
-			# # sharedVars.tlog("e:" + e)
+			# # sharedVars.logte("e:" + e)
 			self.text = self.text.replace(e, "")
 			self.text = self.text.replace(e, "")
 
@@ -301,8 +302,8 @@ class QuoteNav() :
 		l=self.regLink.findall (self.text)
 		for e in l :
 			self.text_link = e[1]
-			# # sharedVars.tlog( "e: " + str(e))
-			# # sharedVars.tlog( "self.text_link " + str(self.text_link))
+			# # sharedVars.logte( "e: " + str(e))
+			# # sharedVars.logte( "self.text_link " + str(self.text_link))
 			if "mailto" in e[0]:
 				self.text = self.text.replace(e[0], self.text_link + ":")
 			elif self.text_link.startswith ("http") :
@@ -316,7 +317,7 @@ class QuoteNav() :
 		# czech : first:Dne 01.07.2023 PLR@site.com last:napsal(a):
 		# tr : 07-01-2023 first:tarihinde PLR ​​şunları last:yazdı:
 		pEnd = self.text.find(wLast, start)
-		# # sharedVars.tlog("Search of {} from {}, found at : {} :".format(wLast, start, pEnd))
+		# # sharedVars.logte("Search of {} from {}, found at : {} :".format(wLast, start, pEnd))
 		if pEnd == -1 : return -1, -1 # pos begin   , pos end
 		# pBeg = self.text.rfind(wFirst, pEnd-100, pEnd)
 		pBeg = -1
@@ -328,7 +329,7 @@ class QuoteNav() :
 				pBeg = pEnd - i + 1
 				break
 
-		# # sharedVars.tlog("reverse Search of new Line  from {} found at :{}, scanned=:{}".format(pEnd, pBeg, scanned))
+		# # sharedVars.logte("reverse Search of new Line  from {} found at :{}, scanned=:{}".format(pEnd, pBeg, scanned))
 
 		if pBeg == -1 : return -1, -1
 		if pEnd - pBeg > 60 : return -1, -1
@@ -348,7 +349,7 @@ class QuoteNav() :
 		headers = []
 		while pE > -1 : 
 			pS, pE = self.findStdHeader(self.onLg, self.wroteLg, pE+1)
-			# # sharedVars.tlog("pS : {}, pE : {}, std header: {}".format(pS, pE, self.text[pS:pE]))
+			# # sharedVars.logte("pS : {}, pE : {}, std header: {}".format(pS, pE, self.text[pS:pE]))
 			if pS != -1 :
 				headers.append(self.text[pS:pE])
 		# 2. for English  language 
@@ -362,9 +363,9 @@ class QuoteNav() :
 		for h in headers :
 			# h = e # str(e).strip()
 			
-			# sharedVars.tlog("Old h :" + h)
+			# sharedVars.logte("Old h :" + h)
 			nh = str("--- ") + str(cleanH(h, self.regMultiSpaces))
-			# sharedVars.tlog("new h :" + nh)
+			# sharedVars.logte("new h :" + nh)
 			self.text = self.text.replace(h, "\n" + nh)
 
 	def cleanMSHeaders(self) :
@@ -380,25 +381,25 @@ class QuoteNav() :
 			if lbl == "" : break
 			lbls += lbl + ":|" + lbl + " :|"
 		lbls = lbls[:-1]
-		# # sharedVars.tlog("from labels:" + lbls)
+		# # sharedVars.logte("from labels:" + lbls)
 		# maybe for a future version > regHdr = "((" + lbls + ").+?" + self.subject + ")"
-		# # sharedVars.tlog("regHdr:" + regHdr)
+		# # sharedVars.logte("regHdr:" + regHdr)
 		p, pEnd = self.findWords(lbls)
 		while p > -1 :
 			p2 = self.text.find(self.subject, pEnd) 
 			if p2 == -1 : break
 			b = self.text[p:p2] + self.subject
-			# # sharedVars.tlog("MS header:" + b)
+			# # sharedVars.logte("MS header:" + b)
 			blocks.append(b)
 			# next block
 			p, pEnd = self.findWords(lbls, p2+lenSubj)
 		if len(blocks) == 0 : return
 
 		for e in blocks :
-			# # sharedVars.tlog("to replace:" + e)
+			# # sharedVars.logte("to replace:" + e)
 			# e may contain , a pseudo \n 
 			t = "\n---" + getSenderName(e) + " " + _("wrote") + " : "
-			# # sharedVars.tlog("t:" + t)
+			# # sharedVars.logte("t:" + t)
 			self.text = self.text.replace(e, t)
 			
 		return
@@ -406,7 +407,7 @@ class QuoteNav() :
 				# arr = str(e[0]).split(":")
 				# if len(arr) > 2 :
 					# repl = "--- " + getSenderName(arr[1]) + " " + _("wrote") + " :"
-					# # sharedVars.tlog( "replacement : " + repl)
+					# # sharedVars.logte( "replacement : " + repl)
 
 	def strBetween2(self, sep1, sep2) :
 		pos1 = self.text.find(sep1) 
@@ -445,7 +446,7 @@ class QuoteNav() :
 		
 		self.regSender.sub("", s)
 		s = s.strip()
-		# # sharedVars.tlog("retour getSenderName :" + s)
+		# # sharedVars.logte("retour getSenderName :" + s)
 		return s
 	# methods related to quotes navigation
 	def skip(self, n=1) :
@@ -456,9 +457,9 @@ class QuoteNav() :
 		elif n == 1 :
 			self.curItem = 0  if self.curItem == self.lastItem  else self.curItem + 1
 		if self.quoteMode :
-			speech.speakText(str(self.curItem+1) + ":" + self.lItems[self.curItem])
+			message(str(self.curItem+1) + ":" + self.lItems[self.curItem])
 		else :
-			speech.speakText(self.lItems[self.curItem])
+			message(self.lItems[self.curItem])
 
 	def skipQuote(self, n=1) :
 		if self.lastItem == -1 : 			self.buildLists(False)
@@ -470,21 +471,21 @@ class QuoteNav() :
 			self.curQuote = 0  if self.curQuote == lastQuote  else self.curQuote + 1
 
 		self.curItem = self.lQuotes[self.curQuote]
-		# return speech.speakText(" curquote {},  curItem {}".format(self.curQuote, self.curItem))
-		speech.speakText(str(self.curQuote+1) + ":" + self.lItems[self.curItem])
+		# return message(" curquote {},  curItem {}".format(self.curQuote, self.curItem))
+		message(str(self.curQuote+1) + ":" + self.lItems[self.curItem])
 
 	def findItem(self, expr) :
 		if self.lastItem == -1 : 			self.buildLists(False)
 		lIdx, wIdx = self.indexOf(expr, self.curItem)
 		if lIdx > -1 :
 			self.curItem = lIdx
-			speech.speakText(self.lItems[lIdx])
+			message(self.lItems[lIdx])
 		else :
 			beep(120, 20)
 	# self.lQuotes = [idx for (idx, item) in enumerate(self.lItems, self.curIndex) if item.find(expr) > -1]
 		# try:
 			# self.CurItem = self.lItems.index(expr) # ,self.curItem)
-			# speech.speakText(self.lItems[self.curItem])
+			# message(self.lItems[self.curItem])
 		# except ValueError:
 			# beep(100, 20)			
 		
@@ -526,7 +527,7 @@ def getSenderName(header) :
 			s = s.split("&lt;")[0]
 
 	s = s.replace("", " ").strip()
-	# # sharedVars.tlog("retour getSenderName :" + s)
+	# # sharedVars.logte("retour getSenderName :" + s)
 	return s
 	
 def shortenUrl(lnk, label) :
@@ -546,18 +547,18 @@ def findNearWords(inStr, w1, w2, max) :
 	len1 = len(w1)
 	len2 = len(w2)
 	p1 = inStr.find(w1) 
-	# # sharedVars.tlog("premier p1 :" + str(p1))
+	# # sharedVars.logte("premier p1 :" + str(p1))
 	while p1 > -1 :
 		p2 = inStr.find(w2, p1+len1)
-		# # sharedVars.tlog("p2 :" + str(p2))
+		# # sharedVars.logte("p2 :" + str(p2))
 		if p2 == -1 : 
-			# # sharedVars.tlog(w2 + " not Found")
+			# # sharedVars.logte(w2 + " not Found")
 			break
 		if  p2-len2 - p1 + len1  < max :
-			# # sharedVars.tlog("found")
+			# # sharedVars.logte("found")
 			return inStr[p1:p2+len2+2]
 		p1 = inStr.find(w1, p2) 
-		# # sharedVars.tlog("p1 :" + str(p1))
+		# # sharedVars.logte("p1 :" + str(p1))
 	return ""
 
 def cleanH(s, reg) :
@@ -569,7 +570,7 @@ def cleanH(s, reg) :
 
 		if ", " in s :
 			s = s.split(", ")
-			# # sharedVars.tlog("s1 {}, s2 {}".format(s[0], s[1]))
+			# # sharedVars.logte("s1 {}, s2 {}".format(s[0], s[1]))
 			s = s[1]
 	finally :
 		return s

@@ -21,7 +21,8 @@ from winsound import PlaySound,SND_MEMORY, SND_PURGE, MessageBeep,MB_ICONASTERIS
 import threading
 objSoundFiles = {}
 import speech
-from wx import CallAfter, CallLater, Menu, MessageBox
+from wx import CallAfter, Menu, MessageBox
+from core import callLater
 from winUser import setCursorPos, getKeyNameText 
 import addonHandler,  os, sys
 addonHandler.initTranslation()
@@ -63,7 +64,7 @@ def playSound (soundFile):
 	try :
 		threading.Thread (None, PlaySound, None, (objSoundFiles[(soundFile if soundFile.endswith (".wav") else soundFile+".wav")],SND_MEMORY|SND_PURGE)).start ()
 	except : 
-		beep(440, 80)
+		# deactivated for those who don't like sound -> beep(440, 80)
 		pass #son non trouvé
 
 def versionTB() :   
@@ -502,7 +503,7 @@ def listGestFromScanCodes() :
 	CallAfter(browseableMessage, message =txt, title = "List of keys from scancodes", 	isHtml = False)
 
 def showNVDAMenu (menu):
-	setCursorPos(300,300)
+	setCursorPos(100,100)
 	sleep(0.03)
 	CallAfter (displayMenu,menu)
 def displayMenu (menu):

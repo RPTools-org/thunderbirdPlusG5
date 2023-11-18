@@ -3,7 +3,8 @@
 import addonHandler
 addonHandler.initTranslation()
 import controlTypes, api
-from speech import speakText, speakSpelling, cancelSpeech, getState, setSpeechMode, SpeechMode
+from speech import  speakSpelling, cancelSpeech, getState, setSpeechMode, SpeechMode
+from ui import message
 from tones import beep
 from wx  import  CallLater
 import sharedVars
@@ -42,9 +43,9 @@ def isQuickfilterBar(o) :
 	
 def checkObj(o, context="") :
 	if not o :
-		# sharedVars.tlog("Not passed : " + context) 
+		# sharedVars.logte("Not passed : " + context) 
 		return  False
-	# sharedVars.tlog("Passed : " + str(o.role) + ", " + str(getIA2Attr(o)) + ", " + context)
+	# sharedVars.logte("Passed : " + str(o.role) + ", " + str(getIA2Attr(o)) + ", " + context)
 	return True
 
 def findChildByRoleID(obj,role, ID, startIdx=0) : # attention : controlTypes roles
@@ -167,11 +168,11 @@ def getThreadTreeFromFG(focus=False, nextGesture="", getThreadPane=False) :
 			# if o.role ==  controlTypes.Role.TOGGLEBUTTON and controlTypes.State.PRESSED in o.states : options += o.name + ", "
 			# # sharedVars.log(o, "child")
 			# o = o.next
-		# # sharedVars.tlog(infos)	
+		# # sharedVars.logte(infos)	
 		# if word or options : t += _("Expression input: %s") %word
-		# speakText(t)
+		# message(t)
 		# if word : speakSpelling(word)
-		# if options : speakText(options)
+		# if options : message(options)
 	# finally :
 		# sharedVars.objLooping = prevLooping
 
@@ -237,7 +238,7 @@ def getPreviewDoc() :
 	o = getMessagePane()
 	# checkObj(o, "get previwDoc, get messagePane")
 	if not o :
-		speakText(_("The preview pane is not displayed. Press F8 and try again please"))
+		message(_("The preview pane is not displayed. Press F8 and try again please"))
 		return None, False
 	# parent of document :| i0, Role-INTERNALFRAME, , IA2ID : messageBrowser | i0, Role-GROUPING,  
 	#|  child i15, Role-INTERNALFRAME, , IA2ID : messagepane 	
@@ -281,10 +282,10 @@ def clickObject(o, left=True) :
 	import winUser
 	api.setNavigatorObject(o)
 	loc = o.location
-	# sharedVars.tlog("location : left {} width {} top {} height {}".format(loc.left, loc.width, loc.top, loc.height))
+	# sharedVars.logte("location : left {} width {} top {} height {}".format(loc.left, loc.width, loc.top, loc.height))
 	x =  int(loc.left + loc.width / 2)
 	y = int(loc.top + loc.height / 2)
-	# sharedVars.tlog("x {}, y {}".format(x, y))
+	# sharedVars.logte("x {}, y {}".format(x, y))
 	winUser.setCursorPos (x, y)
 	if left :
 		winUser.mouse_event(winUser.MOUSEEVENTF_LEFTDOWN,0,1,None,None)
@@ -324,7 +325,6 @@ def setMLIState(obj) :
 		setState(obj, controlTypes.State.SELECTED)
 	if role == controlTypes.Role.TREEVIEWITEM   and controlTypes.State.EXPANDED not in obj.states :
 		setState(obj, controlTypes.State.EXPANDED)
-
 # Headers pane utils
 class RecurseHeaders() :
 	def __init__(self,IDObj, IDLabel, IDName) :
@@ -371,19 +371,19 @@ def getHeader(o, key, repeats=0, say=True) :
 	if hasID(o, "threadTree") : 
 		if controlTypes.State.COLLAPSED   in o.states :
 			# does not work because Alt was pressed before :KeyboardInputGesture.fromName ("righTArrow").send()
-			speakText(_("Press right arrow and retry, please."))
+			message(_("Press right arrow and retry, please."))
 			return "", ""
 		o = getMessagePane()
 		# checkObj(o, "messagePane depuis liste")
 		# if not o :
-			# speakText("F8")
+			# message("F8")
 			# KeyboardInputGesture.fromName ("f8").send()
 			# sleep(0.15)
 			# o = getMessagePane()
 			# # checkObj(o, "messagePane after  f8")
 			# if not o : return
 		if not o :  
-			speakText(_("The headers pane is not displayed. Please press F8 then try again"))
+			message(_("The headers pane is not displayed. Please press F8 then try again"))
 			return "", ""
 		o = getMessageHeaders(o)
 	elif hasattr(o, "role") and  o.role == controlTypes.Role.DOCUMENT :
@@ -391,7 +391,7 @@ def getHeader(o, key, repeats=0, say=True) :
 	else : return "", ""
 	# checkObj(o, "messageHeaders")
 	if not o :  
-		speakText(_("The headers are not available"))
+		message(_("The headers are not available"))
 		return "", ""
 	role = controlTypes.Role.SECTION
 	ran = False
@@ -413,7 +413,7 @@ def getHeader(o, key, repeats=0, say=True) :
 		oHeader = RecurseHeaders("dateLabel", "dummy", "dummy")
 		oHeader.run(o)
 		oHeader.outName =str(oHeader.outObj.firstChild.name) 
-		return speakText(oHeader.outName)
+		return message(oHeader.outName)
 	elif key == 4 : # to
 		o = findChildByRoleID(o, role, "expandedtoRow", 1) 
 		oHeader = RecurseHeaders("toRecipient0", "expandedtoLabel", "dummy")
@@ -474,9 +474,9 @@ def getHeader(o, key, repeats=0, say=True) :
 		while  o :
 			if o.name : t += o.name + ", "
 			o = o.next
-		return speakText(t)
+		return message(t)
 	else : # extra headers
-		return speakText(u"entête non encore implémenté")
+		return message(u"entête non encore implémenté")
 		# level 1, idx 3 of 2 : Role.SECTION, ID : extraHeadersArea, childCount : 0
 		# End of Header list
 	# execution
@@ -485,13 +485,13 @@ def getHeader(o, key, repeats=0, say=True) :
 	if not oHeader.outObj : 
 		headerLabels = _("void,From,Subject: ,Date,To,CC,BCC,Reply to") 
 		headerNotFound = _("The {0} header is missing from this message.")
-		if say : speakText(headerNotFound.format(headerLabels.split(",")[key]))
+		if say : message(headerNotFound.format(headerLabels.split(",")[key]))
 		try : return  oHeader.outLabel, oHeader.outName
 		except : return "", ""
 	if repeats == 0 :
 		if say :
 			oHeader.outLabel += ("" if not oHeader.outLabel else " : ") 
-			speakText(oHeader.outLabel + oHeader.outName)
+			message(oHeader.outLabel + oHeader.outName)
 		else :
 			return oHeader.outLabel, oHeader.outName
 	elif repeats == 1 :
@@ -529,9 +529,9 @@ def getAttachment(repeats) :
 			oBtn =o
 			leftClick = True
 		o = o.next
-	# sharedVars.tlog(text+ msg)
+	# sharedVars.logte(text+ msg)
 	if repeats == 0 :
-		speakText(text + msg)
+		message(text + msg)
 	elif repeats > 0 and oBtn :
 		# oBtn.setFocus()
 		clickObject(oBtn, leftClick)
@@ -546,17 +546,17 @@ def smartReply(repeats=0) :
 		toNames = str(getHeader(5, 0, False)) # key repeats say
 	isList = (repeats== 0 and wordsMatchWord("@googlegroups|@framalist|@freelist", toNames))
 	if isList : 
-		speakText(_("To the group, "))
+		message(_("To the group, "))
 		# display a menu -> return CallLater(150, replyTo, msgHeader, 1)
 		# beep(100, 40)
 		return CallLater(25, KeyboardInputGesture.fromName("control+shift+l").send)
 	else : # not alist
 		# delay = 25
 		# if "groups.io" in toNames :
-			# if ";" not in str(toNames) : speakText(_("To the list, "))
+			# if ";" not in str(toNames) : message(_("To the list, "))
 			# else : 
 				# delay = 250
-				# speakText(toLabel + " 2 addresses") #  + toNames
+				# message(toLabel + " 2 addresses") #  + toNames
 			# return CallLater(delay, KeyboardInputGesture.fromName("control+r").send)
 			# ordinary correspondent
 			# beep(440, 10)
@@ -567,7 +567,7 @@ def listColumnID(oTT):
 		# oTT must be the threadTree
 		prevLooping = sharedVars.objLooping
 		sharedVars.objLooping = True
-		# sharedVars.tlog("Begin Column ID list")
+		# sharedVars.logte("Begin Column ID list")
 			# flat list mode : path Role-TEXTFRAME, , IA2ID : threadTree | i0, Role-TABLE,  | i0, Role-TEXTFRAME,  | i0, Role-TABLEROW,  , 
 		o =  oTT.firstChild.firstChild.firstChild.firstChild  # first headers of threadTree
 		while o   :
@@ -578,13 +578,13 @@ def listColumnID(oTT):
 			cName = ""
 			if o.firstChild :
 				cName = "" if not hasattr(o.firstChild, "name") else o.firstChild.name
-			# sharedVars.tlog("ID {}, left : {}, name : {}, cName : {}, {}".format(ID, left, name, cName, role))
+			# sharedVars.logte("ID {}, left : {}, name : {}, cName : {}, {}".format(ID, left, name, cName, role))
 			o = o.next
 	finally :
-		# sharedVars.tlog("End of  Column ID list")
+		# sharedVars.logte("End of  Column ID list")
 		sharedVars.objLooping = prevLooping
 def listColumnNames(oRow) :
-	# sharedVars.tlog("* Begin of columnNames ")
+	sharedVars.logte("* Begin of columnNames ")
 	o = oRow.firstChild
 	while o :
 		left =  str(o.location.left) 
@@ -599,9 +599,9 @@ def listColumnNames(oRow) :
 			oc = o.firstChild
 			cName = "" if not oc.name else ", cName:" + str(oc.name)
 			cValue = "" if not oc.value else ", cValue:" + str(oc.value)
-		# sharedVars.tlog(left + ", " +  cls + ", " + clsFull + str(name) + str(value) + str(cName) + str(cValue))
+		sharedVars.logte(left + ", " +  cls + ", " + clsFull + str(name) + str(value) + str(cName) + str(cValue))
 		o = o.next
-	# sharedVars.tlog("* End of columnNames ")
+	# sharedVars.logte("* End of columnNames ")
 def recurseObjects(o, level): 
 	if not o : return None
 	o = o.firstChild
@@ -616,4 +616,30 @@ def recurseObjects(o, level):
 		o = o.next
 		i += 1
 	return o
-			
+def listAscendants(last=-4, o=None, title="** List of ascendants") :
+	last = (last if last <= 0 else 0 - last)
+	if not o :
+		o = api.getFocusObject()
+	sharedVars.logte(title)
+	lev = 0
+	while o  and lev >= last :
+		sharedVars.log(o, "level " + str(lev))
+		lev -= 1
+		o = o.parent
+
+def listDescendants(o=None, lev=0, tit=None) :
+	if not o :
+		o = api.getFocusObject()
+	if tit :
+		sharedVars.logte(tit)
+	lev += 1
+	o = o.firstChild
+	i = 1
+	while o :
+		sharedVars.log(o, "level " + str(lev) + " " + str(i))
+		if o.childCount :
+			listDescendants(o, lev) 
+		i +=1
+		o = o.next
+
+

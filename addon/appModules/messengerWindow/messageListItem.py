@@ -10,8 +10,9 @@ from api import copyToClip
 import controlTypes
 from keyboardHandler import KeyboardInputGesture
 from NVDAObjects.IAccessible import IAccessible # , getNVDAObjectFromPoint
-from wx import CallAfter, CallLater
-from ui import  browseableMessage
+from wx import CallAfter
+from core import callLater
+from ui import  browseableMessage, message
 import addonHandler,  os, sys
 _curAddon=addonHandler.getCodeAddon()
 sharedPath=os.path.join(_curAddon.path,"AppModules", "shared")
@@ -24,30 +25,78 @@ addonHandler.initTranslation()
 from time import time, sleep
 
 # postMessage =windll.user32.PostMessageA
-_timer = None
+# optimization : the dict below is initialized on add-on initialization
+TTIDefGestures = {
+	"kb:1" : "readTTICell",
+	"kb:2" : "readTTICell",
+	"kb:3" : "readTTICell",
+	"kb:4" : "readTTICell",
+	"kb:5" : "readTTICell",
+	"kb:6" : "readTTICell",
+	"kb:7" : "readTTICell",
+	"kb:8" : "readTTICell",
+	"kb:9" : "readTTICell",
+	"kb:0" : "readTTICell",
+	"kb:space" : "readPreview",
+	"kb:shift+space" : "readPreview",
+	"kb:enter" : "openMessage",
+	"kb:nvda+upArrow" : "sayLine", 
+	# "kb:delete" : "deleteMsg",
+	"kb:a" : "sayShortcut",
+	# "kb:shift+c" : "sayShortcut",
+	# "kb:j" : "sayShortcut",
+	# "kb:shift+j" : "sayShortcut",
+	"kb:f" : "showFilterBar",
+	# "kb:m" : "toggleUnread"
+} 
 
+TTITagGestures = {
+	"kb:shift+1" : "sayMessageTags",
+	"kb:shift+2" : "sayMessageTags",
+	"kb:shift+3" : "sayMessageTags",
+	"kb:shift+4" : "sayMessageTags",
+	"kb:shift+5" : "sayMessageTags",
+	"kb:shift+6" : "sayMessageTags",
+	"kb:shift+7" : "sayMessageTags",
+	"kb:shift+8" : "sayMessageTags",
+	"kb:shift+9" : "sayMessageTags",
+	"kb:shift+0" : "removeMessageTags",
+	"kb:alt+0" : "sayMessageTags"
+}
+
+gSaying = False
+def gSayShortcut(row) :
+	global gSaying
+	message(row)
+	gSaying = False
+# gTimer = None
+# def gInitTimer() :
+	# global gTimer
+	# if gTimer is not None:
+		# gTimer.Stop()
+		# gTimer = None
+# def saySelection(row, oParent) :
+	# global gTimer
+	# o = api.getFocusObject()
+	# if o.role not in (controlTypes.Role.TREEVIEWITEM, controlTypes.Role.LISTITEM) :
+		# KeyboardInputGesture.fromName("space").send()
+		
+		# # oParent.setFocus()
+		# sleep(.3)
+		# message(str(o.role))
+		# sleep(3)
+		# # beep(700, 10)
+		# gTimer = callLater(100, saySelection, row, oParent)
+		# return
+	# nm = o.name
+	# message(row + o.name)
 
 class MessageListItem(IAccessible):
 	#lastScriptName=False
 	def initOverlayClass (self):
-		for i  in range(0, 10) :self.bindGesture ("kb:"+str(i), "readTTICell")  		
-		for e in  range(1,10) : self.bindGestures ({"kb:shift+"+utis._unicode(e):"sayMessageTags"})
-		self.bindGesture ("kb:shift+0", "removeMessageTags")
-		self.bindGesture ("kb:Alt+0", "sayMessageTags")
-
-		self.bindGesture ("kb:space", "readPreview")
-		self	.bindGesture ("kb:shift+space", "readPreview")
-		self.bindGesture ("kb:enter", "openMessage")
-		self.bindGesture ("kb:nvda+upArrow", "sayLine") 
-		self.bindGestures(
-			{"kb:a" : "sayShortcut",
-			"kb:shift+c" : "sayShortcut",
-			"kb:j" : "sayShortcut",
-			"kb:shift+j" : "sayShortcut",
-			# m is bound to sayUnread
-			"kb:f" : "showFilterBar",
-			"kb:m" : "toggleUnread"
-			})
+		self.bindGestures(TTIDefGestures)
+		if not sharedVars.TTnoTags :
+			self.bindGestures(TTITagGestures)
 
 	def script_sayLine(self, gesture):
 		rc =  getLastScriptRepeatCount ()
@@ -55,7 +104,10 @@ class MessageListItem(IAccessible):
 		if rc > 0 :
 			browseableMessage (message=nm.replace(", ", "\n"), title = _("Line details") + " - ThunderbirdPlus", isHtml = False)
 		else :
-			speech.speakText(sharedVars.curTTRow)
+			message(sharedVars.curTTRow)
+	script_sayLine.__doc__ = _("Message list : One press announces the current line, two presses displays the line text in a window.")
+	script_sayLine.category=sharedVars.scriptCategory
+
 
 	# read threadTree item  cells  
 	def script_readTTICell(self,gesture):
@@ -81,11 +133,11 @@ class MessageListItem(IAccessible):
 			if "attachment" in ID : label = "" ; name = _("No Attachement.")
 			else : name = _("Blank")
 		if rc == 0 :
-			speech.speakText(label + name)
+			message(label + name)
 		elif rc == 1 :
 			speech.speakSpelling(name)
 		else :
-			speech.speakText(_("{columnText} copied to clipboard").format (columnText = "")+ " : "+ name)
+			message(_("{columnText} copied to clipboard").format (columnText = "")+ " : "+ name)
 			api.copyToClip (name)
 
 
@@ -96,7 +148,7 @@ class MessageListItem(IAccessible):
 			ID = str(utils.getIA2Attr(o,False, "class"))
 			left = int(o.location[0])
 			msg = "cell, left:{}, iLeft:{}, ID:{}".format(left, iLeft, ID) 
-			sharedVars.tlog(msg)
+			# sharedVars.logte(msg)
 			if left == iLeft :
 				return o
 			o = o.next
@@ -167,7 +219,7 @@ class MessageListItem(IAccessible):
 		lblNoTags = _("No tag.")
 		if gesture.mainKeyName == "0" :
 			msgTags = setToStr(self.getMessageTagSet(), lblTags, lblNoTags)
-			return speech.speakText(msgTags)
+			return message(msgTags)
 		#translators
 		lblNoMore = _("No More tag.")
 		lblAdded = _("added")
@@ -180,12 +232,12 @@ class MessageListItem(IAccessible):
 		newTagSet =  self.getMessageTagSet() 
 		tagChanged =newTagSet.difference(prevTagSet)
 		if not tagChanged  :tagChanged = prevTagSet.difference(newTagSet)
-		# return speech.speakText("tagChanged" + str(tagChanged))
+		# return message("tagChanged" + str(tagChanged))
 		msg  = list(tagChanged)[0]+" "+(lblAdded,lblRemoved)[len(prevTagSet)>len(newTagSet)]
 		msg ="{0}, {1}".format(msg,setToStr(newTagSet, lblTags, lblNoMore))
-		speech.speakText(msg)
-		#speech.speakText(u"Changé" + str(tagChanged))
-		#speech.speakText(u"étiquettes : " + str(newTagSet))
+		message(msg)
+		#message(u"Changé" + str(tagChanged))
+		#message(u"étiquettes : " + str(newTagSet))
 		return
 		# translator 
 		lblTag = _("tag")
@@ -196,7 +248,7 @@ class MessageListItem(IAccessible):
 		if not msgTags : 
 			msgTags =  lblNoMore
 		newState = (lblAdded if tagName in msgTags else lblRemoved)
-		speech.speakText("{0} : {1} {2}, {3}".format(lblTag, tagName, newState, msgTags))
+		message("{0} : {1} {2}, {3}".format(lblTag, tagName, newState, msgTags))
 	script_sayMessageTags.__doc__ = _("Shift + 1 to 8: announces the additions or removals of tags, Shift+0 announces the tags of the message")
 	script_sayMessageTags.category=sharedVars.scriptCategory
 
@@ -205,18 +257,18 @@ class MessageListItem(IAccessible):
 		lblNoTag = _("No tag to remove.")
 		msgTags = self.getMessageTagSet()
 		if not msgTags :  
-			return speech.speakText(lblNoTag)
+			return message(lblNoTag)
 		rc =  getLastScriptRepeatCount ()
 		if rc == 0 :
 			# translator 
 			lblPressTwice = _("Press this command twice quickly to delete the") 
 			msgTags = setToStr(msgTags, lblPressTwice) 
-			return speech.speakText(msgTags)
+			return message(msgTags)
 		elif rc   == 1:
 			KeyboardInputGesture.fromName("0").send()
 			# translator
 			lblNoTag = _("All tags have been removed from this message.")
-		return CallLater(40, speech.speakText, lblNoTag)
+		return callLater(40, message, lblNoTag)
 	script_removeMessageTags.__doc__ = _("Removes all tags from the selected message.")
 	script_removeMessageTags.category=sharedVars.scriptCategory
 	# end of Message tags
@@ -246,29 +298,52 @@ class MessageListItem(IAccessible):
 		utils.setMLIState(self)
 		sharedVars.msgOpened = True
 		return gesture.send()
+		
+	def script_deleteMsg(self,gesture):
+		# sharedVars.logte("Before delete : " + sharedVars.curTTRow) 
+		# gesture.send()
+		# sleep(.5)
+		# callLater(200, fSayTTi) 
+		if sharedVars.gTimer : beep(100, 5) ; return
+		gesture.send()
+		sharedVars.gTimer = callLater(50,  differMsg, True)
+		
 
 	def script_sayShortcut (self,gesture):
-		# beep(440, 10)
+		global gSaying
+		rc = getLastScriptRepeatCount() 
+		if gSaying  or rc : return beep(100, 20)
+		gSaying = True
 		sel = utils.getMessageStatus(infoIdx=2)
-		if gesture.mainKeyName == "a" : # archive
-			if sel == "" : sel = self.name
-			CallAfter(speech.speakText, _("Archived") + ", " + str(sel))
+		mk = gesture.mainKeyName  
+		if mk == "a" :
+			sharedVars.lastJkey = mk
+			lblAction = str(_("Deleted") if mk == "delete" else _("Archived")) + ", "
+			lblCurrent = str(_("Current row")) + " : "
+			if sel == "" :  # 1 message selected
+				if self.name : sel = self.name[:30] 
+				sel = lblAction + str(sel) + lblCurrent
+				CallAfter(gSayShortcut, sel)
+			else : # sevral selected
+				message(lblAction + sel + lblCurrent)
+				sleep(3.0)
+				gSaying = False
 			return gesture.send()
-		elif gesture.mainKeyName == "c"  and"shift" in gesture.modifierNames :
+		elif mk == "c"  and"shift" in gesture.modifierNames :
+			gSaying = False
 			folder = self.windowText.split (" - ")[0]
-			rc =  getLastScriptRepeatCount ()
-			if rc == 0 : return speech.speakText(_("Press this command twice to mark all messages as read in the folder:" + folder))
+			if rc == 0 : return message(_("Press this command twice to mark all messages as read in the folder:" + folder))
 			else :
 				gesture.send()
-				return speech.speakText(_("the {name} folder no longer contains unread messages.").format (name = folder))
-		elif gesture.mainKeyName in "j,m" : #   junk mail
-			if gesture.mainKeyName == "j" : newState = (_("not junk") if "shift" in gesture.modifierNames else _("junk"))
-			else : newState = _("read or unread")
+				return message(_("the {name} folder no longer contains unread messages.").format (name = folder))
+		elif mk  == "j" : #   junk mail
+			newState = (_("not junk") if "shift" in gesture.modifierNames else _("junk"))
 			sel = utils.getMessageStatus(infoIdx=2)
 			if sel  :
-				speech.speakText(_("{} applied. ").format(newState) + ", " + sel) 
+				message(_("{} applied. ").format(newState) + ", " + sel) 
 			else :
-				speech.speakText(_("{} applied to: ").format(newState) + str(self.name))
+				message(_("{} applied to: ").format(newState) + str(self.name))
+			gSaying = False
 			return			 gesture.send()
 
 	def script_showFilterBar(self, gesture) :
@@ -279,20 +354,23 @@ class MessageListItem(IAccessible):
 	script_showFilterBar.category=sharedVars.scriptCategory
 
 	def script_toggleUnread(self,gesture):
+		sharedVars.lastKey = "Del"
 		gesture.send ()
-		sel = utils.getMessageStatus(infoIdx=2)
-		if sel  :
-			speech.speakText(_("{} applied. ").format(_("read or unread")) + ", " + sel) 
-		else :
-			sleep(.1)
-			s = getStatus(self, "read")
-			if not s : 
-				s  = _("Status column not found. Read or Unread applied.")
-			else :
-				s += " " + _("Applied to: ") + self.name 
-			speech.speakText(s)
-			# causes the line to be reread at the wrong time > self.name =  self.appModule.buildColumnNames(self)
-			sharedVars.curTTRow = self.appModule.buildColumnNames(self)
+		# callLater(600, sayTTi)
+		
+		# sel = utils.getMessageStatus(infoIdx=2)
+		# if sel  :
+			# message(_("{} applied. ").format(_("read or unread")) + ", " + sel) 
+		# else :
+			# sleep(.1)
+			# s = getStatus(self, "read")
+			# if not s : 
+				# s  = _("Status column not found. Read or Unread applied.")
+			# else :
+				# s += " " + _("Applied to: ") + self.name 
+			# message(s)
+			# # causes the line to be reread at the wrong time > self.name =  self.appModule.buildColumnNames(self)
+			# sharedVars.curTTRow = self.appModule.buildColumnNames(self)
 	script_toggleUnread.__doc__ = _("Reverses the read and unread status of the selected message")
 	script_toggleUnread.category=sharedVars.scriptCategory
 
@@ -335,8 +413,8 @@ def setToStr(aSet, aLabel="", msgEmpty="") :
 	return aLabel + " : " + result[:-2]
 
 def chichiLinks(rc) :
-	CallLater(20, utis.sendKey, "space", rc, 0.02)
-	CallLater(100, speech.cancelSpeech) # speech.speakText, "Liste de liens : ")
+	callLater(20, utis.sendKey, "space", rc, 0.02)
+	callLater(100, speech.cancelSpeech) # message, "Liste de liens : ")
 	return
 
 def getStatus(oRow, which="read") :
@@ -354,7 +432,7 @@ def getStatus(oRow, which="read") :
 		# if oCell.firstChild :
 			# testChild = ", firstChild role:" + str(oCell.firstChild.role)
 			# if oCell.firstChild.name : testChild += ", cname:" +  oCell.firstChild.name
-		# sharedVars.tlog(str(oCell.location.left) + ", short ID:" + ID + ", longID:" + longID + nm + testChild)
+		# sharedVars.logte(str(oCell.location.left) + ", short ID:" + ID + ", longID:" + longID + nm + testChild)
 		# end of test 
 		if ID == "statuscol" and which=="read" :
 			o = oCell.firstChild
@@ -370,4 +448,19 @@ def getStatus(oRow, which="read") :
 		oCell = oCell.next
 	return ""
 
+def  fSayTTi() :
+	# sharedVars.logte("After delete sharedVars.curTTRow: " + sharedVars.curTTRow) 
+	o = api.getFocusObject()
+	# sharedVars.logte("After delete o.name: " + str(o.name)) 
 
+def differMsg(ini=False) :
+	if ini :
+		sharedVars.gTimer = callLater(500, differMsg, False)
+	else : 
+		sharedVars.gTimer = None
+
+def sayTTi() :
+	# api.processPendingEvents()
+	# o = api.getFocusObject()
+	# message(str(o.name))
+	sharedVars.nameChanging = False

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: thunderbirdPlus\n"
-"POT-Creation-Date: 2023-10-17 07:57+0200\n"
+"Project-Id-Version: Thunderbird+G5\n"
+"POT-Creation-Date: 2023-11-15 07:31+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Pierre-Louis R. <plr.listes@rptools.org>\n"
 "Language-Team: Pierre-Louis Renaud\n"
@@ -15,45 +15,61 @@ msgstr ""
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: appModules/messengerWindow/folderTreeItem.py:23
+#: appModules/messengerWindow/folderTreeItem.py:24
 msgid "Drafts|Deleted"
 msgstr "Brouillons|Corbeille"
 
-#: appModules/messengerWindow/folderTreeItem.py:44
+#: appModules/messengerWindow/folderTreeItem.py:57
 msgid "selects the first unread message in the list from the folder tree."
 msgstr "sélectionne le premier message non lu dans la liste depuis l'arborescence des dossiers."
 
-#: appModules/messengerWindow/folderTreeItem.py:49
+#: appModules/messengerWindow/folderTreeItem.py:62
 msgid "Folders : displays a menu allowing you to reach a subfolder of your choice."
 msgstr "Dossiers : affiche un menu permettant d'atteindre un sous-dossier de votre choix."
 
-#: appModules/messengerWindow/folderTreeItem.py:54
-msgid "Folders : displays a menu allowing you to reach an unread subfolder of your choice."
-msgstr "Dossiers : affiche un menu permettant d'atteindre un sous-dossier non lu de votre choix."
+#: appModules/messengerWindow/folderTreeItem.py:67
+msgid "Folders : displays a menu allowing you to reach an unread folder of the current account."
+msgstr "Dossiers : affiche un menu permettant d'atteindre un dossier non lu du compte actif."
 
-#: appModules/messengerWindow/folderTreeItem.py:61 appModules/messengerWindow/folderTreeItem.py:129
+#: appModules/messengerWindow/folderTreeItem.py:75
+msgid "Folders : display a menu  of all accounts and folders."
+msgstr "Dossiers : affiche un menu de tous les comptes et dossiers."
+
+#: appModules/messengerWindow/folderTreeItem.py:83
+msgid "Folders : display a menu of all unread accounts and folders."
+msgstr "Dossiers : affiche un menu de tous les comptes et dossiers avec non lus."
+
+#: appModules/messengerWindow/folderTreeItem.py:89 appModules/messengerWindow/folderTreeItem.py:244
 msgid "The folder tree is not in All folders mode"
 msgstr "L'arborescence de dossiers n'est pas en mode Tous les dossiers"
 
-#: appModules/messengerWindow/folderTreeItem.py:79
-msgid "1: Go back to"
-msgstr "Remonter &a"
+#: appModules/messengerWindow/folderTreeItem.py:145 appModules/thunderbird.py:220
+msgid "Collapsed"
+msgstr "Réduit"
 
-#: appModules/messengerWindow/folderTreeItem.py:99
-msgid "No unread folders at this level."
-msgstr "Pas de dossiers non lus à ce niveau."
+#: appModules/messengerWindow/folderTreeItem.py:187
+msgid "Choose an account with unread"
+msgstr "Choisir un compte avec non lus"
 
-#: appModules/messengerWindow/folderTreeItem.py:111
+#: appModules/messengerWindow/folderTreeItem.py:190
+msgid "Choose an account"
+msgstr "Choisir un compte"
+
+#: appModules/messengerWindow/folderTreeItem.py:224
 msgid "Accounts, menu"
 msgstr "Comptes, menu"
 
-#: appModules/messengerWindow/folderTreeItem.py:114
-msgid "Menu, Unread subfolders of"
-msgstr "Menu, dossiers non lus de "
+#: appModules/messengerWindow/folderTreeItem.py:226
+msgid "Accounts with unread, menu"
+msgstr "Comptes avec non lus, menu"
 
-#: appModules/messengerWindow/folderTreeItem.py:116
-msgid "Menu, Subfolders of "
-msgstr "Menu, sous-dossiers de "
+#: appModules/messengerWindow/folderTreeItem.py:229
+msgid "Menu, Unread folders of"
+msgstr "Menu, dossiers non lus de"
+
+#: appModules/messengerWindow/folderTreeItem.py:231
+msgid "Menu, folders of "
+msgstr "Menu, dossiers de "
 
 #: appModules/messengerWindow/menuMain.py:40
 msgid "Help\tCtrlF1"
@@ -123,133 +139,133 @@ msgstr "plus d'options"
 msgid "To get all headers, please open the View Menu, go down to 'Headers' and then press Enter on 'All'  in the submenu. Then display the grave menu again."
 msgstr "Pour obtenir tous les entêtes, veuillez ouvrir le Menu Affichage, descendre sur Entêtes puis presser sur Complets dans le sous-menu. Ensuite, affichez à nouveau le menu puissance2."
 
-#: appModules/messengerWindow/messageListItem.py:56
+#: appModules/messengerWindow/messageListItem.py:105
 msgid "Line details"
 msgstr "Détails de la ligne"
 
-#: appModules/messengerWindow/messageListItem.py:81 appModules/shared/utis.py:596
+#: appModules/messengerWindow/messageListItem.py:108
+msgid "Message list : One press announces the current line, two presses displays the line text in a window."
+msgstr "Liste messages : un appui annonce la ligne courante, deux appuis affiche le texte de la ligne dans une fenêtre."
+
+#: appModules/messengerWindow/messageListItem.py:133 appModules/shared/utis.py:597
 msgid "No Attachement."
 msgstr "Pas de pièce jointe."
 
-#: appModules/messengerWindow/messageListItem.py:82 appModules/thunderbird.py:385
+#: appModules/messengerWindow/messageListItem.py:134 appModules/thunderbird.py:449
 msgid "Blank"
 msgstr "Vide"
 
-#: appModules/messengerWindow/messageListItem.py:88
+#: appModules/messengerWindow/messageListItem.py:140
 #, python-brace-format
 msgid "{columnText} copied to clipboard"
 msgstr "{columnText} copié dans le presse papier"
 
-#: appModules/messengerWindow/messageListItem.py:162 appModules/messengerWindow/messageListItem.py:165
+#: appModules/messengerWindow/messageListItem.py:214 appModules/messengerWindow/messageListItem.py:217
 msgid "Tags"
 msgstr "Etiquettes"
 
-#: appModules/messengerWindow/messageListItem.py:162 appModules/messengerWindow/messageListItem.py:167
+#: appModules/messengerWindow/messageListItem.py:214 appModules/messengerWindow/messageListItem.py:219
 msgid "No tag."
 msgstr "Pas d'étiquette."
 
-#: appModules/messengerWindow/messageListItem.py:172
+#: appModules/messengerWindow/messageListItem.py:224
 msgid "No More tag."
 msgstr "Plus détiquette."
 
-#: appModules/messengerWindow/messageListItem.py:173 appModules/messengerWindow/messageListItem.py:193
+#: appModules/messengerWindow/messageListItem.py:225 appModules/messengerWindow/messageListItem.py:245
 msgid "added"
 msgstr "ajoutée"
 
-#: appModules/messengerWindow/messageListItem.py:174
+#: appModules/messengerWindow/messageListItem.py:226
 msgid " removed"
 msgstr " retirée"
 
-#: appModules/messengerWindow/messageListItem.py:191
+#: appModules/messengerWindow/messageListItem.py:243
 msgid "tag"
 msgstr "étiquette"
 
-#: appModules/messengerWindow/messageListItem.py:192
+#: appModules/messengerWindow/messageListItem.py:244
 msgid "No more tag."
 msgstr "Plus d'étiquette."
 
-#: appModules/messengerWindow/messageListItem.py:194
+#: appModules/messengerWindow/messageListItem.py:246
 msgid "removed"
 msgstr "retirée"
 
-#: appModules/messengerWindow/messageListItem.py:200
+#: appModules/messengerWindow/messageListItem.py:252
 msgid "Shift + 1 to 8: announces the additions or removals of tags, Shift+0 announces the tags of the message"
 msgstr "Maj 1 à 8 : Vocalise les ajouts ou retraits d'étiquettes, Maj+0 annonce les étiquettes du message"
 
-#: appModules/messengerWindow/messageListItem.py:205
+#: appModules/messengerWindow/messageListItem.py:257
 msgid "No tag to remove."
 msgstr "Pas d'étiquette à retirer."
 
-#: appModules/messengerWindow/messageListItem.py:212
+#: appModules/messengerWindow/messageListItem.py:264
 msgid "Press this command twice quickly to delete the"
-msgstr "Pressez deux fois rapidement cette commande pour supprimer les "
+msgstr "Pressez deux fois rapidement cette commande pour supprimer les"
 
-#: appModules/messengerWindow/messageListItem.py:218
+#: appModules/messengerWindow/messageListItem.py:270
 msgid "All tags have been removed from this message."
 msgstr "Toutes les étiquette ont été retirées de ce message."
 
-#: appModules/messengerWindow/messageListItem.py:220
+#: appModules/messengerWindow/messageListItem.py:272
 msgid "Removes all tags from the selected message."
 msgstr "Supprime toutes les étiquettes du message sélectionné."
 
-#: appModules/messengerWindow/messageListItem.py:241
+#: appModules/messengerWindow/messageListItem.py:293
 msgid "Filtered reading of the message preview pane without leaving the list."
 msgstr "Lecture filtrée du volet d'aperçu du message sans quitter la liste."
 
-#: appModules/messengerWindow/messageListItem.py:254
+#: appModules/messengerWindow/messageListItem.py:321
+msgid "Deleted"
+msgstr "Corbeille"
+
+#: appModules/messengerWindow/messageListItem.py:321
 msgid "Archived"
 msgstr "Archivé"
 
-#: appModules/messengerWindow/messageListItem.py:259
+#: appModules/messengerWindow/messageListItem.py:322
+msgid "Current row"
+msgstr "Ligne courante"
+
+#: appModules/messengerWindow/messageListItem.py:335
 msgid "Press this command twice to mark all messages as read in the folder:"
 msgstr "Frappez deux fois cette commande pour marquer tous les messages comme lus dans le dossier : "
 
-#: appModules/messengerWindow/messageListItem.py:262
+#: appModules/messengerWindow/messageListItem.py:338
 #, python-brace-format
 msgid "the {name} folder no longer contains unread messages."
 msgstr "le dossier {name} ne contient plus de message non lu."
 
-#: appModules/messengerWindow/messageListItem.py:264
+#: appModules/messengerWindow/messageListItem.py:340
 msgid "not junk"
 msgstr "acceptable"
 
-#: appModules/messengerWindow/messageListItem.py:264
+#: appModules/messengerWindow/messageListItem.py:340
 msgid "junk"
 msgstr "indésirable"
 
-#: appModules/messengerWindow/messageListItem.py:265 appModules/messengerWindow/messageListItem.py:284
-msgid "read or unread"
-msgstr "lu ou non lu"
-
-#: appModules/messengerWindow/messageListItem.py:268 appModules/messengerWindow/messageListItem.py:284
+#: appModules/messengerWindow/messageListItem.py:343
 msgid "{} applied. "
 msgstr "{} appliqué. "
 
-#: appModules/messengerWindow/messageListItem.py:270
+#: appModules/messengerWindow/messageListItem.py:345
 msgid "{} applied to: "
 msgstr "{} appliqué à : "
 
-#: appModules/messengerWindow/messageListItem.py:277
+#: appModules/messengerWindow/messageListItem.py:353
 msgid "Shows the quick filter bar from the message list."
 msgstr "Affiche la barre de filtre rapide depuis la liste de messages."
 
-#: appModules/messengerWindow/messageListItem.py:289
-msgid "Status column not found. Read or Unread applied."
-msgstr "Colonne Statut absente. Lu ou non lu appliqué."
-
-#: appModules/messengerWindow/messageListItem.py:291
-msgid "Applied to: "
-msgstr "Appliqué à :"
-
-#: appModules/messengerWindow/messageListItem.py:295
+#: appModules/messengerWindow/messageListItem.py:374
 msgid "Reverses the read and unread status of the selected message"
 msgstr "Inverse l'état lu et  non lu  du message sélectionné"
 
-#: appModules/messengerWindow/messageListItem.py:360 appModules/thunderbird.py:201
+#: appModules/messengerWindow/messageListItem.py:439 appModules/thunderbird.py:247
 msgid "unread"
-msgstr "Non lu"
+msgstr "non lu"
 
-#: appModules/messengerWindow/messageListItem.py:363
+#: appModules/messengerWindow/messageListItem.py:442 appModules/thunderbird.py:250
 msgid "Read"
 msgstr "Lu"
 
@@ -317,7 +333,7 @@ msgstr "point virgule"
 
 #: appModules/msgComposeWindow/menuCompose.py:50
 msgid "colon"
-msgstr "deux points "
+msgstr "deux points"
 
 #: appModules/msgComposeWindow/menuCompose.py:50
 msgid "equal"
@@ -342,7 +358,7 @@ msgstr "Mise en forme du texte"
 #: appModules/msgComposeWindow/menuCompose.py:95
 #, python-format
 msgid "%s unavailable"
-msgstr "%s indisponible "
+msgstr "%s indisponible"
 
 #: appModules/msgComposeWindow/menuCompose.py:101
 msgid " Activated, Déactivated"
@@ -358,7 +374,7 @@ msgstr "rien, De, Pour, Pièce jointe, Copie à, Copie cachée à, Sujet, Répon
 
 #: appModules/msgComposeWindow/msgComposeWindow.py:97
 msgid "No header."
-msgstr "pas d'entête."
+msgstr "Pas d'entête."
 
 #: appModules/msgComposeWindow/msgComposeWindow.py:109
 #, python-brace-format
@@ -367,7 +383,7 @@ msgstr "Le champ {0} est absent, refrappez deux fois rapidement cette commande p
 
 #: appModules/msgComposeWindow/msgComposeWindow.py:112
 msgid "You will find this field by pressing the button: Other addressing fields to show"
-msgstr "Vous trouverez ce champ en actionnant le bouton : Autres champs d'adressage à afficher."
+msgstr "Vous trouverez ce champ en actionnant le bouton : Autres champs d'adressage à afficher"
 
 #: appModules/msgComposeWindow/msgComposeWindow.py:131
 msgid "The attachments area is missing. Press Control+Shift+A to add attachements."
@@ -438,181 +454,201 @@ msgid " with : "
 msgstr " par : "
 
 #: appModules/shared/menuSettings.py:59
+msgid "Message list : custom vocalization of rows."
+msgstr "Liste messages : vocalisation personnalisée des lignes."
+
+#: appModules/shared/menuSettings.py:60
+msgid "Message list : force rows to be filled if always blank."
+msgstr "Miste messages : forcer le remplissage des lignes si toujours vides."
+
+#: appModules/shared/menuSettings.py:61
 msgid "Combine multiple 'RE' mentions into one"
 msgstr "Regrouper les mentions 'RE' multiples en une seule"
 
-#: appModules/shared/menuSettings.py:60
+#: appModules/shared/menuSettings.py:62
 msgid "Delete the 'Re' mentions in the subject column"
 msgstr "Supprimer les mentions 'RE' dans la colonne sujet"
 
-#: appModules/shared/menuSettings.py:61
+#: appModules/shared/menuSettings.py:63
 msgid "Delete the colons  in the 'Re:' mentions"
 msgstr "Supprimer les 2 points dans les mentions 'RE', "
 
-#: appModules/shared/menuSettings.py:62
+#: appModules/shared/menuSettings.py:64
 msgid "Clean the names of correspondents in the message list"
 msgstr "Nettoyer les noms des correspondants dans la liste de messages"
 
-#: appModules/shared/menuSettings.py:64
+#: appModules/shared/menuSettings.py:66
 msgid "Hide mailing list names"
 msgstr "Masquer les noms de listes de diffusion"
 
-#: appModules/shared/menuSettings.py:65
+#: appModules/shared/menuSettings.py:67
 msgid "Edit words to hide in message subject"
 msgstr "Editer les mots à masquer dans l'objet de messages"
 
-#: appModules/shared/menuSettings.py:66
+#: appModules/shared/menuSettings.py:68
 msgid "Announce 'junk' if displayed in the 'junk Status' column"
 msgstr "Annoncer 'indésirable' si affiché dans la colonne 'Statut indésirable' "
 
-#: appModules/shared/menuSettings.py:70
+#: appModules/shared/menuSettings.py:72
 msgid "Ignore acknowledgment requests"
 msgstr "Ignorer les demandes d'accusé de réception"
 
-#: appModules/shared/menuSettings.py:77
+#: appModules/shared/menuSettings.py:79
 msgid "Spell Check: Spell the misspelled word and the suggested word."
 msgstr "Vérification orthographique : épeler le mot mal orthographié et le mot suggéré."
 
-#: appModules/shared/menuSettings.py:79
+#: appModules/shared/menuSettings.py:81
 msgid "The Esc key closes the message being written"
 msgstr "La touche Échap ferme le message en cours de rédaction"
 
-#: appModules/shared/menuSettings.py:80
+#: appModules/shared/menuSettings.py:82
 msgid "Single press to show the context menus, double press to write a grave accent  or Tilde or ¬¬."
 msgstr "Simple frappe pour  afficher  les menu contextuel, double frappe pour écrire ² ou ³ ou leurs remplaçants."
 
-#: appModules/shared/menuSettings.py:89
-msgid "Message list : Do not clean table rows before announcement  to improve responsiveness."
-msgstr "Liste messages : ne pas nettoyer les lignes du tableau  avant leur annonce pour plus de réactivité."
+#: appModules/shared/menuSettings.py:93
+msgid "Message list : deactivate  tag management   to improve responsiveness."
+msgstr "Liste messages : désactiver la gestion des étiquettes pour une meilleure réactivité."
 
-#: appModules/shared/menuSettings.py:152
+#: appModules/shared/menuSettings.py:94
+msgid "Message list : do not play sound when list is filtered and gets focus."
+msgstr "Liste messages : ne pas jouer un son lorsque la liste est filtrée et reçoit le focus."
+
+#: appModules/shared/menuSettings.py:95
+msgid "Separate reading window: do not read the cleaned version of the message when the window is opened."
+msgstr "Fenêtre séparée de lecture : ne pas lire la version épurée du message à l'ouverture de la fenêtre."
+
+#: appModules/shared/menuSettings.py:162
 msgid "Words separated by semicolons :"
 msgstr "Mots séparés par des points-virgule : "
 
-#: appModules/shared/menuSettings.py:152
+#: appModules/shared/menuSettings.py:162
 msgid "Edit words to hide in the subject of messages"
 msgstr "Edition des mots à masquer  dans l'objet des messages"
 
-#: appModules/shared/menuSettings.py:155
+#: appModules/shared/menuSettings.py:165
 msgid "Delay between 20 and 2000 milliseconds before filtered reading (default: 100):"
 msgstr "Délai entre 20 et 2000 milli secondes  avant  lecture épurée (défaut : 100) : "
 
-#: appModules/shared/menuSettings.py:155
+#: appModules/shared/menuSettings.py:165
 msgid "Separate reading window"
 msgstr "Fenêtre séparée de lecture"
 
-#: appModules/shared/menuSettings.py:170
+#: appModules/shared/menuSettings.py:185
 msgid "Backup file does not exist."
 msgstr "Fichier de sauvegarde inexistant."
 
-#: appModules/shared/menuSettings.py:181
+#: appModules/shared/menuSettings.py:196
 msgid "The configuration has been reset to its default values"
 msgstr "La configuration a été réinitialisée à ses valeurs par défaut"
 
-#: appModules/shared/menuSettings.py:222
+#: appModules/shared/menuSettings.py:237
 msgid "Mmain window options"
 msgstr "Options pour la fenêtre principale"
 
-#: appModules/shared/menuSettings.py:228
+#: appModules/shared/menuSettings.py:243
 msgid "Write window options"
 msgstr "Options pour la fenêtre de rédaction"
 
-#: appModules/shared/menuSettings.py:237
+#: appModules/shared/menuSettings.py:252
 msgid "Update options"
 msgstr "Options de  Mise à jour"
 
-#: appModules/shared/menuSettings.py:243
+#: appModules/shared/menuSettings.py:258
 msgid "Deactivations"
 msgstr "Désactivations"
 
-#: appModules/shared/menuSettings.py:246
+#: appModules/shared/menuSettings.py:260
+msgid "Open sound folder..."
+msgstr "Ouvrir le dossier des sons."
+
+#: appModules/shared/menuSettings.py:261
 msgid "Backup current configuration file"
 msgstr "Sauvegarder la configuration actuelle"
 
-#: appModules/shared/menuSettings.py:247
+#: appModules/shared/menuSettings.py:262
 msgid "Restore backed up configuration file"
 msgstr "Restaurer la configuration sauvegardée"
 
-#: appModules/shared/menuSettings.py:248
+#: appModules/shared/menuSettings.py:263
 msgid "Reset configuration"
 msgstr "Réinitialiser la configuration"
 
-#: appModules/shared/menuSettings.py:268
+#: appModules/shared/menuSettings.py:283
 msgid "Mentions"
 msgstr "mentions"
 
-#: appModules/shared/menuSettings.py:327
+#: appModules/shared/menuSettings.py:349
 msgid "Enable automatic update"
 msgstr "Activer la mise à jour automatique"
 
-#: appModules/shared/menuSettings.py:328
+#: appModules/shared/menuSettings.py:350
 msgid "Disable automatic update"
 msgstr "Désactiver la mise à jour automatique"
 
-#: appModules/shared/menuSettings.py:336
+#: appModules/shared/menuSettings.py:358
 msgid "Automatic update has been enabled. You can restart NVDA to check for an update."
 msgstr "La mise à jour automatique a bien été activée. Vous pouvez redémarrer NVDA pour rechercher une mise à jour."
 
-#: appModules/shared/menuSettings.py:346
+#: appModules/shared/menuSettings.py:368
 msgid "Error saving update settings file."
 msgstr "Erreur d'enregistrement du fichier de paramètres de mise à jour."
 
-#: appModules/shared/menuSettings.py:347
+#: appModules/shared/menuSettings.py:369
 msgid "Automatic update has been disabled."
 msgstr "La mise à jour automatique a bien été désactivée."
 
-#: appModules/shared/quoteNav.py:30
+#: appModules/shared/quoteNav.py:31
 msgid "On|Le%date_sender%wrote|écrit"
 msgstr "Le|On%date_sender%écrit|wrote"
 
-#: appModules/shared/quoteNav.py:109
+#: appModules/shared/quoteNav.py:110
 msgid " text elements. Press Control to stop."
 msgstr " éléments de texte. Appuyez sur Contrôle pour arrêter."
 
-#: appModules/shared/quoteNav.py:186
+#: appModules/shared/quoteNav.py:187
 #, python-brace-format
 msgid "{0} messages in chronological order, "
 msgstr "{0} messages dans l'ordre chrono"
 
-#: appModules/shared/quoteNav.py:192
+#: appModules/shared/quoteNav.py:193
 #, python-brace-format
 msgid "{0} messages, {1} lines, "
 msgstr "{0} messages, {1} lignes, "
 
-#: appModules/shared/quoteNav.py:228
+#: appModules/shared/quoteNav.py:229
 msgid "Preview copied: "
 msgstr "Aperçu copié."
 
-#: appModules/shared/quoteNav.py:252
+#: appModules/shared/quoteNav.py:253
 msgid "Original Message|E-mail d'origine|Message d'origine"
 msgstr "Message d'origine|Original Message|E-mail d'origine"
 
-#: appModules/shared/quoteNav.py:271
+#: appModules/shared/quoteNav.py:272
 msgid "You are receiving this message because you are subscribed to the group"
 msgstr "Vous recevez ce message, car vous êtes abonné au groupe"
 
-#: appModules/shared/quoteNav.py:300
+#: appModules/shared/quoteNav.py:301
 #, python-format
 msgid " link %s "
 msgstr " lien %s "
 
-#: appModules/shared/quoteNav.py:376
+#: appModules/shared/quoteNav.py:377
 msgid "From|De|Expéditeur"
 msgstr "De|From|Expéditeur"
 
-#: appModules/shared/quoteNav.py:400
+#: appModules/shared/quoteNav.py:401
 msgid "wrote"
 msgstr "a écrit"
 
-#: appModules/shared/utils115.py:240
+#: appModules/shared/utils115.py:241
 msgid "The preview pane is not displayed. Press F8 and try again please"
 msgstr "Le volet d'aperçu n'est pas affiché. Pressez F8 et recommencez SVP"
 
-#: appModules/shared/utils115.py:374 appModules/thunderbird.py:481
+#: appModules/shared/utils115.py:374 appModules/thunderbird.py:545
 msgid "Press right arrow and retry, please."
 msgstr "Veuillez presser flèche droite puis réessayez."
 
-#: appModules/shared/utils115.py:386 appModules/thunderbird.py:564
+#: appModules/shared/utils115.py:386 appModules/thunderbird.py:644
 msgid "The headers pane is not displayed. Please press F8 then try again"
 msgstr "Le volet des entêtes n'est pas affiché. Veuillez presser F8 puis réessayer"
 
@@ -641,151 +677,155 @@ msgstr ", bouton, double appui pour activer."
 msgid "To the group, "
 msgstr "A la liste, "
 
-#: appModules/shared/utis.py:473
+#: appModules/shared/utis.py:474
 msgid "The status bar is not displayed."
 msgstr "La barre d'état n'est pas affichée."
 
-#: appModules/shared/utis.py:572
+#: appModules/shared/utis.py:573
 msgid "Copied"
 msgstr "Copié"
 
-#: appModules/shared/utis.py:660
+#: appModules/shared/utis.py:661
 msgid "File not found"
 msgstr "Fichier non trouvé : "
 
-#: appModules/thunderbird.py:152
+#: appModules/thunderbird.py:197
 msgid "Sort by "
 msgstr "Trier par "
 
-#: appModules/thunderbird.py:175
-msgid "Collapsed"
-msgstr "Réduit "
+#: appModules/thunderbird.py:252
+msgid "Unread"
+msgstr "Non lu"
 
-#: appModules/thunderbird.py:204
-msgid "read"
-msgstr "Lu"
+#: appModules/thunderbird.py:255
+msgid "Starred"
+msgstr "Suivi"
 
-#: appModules/thunderbird.py:226
+#: appModules/thunderbird.py:277
 msgid "attachment"
 msgstr "PJ"
 
-#: appModules/thunderbird.py:230
+#: appModules/thunderbird.py:281
 msgid "Spam"
 msgstr "Spam"
 
-#: appModules/thunderbird.py:265
+#: appModules/thunderbird.py:327
 msgid "draft"
 msgstr "brouillon"
 
-#: appModules/thunderbird.py:268
+#: appModules/thunderbird.py:330
 msgid "replies to the sub-thread,"
 msgstr "réponses au sous-fil de di, "
 
-#: appModules/thunderbird.py:270
+#: appModules/thunderbird.py:332
 msgid "Close"
 msgstr "Fermer"
 
-#: appModules/thunderbird.py:281
+#: appModules/thunderbird.py:343
 msgid "notified when you"
 msgstr "notification quand"
 
-#: appModules/thunderbird.py:285
+#: appModules/thunderbird.py:347
 msgid "Ignore"
 msgstr "Ignorer"
 
-#: appModules/thunderbird.py:291
+#: appModules/thunderbird.py:353
 msgid "bird thinks this message is Junk"
 msgstr "ird pense que"
 
-#: appModules/thunderbird.py:295
+#: appModules/thunderbird.py:357
 msgid "remote content"
 msgstr "contenu distant"
 
-#: appModules/thunderbird.py:339
+#: appModules/thunderbird.py:401
 msgid "Filter removed"
 msgstr "Filtre supprimé"
 
-#: appModules/thunderbird.py:389
+#: appModules/thunderbird.py:453
 msgid "Status line without data"
 msgstr "Ligne d'état sans données"
 
-#: appModules/thunderbird.py:391
+#: appModules/thunderbird.py:455
 msgid "Announces abbreviated status line and message filtering information if applicable"
 msgstr "Annonce la ligne d'état abrégée et les informations de filtrage de messages s'il y a lieu"
 
-#: appModules/thunderbird.py:425
+#: appModules/thunderbird.py:489
 msgid "Smart reply to reply to a recipient or mailing list"
 msgstr "Smart reply pour répondre à un destinataire ou à une liste de diffusion"
 
-#: appModules/thunderbird.py:439
+#: appModules/thunderbird.py:503
 msgid "Sends Control+F4 to the current window."
 msgstr "Envoie Control+F4 à la fenêtre courante."
 
-#: appModules/thunderbird.py:464
+#: appModules/thunderbird.py:528
 msgid "In the main window, 1 press: Alt+1 to 8: reads the message header, Alt+9 announces the number of attachments, 2 presses: displays the header in an edit box or for Alt+9, reaches the list of attachments, 3 presses: reaches the header in the headers area. In the Write window, Alt1 to 4, reads the headers, 2 presses reaches the header."
 msgstr "Dans la fenêtre principale,  1 appui : Alt+1  à 8: lit l'entête  du message, Alt+9 annonce le nombre de pièces jointes, 2 appuis : affiche l'entête dans une boîte d'édition ou pour Alt+9, atteint la liste des pièces jointes, 3 appuis : atteint l'entête dans la zone des entêtes. Dans la fenêtre de rédaction, Alt1 à 4, lit les entêtes,  2 appuis atteint l'entête."
 
-#: appModules/thunderbird.py:525
+#: appModules/thunderbird.py:589
 msgid "Filtered reading of the document in the preview pane, reading tab, reading or Write window, from the list of messages or the document."
 msgstr "Lecture épurée du  document dans  le volet d'aperçu, l'onglet de lecture, la fenêtre de lecture ou de rédaction, depuis la liste de messages ou le document."
 
-#: appModules/thunderbird.py:536
+#: appModules/thunderbird.py:596
+msgid "Folders : displays the accounts menu then  the folders menu for the chosen account."
+msgstr "Dossiers : affiche le menu des comptes puis celui des dossiers du compte choisi"
+
+#: appModules/thunderbird.py:603
+msgid "Folders : displays the accounts menu then the unread folders menu for the chosen account."
+msgstr "Dossiers : affiche le menu des comptes puis celui des dossiers non lus du compte choisi"
+
+#: appModules/thunderbird.py:616
 msgid "Focus : 1 press select the current folder in the folder tree, 2 presesses display a menu  allowings to choose an mail account to reach in the folder tree"
 msgstr "Focus : 1 appui sélectionne le dossier courant dans l'arborescence des dossiers, 2 appuis affiche un menu permettant de choisir le compte de messagerie à atteindre dans l'arborescence des dossiers. "
 
-#: appModules/thunderbird.py:547
+#: appModules/thunderbird.py:627
 msgid "Focus : 1 press set focus on message list, 2 presesses set focus on message list and go to the last message"
 msgstr "Focus : 1 appui place le focus dans la liste de messages, 2 appuis place le focus dans la liste de messages puis va au dernier message"
 
-#: appModules/thunderbird.py:573
+#: appModules/thunderbird.py:653
 msgid "Attachments : announces or displays the attachment pane."
 msgstr "Pièces jointes : annonce ou affiche ce panneau."
 
-#: appModules/thunderbird.py:581
+#: appModules/thunderbird.py:661
 msgid "Press alt+upArrow before navigating through quotes in a message."
 msgstr "Pressez alt+flèche haut avant de naviguer dans les citations"
 
-#: appModules/thunderbird.py:590
+#: appModules/thunderbird.py:670
 msgid "Navigates through quotes in a message"
 msgstr "Navigue dans les citations d'un message"
 
-#: appModules/thunderbird.py:614
+#: appModules/thunderbird.py:694
 msgid "Shows the context menu of actions available in the various Thunderbird windows."
 msgstr "Affiche le menu contextuel des actions  disponibles dans les différentes fenêtres de Thunderbird."
 
-#: appModules/thunderbird.py:634
+#: appModules/thunderbird.py:714
 msgid "Shows the Options context menu of Thunderbird+"
 msgstr "Affiche le menu contextuel des options de Thunderbird+"
 
-#: appModules/thunderbird.py:642
+#: appModules/thunderbird.py:722
 msgid "Shows the dialog for editing the delay before reading the message of the separate reading window."
 msgstr "Affiche le dialogue d'édition du délai avant lecture du message de la fenêtre séparée de lecture."
 
-#: appModules/thunderbird.py:651
+#: appModules/thunderbird.py:731
 msgid "Present: Headers and message pane."
 msgstr "Présent : volet des entêtes et du message."
 
-#: appModules/thunderbird.py:653
+#: appModules/thunderbird.py:733
 msgid "Missing : headers and message pane."
 msgstr "Absent : volet des entêtes et du message."
 
-#: appModules/thunderbird.py:654
+#: appModules/thunderbird.py:734
 msgid "Turn on or off the preview messages panel"
 msgstr "Affiche ou masque le volet des entêtes et d'aperçu du message."
 
-#: appModules/thunderbird.py:659
+#: appModules/thunderbird.py:739
 msgid "Shows the add-on help in a web page"
 msgstr "Affiche l'aide de l'extension dans une page web"
 
-#: appModules/thunderbird.py:677
+#: appModules/thunderbird.py:757
 msgid "of the test mode"
 msgstr "du mode de test"
 
-#: appModules/thunderbird.py:749
-msgid "TB+4 log"
-msgstr "Journal TB+4"
-
-#: appModules/thunderbird.py:785
+#: appModules/thunderbird.py:875
 msgid "Re "
 msgstr "Ré "
 
@@ -916,6 +956,51 @@ msgstr "Mozilla Apps Enhancements en cours d'exécution détecté"
 #: installTasks.py:38
 msgid "Installation cancelled"
 msgstr "Installation annulée."
+
+#~ msgid "Folders : display a menu of accounts."
+#~ msgstr "Dossiers : affiche le menu des comptes de messagerie."
+
+#~ msgid "Folders : display a menu of accounts with unread messages."
+#~ msgstr "Dossiers : affiche le menu des comptes avec des dossiers non lus."
+
+#~ msgid "TB+4 log"
+#~ msgstr "Journal TB+4"
+
+#~ msgid "No unread folders for this account."
+#~ msgstr "Pas de dossiers non lus pour ce compte."
+
+#~ msgid "read or unread"
+#~ msgstr "lu ou non lu"
+
+#~ msgid "Status column not found. Read or Unread applied."
+#~ msgstr "Colonne Statut absente. Lu ou non lu appliqué."
+
+#~ msgid "Applied to: "
+#~ msgstr "Appliqué à : "
+
+#~ msgid "Message list : Do not clean table rows before announcement  to improve responsiveness."
+#~ msgstr "Liste messages : ne pas nettoyer les lignes du tableau  avant leur annonce pour une meilleure réactivité."
+
+#~ msgid "Message list : use the alternate method to read the lines."
+#~ msgstr "Liste Messages : utiliser la méthode alternative pour lire les lignes."
+
+#~ msgid "Folders : displays a menu allowing you to reach an unread subfolder of your choice."
+#~ msgstr "Dossiers : affiche un menu permettant d'atteindre un sous-dossier non lu de votre choix."
+
+#~ msgid "1: Go back to"
+#~ msgstr "Remonter &a"
+
+#~ msgid "No unread folders at this level."
+#~ msgstr "Pas de dossiers non lus à ce niveau."
+
+#~ msgid "Menu, Unread subfolders of"
+#~ msgstr "Menu, dossiers non lus de "
+
+#~ msgid "Menu, Subfolders of "
+#~ msgstr "Menu, sous-dossiers de "
+
+#~ msgid "Separate reading window: disable cleaned message reading when the window opens."
+#~ msgstr "Fenêtre séparée de lecture : ne pas lire la version épurée du message à l'ouverture de la fenêtre."
 
 #~ msgid "Message marked as "
 #~ msgstr "Message marqué comme "
@@ -1150,9 +1235,6 @@ msgstr "Installation annulée."
 
 #~ msgid "Archives"
 #~ msgstr "Archives"
-
-#~ msgid "Deleted"
-#~ msgstr "Corbeille"
 
 #~ msgid "Show the list of folders of the main foldertree , according to four types."
 #~ msgstr "Afficher la liste des dossiers de l'arborescence principale de Thunderbird, selon plusieurs types."

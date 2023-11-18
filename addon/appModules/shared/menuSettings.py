@@ -56,8 +56,10 @@ class  Settings() :
 		adPath = self.addonPath
 		# adPath is the root of the addon path
 		self.option_messengerWindow ={
+		"TTClean" : _("Message list : custom vocalization of rows."),
+		"TTFillRow" : _("Message list : force rows to be filled if always blank."),
 		"responseMentionGroup" : _("Combine multiple 'RE' mentions into one"),
-		"responseMentionRemove" : _("Delete the 'Re' mentions in the subject column"),
+				"responseMentionRemove" : _("Delete the 'Re' mentions in the subject column"),
 		"responseMentionDelColon" : _("Delete the colons  in the 'Re:' mentions"),
 		"namesCleaned" : _("Clean the names of correspondents in the message list"),
 		# "separateCols" : _("Add punctuation between columns"),
@@ -86,7 +88,11 @@ class  Settings() :
 		# }
 
 		self.option_chichi = {
-			"TTnoClean" : _("Message list : Do not clean table rows before announcement  to improve responsiveness."),
+			# "TTnoClean" : _("Message list : Do not clean table rows before announcement  to improve responsiveness."),
+			# "TTAltReading" : _("Message list : use the alternate method to read the lines."),
+			"TTnoTags" : _("Message list : deactivate  tag management   to improve responsiveness."),
+			"TTnoFilterSnd" : _("Message list : do not play sound when list is filtered and gets focus."),
+			"SWRnoRead" : _("Separate reading window: do not read the cleaned version of the message when the window is opened."),
 			# "FTnoSpace" : _("Folders: Spacebar does not select the next unread message in the list and does not show the list of unread folders"),
 			# "FTnoNavLetter" : _("Folders: no first character navigation "),
 			# "TTnoSpace" : _("Message list: Spacebar does not read message from preview pane"),
@@ -107,6 +113,8 @@ class  Settings() :
 			for key in keyValue : 
 				if not key in self.options[section] : self.options[section].update({key:False})
 		section = self.options["messengerWindow"]
+		sharedVars.TTClean = section.as_bool ("TTClean")
+		sharedVars.TTFillRow = section.as_bool ("TTFillRow")
 		#sharedVars.useKeyNav =  not section.as_bool ("FKN1_withoutFolderKeyNav")		
 		#sharedVars.directKeyNav =   not section.as_bool ("FKN2_noDirectKeyNav")		
 		if not"delayReadWnd" in self.options["messengerWindow"] : 
@@ -120,11 +128,13 @@ class  Settings() :
 		
 		# coptions for chichi : speed needed
 		section = self.options["chichi"]
-		sharedVars.TTnoClean = section.as_bool ("TTnoClean")
-		sharedVars.FTnoNavLetter = False # section.as_bool ("FTnoNavLetter")
-		sharedVars.FTnoSpace = False # section.as_bool ("FTnoSpace")
-		sharedVars.TTnoSpace = False # section.as_bool ("TTnoSpace")
-		sharedVars.TTnoFilterBar = False # section.as_bool ("TTnoFilterBar")
+		# sharedVars.TTnoClean = section.as_bool ("TTnoClean")
+		# sharedVars.TTAltReading = section.as_bool ("TTAltReading")
+		sharedVars.TTnoTags = section.as_bool ("TTnoTags")
+		# sharedVars.FTnoNavLetter = False # section.as_bool ("FTnoNavLetter")
+		# sharedVars.FTnoSpace = False # section.as_bool ("FTnoSpace")
+		# sharedVars.TTnoSpace = False # section.as_bool ("TTnoSpace")
+		# sharedVars.TTnoFilterBar = False # section.as_bool ("TTnoFilterBar")
 
 		# self.withFoldersList = section.as_bool ("WwithFoldersList")		
 		#sound
@@ -153,6 +163,11 @@ class  Settings() :
 
 	def editDelay(self) :
 		utis.inputBox(label=_("Delay between 20 and 2000 milliseconds before filtered reading (default: 100):"), title= _("Separate reading window"), postFunction=saveDelay, startValue=sharedVars.delayReadWnd)
+	def openSoundFolder(self) :
+		soundPath = api.config.getUserDefaultConfigPath() + "\\TB+Sounds"
+		if  not os.path.exists(soundPath) :  return beep(100, 30)
+		# libPath =  adPath + "\\SoundLib"
+		os.startfile(soundPath)
 
 	def backup(self) :
 		bakFile = api.config.getUserDefaultConfigPath() + "\\" + self.addonName + ".inibak"
@@ -242,7 +257,7 @@ class  Settings() :
 			for e in range (len (keys)): menu.AppendCheckItem (300+e, self.option_chichi[keys[e]]).Check (options["chichi"].as_bool (keys[e]))	
 			mainMenu.AppendSubMenu (menu, _("Deactivations"))
 			mainMenu.Bind (EVT_MENU,self.onOptMenu)
-
+			mainMenu.Append(899, _("Open sound folder..."))
 			mainMenu.Append(900, _("Backup current configuration file"))
 			mainMenu.Append(901, _("Restore backed up configuration file"))
 			mainMenu.Append(902, _("Reset configuration"))
@@ -271,6 +286,8 @@ class  Settings() :
 					options[section][k] = False
 			# ====
 			options[section][key]= evt.IsChecked ()
+			if key == "TTClean" : sharedVars.TTClean = self.options[section][key]
+			if key == "TTFillRow" : sharedVars.TTFillRow = self.options[section][key]
 			self.setResponseMode()
 			self.setfolderTreeNav()
 			return options.write () 	
@@ -303,12 +320,17 @@ class  Settings() :
 				# return
 			key=keys[eID-IDRange]			
 			options[section][key]= evt.IsChecked ()
-			if key == "TTnoSpace" : sharedVars.TTnoSpace = self.options[section][key]
-			elif key == "TTnoFilterBar" : sharedVars.TTnoFilterBar = self.options[section][key]
-			elif key == "TTnoClean" : sharedVars.TTnoClean = self.options[section][key]
-			elif key == "FTnoNavLetter" : sharedVars.FTnoNavLetter = self.options[section][key]
-			elif key == "FTnoSpace" : sharedVars.FTnoSpace = self.options[section][key]
+			# if key == "TTnoSpace" : sharedVars.TTnoSpace = self.options[section][key]
+			# elif key == "TTnoFilterBar" : sharedVars.TTnoFilterBar = self.options[section][key]
+			# if key == "TTnoClean" : sharedVars.TTnoClean = self.options[section][key]
+			# elif key == "TTAltReading" : sharedVars.TTAltReading = self.options[section][key]
+			if key == "TTnoTags" : sharedVars.TTnoTags = self.options[section][key]
+			# elif key ==  "SWRnoRead :"
+			# elif key == "FTnoNavLetter" : sharedVars.FTnoNavLetter = self.options[section][key]
+			# elif key == "FTnoSpace" : sharedVars.FTnoSpace = self.options[section][key]
 			return options.write () 	
+		elif eID == 899 :
+			self.openSoundFolder()
 		elif eID == 900 :
 			self.backup()
 		elif eID == 901 :
