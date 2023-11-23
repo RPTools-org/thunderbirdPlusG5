@@ -34,12 +34,8 @@ def getURLHelp(url) :
 	
 # Variables to configure
 baseUrl="https://www.rptools.org/"
-urlNotif = "" 
-urlFileInfos = baseUrl + "fileInfos.php?key=tbp5Notif"
-# on peut aussi donner un lien direct : urlFileInfos = baseUrl + "dossierFichieonInfoButton/motCléExtension.txt"
-# Structure du fichier d'informations,  l'ordre des lignes doit être respecté
-# version=2023-04-03 00:00
-# name=Thunderbird+
+
+urlFileInfos = baseUrl + "fileInfos.php?key=tbpg5Notif"
 
 
 def checkNotif() :

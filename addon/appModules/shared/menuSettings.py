@@ -5,7 +5,7 @@ from configobj import ConfigObj
 import re
 import addonHandler,  os, sys
 import  sharedVars, utis
-from wx import Menu, EVT_MENU, CallAfter, CallLater 
+from wx import Menu, EVT_MENU, EVT_MENU_CLOSE, CallAfter, CallLater 
 from ui import  message
 from speech import cancelSpeech
 from tones import beep
@@ -242,6 +242,7 @@ class  Settings() :
 			for e in range (len (keys)): menu.AppendCheckItem (100+e, self.option_msgcomposeWindow[keys[e]]).Check (options["msgcomposeWindow"].as_bool (keys[e]))	
 			mainMenu.AppendSubMenu (menu, _("Write window options"))
 			mainMenu.Bind (EVT_MENU,self.onOptMenu)
+			# mainMenu.Bind (EVT_MENU_CLOSE,self.onOptMenuClose)
 		# startup submenu)
 		if frame == "messengerWindow" :
 			menu, options, keys = Menu (), self.options, list(self.option_startup.keys())
@@ -264,7 +265,10 @@ class  Settings() :
 	# mainMenu.Bind (EVT_MENU,self.onOptMenu)
 
 		utis.showNVDAMenu  (mainMenu)	
-
+	# def onOptMenuClose(self, evt) :
+		# evt.Skip(False)
+		# beep(440, 10)
+		
 	def onOptMenu(self, evt) :
 		eID =evt.Id
 		# menu IDs :0=messenger, 100=compose, 200=startup
@@ -290,7 +294,10 @@ class  Settings() :
 			if key == "TTFillRow" : sharedVars.TTFillRow = self.options[section][key]
 			self.setResponseMode()
 			self.setfolderTreeNav()
-			return options.write () 	
+			options.write () 	
+			# beep(700, 40)
+			# evt.Skip(False)
+			return
 		elif eID < 200  : # msgcomposeWindow
 			IDRange = 100
 			section, keys, options = "msgcomposeWindow", list(self.option_msgcomposeWindow.keys()), self.options

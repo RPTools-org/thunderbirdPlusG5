@@ -103,8 +103,9 @@ class MessageListItem(IAccessible):
 		nm = self.name
 		if rc > 0 :
 			browseableMessage (message=nm.replace(", ", "\n"), title = _("Line details") + " - ThunderbirdPlus", isHtml = False)
-		else :
-			message(sharedVars.curTTRow)
+		else : # 1 press
+			if sharedVars.TTClean or sharedVars.TTFillRow : message(sharedVars.curTTRow)
+			else :  message(self.name)
 	script_sayLine.__doc__ = _("Message list : One press announces the current line, two presses displays the line text in a window.")
 	script_sayLine.category=sharedVars.scriptCategory
 

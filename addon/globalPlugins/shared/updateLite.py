@@ -89,29 +89,21 @@ def getURLHelp(url) :
 # Variables to configure
 baseUrl="https://www.rptools.org/"
 urlHelp = getURLHelp(baseUrl + "NVDA-Thunderbird/changes5.php?lg={0}")
-urlFileInfos = baseUrl + "fileInfos.php?key=thunderbirdPlusG5"
-# urlFileInfos = baseUrl + "fileInfos.php?key=tbpg5"
-# for test urlFileInfos = baseUrl + "fileInfos.php?key=thunderbirdup5test"
-# on peut aussi donner un lien direct : urlFileInfos = baseUrl ttt+ "dossierFichieonInfoButton/motCléExtension.txt"
-# Structure du fichier d'informations,  l'ordre des lignes doit être respecté
-# version=3.2.4
-# dbID=identifiant pour les statistiques 
-# name=Thunderbird+
-# type=2022-01-15.nvda-addon
-# path = "https://www.monsite.orfg/dossierContenantLesFichiersInfo/"
-# Le nom du fichier à télécharger est donc : path + "/" + nane + "-" + version + "-" + type
-
+# urlFileInfos = baseUrl + "fileInfos.php?key=thunderbirdPlusG5"
+urlFileInfos = baseUrl + "fileInfos.php?key=tbpg5upd"
+# test urlFileInfos = baseUrl + "fileInfos.php?key=tbpG5Test"
 isDlg = False
 
 def isNewVersion(vLocal, vRemote) :
 	# Provisoire pour versions dev : 
-	return (vRemote > vLocal)
-	# compares only major and minor versions, not subminor
+	# return (vRemote > vLocal)
+	# version structure : YYMM.DD.BB wg-here BB is build.
+	# compares only major and minor versions, not build no
 	tmp = vLocal.split(".")
 	vLocal = tmp[0].rjust(2, "0") + tmp[1].rjust(2, "0")
 	tmp = vRemote.split(".")
 	vRemote = tmp[0].rjust(2, "0") + tmp[1].rjust(2, "0")
-	# print("vRemote : {0}, vLocal : {1}".format(vRemote, vLocal))
+	print("vRemote : {0}, vLocal : {1}".format(vRemote, vLocal))
 	return (vRemote > vLocal)
 	
 def checkUpdate(autoUp) :
