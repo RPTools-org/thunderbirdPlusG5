@@ -154,6 +154,10 @@ def getRemoteVersion() :
 
 def doUpdate(oldVer, forced="") :
 	global baseUrl, urlFileInfos
+	# urlFileInfos = baseUrl + "fileInfos.php?key=tbpg5upd"
+	if forced == "Forc" :
+		urlFileInfos = urlFileInfos.replace("upd", "")
+	
 	beep(337, 1)
 	try :
 		with urlopen  (urlFileInfos) as data :

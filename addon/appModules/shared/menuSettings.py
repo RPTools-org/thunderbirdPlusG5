@@ -234,7 +234,7 @@ class  Settings() :
 				else : 
 					menu.AppendCheckItem (0 + e, lbl).Check (options["messengerWindow"].as_bool (keys[e]))
 				
-			mainMenu.AppendSubMenu (menu, _("Mmain window options"))
+			mainMenu.AppendSubMenu (menu, _("Main window options"))
 		# msgCompose submenu
 		if frame in ("messengerWindow", "msgcomposeWindow") :
 			menu, options, keys = Menu (), self.options, list(self.option_msgcomposeWindow.keys())

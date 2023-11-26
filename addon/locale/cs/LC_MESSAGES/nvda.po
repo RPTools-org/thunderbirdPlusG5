@@ -542,7 +542,7 @@ msgid "The configuration has been reset to its default values"
 msgstr "Konfigurace byla obnovena na výchozí hodnoty"
 
 #: appModules/shared/menuSettings.py:237
-msgid "Mmain window options"
+msgid "Main window options "
 msgstr "Možnosti hlavního okna"
 
 #: appModules/shared/menuSettings.py:243
