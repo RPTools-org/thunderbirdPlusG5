@@ -35,6 +35,7 @@ class FolderTreeItem (IAccessible):
 		# if not sharedVars.FTnoSpace : 
 		self.bindGestures({"kb:space":"ftiNextUnread", "kb:control+enter":"menuUnread", "kb:enter":"menuFolders", "kb:shift+enter":"menuAllFolders", "kb:shift+control+enter":"menuAllUnread"})
 		self.bindGesture ("kb:nvda+upArrow", "sayFolderName") 
+		self.bindGesture ("kb(laptop):nvda+l", "sayFolderName") 
 	# version g5
 	# def showAccountMenu(self, ty=1) :
 		# o = fGetAccountNode(self)
@@ -86,10 +87,39 @@ class FolderTreeItem (IAccessible):
 
 # functions version 5
 def fMenuFolders(o, unread=False) :
-	if not utils.hasID(o, "all-") : return message(_("The folder tree is not in All folders mode"))
-	o = fGetAccountNode(o)
-	nm = str(o.name) 
-	m = FolderMenu(o, unread)
+	ID = str(utils.getIA2Attr(o)).split("-")[0]
+	# sharedVars.logte("fMenuFolders ID : " + ID)
+	if ID not in "all,smart,unread,tags" :
+		# return message(_("Instead press Alt+c, this menu is only supported in All Folders or Unified Folders modes"))
+		return callLater(10, fMenuAccounts, (1 if not unread else 2))
+	lvl = str(utils.getIA2Attr(o, False, "level"))
+	rec = True
+	ty = 0  # normal folder items, not accounts only
+	folderMode = "smart0" # smart  without exclusion of names without @
+	if ID in "all,unread" :
+		o = fGetAccountNode(o)
+		folderMode = "all"
+		nm = str(o.name) 
+	elif ID == "smart" and lvl == "2" :
+		nm = o.name
+		o = o.parent
+		ty = 0
+		rec = False
+		# beep(200, 40)
+	elif ID == "smart" and lvl == "3" :
+		nm = _("Unified folders")
+		o = o.parent
+	elif ID == "tags" :
+		o = o.parent
+		rec = False
+		folderMode = "tags"
+		nm = _("Tags")
+		
+	# __init__(self, startNode, unread=False, recurs=True, type=0, allFolders=False) :
+	m = FolderMenu(o, unread, rec, ty) 
+	m.mode = folderMode
+	# callLater(10, m.showMenu, title="")
+
 	callLater(10, m.showMenu, title=nm)
 def fGetAccountNode(oNode) :
 	o = oNode
@@ -118,6 +148,7 @@ class FolderMenu() :
 		self.recurs = recurs
 		self.all = allFolders
 		self.type = type # 0=normal, 1=accounts, 2= accounts that will display unread folders 
+		self.mode = "all" # or smart
 		self.idx = 0
 		self.account = ""
 		# self.excluded = str(_("Drafts|Deleted") + "|-, ").split("|")
@@ -129,28 +160,37 @@ class FolderMenu() :
 			o = o.next.firstChild
 			# sharedVars.log(o, "Is TreeviewItem? ")
 
-		
 		while o :
 			hasChildren = (int(o.childCount) > 0)
-			coll = ""
+			nm = coll = ""
 			if o.role == controlTypes.Role.TREEVIEWITEM :
-				nm = o.name
+				nm = str(o.name)
+				lvl = str(utils.getIA2Attr(o, False, "level"))
+
 				if self.all :  
-					lvl = str(utils.getIA2Attr(o, False, "level"))
 					if lvl == "2" : 
 						if self.unread and nm.endswith("-") : o = o.next ; continue 
+						if  self.mode == "smart" and "@" not in o.name : o = o.next ; continue
 						self.account = " (" + nm + ") "
 						beep(357, 3)
 				OK = True 
-				if controlTypes.State.COLLAPSED  in o.states : coll = ", " + _("Collapsed")
+				if controlTypes.State.COLLAPSED  in o.states : coll = ", " + _("Collapsed") ; hasChildren = False
+				else : coll =  ", "
 				if self.unread :
 					if not gRegUnread.search(nm) or gRegExcludeFolders.search(nm) or nm.endswith("-") : OK = False
-				if OK and o.name :
-					self.fMenu.Append (self.idx, o.name + self.account + coll)
+				elif  self.mode == "smart" and lvl == "2" and  "@" not in nm  and _("Inbox") not in nm : OK = False
+				elif self.mode ==  "smart0" :
+					if lvl == "2"  : 
+						coll += " " + str(_("Account") if "@" in nm else _("Unified")) + ", "
+					elif lvl == "3" : coll += _("Unified") + ", "
+					
+				if OK and nm :
+					# self.fMenu.Append (self.idx, o.name + self.account + coll)
+					self.fMenu.Append (self.idx, nm + self.account + coll)
 					self.nodes.append(o)
 					# sharedVars.logte(str(self.idx) + ", " + o.name + ", node ptr" + str(self.nodes[self.idx]))
 					self.idx +=1
-			if self.recurs and hasChildren and not coll :
+			if self.recurs and hasChildren  :
 				self.buildMenu(o)
 			o = o.next
 		return
@@ -182,7 +222,7 @@ class FolderMenu() :
 		# sharedVars.log(self.fti, "len self.nodes=" + str(len(self.nodes)))
 		sharedVars.objLooping = False
 		# Add special menu item in normal menu 
-		if self.type == 0 :
+		if self.type == 0  and self.mode == "all" : # normal  and TB folder Mode is all
 			if self.unread : 
 				self.fMenu.Append (self.idx, "& > " + _("Choose an account with unread"))
 				self.nodes.append(2)
@@ -198,7 +238,10 @@ class FolderMenu() :
 	
 	def onMenu(self, evt):
 		if str(self.nodes[evt.Id]).startswith("<NVDAObject") :   # pointer, not accounts menu
+			# beep(440, 10)
 			o = self.nodes[evt.Id]
+			if self.type > 0 and self.mode == "smart" and o.name.startswith(_("Inbox")) : self.type = 0
+		
 			if self.type == 0 : # regular menu item
 				# beep(100, 30)
 				o.doAction()
@@ -206,10 +249,10 @@ class FolderMenu() :
 				o.setFocus()
 				if controlTypes.State.COLLAPSED  in o.states :
 					CallAfter(KeyboardInputGesture.fromName("rightArrow").send)
-			elif self.type == 1 : # request to display folders of the choosed  account 
+			elif self.type == 1 : # request to display folders of the choosen  account 
 				# beep(250, 40)
 				fMenuFolderFromAccount(o , False)
-			elif self.type == 2 : # request to display unread folders of the choosed  account 
+			elif self.type == 2 : # request to display unread folders of the choosen  account 
 				# beep(440, 40)
 				fMenuFolderFromAccount(o , True)
 		else : # request to display the mail accounts menu
@@ -241,11 +284,19 @@ def fMenuAccounts(type=1) :
 	# level 9,          0 of 10, name : RPTools, Role.TREEVIEWITEM, IA2ID : all-bWFpbGJveDovL3Bsci5saXN0ZXMlNDBycHRvb2xzLm9yZ0Bwb3AzLnJwdG9vbHMub3Jn Tag: li
 	try : o = o.firstChild.firstChild.firstChild
 	except : return beep(100, 30)
-	if not utils.hasID(o, "all-") : return message(_("The folder tree is not in All folders mode"))
-	# __init__(self, startNode, unread=False, recurs=True, type=0, allFolders=False) :
-	# type = 1 : read and unread, type = 2 : unread only
-	m = FolderMenu(o.parent, False,  False, type, False)
-	callLater(10, m.showMenu)
+	ID = str(utils.getIA2Attr(o)).split("-")[0]
+	# if ID not in "all,smart,unread,tags" :
+	if ID in "all,smart,unread" :
+		# type = 0: regular folders,  1 :  accounts, read and unread, type = 2 : accounts, unread only
+		m = FolderMenu(startNode=o.parent, unread=False,  recurs=False, type=type)
+		m.mode = "all" if ID == "unread" else ID
+		titl = ""
+	else :
+		unr = False if type == 1 else True
+		m = FolderMenu(startNode=o.parent, unread=unr,  recurs=False, type=0)
+		m.mode = titl = ID
+
+	callLater(10, m.showMenu, title=titl)
 
 def fMenuFolderFromAccount(accountNode, unrd=False) :
 	speech.cancelSpeech()

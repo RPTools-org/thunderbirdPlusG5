@@ -3,12 +3,12 @@
 import addonHandler
 addonHandler.initTranslation()
 import controlTypes, api
-from speech import  speakSpelling, cancelSpeech, getState, setSpeechMode, SpeechMode
+from speech import  speakSpelling, cancelSpeech, setSpeechMode, SpeechMode
 from ui import message
 from tones import beep
-from wx  import  CallLater
+from wx  import  CallLater, CallAfter
 import sharedVars
-from utis import findParentByID, inputBox, wordsMatchWord
+from utis import findParentByID, inputBox, wordsMatchWord, getSpeechMode
 import re
 gRegFTI = re.compile("all-|unread-|smart-|favorite-|recent-|tags-")
 prevSpeechMode = ""
@@ -51,7 +51,7 @@ def checkObj(o, context="") :
 def findChildByRoleID(obj,role, ID, startIdx=0) : # attention : controlTypes roles
 	if obj  is None : return None
 	# ID can be the n first chars of the searched 
-	try : 
+	try :  # finally
 		prevLooping = sharedVars.objLooping
 		sharedVars.objLooping = True
 		try:
@@ -66,6 +66,20 @@ def findChildByRoleID(obj,role, ID, startIdx=0) : # attention : controlTypes rol
 					# sharedVars.log(o, "toolbar found ")
 					return o
 			o = o.next
+		return None
+	finally :
+		sharedVars.objLooping = prevLooping
+
+def findParentByRole(o, role) :
+	if o.role == role : return o 
+	try :  # finally
+		prevLooping = sharedVars.objLooping
+		sharedVars.objLooping = True
+		while o :
+			# if sharedVars.debug : sharedVars.log(o, " parent ", False)
+			if o.role == role :
+					return o
+			o = o.parent
 		return None
 	finally :
 		sharedVars.objLooping = prevLooping
@@ -127,7 +141,7 @@ def getThreadTreeFromFG(focus=False, nextGesture="", getThreadPane=False) :
 		o = o.next
 	if  o and focus : o.setFocus()
 	if nextGesture :
-		prevSpeechMode = getState().speechMode
+		prevSpeechMode = getSpeechMode()
 		setSpeechMode(SpeechMode.off)
 		CallLater(50, silentSendKey, nextGesture)
 	return  o
@@ -211,7 +225,7 @@ def getMessageStatus(infoIdx=-1)  :
 def silentSendKey(key) :
 	KeyboardInputGesture.fromName (key).send()
 	setSpeechMode(prevSpeechMode)
-def  getMessagePane() : # in the main window
+def getMessagePane() : # in the main window
 	# level 8,         15 of 15, Role.INTERNALFRAME, IA2ID : messagepane Tag: browser, States : , FOCUSABLE, childCount  : 1 Path : Role-FRAME| i32, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 
 	o = getPropertyPage()
 	if not o : return None
@@ -327,7 +341,7 @@ def setMLIState(obj) :
 		setState(obj, controlTypes.State.EXPANDED)
 # Headers pane utils
 class RecurseHeaders() :
-	def __init__(self,IDObj, IDLabel, IDName) :
+	def	 __init__(self,IDObj, IDLabel, IDName) :
 		self.IDObj = IDObj
 		self.IDLabel = IDLabel
 		self.IDName = IDName
@@ -501,41 +515,68 @@ def getHeader(o, key, repeats=0, say=True) :
 		except : clickObject(oHeader.outObj, False) # right click
 	return  ""
 
-def getAttachment(repeats) :
+def getAttachment(oFocus=None, repeats=0) :
 	# in  main window :name : doc_thunderbirdPlusG5_fr.md, Role.BUTTON, IA2ID : attachmentName Path : Role-FRAME| i31, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  | i4, Role-SECTION, , IA2ID : messagePane | i0, Role-INTERNALFRAME, , IA2ID : messageBrowser | i0, Role-GROUPING,  | i18, Role-BUTTON, , IA2ID : attachmentName , IA2Attr : id : attachmentName, display : flex, xml-roles : button, tag : label, , Actions : click,  ;
 	# In separate window : 18 of 20, name : doc_thunderbirdPlusG5_fr.md, Role.BUTTON, IA2ID : attachmentName, Path : Role-FRAME| i4, Role-INTERNALFRAME, IA2ID : messageBrowser | i0, Role-GROUPING,  | i18, Role-BUTTON, , IA2ID : attachmentName
-	o = getOneMessageGrouping()
-	if o :
-		o = o.firstChild
-	else :
+	# sharedVars.debugLog = "getAttachment, repeats : " + str(repeats) + "\n"
+	if not oFocus : oFocus = api.getFocusObject()
+	if oFocus.role in (controlTypes.Role.DOCUMENT, controlTypes.Role.LINK)  : 
+		# if repeats > 0 and oFocus.role == controlTypes.Role.LINK : beep(700, 40)
+		o = findParentByRole(oFocus, controlTypes.Role.GROUPING)
+		# sharedVars.log(o, "is Grouping from doc ? ")
+		if repeats > 0 and o.role != controlTypes.Role.GROUPING : return beep(100, 10)
+	elif hasID(oFocus, "threadTree") :
 		o = getMessagePane()
-		o = o.firstChild.firstChild.firstChild
+		# sharedVars.log(o, "in mainWindow , is messagePane ?")
+		o = o.firstChild.firstChild
+		# sharedVars.log(o, "in mainWindow , is Grouping ?")
+	else : return beep(100, 30)
 	
-	text = ""
-	msg = _(", button, press twice to activate")
-	
+	# common to list and separate reading window
+	oStart = o.getChild(14) # cannot be 15 which ID is messagePane
+	oLast = o.lastChild
+	# sharedVars.log(oStart, "oStart, repeats : " + str(repeats))
+	# sharedVars.log(oLast, "oLast, repeats : " + str(repeats))		
+
+	oList = None
+	ID = str(getIA2Attr(oLast))
+	if ID in ("messagepane", "content") :
+		return message(_("No attachment."))
+	elif ID.startswith("attachmentSaveAll") :  # hidden attachment list
+		o = oStart
+		# search  :   Role.TOGGLEBUTTON, ID : attachmentToggle, childCount : 0
+		while o :
+			ID = str(getIA2Attr(o))
+			if o.role == controlTypes.Role.TOGGLEBUTTON and ID == "attachmentToggle" :
+				if controlTypes.State.PRESSED not in o.states : 
+					# beep(440, 10)
+					CallAfter(o.doAction)
+					return
+			o = o.next
+	elif ID == "attachmentList" : 
+		oList = oLast
+
+	text =  ""
+	o = oStart
 	while o :
+		# sharedVars.log(o, "getAttachmment, in loop : ")
 		ID = str(getIA2Attr(o))
 		if ID == "attachmentCount" :
 			text +=  str(o.name)
-		elif ID ==  "attachmentName" : # button
-			text +=  o.name + ", "
-			oBtn =o
-			leftClick = False
 		elif ID == "attachmentSize" :
 			text +=  o.name
-		elif ID == "attachmentSaveAllMultiple" : # button
-			text += o.name
-			oBtn =o
-			leftClick = True
 		o = o.next
-	# sharedVars.logte(text+ msg)
+	# sharedVars.logte(text)
 	if repeats == 0 :
-		message(text + msg)
-	elif repeats > 0 and oBtn :
-		# oBtn.setFocus()
-		clickObject(oBtn, leftClick)
-	
+		text += ", "
+		o = oList.firstChild
+		while o : 
+			text += str(o.name) + ", "
+			o = o.next
+		message(text + ", " + _("Two presses to reach the list."))
+	elif repeats > 0 : 
+		if  oList.childCount  > 1 : oList.setFocus()
+		else : CallAfter(clickObject, oList, False) # right click
 
 def smartReply(repeats=0) :
 	o = api.getFocusObject()
@@ -561,6 +602,24 @@ def smartReply(repeats=0) :
 			# ordinary correspondent
 			# beep(440, 10)
 			KeyboardInputGesture.fromName("control+r").send()
+def getTotalColIdx(oTT):
+	try : # finally
+		# oTT must be the threadTree
+		prevLooping = sharedVars.objLooping
+		sharedVars.objLooping = True
+			# flat list mode : path Role-TEXTFRAME, , IA2ID : threadTree | i0, Role-TABLE,  | i0, Role-TEXTFRAME,  | i0, Role-TABLEROW,  , 
+		o =  oTT.firstChild.firstChild.firstChild.firstChild  # first headers of threadTree
+		i = 0
+		while o   :
+			if hasID(o, "totalCol") :
+				# sharedVars.logte("index of total col : " + str(i))
+				return i
+			i += 1
+			o = o.next
+		return -1
+	finally :
+		sharedVars.objLooping = prevLooping
+
 # test funcions
 def listColumnID(oTT):
 	try :
@@ -570,6 +629,7 @@ def listColumnID(oTT):
 		# sharedVars.logte("Begin Column ID list")
 			# flat list mode : path Role-TEXTFRAME, , IA2ID : threadTree | i0, Role-TABLE,  | i0, Role-TEXTFRAME,  | i0, Role-TABLEROW,  , 
 		o =  oTT.firstChild.firstChild.firstChild.firstChild  # first headers of threadTree
+		i = 0
 		while o   :
 			role = str(o.role)
 			ID = str(getIA2Attr(o))
@@ -578,7 +638,8 @@ def listColumnID(oTT):
 			cName = ""
 			if o.firstChild :
 				cName = "" if not hasattr(o.firstChild, "name") else o.firstChild.name
-			# sharedVars.logte("ID {}, left : {}, name : {}, cName : {}, {}".format(ID, left, name, cName, role))
+			sharedVars.logte("idx : {},ID {}, left : {}, name : {}, cName : {}, {}".format(i, ID, left, name, cName, role))
+			i += 1
 			o = o.next
 	finally :
 		# sharedVars.logte("End of  Column ID list")

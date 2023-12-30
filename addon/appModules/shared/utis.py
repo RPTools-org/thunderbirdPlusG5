@@ -349,21 +349,22 @@ def getIAPropertyPage (o=None) :
 			if  getIA2Attribute(o) ==  "mailContent" :
 				return o
 	return r
-def getGroupingIndex() :
-	# by default, sharedVars.groupingIdx = 35 # index of child object of role grouping in the foregroundObject children   
+def setGroupingIndex() :
+	# by default in TB 115, sharedVars.groupingIdx = 32 # index of child object of role grouping in the foregroundObject children   
 	try : 
 		sharedVars.objLooping = True
 		try : o = api.getForegroundObject()
-		except : return
-		if not o : return
+		except : 
+			sharedVars.groupingIdx = 27
+			return
+		if not o : sharedVars.groupingIdx = 28 ; return
 		if o.role != controlTypes.Role.FRAME : return
-		i = 39
+		i = min(30, o.childCount ) # changed on 2023.12.29 for TB 115.6.0
 		try : o = o.getChild(i)
-		except : return
+		except : sharedVars.groupingIdx = i ; return
 		while o :
 			if o.role == controlTypes.Role.GROUPING :  
 				sharedVars.groupingIdx = i
-				# sharedVars.log(None, "GroupingIdx = " + str(sharedVars.groupingIdx))
 				return			
 			i += 1
 			o=o.next
@@ -379,12 +380,18 @@ def getPropertyPageFromFG() :
 		if sharedVars.curFrame == "1messageWindow" :
 			return sharedVars.oCurFrame
 		# search for grouping : level 1,  46 of 49, Role.GROUPING, IA2ID : tabpanelcontainer Tag: tabpanels, States : , childCount  : 3 Path : Role-FRAME| i46, Role-GROUPING, , IA2ID : tabpanelcontainer , IA2Attr : display : -moz-deck, class : plain, tag : tabpanels, id : tabpanelcontainer, , Actions : click ancestor,  ;
-		try : o = sharedVars.oCurFrame.getChild(sharedVars.groupingIdx)
-		except : return None # globalVars.foregroundObject # sharedVars.oCurFrame # for separate message window.
-		while o :
-			if o.role == controlTypes.Role.GROUPING :
-				break
-			o = o.next
+		if sharedVars.groupingIdx < 26 :
+			i = 30 # for TB 115
+			try : o = sharedVars.oCurFrame.getChild(i)
+			except : return None # globalVars.foregroundObject # sharedVars.oCurFrame # for separate message window.
+			while o :
+				if o.role == controlTypes.Role.GROUPING :
+					sharedVars.groupingIdx = i
+					break
+				o = o.next
+				i += 1
+		else :
+			o = sharedVars.oCurFrame.getChild(sharedVars.groupingIdx)
 		if not o : return None
 		# search  level 2,   0 of 3, Role.PROPERTYPAGE, IA2ID : mailContent Tag: box, States : , OFFSCREEN, childCount  : 5 Path : Role-FRAME| i46, Role-GROUPING, , IA2ID : tabpanelcontainer | i0, Role-PROPERTYPAGE, , IA2ID : mailContent , IA2Attr : display : -moz-box, id : mailContent, tag : box, , Actions : click ancestor,  ;
 		#  on the main Tab if property page  is not offscreen

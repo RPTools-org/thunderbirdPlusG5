@@ -44,7 +44,7 @@ class MainMenu() :
 		mainMenu.Append (14, _("Donate"))
 
 		# mainMenu.Append (11, _("Chichi's page"))
-		mainMenu.Append (9, _("Write to support"))
+		mainMenu.Append (9, _("Write to support (after reading the manual and the change history)"))
 		mainMenu.Append (10, _("Join the thunderbird-dv mailing list (French)"))
 		# #divers		
 		# subMenu =Menu ()

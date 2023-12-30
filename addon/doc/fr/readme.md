@@ -41,7 +41,7 @@ Note : La touche nommée (touche au dessus de Tab) dans la suite de cette page d
 Ces raccourcis concernent l'arborescence des dossiers, la liste de messages et le volet d'aperçu du message.
 
 * control+(touche au-dessus de Tab) : Un appui place le focus dans la liste de messages, deux appuis place le focus dans la liste de messages puis sélectionne le dernier message.
-* Alt+c : affiiche le menu des comptes puis le menu des dossiers du compte choisi. (2023.11.15)
+* Alt+c : affiiche le menu des comptes puis le menu des dossiers du compte choisi. Depuis la version 2312.14, supporte le mode "dossiers unifiés" de l'arborescence des dossiers.
 * Control+Alt+c : affiiche le menu des comptes puis le menu des dossiers non lus du compte choisi. (2023.11.15)* Tab : va au volet suivant, sans détour.<br>
 Note : ces deux derniers raccourcis peuvent être modifiés ou permutés via le dialogue des Gestes de commande.
 * alt+Début : 1 appui sélectionne le dossier courant dans l'arborescence des dossiers, 2 appuis affiche un menu permettant de choisir le compte de messagerie à atteindre dans l'arborescence 
@@ -70,7 +70,6 @@ Il présente cependant certains inconvénients :
 
 * Il n'est pas compatible avec la vue en fiches de la liste de messages. Pour revenir à la vue en tableau, placez vous dans la liste de messages, pressez Maj+Tab jusqu'au bouton "Options de la liste de messages", pressez Entrée et dans le menu contextuel, cochez "Vue en tableau".
 * Sur les PC moins rapides, il peut provoquer un  ralentissement perceptible de la navigation avec les flèches dans la liste de messages. 
-*  Le numéro de ligne sur le nombre total de lignes n'est pas annoncé.
 * Si vous pressez flèche bas sur la dernière ligne, celle-ci ne sera pas annoncée.
 
 Vous pouvez activer ce mode en pressant majuscule+puissance2 et en sélectionnant dans le menu  l'élément "Oprtions pour la fenêtre principale" puis en cochant l'option "Liste de messages :  vocalisation personnalisée des lignes".
@@ -99,9 +98,11 @@ lisez aussi la section [Choix et agencement des colonnes](#cols)
 <!-- end 2023.11.10 -->
 
 * Echappe dans la liste de messages : si un filtre est actif, il est désactivé et la liste de messages reste sélectionnée. Sinon, ce raccourci donne le focus à l'arborescence des dossiers.
-* NVDA+flèche haut dans la liste de messages :<br>
+* NVDA+flèche haut ou NVDA+l (laptop) dans la liste de messages :<br>
 Un appui : annonce la ligne courante de la liste de messages. Le raccourci NVDA+Tab produit le même résultat mais sans passer par cette extension.<br>
 Deux appuis : affiche le détail de la ligne dans une fenêtre de texte qui permet l'analyse de la ligne au clavier.
+* Control+flèche droite en mode conversations groupées : sélectionne le dernnier message de la conversation. Celle-ci est d'abord développée si elle est réduite. (2312.14.00)
+* Control+flèche gauche en mode conversations groupées : sélectionne le premier message de la conversation. Celle-ci est d'abord développée si elle est réduite.<br>Ces deux derniers raccourcis ont besoin de la colonne   "Total" pour fonctionner.
 * Espace, F4 ou Alt+flèche bas : lit une version épurée du message du volet d'aperçu, sans quitter la liste de messages.
 * Alt+flèche haut : place le message dans le navigateur virtuel de citations ;
 * Windows+flèches bas ou haut : lit la citation suivante ou précédente.
@@ -131,13 +132,10 @@ Trois appuis ouvre le menu contextuel de l'entête concerné. C'est un menu nati
 Les raccourcis suivants permettent d'annoncer les pièces jointes, de les ouvrir ou de les enregistrer.
 
 * Alt+9 ou Alt+page suivante :<br>
-Un appui : annonce le nombre de pièces jointes et le libellé du bouton pouvant être activé pour les ouvrir;<br>
-Deux appuis : affiche le menu des actions disponible si une seule pièce jointe ou active le bouton "Tout enregistrer" si plusieurs pièces jointes sont présentes.
-
-Remarques : 
-
-* le volet des pièces jointes de Thunderbird 115 est en régression par rapport à celui de la version 102. Il n'y a plus de liste de pièces jointes et lorsqu'il il y a plusieurs pièces jointes, seul un bouton "Tout enregistrer" est affiché.
-* Lorsqu'un bouton relatif aux pièces jointes est sélectionné, la touche Echappe simule la touche Maj+f6 pour revenir au volet précédent.
+Un appui : annonce le nombre de pièces jointes et  les noms de toutes les pièces-jointes. (2312.18.00)<br>Si Thunderbird n'affiche pas automatiquement le volet des pièces-jointes, l'extension le fera et Thunderbird sélectionnera la première pièce-jointe.<br>
+Deux appuis :<br>
+Si une seule pièce jointe, déplace le focus sur celle-ci puis affiche son menu contextuel.<br>
+Si plusieurs pièces jointes, sélectionne la première pièce jointe dans la liste. (2312.18.00)
 
 ### Gestion des étiquettes depuis la liste de messages
 Les raccourcis ci-dessous permettent une gestion vocalisée des étiquettes sans passer par une  navigation dans le menu contextuel de Thunderbird.
@@ -208,9 +206,12 @@ De plus, si le nom d'un compte ou dossier  se termine par un tiret, celui-ci ne 
 
 Il est donc conseillé  d'exclure des comptes et dossiers en refermant des branches peu utilisées ou en renommant des comptes pour ajouter un tiret à la fin de leur nom.
 
-Commandes disponibles  dans l'arborescence des dossiers :
+<br>
+Depuis la version 2312.14.00,  le mode "Dossiers unifiés" est pris en charge. Dans ce mode, il est nécessaire que tous les noms de comptes comportent le caractère @. Pour renommer un compte, sélectionnez-le dans l'arborescence, pressez la touches Applications puis pressez  Paramètres dans le menu contextuel. Tabulez ensuite jusqu'au champ "Nom du compte.
 
-* NVDA+flèche haut : annonce le nom du dossier sélectionné. NVDA ne le fait plus par lui-même.  
+### Commandes disponibles  dans l'arborescence des dossiers :
+
+* NVDA+flèche haut ou NVDA+l (portable) : annonce le nom du dossier sélectionné. NVDA ne le fait plus par lui-même.  
 * Espace sur un dossier non lu : place le focus sur le premier message non lu dans la liste de messages.
 * Entrée  ouAlt+flèche haut : affiche un menu de tous les dossiers du compte auquel le dossier sélectionné appartient.
 * Control+Entrée ou Alt+flèche bas : affiche un menu des dossiers non lus du compte auquel le dossier sélectionné appartient.
@@ -224,7 +225,7 @@ Pour ces deux dernières commandes, un certain temps sécoulera avant l'affichag
 
 Utilisez plutôt une de ces deux  petites astuces :
 
-1. Pressez  Alt+Début  deux fois rapidement pour afficher le menu des comptes, 
+1. Pressez  Alt+C pour afficher le menu des comptes, 
 <br>Choisissez un  compte puis pressez Entrée. 
 <br>Un nouveau menu contenant les dossiers de ce compte  s'ouvrira et vous pourrez utiliser une lettre pour en activer un.
 2. Pressez  Control+Alt+Début  deux fois rapidement pour afficher le menu des comptes avec des dossiers non lus, 

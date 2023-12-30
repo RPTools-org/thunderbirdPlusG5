@@ -58,8 +58,8 @@ class  Settings() :
 		self.option_messengerWindow ={
 		"TTClean" : _("Message list : custom vocalization of rows."),
 		"TTFillRow" : _("Message list : force rows to be filled if always blank."),
-		"responseMentionGroup" : _("Combine multiple 'RE' mentions into one"),
-				"responseMentionRemove" : _("Delete the 'Re' mentions in the subject column"),
+		"TTnoFolderName" : _("Message list : Do not say the window and folder names when entering the list."),		"responseMentionGroup" : _("Combine multiple 'RE' mentions into one"),
+		"responseMentionRemove" : _("Delete the 'Re' mentions in the subject column"),
 		"responseMentionDelColon" : _("Delete the colons  in the 'Re:' mentions"),
 		"namesCleaned" : _("Clean the names of correspondents in the message list"),
 		# "separateCols" : _("Add punctuation between columns"),
@@ -115,6 +115,7 @@ class  Settings() :
 		section = self.options["messengerWindow"]
 		sharedVars.TTClean = section.as_bool ("TTClean")
 		sharedVars.TTFillRow = section.as_bool ("TTFillRow")
+		sharedVars.TTnoFolderName = section.as_bool ("TTnoFolderName")
 		#sharedVars.useKeyNav =  not section.as_bool ("FKN1_withoutFolderKeyNav")		
 		#sharedVars.directKeyNav =   not section.as_bool ("FKN2_noDirectKeyNav")		
 		if not"delayReadWnd" in self.options["messengerWindow"] : 
@@ -292,6 +293,7 @@ class  Settings() :
 			options[section][key]= evt.IsChecked ()
 			if key == "TTClean" : sharedVars.TTClean = self.options[section][key]
 			if key == "TTFillRow" : sharedVars.TTFillRow = self.options[section][key]
+			if key == "TTnoFolderName" : sharedVars.TTnoFolderName = self.options[section][key]
 			self.setResponseMode()
 			self.setfolderTreeNav()
 			options.write () 	

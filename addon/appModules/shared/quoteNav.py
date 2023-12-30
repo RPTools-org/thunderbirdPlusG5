@@ -74,7 +74,8 @@ class QuoteNav() :
 		# converts the doc into HTML code
 		if not oDoc : return False 
 		self.nav = nav
-		self.text = "\n---" # alt+0031
+		# self.text = "\n---" # alt+0031
+		self.text = "\n" # alt+0031
 		self.lItems = []
 		self.lQuotes = []
 		self.lastItem = -1
@@ -398,7 +399,8 @@ class QuoteNav() :
 		for e in blocks :
 			# # sharedVars.logte("to replace:" + e)
 			# e may contain , a pseudo \n 
-			t = "\n---" + getSenderName(e) + " " + _("wrote") + " : "
+			# t = "\n---" + getSenderName(e) + " " + _("wrote") + " : "
+			t = "\n" + getSenderName(e) + " " + _("wrote") + " : "
 			# # sharedVars.logte("t:" + t)
 			self.text = self.text.replace(e, t)
 			

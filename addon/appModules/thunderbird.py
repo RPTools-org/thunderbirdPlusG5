@@ -48,8 +48,17 @@ sharedVars.scriptCategory = _curAddon.manifest['summary']
 from . import messengerWindow, msgComposeWindow # , addressbookWindow
 from scriptHandler import getLastScriptRepeatCount
 
+def checkTBVersion() :
+	minVersion = "115.6.0"
+	v = globalVars.foregroundObject.appModule.productVersion
+	if v and v >= minVersion : return
+	beep(200, 60)
+	msg = str(_("In order for Thunderbird+G5 to work properly, you need to update Thunderbird to version 115.6 or higher. If your version {} seems appropriate, restart NVDA.")).format(v)
+	wx.CallLater(3000, ui.browseableMessage,  message=msg, title= _("Warning"), isHtml = False)
+	
 class AppModule(thunderbird.AppModule):
 	timer = None
+	counter = 0
 
 	def __init__(self, *args, **kwargs):
 		super(thunderbird.AppModule, self).__init__(*args, **kwargs)
@@ -71,9 +80,9 @@ class AppModule(thunderbird.AppModule):
 		# self.regExp_listGroupName = compile ("\[(.*)\]") # |\{?*\}") # first occurrence of the list group name
 		self.regExp_removeMultiBlank =compile (" {2,}")
 		self.regExp_removeSymbols =compile ("\d+|&|_|@.+|=|\.| via .*")
-		try : wx.CallLater(100, utis.getGroupingIndex)
-		except :  pass
 		#wx.CallLater(25000, debugShow, self, True)
+		self.verChecked = False
+
 	def initTimer(self):
 		if self.timer is not None:
 			self.timer.Stop()
@@ -108,10 +117,23 @@ class AppModule(thunderbird.AppModule):
 		if ID.startswith("ReplaceWordInput") : clsList.insert (0,msgComposeWindow. spellCheckDlg.SpellCheckDlg); return
 		return
 
-	# def event_foreground(self, obj,nextHandler):
-		# nextHandler()
+	def event_foreground(self, obj,nextHandler):
+		if not self.verChecked :
+			self.verChecked = True
+			checkTBVersion()
+			
+		
+		nextHandler()
 
 	def event_NVDAObject_init(self, obj):
+		# if obj.role == controlTypes.Role.TREEVIEW :
+			# beep(440, 5)
+			# if utils.hasID(obj.parent.parent, "threadTree") : obj.name = ""
+			# return
+
+		# if obj.role == controlTypes.Role.SECTION :
+			# obj.name = "nom de la section"
+			# if utils.hasID(obj.parent.parent, "tabmail-tabs") : obj.name = "nom de la section" 
 		if not sharedVars.TTFillRow : return
 		if obj.role in (controlTypes.Role.LISTITEM, controlTypes.Role.TREEVIEWITEM) and  utils.hasID(obj, "threadTree-row") :
 			# sharedVars.logte("objectInit TTI:" + sharedVars.curTTRow)
@@ -148,6 +170,7 @@ class AppModule(thunderbird.AppModule):
 	def event_gainFocus (self,obj,nextHandler):
 		role = obj.role
 		if role in (controlTypes.Role.LISTITEM, controlTypes.Role.TREEVIEWITEM) and  utils.hasID(obj, "threadTree-row") : 
+			api.setNavigatorObject(obj) # 2311.12.08
 			if sharedVars.lastKey == "" and sharedVars.TTClean :
 				self.customizeRow(obj)
 				return ui.message(sharedVars.curTTRowCleaned)
@@ -173,11 +196,18 @@ class AppModule(thunderbird.AppModule):
 		role, ID  = obj.role, str(utils.getIA2Attr(obj))
 		# sharedVars.log(obj, "current ")
 		#  Role.TEXTFRAME, IA2ID : threadTree Tag: tree-view, States : , FOCUSABLE, childCount  : 1 Path : Role-FRAME| i32, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  | i2, Role-SECTION, , IA2ID : threadPane | i2, Role-TEXTFRAME, , IA2ID : threadTree , IA2Attr : id : threadTree, display : flex, class : tree-view-scrollable-container, tag : tree-view,  ;
-		if role == controlTypes.Role.TEXTFRAME and ID == "threadTree" :
+		if sharedVars.TTnoFolderName and role in  (controlTypes.Role.LIST, controlTypes.Role.TREEVIEW) and utils.hasID(obj.parent.parent, "threadTree") :
+			# beep(440, 5)
+			obj.name = ""
+			globalVars.foregroundObject.name  = ""
+		elif role == controlTypes.Role.TEXTFRAME and ID == "threadTree" :
 			if not sharedVars.oSettings.getOption("chichi", "TTnoFilterSnd") :
 				if hasFilter(obj, ID) : utis.playSound("filter") 
-			# for test > utils.listColumnID(obj)
+			# utils.listColumnID(obj)
+			sharedVars.totalColIdx = utils.getTotalColIdx(obj)
+
 		nextHandler()
+		
 	# G5 : buildColumnID() : used in messageListItem.
 	def buildColumnID(self, oTT):
 		try :
@@ -255,7 +285,13 @@ class AppModule(thunderbird.AppModule):
 				elif "flaggedcol" in longID :
 					if _("Starred") + ", " in oRow.name : s = _("Starred")
 				elif ID == "subjectcol" :
-					s = oCell.name
+					o = oCell.firstChild.firstChild.firstChild
+					s= ""
+					while  o :
+						if o.role == controlTypes.Role.STATICTEXT :
+							s = o.name
+							break
+						o = o.next
 					s=removeResponseMention (self, s,1).strip (" -_*#").replace(" - "," ")
 					if sharedVars.oSettings.regex_removeInSubject is not None : 
 						s =sharedVars.oSettings.regex_removeInSubject.sub ("", s)
@@ -270,7 +306,7 @@ class AppModule(thunderbird.AppModule):
 					sharedVars.curSubject = s
 				elif ID in ("correspondentcol","sendercol","recipientcol") :  # clean
 					if  oCell.firstChild :
-						s 	=oCell.firstChild.name
+						s= oCell.firstChild.name
 						if cleanNames : 
 							s = self.regExp_removeSymbols.sub (" ",s) 
 				elif "attachmentcol" in longID :
@@ -288,6 +324,9 @@ class AppModule(thunderbird.AppModule):
 					except : pass
 				if s : l += s + colSepar
 				oCell = oCell.next
+				
+			# positon info
+			l += ", " +  str(utils.getIA2Attr(oRow, False, "posinset"))    + _(" of ") + str(utils.getIA2Attr(oRow, False, "setsize")) 
 			return l  # + ", Original : " + oRow.name
 		finally :
 			sharedVars.objLooping = False
@@ -410,6 +449,8 @@ class AppModule(thunderbird.AppModule):
 		elif  "Recipient" in ID  or "expandedsubjectBox" in ID or "Recipient" in str(utils.getIA2Attr(o.parent)) : # header pane
 			return KeyboardInputGesture.fromName ("shift+f6").send()
 		elif role in  (controlTypes.Role.BUTTON, controlTypes.Role.TOGGLEBUTTON)  and ID.startswith("attachment") :
+			return KeyboardInputGesture.fromName ("shift+f6").send()
+		elif role == controlTypes.Role.LISTITEM and utils.hasID(o.parent, "attachmentList") :
 			return KeyboardInputGesture.fromName ("shift+f6").send()
 		elif  utils.hasID(o.parent, "attachmentBucket") :  # attachment list in write window
 			return KeyboardInputGesture.fromName ("shift+f6").send()
@@ -640,15 +681,23 @@ class AppModule(thunderbird.AppModule):
 			else :
 				self.timer = wx.CallLater(20, msgComposeWindow.msgComposeWindow.getComposeHeader, fo, 3, rc)
 			return
-		elif ID.startswith("threadTree") or parID == "messagepane" :
+		elif ID.startswith("threadTree") or parID == "messagepane"  or fo.role == controlTypes.Role.LINK :
 			if  ID.startswith("threadTree") and not utils.getMessagePane() :
 				return ui.message(_("The headers pane is not displayed. Please press F8 then try again"))
+			if ID.startswith("threadTree") and controlTypes.State.COLLAPSED in fo.states :
+				beep(432, 2)
+				self.counter += 1
+				utis.sendKey("rightArrow", num=1, delay=0.05)
+				return wx.CallLater(100, self.script_sharedAltPageDown, gesture)
+			self.counter = 0
+			# sharedVars.log(fo,"altPageDown focus")
 			self.initTimer ()
 			if rc> 0 : 
-				self.timer = wx.CallLater(10, utils.getAttachment, rc)
+				# beep(440, 40)
+				self.timer = wx.CallLater(10, utils.getAttachment, fo, rc)
 				return
 			elif rc == 0: 
-				self.timer = wx.CallLater(200, utils.getAttachment, rc)
+				self.timer = wx.CallLater(200, utils.getAttachment, fo, rc)
 				return
 		return gesture.send()
 	script_sharedAltPageDown.__doc__ = _("Attachments : announces or displays the attachment pane.")
@@ -771,7 +820,6 @@ class AppModule(thunderbird.AppModule):
 		"kb:alt+6": "sharedAltN",
 		"kb:alt+7": "sharedAltN",
 		"kb:alt+8": "sharedAltN",
-		# "kb:alt+9": "sharedAltPageDown", # attachments
 		"kb:alt+9": "sharedAltPageDown", # attachments
 		"kb:alt+c": "sharedAltC",
 		"kb:alt+control+c": "sharedAltCtrlC",
@@ -837,6 +885,7 @@ def debugShow(appMod, auto) :
 	sharedVars.logte("sharedVars.curSubject :" + sharedVars.curSubject)
 	if sharedVars.oQuoteNav :
 		sharedVars.logte("oQuoteNav.subject : " + sharedVars.oQuoteNav.subject)
+	sharedVars.logte("GroupingIdx = " + str(sharedVars.groupingIdx))
 	ui.browseableMessage (message = sharedVars.debugLog, title = "TB+G5 log", isHtml = False)
 	if not auto : 
 		sharedVars.debugLog = ""

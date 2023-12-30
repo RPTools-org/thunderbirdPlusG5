@@ -41,7 +41,7 @@ Note: The named key (key above Tab) in the remainder of this page designates the
 These shortcuts are for the folder tree, message list, and message preview pane.
 
 * control+(key above Tab): One press places the focus in the message list, two presses places the focus in the message list then selects the last message.
-* Alt+c: displays the accounts menu then the folders menu of the chosen account. (2023.11.15)
+* Alt+c: displays the accounts menu then the folders menu of the chosen account. Since version 2312.14, supports the "unified folders" mode of the folder tree.
 * Control+Alt+c: displays the accounts menu then the unread folders menu for the chosen account. (2023.11.15)<br>
 Note: these last two shortcuts can be modified or swapped via the Input Gestures dialog.
 * alt+Home : one press selects the current folder in the folder tree, two presses displays a menu allowing you to choose the email account to reach in the tree
@@ -71,7 +71,6 @@ However, it has some disadvantages:
 
 * It is not compatible with the card view of the message list. To return to the table view, go to the message list, press Shift+Tab to the "Message list options" button, press Enter and in the context menu, check "Table view".
 * On slower PCs, it may cause a noticeable slowdown in navigation with the arrows in the message list.
-* The line number out of the total number of lines is not announced.
 * If you press down arrow on the last line, it will not be announced.
 
 You can activate this mode by pressing shift+ key above Tab and selecting the "Main window options" item in the menu then checking the "Message list: custom vocalization of rows" option.
@@ -100,9 +99,11 @@ also read the section [Choice and order of columns](#cols)
 <!-- end 2023.10.31 -->
 
 * Escape in the message list: if a filter is active, it is deactivated and the message list remains selected. Otherwise, this shortcut gives focus to the folder tree.
-* NVDA+up arrow in message list:<br>
+* NVDA+up arrow or NVDA+l (laptop) in message list:<br>
 One press: announces the current line of the message list. The NVDA+Tab shortcut produces the same result but without using this add-on.<br>
 Two presses: displays the details of the line in a text window which allows analysis of the line using the keyboard.
+* Control+right arrow in messages grouped by conversation : selects the last message in the conversation. This is first expanded if it is collapsed. (2312.14.00)
+* Control+left arrow in messages grouped by conversations : selects the first message in the conversation. This is first expanded if it is collapsed.<br>These last two shortcuts need the "Total" column to work.
 * Spacebar, F4, or Alt+down arrow: Reads a clean version of the message from the preview pane, without leaving the message list.
 * Alt+up arrow: places the message in the virtual quote browser;
 * Windows+down or up arrows: reads the next or previous quote.
@@ -130,16 +131,13 @@ Two presses : opens an edit box containing the header value. By closing this dia
 Three presses : opens the context menu of the relevant header. This is a native Thunderbird menu.
 
 ### Attachments pane in main window and separate reading window
-The following shortcuts allow you to announce attachments, open them, or save them.
+The following shortcuts allow you to announce attachments or select one in the list.
 
-* Alt+9 or Alt+page down:<br>
-One press: announces the number of attachments and the wording of the button that can be activated to open them;<br>
-Two presses: displays the menu of actions available if only one attachment or activates the "Save all" button if several attachments are present.
-
-Remarks :
-
-* the attachments pane of Thunderbird 115 is in regression compared to that of version 102. There is no longer a list of attachments and when there are several attachments, only a "Save all" button is posted.
-* When an attachment-related button is selected, the Escape key simulates the Shift+f6 key to return to the previous pane.
+* Alt+9 or Alt+Page Down :<br>
+One press: announces the number of attachments and the names of all attachments.<br>If Thunderbird does not automatically display the attachments pane, the add-on will do so and Thunderbird will select the first attachment.<br>
+Two presses :<br>
+If there is only one attachment, move the focus to it then display its context menu. (2312.18.00)<br>
+If multiple attachments, select the first attachment in the list. (2312.18.00)
 
 ### Tag management from the message list
 The shortcuts below allow vocal management of tags without having to navigate through the Thunderbird context menu.
@@ -211,9 +209,12 @@ Additionally, if the name of an account or folder ends with a hyphen, it will no
 
 It is therefore advisable to exclude accounts and folders by closing little-used branches or by renaming accounts to add a hyphen to the end of their name.
 
+<br>
+Since version 2312.14.00, "Unified Folders" mode is supported. In this mode, all account names must contain the @ character. To rename an account, select it in the tree, press the Applications key then press Settings in the context menu. Then tab to the "Account Name" field.
+
 ### Folder tree Shortcuts
 
-* NVDA+up arrow: announces the name of the selected folder. NVDA no longer does this on its own.
+* NVDA+up arrowor NVDA+l (laptop) : announces the name of the selected folder. NVDA no longer does this on its own.
 * Space on unread folder:  sets  focus on the first unread message in the message list.
 * Enter or Alt+up arrow: displays a menu of all folders in the account to which the selected folder belongs.
 * Control+Enter or Alt+down arrow: displays a menu of unread folders for the account to which the selected folder belongs.

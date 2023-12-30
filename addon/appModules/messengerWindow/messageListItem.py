@@ -41,7 +41,9 @@ TTIDefGestures = {
 	"kb:shift+space" : "readPreview",
 	"kb:enter" : "openMessage",
 	"kb:nvda+upArrow" : "sayLine",
-	"kb(laptop):nvda+l" : "sayLine", 	
+	"kb(laptop):nvda+l" : "sayLine",
+	"kb:control+leftArrow" : "goGroupedFirst", 	
+	"kb:control+rightArrow" : "goGroupedLast", 	
 	# "kb:delete" : "deleteMsg",
 	"kb:a" : "sayShortcut",
 	# "kb:shift+c" : "sayShortcut",
@@ -93,7 +95,8 @@ def gSayShortcut(row) :
 	# message(row + o.name)
 
 class MessageListItem(IAccessible):
-	#lastScriptName=False
+	timer = None
+	timerCount = 0
 	def initOverlayClass (self):
 		self.bindGestures(TTIDefGestures)
 		if not sharedVars.TTnoTags :
@@ -112,35 +115,60 @@ class MessageListItem(IAccessible):
 
 
 	# read threadTree item  cells  
+	# def script_readTTICell(self,gesture):
+		# rc = getLastScriptRepeatCount()
+		# idx = int(gesture.mainKeyName)
+		# idx = 9 if idx == 0   else idx-1
+
+		# self.appModule.buildColumnID(self)
+
+		# if idx >= len (self.appModule.columnID) : return beep(100, 10)
+		# left = self.appModule.columnID[idx][0]
+		# ID = self.appModule.columnID[idx][1]
+		# label = self.appModule.columnID[idx][2] 
+		# oCell = self.getCellObj(left)
+		# if not oCell : return beep(100, 10)
+		
+		# name = ""
+		# if oCell.name : name = oCell.name
+		# else : 
+			# try : name = oCell.firstChild.name
+			# except : pass  
+		# if not name :
+			# if "attachment" in ID : label = "" ; name = _("No Attachement.")
+			# else : name = _("Blank")
+		# if rc == 0 :
+			# message(label + name)
+		# elif rc == 1 :
+			# speech.speakSpelling(name)
+		# else :
+			# message(_("{columnText} copied to clipboard").format (columnText = "")+ " : "+ name)
+			# api.copyToClip (name)
+
 	def script_readTTICell(self,gesture):
 		rc = getLastScriptRepeatCount()
 		idx = int(gesture.mainKeyName)
-		idx = 9 if idx == 0   else idx-1
-
-		self.appModule.buildColumnID(self)
-
-		if idx >= len (self.appModule.columnID) : return beep(100, 10)
-		left = self.appModule.columnID[idx][0]
-		ID = self.appModule.columnID[idx][1]
-		label = self.appModule.columnID[idx][2] 
-		oCell = self.getCellObj(left)
-		if not oCell : return beep(100, 10)
-		
+		idx = 9 if idx == 0 else idx-1
+		oCell = self.getChild(idx)
+		if not oCell : return message(_("No column ") + str(idx+1)) 
+		lbl = oCell.name
+		# oCell = oCell.firstChild
+		c = GetDescObject(controlTypes.Role.STATICTEXT, controlTypes.Role.GRAPHIC)
+		c.run(oCell)
 		name = ""
-		if oCell.name : name = oCell.name
-		else : 
-			try : name = oCell.firstChild.name
-			except : pass  
+		if c.mainObj and c.mainObj.name : name  =  str(c.mainObj.name)
+		if c.secondObj and c.secondObj.name : name += str(c.secondObj.name)
 		if not name :
-			if "attachment" in ID : label = "" ; name = _("No Attachement.")
-			else : name = _("Blank")
+			return message(_("No") + " " + lbl)
+		
 		if rc == 0 :
-			message(label + name)
+			message(lbl + " : " + name)
 		elif rc == 1 :
 			speech.speakSpelling(name)
 		else :
 			message(_("{columnText} copied to clipboard").format (columnText = "")+ " : "+ name)
 			api.copyToClip (name)
+
 
 
 	def getCellObj(self, iLeft) :
@@ -376,6 +404,59 @@ class MessageListItem(IAccessible):
 	script_toggleUnread.__doc__ = _("Reverses the read and unread status of the selected message")
 	script_toggleUnread.category=sharedVars.scriptCategory
 
+	def script_goGroupedFirst(self, gesture) :
+		if  sharedVars.totalColIdx == -1 : return # no Total column
+		n = getThreadMsgCount(self)
+		if n == 1 : return
+		if  n > 1 : 
+			if controlTypes.State.COLLAPSED in self.states :
+				KeyboardInputGesture.fromName("rightArrow").send()
+			CallAfter(message, self.name)
+			return
+		o = self
+		while o  :
+			o = o.previous
+			if getThreadMsgCount(o) > 1 :
+				o.setFocus()
+				o.doAction()
+				break
+		return
+
+	def script_goGroupedLast(self, gesture) :
+		if  sharedVars.totalColIdx == -1 : return # no Total column
+		n = getThreadMsgCount(self)
+		if n == 1 : return
+		if  n > 1 and controlTypes.State.COLLAPSED in self.states :
+			utils.setMLIState(self)
+			if self.timer : self.timer.Stop() ; self.timer = None ; self.timerCount = 0
+		self.timer = callLater(50, self.selectLastMsg, self)
+			
+	def selectLastMsg(self, obj) :
+		if controlTypes.State.COLLAPSED in obj.states :
+			if self.timerCount > 10 : self.timer = None ; self.timerCount = 0 ; return
+			self.timerCount += 1
+			self.timer = callLater(100, self.selectLastMsg, obj)
+			return
+
+
+		o = obj
+		o = o.next
+		oFound = None
+		while o  :
+			if getThreadMsgCount(o) == 0 :
+				oFound  = o
+			else : break
+			o = o.next
+		if oFound :
+			self.timer = None ; self.timerCount = 0
+			oFound .setFocus()
+			oFound.doAction()
+
+def getThreadMsgCount(o) :
+	try :
+		return int(o.getChild(sharedVars.totalColIdx).firstChild.name)
+	except : 
+		return 0
 
 # function helpers
 
@@ -466,3 +547,26 @@ def sayTTi() :
 	# o = api.getFocusObject()
 	# message(str(o.name))
 	sharedVars.nameChanging = False
+
+class GetDescObject() :
+	def __init__(self, mainRole, secondRole=None, ID="") :
+		self.mainRole = mainRole
+		self.secondRole = secondRole
+		self.ID = ID
+		self.mainObj = self.secondObj = None # object found after the run methode
+		
+	def run(self, obj) :
+		if not obj : return
+		obj = obj.firstChild
+		if not obj : return 
+		while obj :
+			ID_OK = True
+			if self.ID : 
+				ID =  str(getIA2Attr(obj))
+				if not ID.startswith(self.IDObj) : ID_OK = False
+			if obj.role == self.secondRole   and ID_OK: self.secondObj = obj
+			elif obj.role == self.mainRole   and ID_OK:self.mainObj = obj
+			if self.mainObj and self.secondObj :return
+			if obj.childCount > 0 :
+				self.run(obj)
+			obj = obj.next

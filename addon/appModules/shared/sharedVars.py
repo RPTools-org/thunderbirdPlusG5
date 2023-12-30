@@ -3,7 +3,7 @@ objLooping = False
 gTimer = None
 lastKey = ""
 oCurFrame = None
-groupingIdx = 35 # index of child object of role grouping in the foregroundObject children  
+groupingIdx = 25 # index of child object of role grouping in the foregroundObject children  
 curFrame = curSubject = ""
 curTab = "init2"
 curTTRow = ""  # current thread tree row
