@@ -53,7 +53,7 @@ def checkTBVersion() :
 	v = globalVars.foregroundObject.appModule.productVersion
 	if v and v >= minVersion : return
 	beep(200, 60)
-	msg = str(_("In order for Thunderbird+G5 to work properly, you need to update Thunderbird to version 115.6 or higher. If your version {} seems appropriate, restart NVDA.")).format(v)
+	msg = str(_("Your current version of the Thunderbird+G5 add-on needs version {0} or higher of the Thunderbird application but your version is: {1}.\nPlease update the Thunderbird application for the add-on to work properly.")).format(minVersion, v)
 	wx.CallLater(3000, ui.browseableMessage,  message=msg, title= _("Warning"), isHtml = False)
 	
 class AppModule(thunderbird.AppModule):

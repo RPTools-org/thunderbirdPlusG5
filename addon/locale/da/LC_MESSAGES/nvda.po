@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: thunderbirdPlusG5\n"
-"POT-Creation-Date: 2023-12-30 07:16+0100\n"
+"POT-Creation-Date: 2023-12-31 07:10+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Pierre-Louis R. <plr.listes@rptools.org>\n"
 "Language-Team: Brian Hovmand\n"
@@ -714,7 +714,10 @@ msgid "File not found"
 msgstr ""
 
 #: appModules/thunderbird.py:56
-msgid "In order for Thunderbird+G5 to work properly, you need to update Thunderbird to version 115.6 or higher. If your version {} seems appropriate, restart NVDA."
+#, python-brace-format
+msgid ""
+"Your current version of the Thunderbird+G5 add-on needs version {0} or higher of the Thunderbird application but your version is: {1}.\n"
+"Please update the Thunderbird application for the add-on to work properly."
 msgstr ""
 
 #: appModules/thunderbird.py:57

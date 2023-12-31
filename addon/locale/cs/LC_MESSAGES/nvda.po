@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Thunderbird+G5\n"
-"POT-Creation-Date: 2023-12-30 07:20+0100\n"
+"POT-Creation-Date: 2023-12-31 07:11+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Pierre-Louis R. <plr.listes@rptools.org>\n"
 "Language-Team: Jarek Krcmar\n"
@@ -716,9 +716,13 @@ msgid "File not found"
 msgstr "Soubor nenalezen"
 
 #: appModules/thunderbird.py:56
-#, fuzzy
-msgid "In order for Thunderbird+G5 to work properly, you need to update Thunderbird to version 115.6 or higher. If your version {} seems appropriate, restart NVDA."
-msgstr "Aby Thunderbird+G5 správně fungoval, musíte Thunderbird aktualizovat na verzi 115.6 nebo vyšší. Pokud se vaše verze {} zdá být vhodná, restartujte NVDA."
+#, fuzzy, python-brace-format
+msgid ""
+"Your current version of the Thunderbird+G5 add-on needs version {0} or higher of the Thunderbird application but your version is: {1}.\n"
+"Please update the Thunderbird application for the add-on to work properly."
+msgstr ""
+"Vaše aktuální verze doplňku Thunderbird+G5 vyžaduje verzi {0} nebo vyšší aplikace Thunderbird, ale vaše verze je: {1}.\n"
+"Aktualizujte prosím aplikaci Thunderbird, aby doplněk fungoval správně."
 
 #: appModules/thunderbird.py:57
 #, fuzzy
@@ -1002,6 +1006,10 @@ msgstr "Bylo zjištěno spuštění MozillaAppsEnhancements"
 #: installTasks.py:38
 msgid "Installation cancelled"
 msgstr "Instalace zrušena"
+
+#, fuzzy
+#~ msgid "In order for Thunderbird+G5 to work properly, you need to update Thunderbird to version 115.6 or higher. If your version {} seems appropriate, restart NVDA."
+#~ msgstr "Aby Thunderbird+G5 správně fungoval, musíte Thunderbird aktualizovat na verzi 115.6 nebo vyšší. Pokud se vaše verze {} zdá být vhodná, restartujte NVDA."
 
 #, fuzzy
 #~ msgid "In order for Thunderbird+G5 to work properly, you need to update Thunderbird to version 115.6 or higher."
