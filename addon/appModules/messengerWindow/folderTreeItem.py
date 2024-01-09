@@ -242,19 +242,23 @@ class FolderMenu() :
 			o = self.nodes[evt.Id]
 			if self.type > 0 and self.mode == "smart" and o.name.startswith(_("Inbox")) : self.type = 0
 		
-			if self.type == 0 : # regular menu item
+			if self.type == 0 : # regular menu item, request to focus folderTree
 				# beep(100, 30)
-				o.doAction()
 				o.scrollIntoView()
+				o.doAction()
 				o.setFocus()
 				if controlTypes.State.COLLAPSED  in o.states :
 					CallAfter(KeyboardInputGesture.fromName("rightArrow").send)
 			elif self.type == 1 : # request to display folders of the choosen  account 
 				# beep(250, 40)
-				fMenuFolderFromAccount(o , False)
+				o.scrollIntoView()
+				o.doAction()
+				CallAfter(fMenuFolderFromAccount, o , False)
 			elif self.type == 2 : # request to display unread folders of the choosen  account 
 				# beep(440, 40)
-				fMenuFolderFromAccount(o , True)
+				o.scrollIntoView()
+				o.doAction()
+				CallAfter(fMenuFolderFromAccount, o , True)
 		else : # request to display the mail accounts menu
 			# t = 1 if self.nodes[evt.Id] == 9997 else 2
 			# sharedVars.log(self.fti, "self.fti=")

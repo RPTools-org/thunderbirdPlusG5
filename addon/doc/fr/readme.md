@@ -103,9 +103,13 @@ Un appui : annonce la ligne courante de la liste de messages. Le raccourci NVDA+
 Deux appuis : affiche le détail de la ligne dans une fenêtre de texte qui permet l'analyse de la ligne au clavier.
 * Control+flèche droite en mode conversations groupées : sélectionne le dernnier message de la conversation. Celle-ci est d'abord développée si elle est réduite. (2312.14.00)
 * Control+flèche gauche en mode conversations groupées : sélectionne le premier message de la conversation. Celle-ci est d'abord développée si elle est réduite.<br>Ces deux derniers raccourcis ont besoin de la colonne   "Total" pour fonctionner.
-* Espace, F4 ou Alt+flèche bas : lit une version épurée du message du volet d'aperçu, sans quitter la liste de messages.
-* Alt+flèche haut : place le message dans le navigateur virtuel de citations ;
-* Windows+flèches bas ou haut : lit la citation suivante ou précédente.
+* Espace, F4 ou Alt+flèche bas : lit une version épurée ou traduite du message du volet d'aperçu, sans quitter la liste de messages.<br>
+Note : Si un message comporte plus de 75 éléments HTML, un bip sera émis  à chaque élément de texte récupéré. Avec un appui rapide sur la touche Control, vous pouvez lancer immédiatement l'annonce du message  incomplet. (2401.09.0)
+* Arrête défil. :  Active ou désactive le mode Traduction de messages pour la lecture rapide avec Espace, F4 ou Alt+flèche bas. Notez que l'extension Instant Translate doit être installée et activée. (2401.02.0)
+* Maj+Arrêt défil : Active ou désactive le mode Affichage de la traduction dans une fenêtre   de texte consultable. Ce mode permet la lecture en Braille de l'intégralité du message.  (2401.02.0) <br>
+Remarque : La traduction de messages est aussi disponible dans les fenêtres et onglets  qui affichent un message.
+* Alt+flèche haut : place le message dans le navigateur virtuel de citations ;<br>
+* Windows+flèches bas ou haut : lit la citation suivante ou précédente. Si le mode Traduction est actif, la citation sera traduite. 
 
 Remarque : ce navigateur de citations est utilisable depuis la liste de messages, le message de la fenêtre séparée de lecture, de la fenêtre de rédaction et du dialogue de vérification orthographique.
 
@@ -296,7 +300,7 @@ Régler les options de Start with Inbox :
 *  Réglez les options puis redémarrez Thunderbird.
 
 
-[1]: https://github.com/RPTools-org/thunderbirdPlusG5/releases/download/v2312.31.00/thunderbirdPlusG5-2312.31.00.nvda-addon
+[1]: https://github.com/RPTools-org/thunderbirdPlusG5/releases/download/v2401.09.00/thunderbirdPlusG5-2401.09.00.nvda-addon
 
 [2]: https://github.com/RPTools-org/thunderbirdPlusG5/
 

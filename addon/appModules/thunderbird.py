@@ -631,6 +631,18 @@ class AppModule(thunderbird.AppModule):
 	script_sharedF4.__doc__ = _("Filtered reading of the document in the preview pane, reading tab, reading or Write window, from the list of messages or the document.")
 	script_sharedF4.category = sharedVars.scriptCategory
 
+	def script_toggleTranslation(self, gesture) :
+		if not sharedVars.oQuoteNav : sharedVars.initQuoteNav() # then use  sharedVars.oQuoteNav.*		self.regExp_date =compile ("^(\d\d/\d\d/\d{4} \d\d:\d\d|\d\d:\d\d)$")
+		sharedVars.oQuoteNav.toggleTranslation()
+	script_toggleTranslation.__doc__ = _("Enables or disables  the translation mode of a message.")
+	script_toggleTranslation.category = sharedVars.scriptCategory
+
+	def script_toggleBrowseTranslation(self, gesture) :
+		if not sharedVars.oQuoteNav : sharedVars.initQuoteNav() # then use  sharedVars.oQuoteNav.*		self.regExp_date =compile ("^(\d\d/\d\d/\d{4} \d\d:\d\d|\d\d:\d\d)$")
+		sharedVars.oQuoteNav.toggleBrowseTranslation()
+	script_toggleBrowseTranslation.__doc__ = _("Enables or disables the display of translations in a window.")
+	script_toggleBrowseTranslation.category = sharedVars.scriptCategory
+
 	def script_sharedAltC(self, gesture) :
 		if sharedVars.curTab !=  "main" : return gesture.send()
 		# type 1 : read and unread
@@ -833,6 +845,8 @@ class AppModule(thunderbird.AppModule):
 		"kb:alt+shift+downArrow": "sharedAltArrow",
 		"kb:alt+upArrow": "sharedAltArrow",
 		"kb:f4": "sharedF4",
+		"kb:scrolllock": "toggleTranslation",
+		"kb:shift+scrolllock": "toggleBrowseTranslation",
 		"kb:windows+downarrow": "sharedWinArrow",
 		"kb:windows+uparrow": "sharedWinArrow",
 		"kb:windows+leftarrow": "sharedWinArrow",

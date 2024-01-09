@@ -3,13 +3,13 @@
 	"displayName": "Thunderbird+G5 (TB >= 115)\u0003",
 	"URL": "",
 	"description": "This add-on significantly increases the efficiency and comfort of using Thunderbird 115 with NVDA.\nFor more information, visit :\nhttps://www.rptools.org/NVDA-Thunderbird/get.php?pg=manual&v=g5&lang=en",
-	"sha256": "0a02b7cc8a7727afb3965df89cf9ebe573864ff66149748d7dd86a23c1dcd21c",
+	"sha256": "8db5999eb2237a27cbcb8ea6a0bf1132005814b60a787ab24cfb44c3e705c8ea",
 	"homepage": "https://www.rptools.org/NVDA-Thunderbird/index.html",
-	"addonVersionName": "2023.11.13",
+	"addonVersionName": "2401.07.00",
 	"addonVersionNumber": {
-		"major": 2023,
-		"minor": 11,
-		"patch": 13
+		"major": 2401,
+		"minor": 7,
+		"patch": 0
 	},
 	"minNVDAVersion": {
 		"major": 2021,

@@ -104,9 +104,13 @@ One press: announces the current line of the message list. The NVDA+Tab shortcut
 Two presses: displays the details of the line in a text window which allows analysis of the line using the keyboard.
 * Control+right arrow in messages grouped by conversation : selects the last message in the conversation. This is first expanded if it is collapsed. (2312.14.00)
 * Control+left arrow in messages grouped by conversations : selects the first message in the conversation. This is first expanded if it is collapsed.<br>These last two shortcuts need the "Total" column to work.
-* Spacebar, F4, or Alt+down arrow: Reads a clean version of the message from the preview pane, without leaving the message list.
-* Alt+up arrow: places the message in the virtual quote browser;
-* Windows+down or up arrows: reads the next or previous quote.
+* Spacebar, F4, or Alt+down arrow: Reads a clean or translated version of the message from the preview pane, without leaving the message list.<br>
+Note: If a message contains more than 75 HTML elements, a beep will be emitted for each text element retrieved. With a quick press of the Control key, you can immediately start announcing the incomplete message. (2401.09.0)
+* Scroll lock. : Enables or disables Message Translation mode for  message reading with Space, F4 or Alt+down arrow. Note that the Instant Translate add-on must be installed and activated. (2401.02.0)
+* Shift+Scroll Lock: Enables or disables Showing the translation in a browseable text window. This mode allows the entire message to be read in Braille. (2401.02.0) <br>
+Note: Message translation is also available in windows and tabs that display a message.
+* Alt+up arrow: places the message in the virtual quote / citations  browser;
+* Windows+down or up arrows: reads the next or previous quote. If Translation mode is active, the quote will be translated (2401.02.0.
 
 Note: This quote / citation browser can be used from the message list, message from the separate reading window, from the compose window and from the spell check dialog.
 
@@ -298,7 +302,7 @@ Set Start with Inbox options:
 * Set the options then restart Thunderbird.
 
 
-[1]: https://github.com/RPTools-org/thunderbirdPlusG5/releases/download/v2312.31.00/thunderbirdPlusG5-2312.31.00.nvda-addon
+[1]: https://github.com/RPTools-org/thunderbirdPlusG5/releases/download/v2401.09.00/thunderbirdPlusG5-2401.09.00.nvda-addon
 
 [2]: https://github.com/RPTools-org/thunderbirdPlusG5/
 

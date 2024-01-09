@@ -70,6 +70,7 @@ class  Settings() :
 		# "withoutFolderKeyNav" : _("Do not use first character navigation in the folder tree"),
 		# "noDirectKeyNav" : _("Character navigation via an edit box"),
 		"withoutReceipt" : _("Ignore acknowledgment requests"),
+		"displayTranslations" : _("Always display the translations"),
 		# "WwithUnread" : _("Show only folders with unread in the 'Folders in Tree' dialog"),
 		# "WithoutAutoRead" : _("separate reading window: do not automatically read the mmessage if it causes NVDA hangs"),
 		# "editDelay_str" : _("Edit the delay before the automatic reading of the separate message window.\\tAlt+d,n")

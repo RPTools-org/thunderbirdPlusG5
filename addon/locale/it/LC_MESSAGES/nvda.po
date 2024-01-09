@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Thunderbird+G5\n"
-"POT-Creation-Date: 2023-12-31 07:14+0100\n"
+"POT-Creation-Date: 2024-01-02 11:30+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Pierre-Louis R. <plr.listes@rptools.org>\n"
 "Language-Team: Leonardo Marenda\n"
@@ -351,11 +351,11 @@ msgstr "Due punti"
 msgid "equal"
 msgstr "Pari"
 
-#: appModules/msgComposeWindow/menuCompose.py:52
+#: appModules/msgComposeWindow/menuCompose.py:52 appModules/shared/quoteNav.py:72 appModules/shared/quoteNav.py:86
 msgid "Disabled"
 msgstr "Disattivato"
 
-#: appModules/msgComposeWindow/menuCompose.py:52
+#: appModules/msgComposeWindow/menuCompose.py:52 appModules/shared/quoteNav.py:81 appModules/shared/quoteNav.py:86
 msgid "Enabled"
 msgstr "Abilitato"
 
@@ -509,150 +509,166 @@ msgstr "Annuncia 'Indesiderata' se visualizzato nella colonna 'stato indesiderat
 msgid "Ignore acknowledgment requests"
 msgstr "Ignora le richieste di conferma"
 
-#: appModules/shared/menuSettings.py:79
+#: appModules/shared/menuSettings.py:73
+msgid "Always display the translations"
+msgstr "Visualizza sempre le traduzioni"
+
+#: appModules/shared/menuSettings.py:80
 msgid "Spell Check: Spell the misspelled word and the suggested word."
 msgstr "Controllo ortografico: Scrivi la parola errata e quella suggerita."
 
-#: appModules/shared/menuSettings.py:81
+#: appModules/shared/menuSettings.py:82
 msgid "The Esc key closes the message being written"
 msgstr "Il tasto Esc chiude il messaggio in fase di scrittura"
 
-#: appModules/shared/menuSettings.py:82
+#: appModules/shared/menuSettings.py:83
 msgid "Single press to show the context menus, double press to write a grave accent  or Tilde or ¬¬."
 msgstr "Singola pressione per visualizzare il menu contestuale, doppia pressione per scrivere controbarra o barra verticale o le loro sostituzioni."
 
-#: appModules/shared/menuSettings.py:93
+#: appModules/shared/menuSettings.py:94
 msgid "Message list : deactivate  tag management   to improve responsiveness."
 msgstr "Elenco messaggi: disattiva la gestione dei tag per migliorare la reattività."
 
-#: appModules/shared/menuSettings.py:94
+#: appModules/shared/menuSettings.py:95
 msgid "Message list : do not play sound when list is filtered and gets focus."
 msgstr "Elenco dei messaggi: non riproduce l'audio quando l'elenco viene filtrato e viene messo a fuoco."
 
-#: appModules/shared/menuSettings.py:95
+#: appModules/shared/menuSettings.py:96
 msgid "Separate reading window: do not read the cleaned version of the message when the window is opened."
 msgstr "Finestra di lettura separata: non legge la versione ripulita del messaggio quando la finestra è aperta."
 
-#: appModules/shared/menuSettings.py:163
+#: appModules/shared/menuSettings.py:164
 msgid "Words separated by semicolons :"
 msgstr "Parole separate da punto e virgola : "
 
-#: appModules/shared/menuSettings.py:163
+#: appModules/shared/menuSettings.py:164
 msgid "Edit words to hide in the subject of messages"
 msgstr "Modifica le parole da nascondere nell'oggetto dei messaggi"
 
-#: appModules/shared/menuSettings.py:166
+#: appModules/shared/menuSettings.py:167
 msgid "Delay between 20 and 2000 milliseconds before filtered reading (default: 100):"
 msgstr "Ritardo tra 20 e 2000 millisecondi prima della lettura filtrata (predefinito: 100):"
 
-#: appModules/shared/menuSettings.py:166
+#: appModules/shared/menuSettings.py:167
 msgid "Separate reading window"
 msgstr "Finestra di lettura separata"
 
-#: appModules/shared/menuSettings.py:186
+#: appModules/shared/menuSettings.py:187
 msgid "Backup file does not exist."
 msgstr "Il file di backup non esiste."
 
-#: appModules/shared/menuSettings.py:197
+#: appModules/shared/menuSettings.py:198
 msgid "The configuration has been reset to its default values"
 msgstr "La configurazione è stata ripristinata ai suoi valori di default"
 
-#: appModules/shared/menuSettings.py:238
+#: appModules/shared/menuSettings.py:239
 msgid "Main window options"
 msgstr "Opzioni per la finestra principale"
 
-#: appModules/shared/menuSettings.py:244
+#: appModules/shared/menuSettings.py:245
 msgid "Write window options"
 msgstr "Opzioni per la finestra di composizione"
 
-#: appModules/shared/menuSettings.py:254
+#: appModules/shared/menuSettings.py:255
 msgid "Update options"
 msgstr "Opzioni di aggiornamento"
 
-#: appModules/shared/menuSettings.py:260
+#: appModules/shared/menuSettings.py:261
 msgid "Deactivations"
 msgstr "Disattivazioni"
 
-#: appModules/shared/menuSettings.py:262
+#: appModules/shared/menuSettings.py:263
 msgid "Open sound folder..."
 msgstr "Apri la cartella audio..."
 
-#: appModules/shared/menuSettings.py:263
+#: appModules/shared/menuSettings.py:264
 msgid "Backup current configuration file"
 msgstr "Backup del file di configurazione corrente"
 
-#: appModules/shared/menuSettings.py:264
+#: appModules/shared/menuSettings.py:265
 msgid "Restore backed up configuration file"
 msgstr "Ripristina il file di configurazione di cui è stato eseguito il backup"
 
-#: appModules/shared/menuSettings.py:265
+#: appModules/shared/menuSettings.py:266
 msgid "Reset configuration"
 msgstr "Ripristina configurazione"
 
-#: appModules/shared/menuSettings.py:288
+#: appModules/shared/menuSettings.py:289
 msgid "Mentions"
 msgstr "Menzioni"
 
-#: appModules/shared/menuSettings.py:358
+#: appModules/shared/menuSettings.py:359
 msgid "Enable automatic update"
 msgstr "Abilita l'aggiornamento automatico"
 
-#: appModules/shared/menuSettings.py:359
+#: appModules/shared/menuSettings.py:360
 msgid "Disable automatic update"
 msgstr "Disattiva l'aggiornamento automatico"
 
-#: appModules/shared/menuSettings.py:367
+#: appModules/shared/menuSettings.py:368
 msgid "Automatic update has been enabled. You can restart NVDA to check for an update."
 msgstr "L'aggiornamento automatico è stato abilitato. Puoi riavviare NVDA per verificare la presenza di aggiornamenti."
 
-#: appModules/shared/menuSettings.py:377
+#: appModules/shared/menuSettings.py:378
 msgid "Error saving update settings file."
 msgstr "Errore durante il salvataggio del file delle impostazioni di aggiornamento."
 
-#: appModules/shared/menuSettings.py:378
+#: appModules/shared/menuSettings.py:379
 msgid "Automatic update has been disabled."
 msgstr "L'aggiornamento automatico è stato disabilitato."
 
-#: appModules/shared/quoteNav.py:31
+#: appModules/shared/quoteNav.py:36
 msgid "On|Le%date_sender%wrote|écrit"
 msgstr "Il|%date_sender%ha scritto|scritto"
 
-#: appModules/shared/quoteNav.py:111
-msgid " text elements. Press Control to stop."
-msgstr "elementi di testo. Premi CTRL per interrompere."
+#: appModules/shared/quoteNav.py:68
+msgid "message translation mode "
+msgstr "modalità di traduzione dei messaggi"
 
-#: appModules/shared/quoteNav.py:188
+#: appModules/shared/quoteNav.py:79
+msgid "The Instant Translate add-on is not active or not installed."
+msgstr "Il componente aggiuntivo Instant Translate non è attivo o non è installato."
+
+#: appModules/shared/quoteNav.py:84
+msgid "Translation display mode {}"
+msgstr "Modalità di visualizzazione della traduzione {}"
+
+#: appModules/shared/quoteNav.py:213
 #, python-brace-format
 msgid "{0} messages in chronological order, "
 msgstr "{0} messaggi in ordine cronologico,"
 
-#: appModules/shared/quoteNav.py:194
+#: appModules/shared/quoteNav.py:219
 #, python-brace-format
 msgid "{0} messages, {1} lines, "
 msgstr "{0} messaggi, {1} righe,"
 
-#: appModules/shared/quoteNav.py:230
+#: appModules/shared/quoteNav.py:248
+msgid "Translation"
+msgstr "Traduzione"
+
+#: appModules/shared/quoteNav.py:255
 msgid "Preview copied: "
 msgstr "Anteprima copiata: "
 
-#: appModules/shared/quoteNav.py:254
+#: appModules/shared/quoteNav.py:290
 msgid "Original Message|E-mail d'origine|Message d'origine"
 msgstr "Messaggio originale|Original message|E-mail originale"
 
-#: appModules/shared/quoteNav.py:273
+#: appModules/shared/quoteNav.py:309
 msgid "You are receiving this message because you are subscribed to the group"
 msgstr "Ricevi questo messaggio perché sei iscritto al gruppo"
 
-#: appModules/shared/quoteNav.py:302
+#: appModules/shared/quoteNav.py:338
 #, python-format
 msgid " link %s "
 msgstr " link %s "
 
-#: appModules/shared/quoteNav.py:378
+#: appModules/shared/quoteNav.py:414
 msgid "From|De|Expéditeur"
 msgstr "Da|Da|Mittente"
 
-#: appModules/shared/quoteNav.py:403
+#: appModules/shared/quoteNav.py:439
 msgid "wrote"
 msgstr "ha scritto"
 
@@ -664,7 +680,7 @@ msgstr "Il riquadro di anteprima non viene visualizzato. Per favore, premi F8 e 
 msgid "Press right arrow and retry, please."
 msgstr "Premi freccia destra e riprova, per favore."
 
-#: appModules/shared/utils115.py:400 appModules/thunderbird.py:686
+#: appModules/shared/utils115.py:400 appModules/thunderbird.py:698
 msgid "The headers pane is not displayed. Please press F8 then try again"
 msgstr "Il riquadro dell'intestazione non viene visualizzato. Premi F8 e riprova"
 
@@ -686,12 +702,10 @@ msgid "Copy to clipboard"
 msgstr "Copia negli appunti"
 
 #: appModules/shared/utils115.py:544
-#, fuzzy
 msgid "No attachment."
 msgstr "Nessun allegato."
 
 #: appModules/shared/utils115.py:576
-#, fuzzy
 msgid "Two presses to reach the list."
 msgstr "Due pressioni per raggiungere l'elenco."
 
@@ -716,7 +730,7 @@ msgid "File not found"
 msgstr "File non trovato"
 
 #: appModules/thunderbird.py:56
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "Your current version of the Thunderbird+G5 add-on needs version {0} or higher of the Thunderbird application but your version is: {1}.\n"
 "Please update the Thunderbird application for the add-on to work properly."
@@ -725,7 +739,6 @@ msgstr ""
 "Aggiorna l'applicazione Thunderbird affinché il componente aggiuntivo funzioni correttamente."
 
 #: appModules/thunderbird.py:57
-#, fuzzy
 msgid "Warning"
 msgstr "Avvertimento"
 
@@ -750,7 +763,6 @@ msgid "Spam"
 msgstr "Spam"
 
 #: appModules/thunderbird.py:329
-#, fuzzy
 msgid " of "
 msgstr " su "
 
@@ -814,67 +826,75 @@ msgstr "Nella finestra principale, una pressione: Alt+1 a 8: legge l'intestazion
 msgid "Filtered reading of the document in the preview pane, reading tab, reading or Write window, from the list of messages or the document."
 msgstr "Lettura filtrata del documento nel riquadro di anteprima, scheda di lettura, finestra di lettura o scrittura, dall'elenco dei messaggi o dal documento."
 
-#: appModules/thunderbird.py:638
+#: appModules/thunderbird.py:637
+msgid "Enables or disables  the translation mode of a message."
+msgstr "Abilita o disabilita la modalità di traduzione di un messaggio."
+
+#: appModules/thunderbird.py:643
+msgid "Enables or disables the display of translations in a window."
+msgstr "Abilita o disabilita la visualizzazione delle traduzioni in una finestra."
+
+#: appModules/thunderbird.py:650
 msgid "Folders : displays the accounts menu then  the folders menu for the chosen account."
 msgstr "Cartelle: visualizza il menu degli account quindi il menu delle cartelle per l'account scelto."
 
-#: appModules/thunderbird.py:645
+#: appModules/thunderbird.py:657
 msgid "Folders : displays the accounts menu then the unread folders menu for the chosen account."
 msgstr "Cartelle: visualizza il menu degli account quindi il menu delle cartelle non lette per l'account scelto."
 
-#: appModules/thunderbird.py:658
+#: appModules/thunderbird.py:670
 msgid "Focus : 1 press select the current folder in the folder tree, 2 presesses display a menu  allowings to choose an mail account to reach in the folder tree"
 msgstr "Focus: una pressione seleziona la cartella corrente nell'albero delle cartelle, 2 pressioni visualizzano un menu che consente di scegliere un account di posta da raggiungere nell'albero delle cartelle"
 
-#: appModules/thunderbird.py:669
+#: appModules/thunderbird.py:681
 msgid "Focus : 1 press set focus on message list, 2 presesses set focus on message list and go to the last message"
 msgstr "Focus: una pressione posiziona il focus sull'elenco dei messaggi, 2 pressioni posizionano il focus sull'elenco dei messaggi e passano all'ultimo messaggio"
 
-#: appModules/thunderbird.py:703
+#: appModules/thunderbird.py:715
 msgid "Attachments : announces or displays the attachment pane."
 msgstr "Allegati: annuncia o visualizza il riquadro degli allegati."
 
-#: appModules/thunderbird.py:711
+#: appModules/thunderbird.py:723
 msgid "Press alt+upArrow before navigating through quotes in a message."
 msgstr "Premi Alt+Freccia su prima di spostarti tra le virgolette in un messaggio."
 
-#: appModules/thunderbird.py:720
+#: appModules/thunderbird.py:732
 msgid "Navigates through quotes in a message"
 msgstr "Naviga tra le virgolette in un messaggio"
 
-#: appModules/thunderbird.py:744
+#: appModules/thunderbird.py:756
 msgid "Shows the context menu of actions available in the various Thunderbird windows."
 msgstr "Visualizza il menu contestuale delle azioni disponibili nelle varie finestre di Thunderbird."
 
-#: appModules/thunderbird.py:764
+#: appModules/thunderbird.py:776
 msgid "Shows the Options context menu of Thunderbird+"
 msgstr "Visualizza il menu contestuale delle opzioni di Thunderbird+"
 
-#: appModules/thunderbird.py:772
+#: appModules/thunderbird.py:784
 msgid "Shows the dialog for editing the delay before reading the message of the separate reading window."
 msgstr "Visualizza la finestra di dialogo per modificare il ritardo prima della lettura del messaggio della finestra di lettura separata."
 
-#: appModules/thunderbird.py:781
+#: appModules/thunderbird.py:793
 msgid "Present: Headers and message pane."
 msgstr "Presente: intestazioni e riquadro dei messaggi."
 
-#: appModules/thunderbird.py:783
+#: appModules/thunderbird.py:795
 msgid "Missing : headers and message pane."
 msgstr "Mancanti: intestazioni e riquadro dei messaggi."
 
-#: appModules/thunderbird.py:784
+#: appModules/thunderbird.py:796
 msgid "Turn on or off the preview messages panel"
 msgstr "Mostra o nasconde il riquadro di anteprima dei messaggi"
 
-#: appModules/thunderbird.py:789
+#: appModules/thunderbird.py:801
 msgid "Shows the add-on help in a web page"
 msgstr "Visualizza la guida del  componente aggiuntivo in una pagina web"
 
-#: appModules/thunderbird.py:807
+#: appModules/thunderbird.py:819
 msgid "of the test mode"
 msgstr "modalità di prova"
 
-#: appModules/thunderbird.py:925
+#: appModules/thunderbird.py:939
 msgid "Re "
 msgstr "Re "
 
@@ -1003,11 +1023,12 @@ msgstr "Rilevato Mozilla Apps Enhancements in esecuzione"
 msgid "Installation cancelled"
 msgstr "Installazione annullata"
 
-#, fuzzy
+#~ msgid " text elements. Press Control to stop."
+#~ msgstr "elementi di testo. Premi CTRL per interrompere."
+
 #~ msgid "In order for Thunderbird+G5 to work properly, you need to update Thunderbird to version 115.6 or higher. If your version {} seems appropriate, restart NVDA."
 #~ msgstr "Affinché Thunderbird+G5 funzioni correttamente, è necessario aggiornare Thunderbird alla versione 115.6 o successiva. Se la tua versione {} sembra appropriata, riavvia NVDA."
 
-#, fuzzy
 #~ msgid "In order for Thunderbird+G5 to work properly, you need to update Thunderbird to version 115.6 or higher."
 #~ msgstr "Affinché Thunderbird+G5 funzioni correttamente, è necessario aggiornare Thunderbird alla versione 115.6 o successiva."
 

@@ -3,12 +3,15 @@ import addonHandler
 addonHandler.initTranslation()
 
 import re, speech, winUser
-from ui import message
+from ui import message, browseableMessage
+from core import callLater
+from core import callLater
 from tones import beep
 from time import sleep
 from api import  getForegroundObject, getFocusObject, copyToClip, processPendingEvents
 from comtypes.gen.ISimpleDOM import ISimpleDOMNode
 from NVDAObjects.IAccessible import IAccessible
+import globalPluginHandler
 import controlTypes
 
 import sharedVars
@@ -25,6 +28,10 @@ class QuoteNav() :
 
 	def __init__(self) :
 		self.lItems  = self.lQuotes = []
+		self.translate = False # 2024.01.02
+		self.browseTranslation = sharedVars.oSettings.getOption("messengerWindow", "displayTranslations")
+		self.iTranslate = None
+		self.langTo = utis.getLang()
 
 		# Translators : do not translate nor remove %date_sender%. Replace french words, word 2 and word 5, by your translations. 
 		# The  char Alt+0030 is a temporary replacement of \n
@@ -48,7 +55,7 @@ class QuoteNav() :
 		# link tags
 		self.regLink = re.compile ("(\<a .+?\>(.+?)\</a\>)")
 		# All HTML tags
-		self.regHTML = re.compile ("<.+?>")
+		self.regHTML = re.compile("\<.+?\>")
 		# to removes  multiple spaces
 		self.regMultiSpaces = re.compile(" {2,}")
 		# to remove multi pseudo new line :  
@@ -57,22 +64,53 @@ class QuoteNav() :
 		self.regSender = re.compile("(|\n|&lt;| via groups\.io)")
 		# replace \n that are after a letter or a digit with semicolon
 		self.regSemi = re.compile("(\w|\d)\n")
+		self.regTextTags = re.compile("<span|<a|<p|<li|<td")
 		# v2 issueself.regSender = re.compile("(|&lt;| via (" + self.lblWrote  + "))")
+
+	def toggleTranslation(self) :
+		msg = _("message translation mode ")
+		if self.translate : 
+			self.translate = False 
+			self.iTranslate = None
+			return message(msg + _("Disabled"))
+		try : 
+			self.iTranslate = [p for p in globalPluginHandler.runningPlugins if p.__module__ == 'globalPlugins.instantTranslate'][0]
+		except :
+			pass
+		
+		if not self.iTranslate :
+			return message(_("The Instant Translate add-on is not active or not installed."))
+		self.translate = True
+		message(msg + _("Enabled"))
+
+	def toggleBrowseTranslation(self) :
+		msg = _("Translation display mode {}")
+		self.browseTranslation = not   self.browseTranslation
+		state = _("Enabled"  if self.browseTranslation else _("Disabled"))
+		message(msg.format(state))
 
 	def readMail(self, oDoc, rev = False, spkMode=1): 
 		speech.cancelSpeech()
 		for i in range(0, 20) :
-			if oDoc.role == controlTypes.Role.DOCUMENT and self.setDoc(oDoc, rev) :
-				self.setText(spkMode)
-				break
+			if oDoc.role == controlTypes.Role.DOCUMENT :
+				result = self.setDoc(oDoc, rev)
+				# sharedVars.debugLog= self.text
+				if result == 1 : 
+					self.setText(spkMode) 
+					break
+				elif result == 2 : 
+					# beep(100, 20)
+					callLater(250, self.setText, spkMode) 
+					# self.sayDraftText()
+					break
 			else : 
-				beep(1, 200)
+				beep(150, 5)
 				# sleep(0.1)
 				oDoc =  getFocusObject()
 
 	def setDoc(self, oDoc, nav=False): 
 		# converts the doc into HTML code
-		if not oDoc : return False 
+		if not oDoc : return 0 
 		self.nav = nav
 		# self.text = "\n---" # alt+0031
 		self.text = "\n" # alt+0031
@@ -100,7 +138,7 @@ class QuoteNav() :
 
 		o=oDoc.firstChild # section ou paragraph
 		# # sharedVars.logte(u"après  o.firstChild " + str(o.role)  + ", " + str(o.name))
-		if not o : return False
+		if not o : return 0
 		cCount =  oDoc.childCount
 		
 		if o.next :
@@ -108,7 +146,7 @@ class QuoteNav() :
 			#html simple
 			# self.text = "\n---" 
 			i = 1
-			if cCount > 75 : message(str(cCount) + _(" text elements. Press Control to stop."))
+			# if cCount > 75 : message(str(cCount) + _(" text elements. Press Control to stop."))
 			while o :
 				# # sharedVars.logte(u"HTML elem:" + str(o.role)  + ", " + str(o.name))
 				try : 
@@ -118,27 +156,28 @@ class QuoteNav() :
 				except :
 					s = "error retriving innerHTML"
 					pass
-					
 				if s :self.text += s + CNL # + CNL required for not self.quoteMode
+				if cCount > 75 and s and self.regTextTags.search(s) :
+					beep(250,5)
 				if winUser.getKeyState(winUser.VK_CONTROL)&32768:
-					beep(100, 30)
-					return True
-
+					return 2
 				i += 1
-				if cCount > 100 :
-					perc = (i / cCount) * 100
-					if perc % 10 == 0 :
-						if perc == 50.0 : beep(350, 20)
-						else : beep(350, 2) # message(str(int(perc)) + "%")
 				try : o=o.next
-				except : break # fix v 3.4.1
+				except : break
 		else: # plain Text
 			# self.text = "\n---"
 			o = o.IAccessibleObject.QueryInterface(ISimpleDOMNode)
 			# # sharedVars.logte("brut:" + str(o))
 			self.text += str(o.innerHTML)
-		return True
+		return 1
 
+	def sayDraftText(self) :
+		self.text=self.regHTMLChars.sub(" ",self.text)
+		self.text=self.regHTML.sub(" ",self.text)
+		# beep(100, 20)
+		sharedVars.debugLog = "Draft :\n" + self.text
+		callLater(500, message, self.text)
+	
 	def getDocObjects(self, oDoc) :
 		o = oDoc.firstChild
 		while o :
@@ -175,8 +214,6 @@ class QuoteNav() :
 		else :
 			self.buildLists(speakMode)
 
-
-
 	def buildLists(self, speakMode) :
 		# quotes/messages are separated by alt+0031 char
 		# if sharedVars.curTab == "main" :
@@ -201,7 +238,7 @@ class QuoteNav() :
 			self.lItems = []
 			beep(200, 20)
 			return 
-		if self.quoteMode :				
+		if self.quoteMode and not self.translate : # 2024.01.01
 			self.lItems.reverse()
 		self.lastItem = len(self.lItems) - 1
 
@@ -219,8 +256,8 @@ class QuoteNav() :
 		if speakMode  > 0 :
 			message(msg + self.lItems[self.curItem])
 
-
-
+	def showTranslation(self, t) :
+		browseableMessage(message=t, title= _("Translation"), isHtml=False)
 	def speakText(self, freq=0, speakMode=1) :
 		if freq > 0 :
 			beep(freq, 40)
@@ -229,8 +266,20 @@ class QuoteNav() :
 			copyToClip(self.text)
 			msg = _("Preview copied: ")
 		
-		message(msg + self.text)
+		if self.translate : 
+			l = min(28,  len(sharedVars.curSubject))
+			t = sharedVars.curSubject[:l] + " :\n" + self.text.split("")[1]
+			t  = self.iTranslate.translateAndCache(t, "auto", self.langTo).translation
+			if self.browseTranslation : self.showTranslation(t)
+			else : message(msg + t)
+		else :
+			message(msg + self.text)
 
+	def speakQuote(self, quote) :
+		if self.translate : 
+			quote  = self.iTranslate.translateAndCache(quote, "auto", self.langTo).translation
+		if self.browseTranslation : self.showTranslation(quote) 
+		else : message(quote)
 	def deleteMetas(self) :
 		lbl = "<meta "
 		metas = []
@@ -403,7 +452,6 @@ class QuoteNav() :
 			t = "\n" + getSenderName(e) + " " + _("wrote") + " : "
 			# # sharedVars.logte("t:" + t)
 			self.text = self.text.replace(e, t)
-			
 		return
 			# if utis.wordsMatchWord(search, e[0]) :
 				# arr = str(e[0]).split(":")
@@ -459,9 +507,9 @@ class QuoteNav() :
 		elif n == 1 :
 			self.curItem = 0  if self.curItem == self.lastItem  else self.curItem + 1
 		if self.quoteMode :
-			message(str(self.curItem+1) + ":" + self.lItems[self.curItem])
+			self.speakQuote(str(self.curItem+1) + ":" + self.lItems[self.curItem])
 		else :
-			message(self.lItems[self.curItem])
+			self.speakQuote(self.lItems[self.curItem])
 
 	def skipQuote(self, n=1) :
 		if self.lastItem == -1 : 			self.buildLists(False)
@@ -474,14 +522,14 @@ class QuoteNav() :
 
 		self.curItem = self.lQuotes[self.curQuote]
 		# return message(" curquote {},  curItem {}".format(self.curQuote, self.curItem))
-		message(str(self.curQuote+1) + ":" + self.lItems[self.curItem])
+		self.speakQuote(str(self.curQuote+1) + ":" + self.lItems[self.curItem])
 
 	def findItem(self, expr) :
 		if self.lastItem == -1 : 			self.buildLists(False)
 		lIdx, wIdx = self.indexOf(expr, self.curItem)
 		if lIdx > -1 :
 			self.curItem = lIdx
-			message(self.lItems[lIdx])
+			self.speakQuote(self.lItems[lIdx])
 		else :
 			beep(120, 20)
 	# self.lQuotes = [idx for (idx, item) in enumerate(self.lItems, self.curIndex) if item.find(expr) > -1]
@@ -593,3 +641,8 @@ def delMailAddrs(s) :
 	s = s.replace("via groups.io", "") 
 	return s.replace("  ", " ")
 	
+# def detect_language(text):
+	# response=urllib.urlopen("https://translate.yandex.net/api/v1.5/tr.json/detect?key=trnsl.1.1.20150410T053856Z.1c57628dc3007498.d36b0117d8315e9cab26f8e0302f6055af8132d7&"+urllib.urlencode({"text":text.encode('utf-8')})).read()
+	# response=json.loads(response)
+	# return response['lang']
+
