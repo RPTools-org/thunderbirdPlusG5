@@ -8,12 +8,12 @@ from core import callLater
 from core import callLater
 from tones import beep
 from time import sleep
-from api import  getForegroundObject, getFocusObject, copyToClip, processPendingEvents
+from api import  getForegroundObject, getFocusObject, setFocusObject, copyToClip, processPendingEvents
 from comtypes.gen.ISimpleDOM import ISimpleDOMNode
 from NVDAObjects.IAccessible import IAccessible
 import globalPluginHandler
 import controlTypes
-
+import treeInterceptorHandler, textInfos
 import sharedVars
 import utis 
 
@@ -75,6 +75,7 @@ class QuoteNav() :
 			return message(msg + _("Disabled"))
 		try : 
 			self.iTranslate = [p for p in globalPluginHandler.runningPlugins if p.__module__ == 'globalPlugins.instantTranslate'][0]
+			# sharedVars.logte("Instant Translate :" + str(self.iTranslate))
 		except :
 			pass
 		
@@ -90,6 +91,22 @@ class QuoteNav() :
 		message(msg.format(state))
 
 	def readMail(self, oDoc, rev = False, spkMode=1): 
+		# focus = getFocusObject()
+		# setFocusObject(oDoc)
+		# treeInterceptor = treeInterceptorHandler.getTreeInterceptor(oDoc)
+		# setFocusObject(focus)
+		# if treeInterceptor:
+			# try:
+				# info = treeInterceptor.makeTextInfo("all")
+			# except:
+				# pass
+			# else:
+				# message(
+				# text=info.text,
+				# brailleText="\n".join((oDoc.name, info.text)))
+		# beep(432, 10)
+		# # browseableMessage(message= str(info.text), title= str(oDoc.name), isHtml=False)
+		# return
 		speech.cancelSpeech()
 		for i in range(0, 20) :
 			if oDoc.role == controlTypes.Role.DOCUMENT :

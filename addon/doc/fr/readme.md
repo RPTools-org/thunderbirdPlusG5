@@ -21,6 +21,8 @@ Elle améliore votre productivité en fournissant des commandes qui n'existent p
 * Un accès direct aux pièces jointes.
 * Des raccourcis de consultation et d'accès directs aux champs d'adressage de la fenêtre de rédaction.
 * Une amélioration considérable de l'utilisation du dialogue de vérification orthographique.
+* Une gestion plus faciele  des carnets d'adresses et des listes de diffusion (v.2402.14.00).
+* Un menu de mise à jour de l'extension (v.2402.14.00)
 * et bien d'autres choses encore... 
 
 Cette page documente les raccourcis clavier proposés par Thunderbird+G5. 
@@ -52,7 +54,8 @@ Echappe permet aussi d'alterner entre l'arborescence des dossiers et la liste de
 
 ### Navigation parmi les onglets de la fenêtre principale
 
-* Control+Tab avec ou sans la touche majuscule et control+1 à 9 : L'extension intercepte les changements d'onglet afin d'annoncer leur numéro d'ordre et le nombre total d'onglets.
+* Control+Tab avec ou sans la touche majuscule et control+1 à 9 : L'extension intercepte les changements d'onglet afin d'annoncer leur numéro d'ordre et le nombre total d'onglets.<br>
+En outre, l'extension donne le focus au contenu de l'onglet lors de sa première activation. Pour le premier onglet, le focus peut être amené au dernier message de la liste de messages ou premier message non lu. Via le menu des options / Options pour la fenêtre principale, vous pouvez cocher l'option intitulée : Accéder au premier message non lu lors de la première activation du premier onglet, sinon au dernier message (v.2402.14.00));
 * Control+la première touche située à gauche de retour-arrière : affiche un menu avec la liste des onglets existants. Pressez Entrée sur un élément de menu pour activer l'onglet correspondant.
 * Alt+la première touche située à gauche de retour-arrière : affiche le menu contextuel des onglets.Ce menu est natif de Thunderbird.
 
@@ -269,6 +272,58 @@ Les raccourcis suivants sont disponibles depuis la zone d'édition du mot de rem
 * Maj+control+Entrée : presse le bouton "Tout ignorer".
 * Alt+Entrée : ajoute le mot déclaré comme mal orthographié au dictionnaire.
 
+## Carnet d'adresses, une gestion plus facile (v.2024.02.07)
+
+L'extension améliore les annonces du carnet d'adresses et vous propose des commandes-clavier qui permettent   d'organiser les carnets d'adresses et les listes de diffusion via des glisser-déposer virtuels.
+
+### Annonces améliorées
+
+* Arborescence des carnets d'adresses et listes de diffusion :  l'extension annonce aussi le type d'un élément :carnet d'adresse ou liste du carnet d'adresses parent,
+* liste de contacts : l'extension annonce aussi l'adresse mail du contact sélectionné.
+
+### Résumé des commandes
+* Touche Tab  depuis le champ de recherche : accède directement au tableau des contacts en sautant le bouton "Options d'affichage de la liste". Celui-ci reste accessible avec maj+Tab depuis le tableau des contacts;  .  
+* Touche échappe :
+
+	* Depuis l'arborescence des carnets d'adresses, amène le focus au champ de recherche;
+	* Depuis le champ de recherche, amène lle focus à l'arborescence des carnets d'adresses;
+	* Depuis le tableau des contacts, amène le focus au champ de recherche;
+ 
+* Control+Applications ou touche au dessus de Tab : ouvre un menu contextuel comprenant : Accédez à l'arborescence des carnets d'adresses et des listes de diffusion, Accéder au tableau des contacts, Nouveau carnet d’adresses, Nouveau contact, Nouvelle liste, Importer. Hormis les deux premiers, ces éléments proviennent de la barre d'outils du carnet d'adresses. 
+* lettre "a" depuis le tableau des contacts : effectue un glisser-déposer des contacts sélectionnés vers la liste de diffusion ou le carnet d'adresses défini comme destination. La première fois que vous pressez cette touche, la destination vous est demandée via un menu. Ensuite, la destination ne vous sera plus demandée tant que vous ne modifiez pas la liste ou le carnet d'adresses source.
+* lettre "d" depuis le tableau des contacts : affiche le menu des listes et des carnets d'adresses  de destination.
+
+### Exemple 1 : création d'une liste de diffusion dans le carnet d'adresses personnelles 
+
+*  Placez-vous dans l'arborescence des carnets d'adresses et sélectionnez "Adresses personnelles". Une novelle liste se crée uniquement dans le carnet sélectionné ;
+* Pressez Control+Applications ou la touche au-dessus de Tab et dans le menu, pressez Entrée sur  : Nouvelle liste;
+* Dans le dialogue qui s'est ouvert, entrez le nom de la liste, par exemple : Ma famille. Vous pouvez ajouter des contacts via ce dialogue mais pour l'exemple,  fermez ce dialogue via le bouton OK;
+* De retour  dans l'arborescence des carnets d'adresses et des listes, vous constatez l'apparition de : Ma famille, liste de Adresses personnelles, <br>
+Sélectionnez "Adresses personnelles" ;
+* Pressez la touche Tab pour entrer un mot-clé de recherche  ou Tabulez  jusqu'au tableau des contacts ou utilisez   le menu Control+Applications ou touche au-dessus de Tab;
+* Dans le tableau des contacts, sélectionnez un ou plusieurs contacts via la méthode standard des Control+Espace, Control+flèche vers le bas, Control+Espace, etc; 
+* Pressez la lettre a pour les glisser-déposer dans la liste de diffusion. La première fois, le menu des destinations autorisées sera affiché. Sélectionnez l'élément "Nom de la nouvelle liste" puis pressezEntrée. Lors des prochains appuis sur la lettre a, la même destination sera utilisée sans afficher ce menu. 
+* A la fin de l'opération de glisser-déposer, un bip sera joué  et le focus sera donné au champ de recherche.
+* Entrez un nouveau mot, pressez Tab, sélectionnez des contacts puis pressez à nouveau la lettre a pour les ajouter à la liste "Nom de la nouvelle liste" 
+
+### Déplacement de contacts depuis Adress collectées vers  des carnets d'adresse différents
+
+1.  Placez-vous dans l'arborescence des carnets d'adresses et sélectionnez "Adresses collectées";
+2. Tabulez jusqu'au tableau des contacts;
+3.  Selectionnez un ou plusieurs contacts ;
+4.  Pressez éventuellement la lettre "d" pour présélectionner une nouvelle destination;
+5. De retour dans le tableau des contacts, pressez lalettre "a" pour effectuer le glisser-déposer;
+6. Cela fait, le focus est donné au champ de recherche. Entrez éventuellement un nom puis réitérez les opérations 2 à 5.
+
+
+## Menu de mise à jour de l'extension (v.2402.14.00)
+
+Pour accéder à ce menu, vous pouvez presser AltGr+Majuscule+touche au-dessus de la touche Tab  ou procéder comme  suit :
+
+* Placez-vous dans la fenêtre principale de Thunderbird,
+* Pressez la touche au-dessus de la touche Tab,
+* Dans le menu contextuel, pressez flèche vers le haut afin de sélectionner l'élément Mise à jour puis pressez Entrée,
+* Un nouveau menu contextuel vous offre alors le choix entre :  Rechercher une mise à jour, Activer ou Désactiver les mise à jour automatiques et  Installer la version AAMM.JJ où AAMM.JJ est la version disponible en téléchargement. Cette dernière peut être plus récente que celle disponible en mise à jour automatique.
 
 ## Compléments externes
 
@@ -300,7 +355,7 @@ Régler les options de Start with Inbox :
 *  Réglez les options puis redémarrez Thunderbird.
 
 
-[1]: https://github.com/RPTools-org/thunderbirdPlusG5/releases/download/v2401.09.00/thunderbirdPlusG5-2401.09.00.nvda-addon
+[1]: https://github.com/RPTools-org/thunderbirdPlusG5/releases/download/v2402.14.00/thunderbirdPlusG5-2402.14.00.nvda-addon
 
 [2]: https://github.com/RPTools-org/thunderbirdPlusG5/
 

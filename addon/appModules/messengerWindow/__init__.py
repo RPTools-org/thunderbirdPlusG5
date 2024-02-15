@@ -1,1 +1,1 @@
-from . import folderTreeItem, messageListItem, menuMain, tabs
+from . import folderTreeItem, messageListItem, menuMain, tabs, tabAddressBook

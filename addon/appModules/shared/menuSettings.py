@@ -4,6 +4,7 @@ import api, config, sys, glob, shutil
 from configobj import ConfigObj
 import re
 import addonHandler,  os, sys
+import globalPluginHandler
 import  sharedVars, utis
 from wx import Menu, EVT_MENU, EVT_MENU_CLOSE, CallAfter, CallLater 
 from ui import  message
@@ -71,6 +72,7 @@ class  Settings() :
 		# "noDirectKeyNav" : _("Character navigation via an edit box"),
 		"withoutReceipt" : _("Ignore acknowledgment requests"),
 		"displayTranslations" : _("Always display the translations"),
+		"firstTabActivation" : _("Access the first unread message when first activating the first tab, otherwise the last message."),
 		# "WwithUnread" : _("Show only folders with unread in the 'Folders in Tree' dialog"),
 		# "WithoutAutoRead" : _("separate reading window: do not automatically read the mmessage if it causes NVDA hangs"),
 		# "editDelay_str" : _("Edit the delay before the automatic reading of the separate message window.\\tAlt+d,n")
@@ -250,9 +252,9 @@ class  Settings() :
 			menu, options, keys = Menu (), self.options, list(self.option_startup.keys())
 			#keys.sort ()
 			for e in range (len (keys)): menu.AppendCheckItem (200+e, self.option_startup[keys[e]]).Check (options["startup"].as_bool (keys[e]))
-			# ajout de activer/ désactiver mise à jour
-			menu.Append(200+e+1, getUpdateLabel())
-			mainMenu.AppendSubMenu (menu, _("Update options"))
+			# # ajout de activer/ désactiver mise à jour
+			# menu.Append(200+e+1, getUpdateLabel())
+			# mainMenu.AppendSubMenu (menu, _("Update options"))
 			mainMenu.Bind (EVT_MENU,self.onOptMenu)
 		# Chichi submenu
 		if frame == "messengerWindow" :
@@ -350,34 +352,34 @@ class  Settings() :
 		return
 
 
-import os
-def getUpdateLabel() :
-	addonName = "Thunderbird+4"
-	nextUpdateFile = api.config.getUserDefaultConfigPath()+"\\addons\\" +  addonName + "-nextUpdate.pickle"
-	exists =  (True if  os.path.exists(nextUpdateFile) else False)
-	if exists and  os.path.getsize(nextUpdateFile) < 5 : # mise à jour désactivée # maj désactivée
-		return  _("Enable automatic update")
-	return _("Disable automatic update")
+# import os
+# def getUpdateLabel() :
+	# addonName = "Thunderbird+4"
+	# nextUpdateFile = api.config.getUserDefaultConfigPath()+"\\addons\\" +  addonName + "-nextUpdate.pickle"
+	# exists =  (True if  os.path.exists(nextUpdateFile) else False)
+	# if exists and  os.path.getsize(nextUpdateFile) < 5 : # mise à jour désactivée # maj désactivée
+		# return  _("Enable automatic update")
+	# return _("Disable automatic update")
 
-def toggleUpdateState() :
-	addonName = "Thunderbird+4"
-	nextUpdateFile = api.config.getUserDefaultConfigPath()+"\\addons\\" +  addonName + "-nextUpdate.pickle"
-	if  os.path.exists(nextUpdateFile) and   os.path.getsize(nextUpdateFile) < 5 : 
-		os.remove(nextUpdateFile) # réactive la maj
-		cancelSpeech()
-		CallAfter(message, _("Automatic update has been enabled. You can restart NVDA to check for an update."))
-		return 1
-	# désactivation maj : écrit le fichier de longueur < 5 et contenant 0
-	cancelSpeech()
-	try :
-		ut = "0"
-		with open(nextUpdateFile, mode="w") as fileObj :
-			#pickle.dump(ut, fileObj)  #, protocol=0
-			fileObj.write(ut)
-	except :
-		return CallAfter(message, _("Error saving update settings file."))
-	CallAfter(message, _("Automatic update has been disabled."))
-	return
+# def toggleUpdateState() :
+	# addonName = "Thunderbird+4"
+	# nextUpdateFile = api.config.getUserDefaultConfigPath()+"\\addons\\" +  addonName + "-nextUpdate.pickle"
+	# if  os.path.exists(nextUpdateFile) and   os.path.getsize(nextUpdateFile) < 5 : 
+		# os.remove(nextUpdateFile) # réactive la maj
+		# cancelSpeech()
+		# CallAfter(message, _("Automatic update has been enabled. You can restart NVDA to check for an update."))
+		# return 1
+	# # désactivation maj : écrit le fichier de longueur < 5 et contenant 0
+	# cancelSpeech()
+	# try :
+		# ut = "0"
+		# with open(nextUpdateFile, mode="w") as fileObj :
+			# #pickle.dump(ut, fileObj)  #, protocol=0
+			# fileObj.write(ut)
+	# except :
+		# return CallAfter(message, _("Error saving update settings file."))
+	# CallAfter(message, _("Automatic update has been disabled."))
+	# return
 
 	def removeLabel(value, label) :
 		return  value[len(label):]

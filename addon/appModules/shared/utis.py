@@ -35,8 +35,8 @@ GetPreviousSiblingElement = clientObject.RawViewWalker.GetPreviousSiblingElement
 GetFirstChildElement  = clientObject.RawViewWalker.GetFirstChildElement
 GetNextSiblingElement =clientObject.RawViewWalker.GetNextSiblingElement
 import sharedVars
+import globalVars
 
-prevSpeechMode = False
 
 def _unicode(s) : return str(s)
 def isChichi() :
@@ -88,6 +88,7 @@ def getSpeechMode():
 		return speech.speechMode
 
 def setSpeechMode(mode):
+	global prevSpeechMode
 	try:
 		# for nvda version >= 2021.1
 		speech.setSpeechMode(mode)
@@ -95,6 +96,7 @@ def setSpeechMode(mode):
 		speech.speechMode = mode
 
 def setSpeechMode_off():
+	global prevSpeechMode
 	#print(u"Fonction setSpeechMode_off")
 	try:
 		# for nvda version >= 2021.1
@@ -103,13 +105,21 @@ def setSpeechMode_off():
 		speech.speechMode = speech.speechMode_off
 
 def setSpeech(enable) :
-	global 		prevSpeechMode
-	if enable and  prevSpeechMode :
+	global  prevSpeechMode
+	if enable and prevSpeechMode :
 		setSpeechMode(prevSpeechMode)
 		prevSpeechMode = None
 	elif not enable :
 		prevSpeechMode = getSpeechMode()
 		setSpeechMode_off()
+
+def enableSpeechAndSay(msg, focusName=False) :
+	if focusName :
+		o = api.getFocusObject()
+		msg = str(o.name) + ", " + o.role.displayString + ", " + msg 
+		speech.setSpeechMode(speech.SpeechMode.talk)
+	message(msg)
+
 
 def getIA2Attribute (obj,attribute_value=False,attribute_name ="id"):
 	r= hasattr (obj,"IA2Attributes") and attribute_name in obj.IA2Attributes.keys ()
@@ -496,7 +506,7 @@ def sendKey(keyName, num=1, delay=0.01) :
 		i += 1
 
 # 2022-12-09 : 2 scancode functions
-def gestureFromScanCode(sc, prefix) :
+def gestureFromScanCode(sc, prefix="") :
 	# sc stands for the scanCode  of the key
 	# prefix is "kb:modifiers"
 	k = getKeyNameText(sc, 0)

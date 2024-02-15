@@ -12,7 +12,7 @@ import  gui
 from ui import  message, browseableMessage
 import addonHandler
 import core
-
+from speech import cancelSpeech
 addonHandler.initTranslation()
 import api
 import time, winUser
@@ -118,16 +118,18 @@ def checkUpdate(autoUp) :
 		if not hasToUpdate(nm) : return
 	name, remoteVer =  getRemoteVersion()
 	if not isNewVersion(curVer, remoteVer) : 
-		if not autoUp : message(name + " " + curVer + _("is up to date."))
+		if not autoUp : 
+			core.callLater(10, cancelSpeech)
+			core.callLater(50, message, name + " " + curVer + _("is up to date."))
 		return
 	isDlg = True
 	msg = _("Do you want to update version {0} to version {1}?").format(curVer, remoteVer)
 	with availableUpdateDialog(gui.mainFrame,_("ThunderbirdPlusG5 add-on update"), msg, releaseNoteURL=urlHelp) as dlg:  
 		result=dlg.ShowModal()
 	if result ==  6666 : # later
-		wx.CallLater(40, setNextUpdate, nm)
+		core.callLater(40, setNextUpdate, nm)
 	elif result ==  wx.ID_NO :
-		wx.CallLater(40, setNextUpdate, nm, True) # disable
+		core.callLater(40, setNextUpdate, nm, True) # disable
 	elif result ==  wx.ID_YES :
 		result, msg = doUpdate(curVer)
 		if result < 1 :
@@ -293,3 +295,19 @@ def getFileSizeFromURL(url) :
 	#f.status # 200
 	return str(f.headers['Content-Length'])
 
+def getLatestVersion() :
+	global baseUrl
+	urlInfos = baseUrl + "fileInfos.php?key=tbpg5"
+	errMsg = " : " + _("Undetermined version")
+	try :
+		with urlopen  (urlInfos) as data :
+			data = data.read().decode()
+	except :
+		return errMsg + " 1"
+	if len(data) < 10 :
+		return errMsg + " 2"
+	lines = data.split("\n")
+	try : ver = lines[0].split("=")[1]
+	except : return errMsg + " 3"
+	# browseableMessage (message =data, title = _("Addon update"), isHtml = False)
+	return  ver

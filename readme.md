@@ -20,6 +20,8 @@ It improves your productivity by providing commands that don't exist natively in
 * Direct access to attachments.
 * Shortcuts for consultation and direct access to the addressing fields of the Write window.
 * Significantly improved the use of the spell check dialog.
+* Easier management of address books and mailing lists (v.2402.14.00).
+* Add-on update menu (v.2402.14.00)
 * And many more...
 
 This page documents the keyboard shortcuts offered by Thunderbird+G5.
@@ -32,7 +34,7 @@ Note: The named key (key above Tab) in the remainder of this page designates the
 
 ### General shortcuts
 
-* (key above Tab): displays the menu of various add-on commands.
+* (key above Tab): displays the menu of various add-on commands, including add-on update.
 * Shift+(key above Tab): Displays the add-on options menu.
 * Control+F1: displays the current page. For some clarification you can [visit version4 documentation][7]
 * F8 to show or hide the preview pane: this command is voiced by the add-on.
@@ -53,7 +55,8 @@ Escape also allows you to alternate between the folder tree and the message list
 
 ### Navigating through main window tabs
 
-* Control+Tab with or without the shift key and control+1 to 9: The add-on intercepts tab changes in order to announce their order number and the total number of tabs.
+* Control+Tab with or without the shift key and control+1 to 9: The add-on intercepts tab changes in order to announce their order number and the total number of tabs.<br>
+Additionally, the add-on gives focus to the tab's content when it is first activated. For the first tab, the focus can be brought to the last message in the message list or first unread message. Via the options menu / Main window options, you can check the option titled: Access the first unread message when the first tab is first activated, otherwise the last message (v.2402.14.00));
 * Control+the first key located to the left of backspace: displays a menu with the list of existing tabs. Press Enter on a menu item to activate the corresponding tab.
 * Alt+the first key to the left of backspace: displays the tab context menu. This menu is native to Thunderbird.
 
@@ -272,11 +275,63 @@ The following shortcuts are available from the replacement word editing area:
 * Shift+control+Enter: press the "Ignore all" button.
 * Alt+Enter: adds the word declared as misspelled to the dictionary.
 
+## Address book, easier management (v.2024.02.07)
+The add-on improves address book announcements and provides you with keyboard commands that allow you to organize address books and mailing lists via virtual drag and drop.
+
+### Improved annoucements
+
+* Address books and mailing lists tree : the add-on also announces the type of an element: address book or list of the parent address book,
+* contact list: the add-on also announces the email address of the selected contact.
+
+### Command Summary
+
+* Tab key from search field: Goes directly to the contacts table by skipping the "List display options" button. This button remains accessible with shift+Tab from the contacts table; .
+* Escape key:
+
+	* From the address book tree, bring the focus to the search field;
+	* From the search field, bring the focus to the address book tree;
+	* From the contacts table, bring the focus to the search field;
+ 
+* Control+Applications or key above Tab: opens a context menu including: Go to   address books and mailing lists tree, Access the contacts table, New address book, New contact, New list , Import. Aside from the first two, these items come from the Address Book toolbar.
+* letter "a" from the contacts table: drags and drops the selected contacts to the mailing list or address book defined as destination. The first time you press this key, you are asked for the destination via a menu. Then you won't be asked for the destination again until you change the source list or address book.
+* letter "d" from the contacts table: displays the menu of lists and  address books destinations.
+
+### Example 1: Creating a mailing list in the Personal Address Book
+
+* Go to the address book tree and select "Personal addresses". A new list is created only in the selected address book, it is not possible from "All address books";
+* Press Control+Applications or the key above Tab and in the menu, press Enter on: New list;
+* In the dialog that opened, enter the name of the list, for example : My family,<br> You can add contacts via this dialog but for the example, close this dialog via the OK button;
+* Back in the address books and lists tree, you notice a new element named: My family, list of Personal addresses,<br>
+Select "Personal addresses";
+* Press Tab to enter a search keyword or Tab to the Contacts table or use the Control+Applications menu or key above Tab;
+* In the contacts table, select one or more contacts via the standard method of Control+Space, Control+down arrow, Control+Space, etc;
+* Press the letter a to drag and drop them into the mailing list. The first time, the menu of possible destinations will be displayed. Select the "New list name" item then press Enter. The next time you press the letter a, the same destination will be used without displaying this menu.
+* At the end of the drag and drop operation,a beep will be played and focus will be given to the search box.
+* Enter a new word, press Tab, select contacts then press the letter a again to add them to the list "New list name";
+
+### Moving Contacts from Collected Addresses to Different Address Books
+
+1. Go to the address book tree and select "Collected addresses";
+2. Tab to the contacts table;
+3. Select one or more contacts;
+4. Optionally press the letter "d" to preselect a new destination;
+5. Back in the contacts table, press the letter "a" to drag and drop selected contacts to the destination  address book;
+6. Once done, the focus is given to the search field. Optionally enter a name then repeat operations 2 to 5.
+
+## Add-on update menu (v.2402.14.00)
+
+To access this menu, you can press AltGr+Shift+key above the Tab key or do the following:
+
+* Go to the main Thunderbird window,
+* Press the key above the Tab key,
+* In the context menu, press up arrow to select the Update item then press Enter,
+* A new context menu then offers you the choice between: Check for an update, enable or disable automatic updates and Install version YYMM.DD where YYMM.DD is the version available for download. The latter may be more recent than that available in automatic update.
+
 ## External complements
 
-### Extension Start With inbox for Thunderbird 115 (2023.10.31)1
+### add-on Start With inbox for Thunderbird 115 (2023.10.31)1
 
-When Thunderbird starts, this extension automatically selects:
+When Thunderbird starts, this add-on automatically selects:
 
 * the “Incoming Mail” folder of the account of your choice in the folder tree.
 * The last message in the incoming mail folder of the chosen account.
@@ -302,7 +357,7 @@ Set Start with Inbox options:
 * Set the options then restart Thunderbird.
 
 
-[1]: https://github.com/RPTools-org/thunderbirdPlusG5/releases/download/v2401.09.00/thunderbirdPlusG5-2401.09.00.nvda-addon
+[1]: https://github.com/RPTools-org/thunderbirdPlusG5/releases/download/v2402.14.00/thunderbirdPlusG5-2402.14.00.nvda-addon
 
 [2]: https://github.com/RPTools-org/thunderbirdPlusG5/
 

@@ -11,6 +11,7 @@ if not hasattr(controlTypes, "Role"):
 	setattr(controlTypes, "role", type("role", (), {"_roleLabels": controlTypes.roleLabels}))
 # End of compatibility fixes
 import globalVars
+import globalPluginHandler
 import utis, sharedVars
 from wx import Menu,EVT_MENU, CallAfter, CallLater, ScreenDC
 from oleacc import ROLE_SYSTEM_ALERT, ROLE_SYSTEM_LINK, ROLE_SYSTEM_TOOLBAR, ROLE_SYSTEM_TEXT,STATE_SYSTEM_MARQUEED, STATE_SYSTEM_PRESSED, ROLE_SYSTEM_SEPARATOR, STATE_SYSTEM_SELECTED, STATE_SYSTEM_SELECTABLE, STATE_SYSTEM_FOCUSABLE
@@ -46,6 +47,7 @@ class MainMenu() :
 		# mainMenu.Append (11, _("Chichi's page"))
 		mainMenu.Append (9, _("Write to support (after reading the manual and the change history)"))
 		mainMenu.Append (10, _("Join the thunderbird-dv mailing list (French)"))
+		mainMenu.Append (15, _("Update"))
 		# #divers		
 		# subMenu =Menu ()
 		# #s=u"Convertir un lien &vidéo en flu RSS,Choisir et agencer les colonnes de la liste de messages".split (",")
@@ -75,8 +77,15 @@ class MainMenu() :
 			return CallAfter(showTranslatedHTML, "TB+G5-history.html")
 		elif ID == 13 : # notifications
 			return CallAfter(showTranslatedHTML, "notificationsG5.html")
-		elif ID == 14 : # donate
-			return CallAfter(os.startfile, "https://www.paypal.com/donate/?business=QQJT2CCNR66G4&no_recurring=0&item_name=Thunderbird%2Badd-on+for+NVDA++donations.+%0AMany+thanks+%21+%3B&currency_code=EUR")
+		# elif ID == 14 : # donate
+		elif ID == 15 : 
+			# for p in globalPluginHandler.runningPlugins :
+				# sharedVars.logte("Running global plugin :" + p.__module__) 
+			# Result of this test : Running global plugin :globalPlugins.ThunderbirdGlob 
+			gp = [p for p in globalPluginHandler.runningPlugins if p.__module__ == 'globalPlugins.ThunderbirdGlob'][0]
+			gp.script_searchUpdate(None)
+			
+
 	def showColumnPicker(self) :
 		utis.setSpeech(False)
 		#sharedVars.debugMess(self.focused, " focused ")

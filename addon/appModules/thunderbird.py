@@ -1,7 +1,6 @@
 #-*- coding:utf-8 -*
 # ThunderbirdPlusG5 for Thunderbird 115+
 
-# from .py3compatibility import *
 from nvdaBuiltin.appModules import thunderbird
 from time import time, sleep
 from datetime import datetime
@@ -11,14 +10,6 @@ except ImportError:
 	from NVDAObjects.IAccessible import IAccessible
 from tones import beep
 import controlTypes
-# controlTypes module compatibility with old versions of NVDA
-if not hasattr(controlTypes, "Role"):
-	setattr(controlTypes, "Role", type('Enum', (), dict(
-	[(x.split("ROLE_")[1], getattr(controlTypes, x)) for x in dir(controlTypes) if x.startswith("ROLE_")])))
-	setattr(controlTypes, "State", type('Enum', (), dict(
-	[(x.split("STATE_")[1], getattr(controlTypes, x)) for x in dir(controlTypes) if x.startswith("STATE_")])))
-	setattr(controlTypes, "role", type("role", (), {"_roleLabels": controlTypes.roleLabels}))
-# End of compatibility fixes
 import api
 import ui
 import scriptHandler
@@ -26,7 +17,7 @@ import winUser
 import speech
 import gui
 import wx
-import globalCommands, globalVars
+import globalCommands, globalVars	
 from re import compile,IGNORECASE
 
 # shared modules import
@@ -62,18 +53,10 @@ class AppModule(thunderbird.AppModule):
 
 	def __init__(self, *args, **kwargs):
 		super(thunderbird.AppModule, self).__init__(*args, **kwargs)
-		#super(AppModule, self).__init__(*args, **kwargs)
-		self.lastIndex = 0
-		self.Dialog = None
-		# Thunderbird+
-		self.wndClass = ""
-		columnID= []
-		self.prevTitle    = "init"
-		globalVars.TBStep = 5 # à supprimer
+
+		# Thunderbird+G5
+		# self.columnID= []
 		#ui.message("TBStep : " + str(globalVars.TBStep))
-		#self.curFrame = "messengerWindow"
-		self.TTActivated = False
-		self.needReading = False
 		sharedVars.initSettingsMenu(self) # then use  sharedVars.oSettings.*
 		# initQuotenav  will be run at first use of quote Navigator >sharedVars.initQuoteNav() # then use  sharedVars.oQuoteNav.*		self.regExp_date =compile ("^(\d\d/\d\d/\d{4} \d\d:\d\d|\d\d:\d\d)$")
 		self.regExp_nameListGroup, self.regExp_AnnotationResponse, self.regExp_mailAddress  =compile ("\[.*\]|\{.*\}"), compile("re[ ]*:[ ]", IGNORECASE), compile ("\S+?@\S+?\.\S+")
@@ -82,7 +65,12 @@ class AppModule(thunderbird.AppModule):
 		self.regExp_removeSymbols =compile ("\d+|&|_|@.+|=|\.| via .*")
 		#wx.CallLater(25000, debugShow, self, True)
 		self.verChecked = False
+		k =  utis.gestureFromScanCode(41)
+		self.bindGesture("kb:" + k, "showContextMenu") # 41 is the scancode of the key above Tab
+		self.bindGesture("kb:shift+" + k,  "showOptionMenu") 
+		self.bindGesture("kb:control+" + k, "sharedControlGrave") # 41 is the scancode of the key above Tab
 
+		
 	def initTimer(self):
 		if self.timer is not None:
 			self.timer.Stop()
@@ -101,6 +89,12 @@ class AppModule(thunderbird.AppModule):
 		if role == controlTypes.Role.GROUPING : obj.name = "" ; return 
 		# if  role == controlTypes.Role.DOCUMENT and  utils.hasID(obj.parent, "messagepane")  and obj.name: sharedVars.curSubject = obj.name ; obj.name = "" ; return
 		ID = str(utils.getIA2Attr(obj))
+		if role == controlTypes.Role.FRAME : return messengerWindow.tabs.setCurFrameTab(obj)
+		elif role == controlTypes.Role.DIALOG :  sharedVars.curFrame = "dialog" ; sharedVars.curTab = ID ; return
+		
+		# if sharedVars.curFrame == "messengerWindow"and role == controlTypes.Role.DOCUMENT :
+			# sharedVars.curTab = messengerWindow.tabs.getTabTypeFromName(obj.name, "document")
+			# return
 		#  list of messages 
 		if role in (controlTypes.Role.LISTITEM, controlTypes.Role.TREEVIEWITEM) :
 			if ID.startswith("threadTree-row") :
@@ -115,7 +109,16 @@ class AppModule(thunderbird.AppModule):
 				return
 				# spellCheck dialog
 		if ID.startswith("ReplaceWordInput") : clsList.insert (0,msgComposeWindow. spellCheckDlg.SpellCheckDlg); return
-		return
+		# special tabs documents 
+		# if role == controlTypes.Role.DOCUMENT : 
+			# parID = str(utils.getIA2Attr(obj.parent))
+			# if parID == "messagepane" : sharedVars.curTab = "main" ; return
+			# elif  parID.startswith("addressBookTab") : sharedVars.curFrame = "messengerWindow" ; sharedVars.curTab = "sp:addressbook" ; return
+			# else : sharedVars.curTab = messengerWindow.tabs.specialTabType(obj.name, True)
+		if sharedVars.curTab == "sp:addressbook" :
+			if role in (controlTypes.Role.TREEVIEWITEM, controlTypes.Role.BUTTON, controlTypes.Role.EDITABLETEXT) :
+				clsList.insert(0, messengerWindow.tabAddressBook.AddressBook)
+			
 
 	def event_foreground(self, obj,nextHandler):
 		if not self.verChecked :
@@ -404,18 +407,19 @@ class AppModule(thunderbird.AppModule):
 				# nextHandler()
 				return
 		# for addons install
-		try:
-			if api.getForegroundObject().simpleFirstChild.IA2Attributes["id"] == "notification-popup":
-				#speech.cancelSpeech()
-				o=api.getForegroundObject().simpleFirstChild.lastChild
-				#ne fonctionne pas : api.setFocusObject(o)
-				#o.setFocus ()
-				wx.CallLater (30, focusAlert, msg, o)
+		# msg = ""
+		# try:
+			# if api.getForegroundObject().simpleFirstChild.IA2Attributes["id"] == "notification-popup":
+				# #speech.cancelSpeech()
+				# o=api.getForegroundObject().simpleFirstChild.lastChild
+				# #ne fonctionne pas : api.setFocusObject(o)
+				# #o.setFocus ()
+				# wx.CallLater (30, focusAlert, msg, o)
 				# unwanted here : o.doAction()
-				nextHandler()
-				return
-		except (KeyError, AttributeError):
-			pass	
+				# nextHandler()
+				# return
+		# except (KeyError, AttributeError):
+			# pass	
 		nextHandler()
 
 	# gesture scripts
@@ -427,10 +431,10 @@ class AppModule(thunderbird.AppModule):
 		elif utils.isFolderTreeItem(o, ID) : 
 			# return wx.CallLater(50, utils.getThreadTreeFromFG, True)
 			return wx.CallAfter(specialSendKey, "f6")
-		else :
-			return gesture.send()
-		# o.setFocus()
-		return
+		elif sharedVars.curTab == "sp:addressbook" :
+			if ID.startswith("searchInput") :
+				return KeyboardInputGesture.fromName ("f6").send () 
+		return gesture.send()
 
 	def script_sharedEscape(self, gesture) :
 		o=api.getFocusObject() 
@@ -454,6 +458,14 @@ class AppModule(thunderbird.AppModule):
 			return KeyboardInputGesture.fromName ("shift+f6").send()
 		elif  utils.hasID(o.parent, "attachmentBucket") :  # attachment list in write window
 			return KeyboardInputGesture.fromName ("shift+f6").send()
+		elif sharedVars.curTab == "sp:addressbook" :
+			if ID.startswith("cards-row") or ID.startswith("searchInput") or ID.startswith("cards") :
+				return KeyboardInputGesture.fromName ("shift+f6").send () 
+			elif role == controlTypes.Role.TREEVIEWITEM and (ID.startswith("list") or utils.hasID(o.parent, "books")) :
+				return KeyboardInputGesture.fromName ("f6").send () 
+			elif role == controlTypes.Role.BUTTON :
+				return KeyboardInputGesture.fromName ("shift+tab").send () 
+			else : return gesture.send()
 		elif role == controlTypes.Role.DOCUMENT  and controlTypes.State.READONLY in o.states :
 			if utils.isSeparMsgWnd() :
 				return KeyboardInputGesture.fromName ("control+w").send () 
@@ -734,7 +746,11 @@ class AppModule(thunderbird.AppModule):
 
 	def script_showContextMenu(self, gesture) :
 		repeats = getLastScriptRepeatCount ()
-		if sharedVars.curFrame == "messengerWindow" :
+		if sharedVars.curTab == "sp:addressbook" :
+			o = api.getFocusObject()
+			if hasattr(o, "script_menuAB") :
+				o.script_menuAB(gesture)
+		elif sharedVars.curFrame == "messengerWindow" :
 			oMenu = messengerWindow.menuMain.MainMenu(self)
 			oMenu.showMenu(globalVars.focusObject)
 		elif sharedVars.curFrame == "msgcomposeWindow" :
@@ -819,6 +835,8 @@ class AppModule(thunderbird.AppModule):
 		ui.message(mode + _("of the test mode"))
 	
 	__gestures = {
+		# utis.gestureFromScanCode(41, "kb:") :"showContextMenu", # 41 is the scancode of the key above Tab
+		# utis.gestureFromScanCode(41, "kb:shift+") :"showOptionMenu", 
 		#"kb(desktop):NVDA+End": "statusBar",
 		"kb:tab": "sharedTab",
 		"kb:escape": "sharedEscape",
@@ -837,7 +855,8 @@ class AppModule(thunderbird.AppModule):
 		"kb:alt+control+c": "sharedAltCtrlC",
 		"kb:alt+home": "sharedAltHome",
 		"kb:alt+control+home": "sharedAltHome",
-		utis.gestureFromScanCode(41, "kb:control+") :"sharedControlGrave", # 41 is the scancode of the key above Tab
+		# utis.gestureFromScanCode(41, "kb:control+") :"sharedControlGrave", # 41 is the scancode of the key above Tab
+		"kb:alt+pagedown":"sharedAltPageDown",
 		"kb:alt+pagedown":"sharedAltPageDown",
 		"kb:alt+leftArrow": "sharedAltArrow",
 		"kb:alt+rightArrow": "sharedAltArrow",
@@ -873,8 +892,6 @@ class AppModule(thunderbird.AppModule):
 		# "kb:control+f4": "sendCtrlF4",
 		# "kb:control+w": "sendCtrlF4",
 		"kb:control+backspace": "sendCtrlF4",
-		utis.gestureFromScanCode(41, "kb:") :"showContextMenu", # 41 is the scancode of the key above Tab
-		utis.gestureFromScanCode(41, "kb:shift+") :"showOptionMenu", 
 		# _("kb:shift+control+²") :"showOptionMenu",
 		# _("kb:control+²") :"showContextMenu",
 		"kb:alt+d":"sharedAltD",
@@ -892,8 +909,8 @@ def debugShow(appMod, auto) :
 		utils.listAscendants(-6)
 		utils.listColumnNames(fo) 
 	else :
-		utils.listDescendants(fo, 0, "* List of descendants")
 		utils.listAscendants(-6)
+		utils.listDescendants(fo, 0, "* List of descendants")
 	#sharedVars.debugLog += "\ncurFrame : {0}, curTab : {1},".format(appMod.curFrame, sharedVars.curTab) + "\n"
 	sharedVars.debugLog += "\ncurTab : {0}, curFrame : {1},".format(sharedVars.curTab, sharedVars.curFrame) + "\n"
 	sharedVars.logte("sharedVars.curSubject :" + sharedVars.curSubject)

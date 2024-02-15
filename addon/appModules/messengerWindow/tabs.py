@@ -1,24 +1,18 @@
 #-*- coding:utf-8 -*
-
+# G5
 import controlTypes
-# controlTypes module compatibility with old versions of NVDA
-if not hasattr(controlTypes, "Role"):
-	setattr(controlTypes, "Role", type('Enum', (), dict(
-	[(x.split("ROLE_")[1], getattr(controlTypes, x)) for x in dir(controlTypes) if x.startswith("ROLE_")])))
-	setattr(controlTypes, "State", type('Enum', (), dict(
-	[(x.split("STATE_")[1], getattr(controlTypes, x)) for x in dir(controlTypes) if x.startswith("STATE_")])))
-	setattr(controlTypes, "role", type("role", (), {"_roleLabels": controlTypes.roleLabels}))
-# End of compatibility fixes
+from api import getFocusObject, getForegroundObject
+from tones import beep
 import addonHandler,  os, sys
 _curAddon=addonHandler.getCodeAddon()
 sharedPath=os.path.join(_curAddon.path,"AppModules", "shared")
 sys.path.append(sharedPath)
 import  utis, utils115 as utils, sharedVars
-from api import getForegroundObject
 del sys.path[-1]
 addonHandler.initTranslation()
 from ui import message
-from wx import Menu, EVT_MENU, ITEM_CHECK, MenuItem,CallAfter,CallLater
+from wx import Menu, EVT_MENU, ITEM_CHECK, MenuItem,CallAfter
+from core import callLater
 from keyboardHandler import KeyboardInputGesture
 import speech
 from time import sleep
@@ -26,6 +20,24 @@ import globalVars
 
 # translator "Onglet" stands for "tab"
 msgName = _("Tab {0} of {1} {2}")
+
+_timerTab = None
+
+def setCurFrameTab(oFrame) :
+	# level 2,   32 of 51, Role.TOOLBAR, IA2ID : tabs-toolbar Tag: toolbar, States : , childCount  : 1 Path : Role-WINDOW| i2, Role-FRAME, , WCl : MozillaWindowClass | i32, Role-TOOLBAR, , IA2ID : tabs-toolbar , IA2Attr : tag : toolbar, id : tabs-toolbar, display : flex, class : chromeclass-toolbar, , Actions : click ancestor,  ;
+	o = utils.findChildByRoleID(oFrame, controlTypes.Role.TOOLBAR, "tabs-toolbar", 31)
+	if  o : 
+		sharedVars.curFrame = "messengerWindow"
+		sharedVars.curTab = getTabTypeFromName(oFrame.name)
+		return
+	# separate reading window :
+	# level  1,  4 of 5, Role.INTERNALFRAME, IA2ID : messageBrowser Tag: browser, States : , FOCUSABLE, childCount  : 1 Path : Role-FRAME| i4, Role-INTERNALFRAME, , IA2ID : messageBrowser , IA2Attr : tag : browser, id : messageBrowser, display : block, , Actions : click ancestor,  ;	
+	try : 
+		o = oFrame.getChild(4) 
+		if o.role == controlTypes.Role.INTERNALFRAME and utils.hasID(o, "messageBrowser") : sharedVars.curFrame = "messengerWindow" ; sharedVars.curTab =  "message" ; return
+	except : pass
+# 
+	
 
 def getTabType(nm, idx, oFocused) :
 	# Translator : in getTabType(), the strings come  from the main window title bar when a tab is active. You have to copy   them from the title bar of  Thunderbird in your language.
@@ -36,35 +48,37 @@ def getTabType(nm, idx, oFocused) :
 	else : tabType = getMainTabType(idx, oFocused)
 	if tabType != "sp:" :
 		return tabType
-
-		# Translator :  title bar when Address book tab is active. Must be the same as in the user interface of TB
-	if _("Address Bo") in nm :
+	return gettabTypeFromName(nm, "tab")
+	
+def getTabTypeFromName(nm, origin="frame") :
+	# Translator :  title bar when Address book tab is active. Must be the same as in the user interface of TB
+	if nm.startswith(_("Address Bo")) :
 		tabType = "sp:addressbook"
 		# Translators: title bar when Saved tab is active. must be the same as in  the user interface 
-	elif _("Saved Files") in nm :
+	elif nm.startswith(_("Saved Files")) :
 		tabType = "sp:downloads"
 		# 2022-12-96 : paramètres des comptes monté devant paramètres pour corriger erreur
 		# Translators: title bar when Account Settings tab is active.must be the same as in  the user interface 
-	elif _("Account Settings") in nm :
+	elif nm.startswith(_("Account Settings")) :
 		tabType = "sp:accounts"
 		# Translators: title bar when Settings tab is active.must be the same as in  the user interface 
-	elif _("Settings") in nm :
+	elif nm.startswith(_("Settings")) :
 		tabType = "sp:preferences"
 		# Translators: titlebar when addons manager tab is active.must be the same as in  the user interface 
-	elif _("Add-ons Manager") in nm :
+	elif nm.startswith(_("Add-ons Manager")) :
 		tabType = "sp:addons"
 		# Translators: Title bar when  New account creation tab is active. must be the same as in  the user interface 
-	elif _("Account Setup") in nm :
+	elif nm.startswith(_("Account Setup")) :
 		tabType = "sp:newaccount"
 		#Translators: title bar when addons search results tab is active.  
-	elif _("Add-ons for Thunderbird") in nm: 
+	elif nm.startswith(_("Add-ons for Thunderbird")) : 
 		tabType = "sp:addonsearch"
 	elif "chichi" in nm: 
 		tabType = "sp:chichi"
 	else :
-		tabType = "sp:"
-	# if sharedVars.debug :sharedVars.log(None, " sortie de getTabType : " + tabType + ", " + nm)
-	return tabType
+		tabType = "main"
+	# sharedVars.logte("getTabTypeFromName : " + origin + ", " + tabType + ", " + nm)
+	return tabType # + " from " + origin
 
 # def getMainTabType(tabIdx, oFocus) :
 	# # if tabIdx > 0
@@ -213,13 +227,14 @@ def activateTab(appMod,obj, newTabIdx) :
 		newTabIdx = lastIdx   
 	activate   = (newTabIdx != idx)
 	oTab = oTabCtrl.getChild(newTabIdx)
-	appMod.curTab = sharedVars.curTab = getTabType(oTab.name, newTabIdx, obj)
+	sharedVars.curTab = getTabTypeFromName(oTab.name, "ActivateTab")
 	if activate  : 
 		message(msgName.format(newTabIdx+1, lastIdx+1, "")) # oTab.name))
 		sleep(.5)
 		oTab.doAction()
 	else :
 		message(msgName.format(newTabIdx+1, lastIdx+1, "")) # oTab.name))
+	callLater(1500, activateDoc, oTab)
 	return True
 def changeTab(appMod, obj, direct) : # control+tab
 	global msgName
@@ -235,10 +250,11 @@ def changeTab(appMod, obj, direct) : # control+tab
 		if idx > 0  : idx -= 1
 		else : idx = lastIdx
 	oTab = oTabCtrl.getChild(idx)
-	appMod.curTab = sharedVars.curTab = getTabType(oTab.name, idx, obj)
+	sharedVars.curTab = getTabTypeFromName(oTab.name, "changeTab")
 	message(msgName.format(idx+1, lastIdx+1, "")) # oTab.name))
 	sleep(.5)
 	oTab.doAction() # selects the new tab
+	callLater(1500, activateDoc, oTab)
 	return True
 appModule = tabObjects = None
 
@@ -250,7 +266,7 @@ def showTabMenu(appMod, obj) :
 	if not oTab : return
 	oTabCtrl = oTab.parent
 	if lastIdx == 0 :
-		CallLater(100, message, _("There is only one tab open."))
+		callLater(100, message, _("There is only one tab open."))
 		return
 	tabObjects = []
 	mainMenu = Menu ()
@@ -272,15 +288,27 @@ def onMenuTabs(evt):
 	idx = int(evt.Id)
 	oTab = tabObjects[idx]
 	#message(u"Sélection de l'onglet " + tabObjects[idx].name)
-	appModule.curTab = sharedVars.curTab = getTabType(oTab.name, idx, globalVars.focusObject)
+	sharedVars.curTab = getTabTypeFromName(oTab.name, "onMenuTab")
 	tabObjects = None
-	appModule = None
 	oTab.doAction()
+
 
 def tabContextMenu(appMod, obj) :
 	oTab , curIdx, lastIdx = findCurTab(obj)
 	if not oTab : return
 	oTab.setFocus()
 	CallAfter(message, _("Active tab {0} of {1} : {2}, ").format(curIdx+1, lastIdx+1, oTab.name))
-	CallLater(200, KeyboardInputGesture.fromName("shift+f10").send) # affiche menu contextuel
-
+	callLater(200, KeyboardInputGesture.fromName("shift+f10").send) # affiche menu contextuel
+def activateDoc(oCurTab) :
+	o = getFocusObject()
+	if o.role ==  controlTypes.Role.TAB :
+		KeyboardInputGesture.fromName("tab").send() 
+	elif o.role ==  controlTypes.Role.FRAME :
+		oCurTab.setFocus()
+		if sharedVars.curTab.startswith("sp:") :
+			callLater(20, KeyboardInputGesture.fromName("tab").send) 
+		else :
+			# callLater(20, utils.getFolderTreeFromFG, True)
+			if sharedVars.oSettings.getOption("messengerWindow","firstTabActivation") : k = "n"
+			else : k = "end"
+			callLater(20, utils.getThreadTreeFromFG, True, k)

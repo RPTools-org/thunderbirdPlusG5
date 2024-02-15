@@ -124,7 +124,8 @@ def getThreadTreeFromFG(focus=False, nextGesture="", getThreadPane=False) :
 	o = getPropertyPage()
 	# checkObj(o)
 	# | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  
-	o = o.firstChild.firstChild
+	try : o = o.firstChild.firstChild
+	except :  return None
 	# checkObj(o)
 	#  | i2or i4 , Role-SECTION, , IA2ID : threadPane 
 	o = findChildByRoleID(o, controlTypes.Role.SECTION, "threadPane")
@@ -290,10 +291,58 @@ def getOneMessageGrouping() :
 	# for message list item
 from time import sleep
 from keyboardHandler import KeyboardInputGesture
+import winUser
+
+def moveMouseToObject(o, moveCursor=True) :
+	# location : RectLTWH(left=201, top=170, width=1522, height=22)
+	loc = o.location
+	# sharedVars.logte("location : left {} width {} top {} height {}".format(loc.left, loc.width, loc.top, loc.height))
+	x =  int(loc.left + loc.width / 2)
+	y = int(loc.top + loc.height / 2)
+	# sharedVars.logte("x {}, y {}".format(x, y))
+	if moveCursor : winUser.setCursorPos (x, y)
+	return x, y
+
+def dragAndDrop(objSource,objTarget, objFocusAfter) :
+	xS, yS = moveMouseToObject(objSource)
+	sharedVars.log(objSource, "dragDrop, Source x {}, y {}".format(xS, yS))
+	sleep (0.2)
+	winUser.mouse_event(winUser.MOUSEEVENTF_LEFTDOWN,0,1,None,None)
+	x, y = moveMouseToObject(objTarget)
+	sharedVars.log(objTarget, "dragDrop, Target x {}, y {}".format(x, y))
+	sleep (0.2)
+	winUser.mouse_event(winUser.MOUSEEVENTF_LEFTUP,0,0,None,None)
+	sleep (0.2)
+	# api.processPendingEvents()
+	# objFocusAfter.setFocus()
+	sharedVars.log(objFocusAfter, "DragDrop focus after")
+	# click source
+	# winUser.mouse_event(winUser.MOUSEEVENTF_LEFTUP,xS,yS,None,None)	
+	# winUser.setCursorPos (xS, yS)
+	# winUser.mouse_event(winUser.MOUSEEVENTF_LEFTDOWN,xS,yS,None,None)
+	# sleep(0.005) 
+	# winUser.mouse_event(winUser.MOUSEEVENTF_LEFTUP,xS,yS,None,None)
+
+
+# def dragAndDrop(objSource,objTarget) :
+	# xS, yS = moveMouseToObject(objSource, False)
+	# xT, yT = moveMouseToObject(objTarget, False)
+
+	# sharedVars.log(objSource, "dragDrop, Source x {}, y {}".format(xS, yS))
+	# sharedVars.log(objTarget, "dragDrop, Target x {}, y {}".format(xT, yT))
+	# winUser.setCursorPos (xS, yS)
+	# winUser.mouse_event(winUser.MOUSEEVENTF_LEFTDOWN,xS,yS,None,None)
+	# # sleep (0.2)
+
+	# winUser.setCursorPos (xT, yT)
+	# sleep (0.2)
+	# winUser.mouse_event(winUser.MOUSEEVENTF_LEFTUP,xT,yT,None,None)
+	# sleep (0.2)
+
+
 
 def clickObject(o, left=True) :
 	# location : RectLTWH(left=201, top=170, width=1522, height=22)
-	import winUser
 	api.setNavigatorObject(o)
 	loc = o.location
 	# sharedVars.logte("location : left {} width {} top {} height {}".format(loc.left, loc.width, loc.top, loc.height))

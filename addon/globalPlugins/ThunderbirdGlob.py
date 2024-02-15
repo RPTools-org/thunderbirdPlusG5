@@ -1,29 +1,24 @@
 # -*- coding: utf-8 -*-
-# globalPlugins/Thunderbird.py
-# Thunderbird+ 4.x
+# globalPlugins/ThunderbirdGlob.py
+# Thunderbird+G5
 
 import controlTypes
-# controlTypes module compatibility with old versions of NVDA
-if not hasattr(controlTypes, "Role"):
-	setattr(controlTypes, "Role", type('Enum', (), dict(
-	[(x.split("ROLE_")[1], getattr(controlTypes, x)) for x in dir(controlTypes) if x.startswith("ROLE_")])))
-	setattr(controlTypes, "State", type('Enum', (), dict(
-	[(x.split("STATE_")[1], getattr(controlTypes, x)) for x in dir(controlTypes) if x.startswith("STATE_")])))
-	setattr(controlTypes, "role", type("role", (), {"_roleLabels": controlTypes.roleLabels}))
-# End of compatibility fixes
 import globalPluginHandler, addonHandler
 from scriptHandler import getLastScriptRepeatCount
 
 addonHandler.initTranslation()
+ADDON_NAME = addonHandler.getCodeAddon().manifest["name"]
+ADDON_SUMMARY = addonHandler.getCodeAddon().manifest["summary"]
+ADDON_VERSION = addonHandler.getCodeAddon().manifest["version"]
 import api
 import ui
 import speech
 import wx
 from .shared import updateLite
 from .shared import notif
-from time import time
+from time import time, sleep
 import winUser
-from winUser import getKeyNameText 
+from winUser import getKeyNameText, setCursorPos 
 from tones import beep
 import winKernel, globalVars
 import os, sys
@@ -35,6 +30,8 @@ def gestureFromScanCode(sc, prefix) :
 	return prefix + k
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
+	scriptCategory = ADDON_SUMMARY
+
 	focusNothing = False
 	timer = None
 	timerStartedAt = 0
@@ -55,6 +52,15 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		else :
 			wx.CallLater(3000, updateLite.checkUpdate, True) # auto
 
+	def RestoreSpeechAndSay(msg, focusName=False) :
+		if focusName :
+			o = api.getFocusObject()
+			msg = str(o.name) + ", " + o.role.displayString + ", " + msg 
+		if self.prevSpeechMode :
+			speech.setSpeechMode(self.TprevSpeechMode)
+			self.prevSpeechMode = None
+		ui.message(msg)
+		
 	def initTimer(self):
 		if self.timer is not None:
 			self.timer.Stop()
@@ -85,9 +91,9 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def script_startTB(self, gesture) :
 		# beep(440, 30)
-		if getProcessIDFromExe("thunderbird.exe") != 0 :
-			ui.message(_("Thunderbird is already in use."))
-			return
+		# if getProcessIDFromExe("thunderbird.exe") != 0 :
+			# ui.message(_("Thunderbird is already in use."))
+			# return
 		#wx.CallLater(50, speech.speakMessage , "Hello everyone !", priority = speech.priorities.Spri.NOW)		
 		focusTaskButton()
 		ui.message(_("Starting Thunderbird."))
@@ -104,17 +110,29 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		startProgramMaximized(tbPaths[idx])
 		return
 	script_startTB.__doc__ = _("Starts Thunderbird")
-	script_startTB.category=_("Thunderbird+, launcher and update")
+	script_startTB.category= ADDON_SUMMARY
 
 	def  script_searchUpdate(self, gesture) :
-		repeat = getLastScriptRepeatCount()
-		self.initTimer ()
-		if repeat == 0: # 1 press : search new update 
-			self.timer = wx.CallLater(300, updateLite.checkUpdate, False)
-		elif repeat == 2 : # 3 press, force update
-			self.timer = wx.CallLater(300, updateLite.forceUpdate)
-	script_searchUpdate.__doc__ = _("Check for Thunderbird+ update")
-	script_searchUpdate.category=_("Thunderbird+, launcher and update")
+		self.updateMenu = wx.Menu()
+		self.updateMenu.Append(0, _("Check for an update"))
+		self.updateMenu.Append(1, getUpdateLabel())
+		lbl =  _("Install version {}")
+		lbl = lbl.format(updateLite.getLatestVersion())
+		self.updateMenu.Append(2, lbl)
+		self.updateMenu.Bind (wx.EVT_MENU,self.onMenu)
+		wx.CallLater(20, ui.message, ADDON_NAME +" " + ADDON_VERSION)
+		showNVDAMenu  (self.updateMenu)
+
+	def onMenu(self, evt):
+		if evt.Id == 0 :
+			# wx.CallLater(20, updateLite.checkUpdate, False)
+			updateLite.checkUpdate(False)
+		elif evt.Id == 1 :
+			toggleUpdateState()
+		elif evt.Id == 2 :
+			wx.CallLater(20, updateLite.forceUpdate)
+	script_searchUpdate.__doc__ = _("Update : shows an update menu")
+	script_searchUpdate.category=ADDON_SUMMARY
 
 	__gestures={
 		gestureFromScanCode(41, "kb:control+alt+"): "startTB",
@@ -199,3 +217,42 @@ def getProcessIDFromExe(exeName):
 		ContinueLoop = winKernel.kernel32.Process32NextW(FSnapshotHandle, ctypes.byref(FProcessEntry32))
 	winKernel.kernel32.CloseHandle(FSnapshotHandle)
 	return pID
+
+def showNVDAMenu (menu):
+	setCursorPos(100,100)
+	sleep(0.03)
+	wx.CallAfter (displayMenu,menu)
+from gui import mainFrame  
+def displayMenu (menu):
+	mainFrame.prePopup ()
+	mainFrame.PopupMenu (menu)
+	mainFrame.postPopup ()
+
+
+def getUpdateLabel() :
+	global ADDON_NAME
+	nextUpdateFile = api.config.getUserDefaultConfigPath()+"\\addons\\" +  ADDON_NAME + "-nextUpdate.pickle"
+	exists =  (True if  os.path.exists(nextUpdateFile) else False)
+	if exists and  os.path.getsize(nextUpdateFile) < 5 : # mise à jour désactivée # maj désactivée
+		return  _("Enable automatic update")
+	return _("Disable automatic update")
+
+def toggleUpdateState() :
+	global ADDON_NAME
+	nextUpdateFile = api.config.getUserDefaultConfigPath()+"\\addons\\" +  ADDON_NAME + "-nextUpdate.pickle"
+	if  os.path.exists(nextUpdateFile) and   os.path.getsize(nextUpdateFile) < 5 : 
+		os.remove(nextUpdateFile) # réactive la maj
+		speech.cancelSpeech()
+		wx.CallAfter(ui.message, _("Automatic update has been enabled. You can restart NVDA to check for an update."))
+		return 1
+	# désactivation maj : écrit le fichier de longueur < 5 et contenant 0
+	speech.cancelSpeech()
+	try :
+		ut = "0"
+		with open(nextUpdateFile, mode="w") as fileObj :
+			#pickle.dump(ut, fileObj)  #, protocol=0
+			fileObj.write(ut)
+	except :
+		return wx.CallAfter(ui.message, _("Error saving update settings file."))
+	wx.CallAfter(ui.message, _("Automatic update has been disabled."))
+
