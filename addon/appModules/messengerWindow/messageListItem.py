@@ -329,14 +329,14 @@ class MessageListItem(IAccessible):
 		sharedVars.msgOpened = True
 		return gesture.send()
 		
-	def script_deleteMsg(self,gesture):
-		# sharedVars.logte("Before delete : " + sharedVars.curTTRow) 
+	# def script_deleteMsg(self,gesture):
+		# # sharedVars.logte("Before delete : " + sharedVars.curTTRow) 
+		# # gesture.send()
+		# # sleep(.5)
+		# # callLater(200, fSayTTi) 
+		# if sharedVars.gTimer : beep(100, 5) ; return
 		# gesture.send()
-		# sleep(.5)
-		# callLater(200, fSayTTi) 
-		if sharedVars.gTimer : beep(100, 5) ; return
-		gesture.send()
-		sharedVars.gTimer = callLater(50,  differMsg, True)
+		# sharedVars.gTimer = callLater(50,  differMsg, True)
 		
 
 	def script_sayShortcut (self,gesture):

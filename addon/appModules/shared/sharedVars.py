@@ -85,7 +85,7 @@ def log(o, msg="Objet", withStep=False):
 	if hasattr(o, "IA2Attributes") :
 		ID = str(o.IA2Attributes.get("id"))
 	else : ID = ""
-	t =  states + " : {0}, ID : {1}, childCount : {2}{3}".format(str(o.role), ID, o.childCount, nm + val)
+	t =  states + " : {}, ID : {}, hWnd : {}, childCount : {}{}".format(str(o.role), ID, o.windowHandle, o.childCount, nm + val)
 	debugLog = debugLog + step + lastFunction + msg +  t + "\n"
 
 def debugMess(o, msg="Objet") :

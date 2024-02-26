@@ -16,6 +16,7 @@ import speech
 import wx
 from .shared import updateLite
 from .shared import notif
+from .shared import winUtils
 from time import time, sleep
 import winUser
 from winUser import getKeyNameText, setCursorPos 
@@ -28,6 +29,15 @@ def gestureFromScanCode(sc, prefix) :
 	# prefix is "kb:modifiers"
 	k = getKeyNameText(sc, 0)
 	return prefix + k
+
+def setTBOnTop() :
+	hWindow = winUtils.findWindowFromExeName("thunderbird.exe")
+	if hWindow and winUser.getForegroundWindow() != hWindow :
+		winUser.setForegroundWindow(hWindow)
+	else :
+		# beep(250, 5)
+		wx.CallLater(500, setTBOnTop) 
+
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	scriptCategory = ADDON_SUMMARY
@@ -88,15 +98,16 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		# return  False
 		# if time() - self.timerStartedAt < 30.0 : # secondes
 			# self.timer.Start()
-
+			
 	def script_startTB(self, gesture) :
-		# beep(440, 30)
-		# if getProcessIDFromExe("thunderbird.exe") != 0 :
-			# ui.message(_("Thunderbird is already in use."))
-			# return
-		#wx.CallLater(50, speech.speakMessage , "Hello everyone !", priority = speech.priorities.Spri.NOW)		
-		focusTaskButton()
-		ui.message(_("Starting Thunderbird."))
+		forced = False if getLastScriptRepeatCount() == 0 else True
+		if not forced :
+			hWindow = winUtils.findWindowFromExeName("thunderbird.exe")
+			if hWindow :
+				winUser.setForegroundWindow(hWindow)
+				# ui.message("Title : {}, hWindow : {}".format(winUser.getWindowText(hWindow), hWindow))
+				return
+			focusTaskButton()
 		tbPaths = ("C:\\Program Files\\Mozilla Thunderbird\\thunderbird.exe", "C:\\Program Files (x86)\\Mozilla Thunderbird\\thunderbird.exe")
 		idx = -1
 		if  os.path.exists(tbPaths[0]) :
@@ -108,6 +119,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			ui.message(_("Thunderbird.exe not found in C:\\Program files"))
 			return
 		startProgramMaximized(tbPaths[idx])
+		wx.CallLater(300, setTBOnTop)
 		return
 	script_startTB.__doc__ = _("Starts Thunderbird")
 	script_startTB.category= ADDON_SUMMARY
@@ -146,7 +158,7 @@ def startProgramMaximized(exePath):
 	info.dwFlags = subprocess.STARTF_USESHOWWINDOW
 	info.wShowWindow = SW_MAXIMIZE
 	subprocess.Popen(exePath, startupinfo=info)
-
+	return
 import ctypes
 from oleacc import AccessibleObjectFromWindow
 def focusTaskButton():
@@ -190,33 +202,33 @@ def setSpeechMode_off():
 		speech.speechMode = speech.speechMode_off
 
 
-class processEntry32W(ctypes.Structure):
-	_fields_ = [
-		("dwSize",ctypes.wintypes.DWORD),
-		("cntUsage", ctypes.wintypes.DWORD),
-		("th32ProcessID", ctypes.wintypes.DWORD),
-		("th32DefaultHeapID", ctypes.wintypes.DWORD),
-		("th32ModuleID",ctypes.wintypes.DWORD),
-		("cntThreads",ctypes.wintypes.DWORD),
-		("th32ParentProcessID",ctypes.wintypes.DWORD),
-		("pcPriClassBase",ctypes.c_long),
-		("dwFlags",ctypes.wintypes.DWORD),
-		("szExeFile", ctypes.c_wchar * 260)
-	]
+# class processEntry32W(ctypes.Structure):
+	# _fields_ = [
+		# ("dwSize",ctypes.wintypes.DWORD),
+		# ("cntUsage", ctypes.wintypes.DWORD),
+		# ("th32ProcessID", ctypes.wintypes.DWORD),
+		# ("th32DefaultHeapID", ctypes.wintypes.DWORD),
+		# ("th32ModuleID",ctypes.wintypes.DWORD),
+		# ("cntThreads",ctypes.wintypes.DWORD),
+		# ("th32ParentProcessID",ctypes.wintypes.DWORD),
+		# ("pcPriClassBase",ctypes.c_long),
+		# ("dwFlags",ctypes.wintypes.DWORD),
+		# ("szExeFile", ctypes.c_wchar * 260)
+	# ]
 
-def getProcessIDFromExe(exeName):
-	FSnapshotHandle = winKernel.kernel32.CreateToolhelp32Snapshot (2,0)
-	FProcessEntry32 = processEntry32W()
-	FProcessEntry32.dwSize = ctypes.sizeof(processEntry32W)
-	ContinueLoop = winKernel.kernel32.Process32FirstW(FSnapshotHandle, ctypes.byref(FProcessEntry32))
-	pID = 0
-	while ContinueLoop:
-		if exeName == FProcessEntry32.szExeFile :
-			pID = FProcessEntry32.th32ProcessID
-			break
-		ContinueLoop = winKernel.kernel32.Process32NextW(FSnapshotHandle, ctypes.byref(FProcessEntry32))
-	winKernel.kernel32.CloseHandle(FSnapshotHandle)
-	return pID
+# def getProcessIDFromExe(exeName):
+	# FSnapshotHandle = winKernel.kernel32.CreateToolhelp32Snapshot (2,0)
+	# FProcessEntry32 = processEntry32W()
+	# FProcessEntry32.dwSize = ctypes.sizeof(processEntry32W)
+	# ContinueLoop = winKernel.kernel32.Process32FirstW(FSnapshotHandle, ctypes.byref(FProcessEntry32))
+	# pID = 0
+	# while ContinueLoop:
+		# if exeName == FProcessEntry32.szExeFile :
+			# pID = FProcessEntry32.th32ProcessID
+			# break
+		# ContinueLoop = winKernel.kernel32.Process32NextW(FSnapshotHandle, ctypes.byref(FProcessEntry32))
+	# winKernel.kernel32.CloseHandle(FSnapshotHandle)
+	# return pID
 
 def showNVDAMenu (menu):
 	setCursorPos(100,100)

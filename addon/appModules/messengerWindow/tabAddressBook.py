@@ -20,7 +20,7 @@ import  utis, sharedVars, utils115 as utils
 del sys.path[-1]
 addonHandler.initTranslation()
 
-oDragDropper = None
+oDragDropper = oContactLine = None
 lastBook = ""
 
 class AddressBook(IAccessible):
@@ -28,34 +28,51 @@ class AddressBook(IAccessible):
 	ABMenuPointers = None
 	idx = 0
 	def initOverlayClass (self):
+		global oContactLine
 		self.bindGestures({"kb:control+applications" :"menuAB"})
 		if self.role in (controlTypes.Role.TREEVIEWITEM, controlTypes.Role.LISTITEM) and utils.hasID(self, "cards-row") :
 			self.bindGestures({"kb:a" :"addContactTo", "kb:d" :"setDest"})		
+			if not oContactLine : oContactLine = ContactLine()
+			oContactLine.line = ""
 
+	def __del__(self) :
+		global oContactLine
+		oContactLine = None
+		# destructor
+		
 	def event_gainFocus (self):
-		global oDragDropper
+		global oDragDropper, oContactLine
 		role = self.role
 		ID = str(utils.getIA2Attr(self))
-		tRole = ""
+		name2 = ""
+
 		if role == controlTypes.Role.TREEVIEWITEM and ID.startswith("cards-row") : # element of contact table
-			# mail address path : i1, Role-TREEVIEWITEM, , IA2ID : cards-row1 | i0, Role-TEXTFRAME,  | i0, Role-TEXTFRAME,  | i1, Role-TEXTFRAME,  | i1, Role-TEXTFRAME,  | i0, Role-STATICTEXT
-			o = self.firstChild.firstChild.getChild(1).getChild(1).firstChild
-			if o : self.name = self.name + ", " + o.name
-			return
+			# normal view, mail address path : i1, Role-TREEVIEWITEM, , IA2ID : cards-row1 | i0, Role-TEXTFRAME,  | i0, Role-TEXTFRAME,  | i1, Role-TEXTFRAME,  | i1, Role-TEXTFRAME,  | i0, Role-STATICTEXT
+			o =  self.firstChild.firstChild
+			if o.role == controlTypes.Role.TEXTFRAME :
+				try : 
+					o = o.getChild(1).getChild(1).firstChild
+					return message(self.name + ", " + o.name + + ", " + str(self.positionInfo['indexInGroup']) + _(" of ") + str(self.positionInfo['similarItemsInGroup']))
+				except : message(self.name+ ", " + str(self.positionInfo['indexInGroup']) + _(" of ") + str(self.positionInfo['similarItemsInGroup'])) ; return
+			# table view
+			try : 
+				oContactLine.buildLine(self)
+				message(oContactLine.line + ", " + str(self.positionInfo['indexInGroup']) + _(" of ") + str(self.positionInfo['similarItemsInGroup']))
+				return
+			except : return message(self.name)
 		elif role == controlTypes.Role.TREEVIEWITEM : # books tree
 			if oDragDropper : oDragDropper = None
-			if ID.startswith("book-") : tRole = ", " + _("Address book")
-			if ID.startswith("list-") : tRole = getParentBook(self)
+			if ID.startswith("book-") : name2 = ", " + _("Address book")
+			if ID.startswith("list-") : name2 = getParentBook(self)
 		elif role == controlTypes.Role.EDITABLETEXT :
-			if self.value : tRole = ", " + self.value
-			else :  tRole = ", " + _("blank")
+			if self.value : name2 = ", " + self.value
+			else :  name2 = ", " + _("blank")
 		elif  role == controlTypes.Role.BUTTON :
-			tRole = ", " + controlTypes.Role.BUTTON.displayString
-			if ID.startswith("toolbarCreateBook") : tRole += ", " + _("Press Alt + down arrow to open the context menu.")  
+			name2 = ", " + controlTypes.Role.BUTTON.displayString
+			if ID.startswith("toolbarCreateBook") : name2 += ", " + _("Press Alt + down arrow to open the context menu.")  
 		elif  role == controlTypes.Role.POPUPMENU :
-			tRole = self.name + ", " + controlTypes.Role.POPUPMENU.displayString
-			return message(tRole)
-		message(self.name + tRole)
+			name2 = ", " + controlTypes.Role.POPUPMENU.displayString
+		message(self.name + name2)
 		
 
 	def getContactTable(self, oDoc) :
@@ -319,3 +336,19 @@ def getParentBook(obj) :
 				return ", " + _("list in ") + obj.name
 			obj = obj.parent
 		return ""
+
+class ContactLine() :
+	def __init__(self) :
+		# self.obj = None
+		self.line = ""
+	
+	def buildLine(self, obj) :
+		# recursive function
+		obj = obj.firstChild
+		while obj :
+			if obj.role == controlTypes.Role.STATICTEXT :
+				self.line +=  obj.name + ", "
+				sharedVars.logte("contact line : " + self.line)
+			if obj.childCount :
+				self.buildLine(obj)
+			obj = obj.next

@@ -116,7 +116,7 @@ class AppModule(thunderbird.AppModule):
 			# elif  parID.startswith("addressBookTab") : sharedVars.curFrame = "messengerWindow" ; sharedVars.curTab = "sp:addressbook" ; return
 			# else : sharedVars.curTab = messengerWindow.tabs.specialTabType(obj.name, True)
 		if sharedVars.curTab == "sp:addressbook" :
-			if role in (controlTypes.Role.TREEVIEWITEM, controlTypes.Role.BUTTON, controlTypes.Role.EDITABLETEXT) :
+			if not  sharedVars.noAddressBook and role in (controlTypes.Role.TREEVIEWITEM, controlTypes.Role.BUTTON, controlTypes.Role.EDITABLETEXT) :
 				clsList.insert(0, messengerWindow.tabAddressBook.AddressBook)
 			
 
@@ -240,6 +240,7 @@ class AppModule(thunderbird.AppModule):
 			sharedVars.objLooping = False
 
 	def buildColumnNames(self, oRow) :
+		# for testing :  t = time()
 		# options preparation ap
 		options = sharedVars.oSettings.getOption("messengerWindow") # all options of tehe section
 		listGroupName = options.as_bool ("listGroupName")
@@ -329,7 +330,14 @@ class AppModule(thunderbird.AppModule):
 				oCell = oCell.next
 				
 			# positon info
-			l += ", " +  str(utils.getIA2Attr(oRow, False, "posinset"))    + _(" of ") + str(utils.getIA2Attr(oRow, False, "setsize")) 
+			posInfo = oRow.positionInfo
+			# example : PosInfo={'level': 1, 'similarItemsInGroup': 973, 'indexInGroup': 971}posInfo = oRow.positionInfo 
+			# Remarhs :  the level info  and oRow.childcount are both erroneous.
+			l += " " + str(posInfo['indexInGroup']) + _(" of ") + str(posInfo['similarItemsInGroup'])
+			# # for testing, duration
+			# ms = time () - t
+			# ms = int(ms *1000)
+			# l += ", duration : " + str(ms) 
 			return l  # + ", Original : " + oRow.name
 		finally :
 			sharedVars.objLooping = False
@@ -683,13 +691,17 @@ class AppModule(thunderbird.AppModule):
 	script_sharedAltHome.category = sharedVars.scriptCategory
 
 	def script_sharedControlGrave(self, gesture) :
-		rc = int(getLastScriptRepeatCount())
-		d = 100
-		self.initTimer ()
-		if rc == 0: # 1 press : search new update 
-			self.timer = wx.CallLater(d, utils.getThreadTreeFromFG, True)
-		elif rc == 1: # 1 press : threadtree + end of list   
-			self.timer = wx.CallLater(d, utils.getThreadTreeFromFG, True, "end")
+		if sharedVars.curTab == "main" :
+			rc = int(getLastScriptRepeatCount())
+			d = 100
+			self.initTimer ()
+			if rc == 0: # 1 press 
+				self.timer = wx.CallLater(d, utils.getThreadTreeFromFG, True)
+			elif rc == 1: # 1 press : threadtree + end of list   
+				self.timer = wx.CallLater(d, utils.getThreadTreeFromFG, True, "end")
+		else : # other active tab, we activate the first tab
+			if not messengerWindow.tabs.activateTab(self, api.getFocusObject(), 0) :
+				return gesture.send()
 	script_sharedControlGrave.__doc__ = _("Focus : 1 press set focus on message list, 2 presesses set focus on message list and go to the last message")
 	script_sharedControlGrave.category = sharedVars.scriptCategory
 
@@ -905,8 +917,8 @@ def debugShow(appMod, auto) :
 	fo = api.getFocusObject()
 	if utils.hasID(fo, "threadTree-row"	) :
 		sharedVars.logte("Current row original name :\n" + sharedVars.curTTRow)
-		utils.listDescendants(fo, 0, "* List of descendants")
 		utils.listAscendants(-6)
+		utils.listDescendants(fo, 0, "* List of descendants")
 		utils.listColumnNames(fo) 
 	else :
 		utils.listAscendants(-6)

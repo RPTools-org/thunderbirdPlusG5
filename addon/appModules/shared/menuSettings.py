@@ -73,6 +73,8 @@ class  Settings() :
 		"withoutReceipt" : _("Ignore acknowledgment requests"),
 		"displayTranslations" : _("Always display the translations"),
 		"firstTabActivation" : _("Access the first unread message when first activating the first tab, otherwise the last message."),
+		# "sayContact" : _("Address book : explicit announcement of contacts in the contact list."),
+
 		# "WwithUnread" : _("Show only folders with unread in the 'Folders in Tree' dialog"),
 		# "WithoutAutoRead" : _("separate reading window: do not automatically read the mmessage if it causes NVDA hangs"),
 		# "editDelay_str" : _("Edit the delay before the automatic reading of the separate message window.\\tAlt+d,n")
@@ -96,6 +98,7 @@ class  Settings() :
 			"TTnoTags" : _("Message list : deactivate  tag management   to improve responsiveness."),
 			"TTnoFilterSnd" : _("Message list : do not play sound when list is filtered and gets focus."),
 			"SWRnoRead" : _("Separate reading window: do not read the cleaned version of the message when the window is opened."),
+			"noAddressBook" : _("Address book : disable additional features of Thunderbird+G5."),
 			# "FTnoSpace" : _("Folders: Spacebar does not select the next unread message in the list and does not show the list of unread folders"),
 			# "FTnoNavLetter" : _("Folders: no first character navigation "),
 			# "TTnoSpace" : _("Message list: Spacebar does not read message from preview pane"),
@@ -135,6 +138,7 @@ class  Settings() :
 		# sharedVars.TTnoClean = section.as_bool ("TTnoClean")
 		# sharedVars.TTAltReading = section.as_bool ("TTAltReading")
 		sharedVars.TTnoTags = section.as_bool ("TTnoTags")
+		sharedVars.noAddressBook = section.as_bool ("noAddressBook")
 		# sharedVars.FTnoNavLetter = False # section.as_bool ("FTnoNavLetter")
 		# sharedVars.FTnoSpace = False # section.as_bool ("FTnoSpace")
 		# sharedVars.TTnoSpace = False # section.as_bool ("TTnoSpace")
@@ -335,10 +339,9 @@ class  Settings() :
 			# if key == "TTnoSpace" : sharedVars.TTnoSpace = self.options[section][key]
 			# elif key == "TTnoFilterBar" : sharedVars.TTnoFilterBar = self.options[section][key]
 			# if key == "TTnoClean" : sharedVars.TTnoClean = self.options[section][key]
-			# elif key == "TTAltReading" : sharedVars.TTAltReading = self.options[section][key]
 			if key == "TTnoTags" : sharedVars.TTnoTags = self.options[section][key]
 			# elif key ==  "SWRnoRead :"
-			# elif key == "FTnoNavLetter" : sharedVars.FTnoNavLetter = self.options[section][key]
+			elif key == "noAddressBook" : sharedVars.noAddressBook = self.options[section][key]
 			# elif key == "FTnoSpace" : sharedVars.FTnoSpace = self.options[section][key]
 			return options.write () 	
 		elif eID == 899 :

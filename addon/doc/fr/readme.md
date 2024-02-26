@@ -316,7 +316,7 @@ Sélectionnez "Adresses personnelles" ;
 6. Cela fait, le focus est donné au champ de recherche. Entrez éventuellement un nom puis réitérez les opérations 2 à 5.
 
 
-## Menu de mise à jour de l'extension (v.2402.14.00)
+## Menu de mise à jour de l'extension (v.2402.26.00)
 
 Pour accéder à ce menu, vous pouvez presser AltGr+Majuscule+touche au-dessus de la touche Tab  ou procéder comme  suit :
 
@@ -355,7 +355,7 @@ Régler les options de Start with Inbox :
 *  Réglez les options puis redémarrez Thunderbird.
 
 
-[1]: https://github.com/RPTools-org/thunderbirdPlusG5/releases/download/v2402.14.00/thunderbirdPlusG5-2402.14.00.nvda-addon
+[1]: https://github.com/RPTools-org/thunderbirdPlusG5/releases/download/v2402.26.00/thunderbirdPlusG5-2402.26.00.nvda-addon
 
 [2]: https://github.com/RPTools-org/thunderbirdPlusG5/
 
