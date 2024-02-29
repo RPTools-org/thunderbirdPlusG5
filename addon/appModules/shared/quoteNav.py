@@ -1,4 +1,4 @@
-#-*- coding:utf-8 -*
+ #-*- coding:utf-8 -*
 import addonHandler
 addonHandler.initTranslation()
 
@@ -66,7 +66,8 @@ class QuoteNav() :
 		self.regSemi = re.compile("(\w|\d)\n")
 		self.regTextTags = re.compile("<span|<a|<p|<li|<td")
 		# v2 issueself.regSender = re.compile("(|&lt;| via (" + self.lblWrote  + "))")
-
+		self.regSubject = re.compile(u"(Re:|Ré )")
+		self.regListName = re.compile ("\[.*\]|\{.*\}") # compile ("\[(.*)\]")
 	def toggleTranslation(self) :
 		msg = _("message translation mode ")
 		if self.translate : 
@@ -275,6 +276,21 @@ class QuoteNav() :
 
 	def showTranslation(self, t) :
 		browseableMessage(message=t, title= _("Translation"), isHtml=False)
+
+	def truncateSubj(self, text, minLen) :
+		text=self.regSubject.sub("",text)
+		text=self.regListName.sub("",text)
+		text=self.regMultiSpaces.sub(" ", text)
+		max = len(text)
+		# sharedVars.logte("TruncateSubj " + "{}, minLen : {}, maxLen : {}".format(text, minLen, max)) 
+		if minLen <= max : return text 
+		pos = minLen - 1
+		while pos < max :
+			if text[pos] == " " :
+				return text[0:pos]
+			pos += 1
+		return text
+
 	def speakText(self, freq=0, speakMode=1) :
 		if freq > 0 :
 			beep(freq, 40)
@@ -284,9 +300,9 @@ class QuoteNav() :
 			msg = _("Preview copied: ")
 		
 		if self.translate : 
-			l = min(28,  len(sharedVars.curSubject))
-			t = sharedVars.curSubject[:l] + " :\n" + self.text.split("")[1]
-			t  = self.iTranslate.translateAndCache(t, "auto", self.langTo).translation
+			t  = self.iTranslate.translateAndCache(sharedVars.curSubject, "auto", self.langTo).translation
+			t = self.truncateSubj(t, 25) + " :\n" 
+			t += self.iTranslate.translateAndCache(self.text.split("")[1]  , "auto", self.langTo).translation
 			if self.browseTranslation : self.showTranslation(t)
 			else : message(msg + t)
 		else :

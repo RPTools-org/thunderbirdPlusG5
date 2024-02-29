@@ -306,7 +306,7 @@ class AppModule(thunderbird.AppModule):
 					if grp :
 						s= self.regExp_nameListGroup.sub (" ",s)
 						if  not listGroupName :
-							s =  grp + " : " +  s 
+							s = "[" + grp + "] " +  s 
 					sharedVars.curSubject = s
 				elif ID in ("correspondentcol","sendercol","recipientcol") :  # clean
 					if  oCell.firstChild :
