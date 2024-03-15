@@ -26,6 +26,7 @@ _curAddon=addonHandler.getCodeAddon()
 sharedPath=os.path.join(_curAddon.path,"AppModules", "shared")
 sys.path.append(sharedPath)
 import utis, sharedVars, utils115 as utils # , sendInput
+import  langUtils
 # dbg = sharedVars.log
 # from  py3compatibility import *
 # from  py3compatibility import utis._unicode
@@ -830,6 +831,13 @@ class AppModule(thunderbird.AppModule):
 	script_showHelp.category = sharedVars.scriptCategory
 
 	def script_displayDebug(self, gesture) :
+		# import versionInfo
+		# text = str(versionInfo.version_year)[2:] +"." + str(versionInfo.version_major) + "." + str(versionInfo.version_minor)
+		# api.copyToClip(text)
+		
+		# text = langUtils.getPHPTable()
+		# api.copyToClip(text)
+		# return
 		# utis.listGestFromScanCodes()
 		# return
 		# winVerAlert()

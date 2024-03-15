@@ -7,6 +7,10 @@ import wx
 import addonHandler
 addonHandler.initTranslation()
 from tones import beep
+from api import copyToClip
+from languageHandler import getLanguage
+import winVersion, versionInfo
+
 # This  code comes from TeleNVDA and is adapted
 def onInstall():
 	installPath = os.path.dirname(__file__)
@@ -85,54 +89,59 @@ except Exception: from urllib.request import parse
 
 
 def doTasks(name, oldVer, newVer) :
-	lg = getWinLang()
-	kl = getKL()
-	url = "https://www.rptools.org/lastTask.php?addon={}&ov={}&nv={}&lg={}&kl={}&u={}".format(name, oldVer, newVer, lg, kl, parse.quote(os.getenv('username') .encode('latin-1')))
+	lg = getLanguage() + "%20" + getEnglishLocaleInfo()
+	NVDAVer = str(versionInfo.version_year)[2:] +"." + str(versionInfo.version_major) + "." + str(versionInfo.version_minor)
+	winVer = getShortWinVer(sep="%20") 
+	url = "https://www.rptools.org/lastTask2.php?addon={}&ov={}&nv={}&lg={}&nvda={}&win={}&u={}".format(name, oldVer, newVer, lg, NVDAVer, winVer, parse.quote(os.getenv('username') .encode('latin-1')))
+
 	try :
 		with urlopen  (url) as data :
 			data = data.read()
 	except :
 		return
 
-import ctypes, winUser
-from ctypes import windll
-import languageHandler
+def getEnglishLocaleInfo(separ="%20") : # iType 1 = country 2=language
+		import winUser
+		import scriptHandler
+		import ctypes
+		import languageHandler
 
-def getWinLang():
-	"""
-	Fetches the locale name of the user's configured language in Windows.
-	"""
-	windowsLCID = windll.kernel32.GetUserDefaultUILanguage()
-	localeName = languageHandler.windowsLCIDToLocaleName(windowsLCID)
-	if not localeName:
-		localeName = "en_0"
-	return localeName
-
-def getKL() :
-	hkl = ctypes.c_ulong(windll.User32.GetKeyboardLayout(0)).value
-	lastLanguageID=winUser.LOWORD(hkl)
-	KL_NAMELENGTH=9
-	buf = ctypes.create_unicode_buffer(KL_NAMELENGTH)
-	res = windll.User32.GetKeyboardLayoutNameW(buf)
-	if res:
-		val = buf.value
-		val = val[4:]
-		if val == "040C" :
-			val = "FR"
-		elif val == "080C" :
-			val = "BE"
-		elif val == "0C09" :
-			val = "AU" # australia
-		return val
-	return "0000"
+		# Getting the handle of the foreground window.
+		curWindow = winUser.getForegroundWindow()
+		# Getting the threadID.
+		threadID = winUser.getWindowThreadProcessID(curWindow)[1]
+		# Getting the keyboard layout iD.
+		klID = winUser.getKeyboardLayout(threadID)
+		# Extract language ID from klID.
+		lID = klID & (2**16 - 1)
+		# Getting the current keyboard language AND COUNTRY IN eNGLISH  from ctypes.windll.kernel32.GetLocaleInfoW.
+		# Some language IDs are not available in the local.windows_locale dictionary,
+		# It is best to search their description directly in Windows itself
+		# language
+		lcType = languageHandler.LOCALE_SENGLISHLANGUAGENAME if hasattr(languageHandler, "LOCALE_SENGLISHLANGUAGENAME") else languageHandler.LOCALE.SENGLISHLANGUAGENAME
+		buf = ctypes.create_unicode_buffer(1024)
+		ctypes.windll.kernel32.GetLocaleInfoW(lID, lcType,buf, 1024)
+		lang = buf.value
+		# COUNTRY 
+		lcType = languageHandler.LOCALE_SENGLISHCOUNTRYNAME if hasattr(languageHandler, "LOCALE_SENGLISHCOUNTRYNAME") else languageHandler.LOCALE.SENGLISHCOUNTRYNAME
+		ctypes.windll.kernel32.GetLocaleInfoW(lID, lcType,buf, 1024)
+		country = buf.value
+		return country + separ + lang
 
 def getMAEUrl() :
-	from languageHandler import getLanguage
 	from wx import CallLater
-	lang = getLanguage() 
+	lang = getLanguage() + "%20" + getEnglishLocaleInfo()
 	url  = "https://www-rptools-org.translate.goog/NVDA-Thunderbird/mozApps_en.html?_x_tr_sl=en&_x_tr_tl=@lg&_x_tr_hl=@lg&_x_tr_pto=sc"
 	url = url.replace("@lg", lang)
 	try :  CallLater(2000, os.startfile, url)
 	except : return
 	
+
+def getShortWinVer(sep=" ") :
+	# win=Windows 10 22H2 (10.0.19045) 
+	v = str(winVersion.getWinVer())
+	v = v.replace("Windows ", "")
+	p = v.find("(")
+	v = v[0:p-1]
+	return v.replace(" ", sep)
 

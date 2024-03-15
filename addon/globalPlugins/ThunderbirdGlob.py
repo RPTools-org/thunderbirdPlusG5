@@ -107,7 +107,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 				winUser.setForegroundWindow(hWindow)
 				# ui.message("Title : {}, hWindow : {}".format(winUser.getWindowText(hWindow), hWindow))
 				return
-			focusTaskButton()
+			# focusTaskButton()
 		tbPaths = ("C:\\Program Files\\Mozilla Thunderbird\\thunderbird.exe", "C:\\Program Files (x86)\\Mozilla Thunderbird\\thunderbird.exe")
 		idx = -1
 		if  os.path.exists(tbPaths[0]) :
