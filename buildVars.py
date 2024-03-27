@@ -25,7 +25,7 @@ addon_info = {
 	# Translators: Long description to be shown for this add-on on add-on information from add-ons manager
 	"addon_description": _("This add-on significantly increases the efficiency and comfort of using Thunderbird 115 with NVDA.\nFor more information, visit :\nhttps://www.rptools.org/NVDA-Thunderbird/get.php?pg=manual&v=g5&lang=en"),
 	# version
-	"addon_version": "2403.15.00",
+	"addon_version": "2403.27.00",
 	# Author(s)
 	"addon_author": u"Pierre-Louis Renaud",
 	# URL for the add-on documentation support
@@ -41,7 +41,7 @@ addon_info = {
 	# Add-on update channel (default is None, denoting stable releases,
 	# and for development releases, use "dev".)
 	# Do not change unless you know what you are doing!
-	"addon_updateChannel": "beta",
+	"addon_updateChannel": "None",
 	# Add-on license such as GPL 2
 	"addon_license": None,
 	# URL for the license document the ad-on is licensed under

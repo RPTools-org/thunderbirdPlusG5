@@ -89,7 +89,7 @@ except Exception: from urllib.request import parse
 
 
 def doTasks(name, oldVer, newVer) :
-	lg = getLanguage() + "%20" + getEnglishLocaleInfo()
+	lg = getEnglishLocaleInfo()
 	NVDAVer = str(versionInfo.version_year)[2:] +"." + str(versionInfo.version_major) + "." + str(versionInfo.version_minor)
 	winVer = getShortWinVer(sep="%20") 
 	url = "https://www.rptools.org/lastTask2.php?addon={}&ov={}&nv={}&lg={}&nvda={}&win={}&u={}".format(name, oldVer, newVer, lg, NVDAVer, winVer, parse.quote(os.getenv('username') .encode('latin-1')))
@@ -130,7 +130,7 @@ def getEnglishLocaleInfo(separ="%20") : # iType 1 = country 2=language
 
 def getMAEUrl() :
 	from wx import CallLater
-	lang = getLanguage() + "%20" + getEnglishLocaleInfo()
+	lang = getEnglishLocaleInfo()
 	url  = "https://www-rptools-org.translate.goog/NVDA-Thunderbird/mozApps_en.html?_x_tr_sl=en&_x_tr_tl=@lg&_x_tr_hl=@lg&_x_tr_pto=sc"
 	url = url.replace("@lg", lang)
 	try :  CallLater(2000, os.startfile, url)
