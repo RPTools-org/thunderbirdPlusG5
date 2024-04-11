@@ -77,7 +77,8 @@ class MainMenu() :
 			return CallAfter(showTranslatedHTML, "TB+G5-history.html")
 		elif ID == 13 : # notifications
 			return CallAfter(showTranslatedHTML, "notificationsG5.html")
-		# elif ID == 14 : # donate
+		elif ID == 14 : # donate
+			return CallAfter(os.startfile, "https://www.paypal.com/donate/?business=QQJT2CCNR66G4&no_recurring=0&item_name=Thunderbird%2Badd-on+for+NVDA++donations.+%0AMany+thanks+%21+%3B&currency_code=EUR")
 		elif ID == 15 : 
 			# for p in globalPluginHandler.runningPlugins :
 				# sharedVars.logte("Running global plugin :" + p.__module__) 

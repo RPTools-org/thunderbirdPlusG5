@@ -355,7 +355,7 @@ Régler les options de Start with Inbox :
 *  Réglez les options puis redémarrez Thunderbird.
 
 
-[1]: https://github.com/RPTools-org/thunderbirdPlusG5/releases/download/v2403.27.00/thunderbirdPlusG5-2403.27.00.nvda-addon
+[1]: https://github.com/RPTools-org/thunderbirdPlusG5/releases/download/v2404.10.00/thunderbirdPlusG5-2404.10.00.nvda-addon
 
 [2]: https://github.com/RPTools-org/thunderbirdPlusG5/
 

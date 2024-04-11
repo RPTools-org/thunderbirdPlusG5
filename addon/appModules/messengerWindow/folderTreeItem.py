@@ -156,8 +156,9 @@ class FolderMenu() :
 
 	def buildMenu(self, o) :
 		o = o.firstChild
+		# optimization 
 		if o.role == controlTypes.Role.TEXTFRAME : 
-			o = o.next.firstChild
+			o = o.next
 			# sharedVars.log(o, "Is TreeviewItem? ")
 
 		while o :

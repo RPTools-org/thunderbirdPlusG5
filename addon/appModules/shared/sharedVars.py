@@ -33,14 +33,6 @@ import inspect
 oSettings = None # options menu
 import menuSettings
 import controlTypes
-# controlTypes module compatibility with old versions of NVDA
-if not hasattr(controlTypes, "Role"):
-	setattr(controlTypes, "Role", type('Enum', (), dict(
-	[(x.split("ROLE_")[1], getattr(controlTypes, x)) for x in dir(controlTypes) if x.startswith("ROLE_")])))
-	setattr(controlTypes, "State", type('Enum', (), dict(
-	[(x.split("STATE_")[1], getattr(controlTypes, x)) for x in dir(controlTypes) if x.startswith("STATE_")])))
-	setattr(controlTypes, "role", type("role", (), {"_roleLabels": controlTypes.roleLabels}))
-# End of compatibility fixes
 import globalVars
 from ui import message
 
@@ -85,7 +77,7 @@ def log(o, msg="Objet", withStep=False):
 	if hasattr(o, "IA2Attributes") :
 		ID = str(o.IA2Attributes.get("id"))
 	else : ID = ""
-	t =  states + " : {}, ID : {}, hWnd : {}, childCount : {}{}".format(str(o.role), ID, o.windowHandle, o.childCount, nm + val)
+	t =  states + " : {}, ID : {}, hWnd : {}, childCount : {}{}".format(o.role.name, ID, o.windowHandle, o.childCount, nm + val)
 	debugLog = debugLog + step + lastFunction + msg +  t + "\n"
 
 def debugMess(o, msg="Objet") :
@@ -96,5 +88,5 @@ def debugMess(o, msg="Objet") :
 	sel += (",Collapsed" if controlTypes.State.COLLAPSED in o.states else ", Expanded")
 	nm = str(o.name)
 	ID = str(o.IA2Attributes.get("id"))
-	t =  foc + sel + " : role : {0}, ID : {1}, childCount : {2}name : {3}".format(o.role, ID, o.childCount, nm[:15])
+	t =  foc + sel + " : role : {0}, ID : {1}, childCount : {2}name : {3}".format(o.role.name, ID, o.childCount, nm[:15])
 	message(lastFunc + msg + t )

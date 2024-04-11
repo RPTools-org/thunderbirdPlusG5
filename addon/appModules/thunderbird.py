@@ -48,6 +48,13 @@ def checkTBVersion() :
 	msg = str(_("Your current version of the Thunderbird+G5 add-on needs version {0} or higher of the Thunderbird application but your version is: {1}.\nPlease update the Thunderbird application for the add-on to work properly.")).format(minVersion, v)
 	wx.CallLater(3000, ui.browseableMessage,  message=msg, title= _("Warning"), isHtml = False)
 	
+class ListTreeView(IAccessible) :
+	def initOverlayClass (self):
+		self.bindGesture ("kb:f", "goFilterBar")
+	def script_goFilterBar(self, gesture) :
+		if sharedVars.curTab != "main" : return gesture.send() 
+		KeyboardInputGesture.fromName ("shift+control+k").send() 
+
 class AppModule(thunderbird.AppModule):
 	timer = None
 	counter = 0
@@ -96,7 +103,9 @@ class AppModule(thunderbird.AppModule):
 		# if sharedVars.curFrame == "messengerWindow"and role == controlTypes.Role.DOCUMENT :
 			# sharedVars.curTab = messengerWindow.tabs.getTabTypeFromName(obj.name, "document")
 			# return
-		#  list of messages 
+		#  list of messages 			
+		if role in (controlTypes.Role.LIST, controlTypes.Role.TREEVIEW) :
+			clsList.insert(0, ListTreeView)
 		if role in (controlTypes.Role.LISTITEM, controlTypes.Role.TREEVIEWITEM) :
 			if ID.startswith("threadTree-row") :
 				# sharedVars.logte(" Overlay:" + obj.name)
@@ -494,7 +503,11 @@ class AppModule(thunderbird.AppModule):
 			if sharedVars.oSettings.getOption("compose", "closeMessageWithEscape") :
 				return KeyboardInputGesture.fromName ("control+w").send () 
 		elif  role in (controlTypes.Role.LIST, controlTypes.Role.TREEVIEW) : # empty  message list
-			return KeyboardInputGesture.fromName ("shift+f6").send () 
+			if hasFilter(o, "threadTree-row") :
+				wx.CallAfter(ui.message, _("Filter removed"))
+				return gesture.send()
+			else :
+				return KeyboardInputGesture.fromName ("shift+f6").send () 
 		elif o.parent.role == controlTypes.Role.INTERNALFRAME and  utils.hasID(o.parent, "accountCentralBrowser") :
 			return KeyboardInputGesture.fromName ("shift+f6").send () 
 		elif role == controlTypes.Role.BUTTON : 
