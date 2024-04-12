@@ -104,8 +104,9 @@ class AppModule(thunderbird.AppModule):
 			# sharedVars.curTab = messengerWindow.tabs.getTabTypeFromName(obj.name, "document")
 			# return
 		#  list of messages 			
-		if role in (controlTypes.Role.LIST, controlTypes.Role.TREEVIEW) :
+		if role in (controlTypes.Role.LIST, controlTypes.Role.TREEVIEW) and utils.hasID(obj.parent.parent, "threadTree") :
 			clsList.insert(0, ListTreeView)
+			return
 		if role in (controlTypes.Role.LISTITEM, controlTypes.Role.TREEVIEWITEM) :
 			if ID.startswith("threadTree-row") :
 				# sharedVars.logte(" Overlay:" + obj.name)
@@ -502,7 +503,7 @@ class AppModule(thunderbird.AppModule):
 		elif role == controlTypes.Role.EDITABLETEXT and utils.hasID(o.parent, "MsgHeadersToolbar") : # write window
 			if sharedVars.oSettings.getOption("compose", "closeMessageWithEscape") :
 				return KeyboardInputGesture.fromName ("control+w").send () 
-		elif  role in (controlTypes.Role.LIST, controlTypes.Role.TREEVIEW) : # empty  message list
+		elif  role in (controlTypes.Role.LIST, controlTypes.Role.TREEVIEW) and utils.hasID(o.parent.parent, "threadTree") :
 			if hasFilter(o, "threadTree-row") :
 				wx.CallAfter(ui.message, _("Filter removed"))
 				return gesture.send()
