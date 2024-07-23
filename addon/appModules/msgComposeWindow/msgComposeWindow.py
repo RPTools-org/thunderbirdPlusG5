@@ -71,25 +71,26 @@ class MsgComposeWindow():
 
 	def getMsgHeader(self, oToolbar, idx, noText) :
 		findID = self.labelsID[idx]
-		# sharedVars.debugLog = ""
+		sharedVars.debugLog = ""
 		lbl = ""
 		o = oToolbar.firstChild 
-		if sharedVars.debug : sharedVars.log(o, "toolbar firstChild, ID a trouver : " + findID) 
+		# sharedVars.log(o, "toolbar firstChild, ID a trouver : " + findID) 
 		while o :
 			if o.role == controlTypes.Role.LABEL :
 				if str(utis.getIA2Attribute(o)) == findID :
-					if sharedVars.debug : sharedVars.log(o, "Label") 
+					# sharedVars.log(o, "Label") 
 					lbl = o.name + " : "
 					oFocus = o
 					o = o.next
 					if not o : return None, "no obj"
 					if o.role in (controlTypes.Role.EDITABLETEXT, controlTypes.Role.COMBOBOX) :
 						return o, lbl + (" vide"if not o.value else o.value)
-					elif o.role == controlTypes.Role.UNKNOWN : 
+					elif o.role in (controlTypes.Role.UNKNOWN, controlTypes.Role.PANE) :  # TB115, TB128
 						oFocus = o
+						loopRole = o.role
 						val = ""
-						while o and o.role == controlTypes.Role.UNKNOWN :
-							if sharedVars.debug : sharedVars.log(o, "objet inconnu") 
+						while o and o.role == loopRole :
+							# sharedVars.log(o, "objet inconnu") 
 							val +=  o.name.split(">")[0] + ">, "
 							o = o.next
 						return oFocus, lbl + val
@@ -104,7 +105,7 @@ class MsgComposeWindow():
 		lastIdx = len(self.labelsID) - 1
 		if mainKeyName > lastIdx : mainKeyName = lastIdx - 1 # subject
 		oField, fieldText = self.getMsgHeader(self.headersToolbar, mainKeyName, (repeats > 0))
-		# if sharedVars.debug : sharedVars.log(oField, fieldText)
+		# sharedVars.log(oField, fieldText)
 		if not oField : 
 			if repeats == 0 : message(_("The field {0} is missing, type this command twice quickly to show it.").format(self.fieldLabels.split(",")[mainKeyName]))
 			elif repeats > 0 : 

@@ -41,13 +41,15 @@ urlFileInfos = baseUrl + "fileInfos.php?key=tbpg5Notif"
 def checkNotif() :
 	# tsFar  pour rattraper une erreur de date dans  le fichier de dernière notification
 	# tsFar = dateTS("2123-01-01 08:00") 
-	tsFar = 4828230000.0
+	# tsFar = 4828230000.0
 	# print("Far date : {0}, far timestamp : {1} ".format("2123-01-01 08:00", str(tsFar)))
 	# for test setLastDisplayed(tsFar + 10000)
 	date, tsRemote = getRemoteDateTime()
+	# txt1 = "Remote date : {}, Remote timestamp : {}".format(str(date), str(tsRemote))
+
 	tsLocal = getLastDisplayed()
-	# print("Remote date : {0}, Remote timestamp : {1}, Local ts : {2}".format(str(date), str(tsRemote), str(tsLocal)))
-	if tsLocal > tsFar : tsLocal = 1000000000.0
+	# txt2 = "\nLocal timestamp : {0}, positive number means new notif  : {1}".format(str(tsLocal), str(tsRemote-tsLocal))
+	# print(txt1 + txt2)
 	if tsRemote > tsLocal :
 		setLastDisplayed(tsRemote)
 		return  True
@@ -91,7 +93,7 @@ def showNotif() :
 import time
 
 def getLastDisplayed() :
-	tbLastNotifFile = api.config.getUserDefaultConfigPath()+"\\addons\\tbpLastNotif.pickle"
+	tbLastNotifFile = api.config.getUserDefaultConfigPath()+"\\addons\\tbpg5LastNotif.pickle"
 	# print("tbLastNotifFile : " + tbLastNotifFile)
 	if  not os.path.exists(tbLastNotifFile) : return 1000000000.0
 	if os.path.getsize(tbLastNotifFile) < 10 : return 1000000000.0
@@ -109,7 +111,7 @@ def getLastDisplayed() :
 import api
 def setLastDisplayed(ts) :
 	msg = ""
-	tbLastNotifFile = api.config.getUserDefaultConfigPath()+"\\addons\\tbpLastNotif.pickle"
+	tbLastNotifFile = api.config.getUserDefaultConfigPath()+"\\addons\\tbpg5LastNotif.pickle"
 	# print("setLastDisplayed, tbLastNotifFile : " + tbLastNotifFile)
 	# print("setLastDisplayed, ts : " + str(ts))
 	try :

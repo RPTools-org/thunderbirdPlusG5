@@ -166,8 +166,9 @@ def getMainTabType(tabIdx, oFocus) :
 def findCurTab(oFrame=None ) :
 	# returns : oCurtab, tabIndex, tabLastIdx
 	# TB115 Path : Role-FRAME| i31, Role-TOOLBAR, , IA2ID : tabs-toolbar | i0, Role-TABCONTROL, , IA2ID : tabmail-tabs
-	try :
-		sharedVars.setLooping(True)
+	try : # finally
+		prevLooping = sharedVars.objLooping
+		sharedVars.setLooping(False)
 			# get frame object
 		o = getForegroundObject()
 		# sharedVars.debugLog = ""
@@ -193,10 +194,10 @@ def findCurTab(oFrame=None ) :
 			i += 1
 			o = o.next
 		if o : return o, pos, tabLastIdx
-		if sharedVars.debug : sharedVars.log(None, _("tab not found"))
+		# if sharedVars.debug : sharedVars.log(None, _("tab not found"))
 		return None, -1, -1
 	finally :
-		sharedVars.setLooping(False)
+		sharedVars.setLooping(prevLooping)
 def getTabCount(oFrame=None) :
 	# v5 path  : role FRAME=34| i41, role-TOOLBAR=35, , IA2ID : tabs-toolbar | i1, role-TABCONTROL=23, , IA2ID : tabmail-tabs , IA2Attr : id : tabmail-tabs, display : -moz-box, child-item-count : 1, tag : tabs, , Actions : click ancestor,  ;  
 	try :
@@ -234,7 +235,7 @@ def activateTab(appMod,obj, newTabIdx) :
 		oTab.doAction()
 	else :
 		message(msgName.format(newTabIdx+1, lastIdx+1, "")) # oTab.name))
-	callLater(1500, activateDoc, oTab)
+	callLater(1500, activateDoc, oTab, newTabIdx)
 	return True
 def changeTab(appMod, obj, direct) : # control+tab
 	global msgName
@@ -254,7 +255,7 @@ def changeTab(appMod, obj, direct) : # control+tab
 	message(msgName.format(idx+1, lastIdx+1, "")) # oTab.name))
 	sleep(.5)
 	oTab.doAction() # selects the new tab
-	callLater(1500, activateDoc, oTab)
+	callLater(1500, activateDoc, oTab, idx)
 	return True
 appModule = tabObjects = None
 
@@ -299,16 +300,17 @@ def tabContextMenu(appMod, obj) :
 	oTab.setFocus()
 	CallAfter(message, _("Active tab {0} of {1} : {2}, ").format(curIdx+1, lastIdx+1, oTab.name))
 	callLater(200, KeyboardInputGesture.fromName("shift+f10").send) # affiche menu contextuel
-def activateDoc(oCurTab) :
+def activateDoc(oCurTab, idx) :
 	o = getFocusObject()
-	if o.role ==  controlTypes.Role.TAB :
+	if o.role ==  controlTypes.Role.TAB   :
 		KeyboardInputGesture.fromName("tab").send() 
 	elif o.role ==  controlTypes.Role.FRAME :
 		oCurTab.setFocus()
 		if sharedVars.curTab.startswith("sp:") :
-			callLater(20, KeyboardInputGesture.fromName("tab").send) 
+			# beep(100, 30)
+			callLater(sharedVars.delayFocusDoc, KeyboardInputGesture.fromName("tab").send) 
 		else :
-			# callLater(20, utils.getFolderTreeFromFG, True)
-			if sharedVars.oSettings.getOption("messengerWindow","firstTabActivation") : k = "n"
+			# callLater(20, utils.focusThreadTree)
+			if sharedVars.oSettings.getOption("mainWindow","firstTabActivation") : k = "n"
 			else : k = "end"
-			callLater(20, utils.getThreadTreeFromFG, True, k)
+			callLater(20, utils.focusThreadTree)

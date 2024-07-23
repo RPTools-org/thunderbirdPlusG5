@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Thunderbird+G5\n"
-"POT-Creation-Date: 2024-02-24 06:43+0100\n"
+"POT-Creation-Date: 2024-07-09 12:49+0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Umut KORKMAZ <umutkork@gmail.com>\n"
 "Language-Team: Umut KORKMAZ <umutkork@gmail.com>\n"
@@ -10,27 +10,30 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-0: appModules\n"
+"X-Poedit-SearchPath-1: __pycache__\n"
+"X-Poedit-SearchPath-2: globalPlugins\n"
+"X-Poedit-SearchPath-3: installTasks.py\n"
 
-#: appModules/messengerWindow/folderTreeItem.py:24
+#: appModules/messengerWindow/folderTreeItem.py:25
 msgid "Drafts|Deleted"
 msgstr "Taslaklar|Silindi"
 
-#: appModules/messengerWindow/folderTreeItem.py:58
+#: appModules/messengerWindow/folderTreeItem.py:59
 msgid "selects the first unread message in the list from the folder tree."
 msgstr "klasör ağacından listedeki ilk okunmamış mesajı seçer."
 
-#: appModules/messengerWindow/folderTreeItem.py:63
+#: appModules/messengerWindow/folderTreeItem.py:64
 msgid ""
 "Folders : displays a menu allowing you to reach a subfolder of your choice."
 msgstr ""
 "Klasörler : seçtiğiniz bir alt klasöre ulaşmanızı sağlayan bir menü "
 "görüntüler."
 
-#: appModules/messengerWindow/folderTreeItem.py:68
+#: appModules/messengerWindow/folderTreeItem.py:69
 msgid ""
 "Folders : displays a menu allowing you to reach an unread folder of the "
 "current account."
@@ -38,66 +41,65 @@ msgstr ""
 "Klasörler : geçerli hesabın okunmamış bir klasörüne ulaşmanızı sağlayan bir "
 "menü görüntüler."
 
-#: appModules/messengerWindow/folderTreeItem.py:76
+#: appModules/messengerWindow/folderTreeItem.py:77
 msgid "Folders : display a menu  of all accounts and folders."
 msgstr "Klasörler : tüm hesapların ve klasörlerin menüsünü görüntüler."
 
-#: appModules/messengerWindow/folderTreeItem.py:84
+#: appModules/messengerWindow/folderTreeItem.py:85
 msgid "Folders : display a menu of all unread accounts and folders."
 msgstr ""
 "Klasörler : okunmamış tüm hesapların ve klasörlerin menüsünü görüntüler."
 
-#: appModules/messengerWindow/folderTreeItem.py:110
-#| msgid "unread folders view"
+#: appModules/messengerWindow/folderTreeItem.py:111
 msgid "Unified folders"
 msgstr "Birleşik klasörler"
 
-#: appModules/messengerWindow/folderTreeItem.py:116
-#: appModules/messengerWindow/messageListItem.py:244
+#: appModules/messengerWindow/folderTreeItem.py:117
 #: appModules/messengerWindow/messageListItem.py:247
+#: appModules/messengerWindow/messageListItem.py:250
 msgid "Tags"
 msgstr "Etiketler"
 
-#: appModules/messengerWindow/folderTreeItem.py:177
-#: appModules/thunderbird.py:255
+#: appModules/messengerWindow/folderTreeItem.py:179
+#: appModules/thunderbird.py:308
 msgid "Collapsed"
 msgstr "Dizi"
 
-#: appModules/messengerWindow/folderTreeItem.py:181
-#: appModules/messengerWindow/folderTreeItem.py:243
+#: appModules/messengerWindow/folderTreeItem.py:183
+#: appModules/messengerWindow/folderTreeItem.py:245
 msgid "Inbox"
 msgstr "Gelen kutusu"
 
-#: appModules/messengerWindow/folderTreeItem.py:184
+#: appModules/messengerWindow/folderTreeItem.py:186
 msgid "Account"
 msgstr "Hesap"
 
-#: appModules/messengerWindow/folderTreeItem.py:184
-#: appModules/messengerWindow/folderTreeItem.py:185
+#: appModules/messengerWindow/folderTreeItem.py:186
+#: appModules/messengerWindow/folderTreeItem.py:187
 msgid "Unified"
 msgstr "Birleşik"
 
-#: appModules/messengerWindow/folderTreeItem.py:227
+#: appModules/messengerWindow/folderTreeItem.py:229
 msgid "Choose an account with unread"
 msgstr "Okunmamış bir hesap seçin"
 
-#: appModules/messengerWindow/folderTreeItem.py:230
+#: appModules/messengerWindow/folderTreeItem.py:232
 msgid "Choose an account"
 msgstr "Bir hesap seçin"
 
-#: appModules/messengerWindow/folderTreeItem.py:271
+#: appModules/messengerWindow/folderTreeItem.py:273
 msgid "Accounts, menu"
 msgstr "Hesaplar, menü"
 
-#: appModules/messengerWindow/folderTreeItem.py:273
+#: appModules/messengerWindow/folderTreeItem.py:275
 msgid "Accounts with unread, menu"
 msgstr "Okunmamış hesaplar, menü"
 
-#: appModules/messengerWindow/folderTreeItem.py:276
+#: appModules/messengerWindow/folderTreeItem.py:278
 msgid "Menu, Unread folders of"
 msgstr "Menü, Okunmamış klasörler"
 
-#: appModules/messengerWindow/folderTreeItem.py:278
+#: appModules/messengerWindow/folderTreeItem.py:280
 msgid "Menu, folders of "
 msgstr "Menü, klasörler "
 
@@ -126,52 +128,51 @@ msgid "Join the thunderbird-dv mailing list (French)"
 msgstr "Thunderbird-dv posta listesine katılın (Fransızca)"
 
 #: appModules/messengerWindow/menuMain.py:50
-#| msgid "Update options"
 msgid "Update"
 msgstr "Güncelleme"
 
-#: appModules/messengerWindow/menuMain.py:95
+#: appModules/messengerWindow/menuMain.py:96
 msgid "Please select  the message list and try again."
 msgstr "Lütfen ileti listesini seçin ve tekrar deneyin."
 
-#: appModules/messengerWindow/menuMain.py:114
+#: appModules/messengerWindow/menuMain.py:115
 msgid "No attachment to save"
 msgstr "Kaydedilecek ek yok"
 
-#: appModules/messengerWindow/menuMain.py:119
+#: appModules/messengerWindow/menuMain.py:120
 msgid "Open attachments toolbar"
 msgstr "Ekler araç çubuğunu aç"
 
-#: appModules/messengerWindow/menuMain.py:136
-#: appModules/messengerWindow/menuMain.py:154
+#: appModules/messengerWindow/menuMain.py:137
+#: appModules/messengerWindow/menuMain.py:155
 msgid "Open"
 msgstr "Açık"
 
-#: appModules/messengerWindow/menuMain.py:137
+#: appModules/messengerWindow/menuMain.py:138
 msgid "More options \tControl+alt+p"
 msgstr "Daha fazla seçenek \tControl+alt+p"
 
-#: appModules/messengerWindow/menuMain.py:138
+#: appModules/messengerWindow/menuMain.py:139
 msgid "attachment \""
 msgstr "ek \""
 
-#: appModules/messengerWindow/menuMain.py:141
+#: appModules/messengerWindow/menuMain.py:142
 msgid "attached"
 msgstr "ekli"
 
-#: appModules/messengerWindow/menuMain.py:146
+#: appModules/messengerWindow/menuMain.py:147
 msgid "All ... \tControl+Alt+p. "
 msgstr "Tümü ... \tControl+Alt+p. "
 
-#: appModules/messengerWindow/menuMain.py:147
+#: appModules/messengerWindow/menuMain.py:148
 msgid "move to list alt+p"
 msgstr "listeye git alt+p"
 
-#: appModules/messengerWindow/menuMain.py:155
+#: appModules/messengerWindow/menuMain.py:156
 msgid "More options"
 msgstr "Daha fazla seçenek"
 
-#: appModules/messengerWindow/menuMain.py:255
+#: appModules/messengerWindow/menuMain.py:256
 msgid ""
 "To get all headers, please open the View Menu, go down to 'Headers' and then "
 "press Enter on 'All'  in the submenu. Then display the grave menu again."
@@ -179,11 +180,11 @@ msgstr ""
 "Tüm başlıkları almak için lütfen Görünüm Menüsünü açın, Başlıklar'a gidin ve "
 "ardından alt menüde Tam'a basın. Ardından güç2 menüsünü tekrar görüntüleyin."
 
-#: appModules/messengerWindow/messageListItem.py:109
+#: appModules/messengerWindow/messageListItem.py:113
 msgid "Line details"
 msgstr "Satır ayrıntıları"
 
-#: appModules/messengerWindow/messageListItem.py:113
+#: appModules/messengerWindow/messageListItem.py:116
 msgid ""
 "Message list : One press announces the current line, two presses displays "
 "the line text in a window."
@@ -191,51 +192,50 @@ msgstr ""
 "İleti listesi : Bir kez basıldığında geçerli satır duyurulur, iki kez "
 "basıldığında satır metni bir pencerede görüntülenir."
 
-#: appModules/messengerWindow/messageListItem.py:153
+#: appModules/messengerWindow/messageListItem.py:156
 msgid "No column "
 msgstr "Sütun yok "
 
-#: appModules/messengerWindow/messageListItem.py:162
-#| msgid "None"
+#: appModules/messengerWindow/messageListItem.py:165
 msgid "No"
 msgstr "Hiçbiri"
 
-#: appModules/messengerWindow/messageListItem.py:169
+#: appModules/messengerWindow/messageListItem.py:172
 #, python-brace-format
 msgid "{columnText} copied to clipboard"
 msgstr "{columnText} panoya kopyalandı"
 
-#: appModules/messengerWindow/messageListItem.py:244
-#: appModules/messengerWindow/messageListItem.py:249
+#: appModules/messengerWindow/messageListItem.py:247
+#: appModules/messengerWindow/messageListItem.py:252
 msgid "No tag."
 msgstr "Etiket yok."
 
-#: appModules/messengerWindow/messageListItem.py:254
+#: appModules/messengerWindow/messageListItem.py:257
 msgid "No More tag."
 msgstr "Daha fazla etiket yok."
 
-#: appModules/messengerWindow/messageListItem.py:255
-#: appModules/messengerWindow/messageListItem.py:275
+#: appModules/messengerWindow/messageListItem.py:258
+#: appModules/messengerWindow/messageListItem.py:278
 msgid "added"
 msgstr "eklendi"
 
-#: appModules/messengerWindow/messageListItem.py:256
+#: appModules/messengerWindow/messageListItem.py:259
 msgid " removed"
 msgstr " kaldırıldı"
 
-#: appModules/messengerWindow/messageListItem.py:273
+#: appModules/messengerWindow/messageListItem.py:276
 msgid "tag"
 msgstr "etiket"
 
-#: appModules/messengerWindow/messageListItem.py:274
+#: appModules/messengerWindow/messageListItem.py:277
 msgid "No more tag."
 msgstr "Daha fazla etiket yok."
 
-#: appModules/messengerWindow/messageListItem.py:276
+#: appModules/messengerWindow/messageListItem.py:279
 msgid "removed"
 msgstr "kaldırıldı"
 
-#: appModules/messengerWindow/messageListItem.py:282
+#: appModules/messengerWindow/messageListItem.py:285
 msgid ""
 "Shift + 1 to 8: announces the additions or removals of tags, Shift+0 "
 "announces the tags of the message"
@@ -243,118 +243,118 @@ msgstr ""
 "Shift + 1 ila 8: etiketlerin eklenmesini veya çıkarılmasını duyurur, Shift+0 "
 "iletinin etiketlerini duyurur"
 
-#: appModules/messengerWindow/messageListItem.py:287
+#: appModules/messengerWindow/messageListItem.py:290
 msgid "No tag to remove."
 msgstr "Kaldırılacak etiket yok."
 
-#: appModules/messengerWindow/messageListItem.py:294
+#: appModules/messengerWindow/messageListItem.py:297
 msgid "Press this command twice quickly to delete the"
 msgstr "Silmek için bu komuta hızlıca iki kez basın"
 
-#: appModules/messengerWindow/messageListItem.py:300
+#: appModules/messengerWindow/messageListItem.py:303
 msgid "All tags have been removed from this message."
 msgstr "Bu mesajdaki tüm etiketler kaldırıldı."
 
-#: appModules/messengerWindow/messageListItem.py:302
+#: appModules/messengerWindow/messageListItem.py:305
 msgid "Removes all tags from the selected message."
 msgstr "Seçilen iletideki tüm etiketleri kaldırır."
 
-#: appModules/messengerWindow/messageListItem.py:323
+#: appModules/messengerWindow/messageListItem.py:326
 msgid "Filtered reading of the message preview pane without leaving the list."
 msgstr "Listeden çıkmadan ileti önizleme bölmesinin filtrelenmiş okuması."
 
-#: appModules/messengerWindow/messageListItem.py:351
+#: appModules/messengerWindow/messageListItem.py:348
 msgid "Deleted"
 msgstr "Silindi"
 
-#: appModules/messengerWindow/messageListItem.py:351
+#: appModules/messengerWindow/messageListItem.py:348
 msgid "Archived"
 msgstr "Arşivlendi"
 
-#: appModules/messengerWindow/messageListItem.py:352
+#: appModules/messengerWindow/messageListItem.py:349
 msgid "Current row"
 msgstr "Geçerli satır"
 
-#: appModules/messengerWindow/messageListItem.py:365
+#: appModules/messengerWindow/messageListItem.py:362
 msgid "Press this command twice to mark all messages as read in the folder:"
 msgstr ""
 "Klasördeki tüm mesajları okundu olarak işaretlemek için bu komuta iki kez "
 "basın:"
 
-#: appModules/messengerWindow/messageListItem.py:368
+#: appModules/messengerWindow/messageListItem.py:365
 #, python-brace-format
 msgid "the {name} folder no longer contains unread messages."
 msgstr "{name} klasörü artık okunmamış mesajlar içermiyor."
 
-#: appModules/messengerWindow/messageListItem.py:370
+#: appModules/messengerWindow/messageListItem.py:367
 msgid "not junk"
 msgstr "istenmeen değil"
 
-#: appModules/messengerWindow/messageListItem.py:370
+#: appModules/messengerWindow/messageListItem.py:367
 msgid "junk"
 msgstr "istenmeyen"
 
-#: appModules/messengerWindow/messageListItem.py:373
+#: appModules/messengerWindow/messageListItem.py:370
 msgid "{} applied. "
 msgstr "{} uygulandı. "
 
-#: appModules/messengerWindow/messageListItem.py:375
+#: appModules/messengerWindow/messageListItem.py:372
 msgid "{} applied to: "
 msgstr "{} uygulandığı yerler: "
 
-#: appModules/messengerWindow/messageListItem.py:383
+#: appModules/messengerWindow/messageListItem.py:380
 msgid "Shows the quick filter bar from the message list."
 msgstr "İleti listesinden hızlı filtre çubuğunu gösterir."
 
-#: appModules/messengerWindow/messageListItem.py:404
+#: appModules/messengerWindow/messageListItem.py:401
 msgid "Reverses the read and unread status of the selected message"
 msgstr "Seçilen iletinin okunmuş ve okunmamış durumunu tersine çevirir"
 
-#: appModules/messengerWindow/messageListItem.py:522
+#: appModules/messengerWindow/messageListItem.py:519
 msgid "unread"
 msgstr "okunmamış"
 
-#: appModules/messengerWindow/messageListItem.py:525
-#: appModules/thunderbird.py:285
+#: appModules/messengerWindow/messageListItem.py:522
+#: appModules/thunderbird.py:338
 msgid "Read"
 msgstr "Okundu"
 
-#: appModules/messengerWindow/tabAddressBook.py:49
-#| msgid "Address Book"
+#: appModules/messengerWindow/tabAddressBook.py:55
+#: appModules/messengerWindow/tabAddressBook.py:56
+#: appModules/messengerWindow/tabAddressBook.py:60
+msgid " of "
+msgstr " bölü "
+
+#: appModules/messengerWindow/tabAddressBook.py:65
 msgid "Address book"
 msgstr "Adres defteri"
 
-#: appModules/messengerWindow/tabAddressBook.py:53
-#| msgid "Blank"
+#: appModules/messengerWindow/tabAddressBook.py:69
 msgid "blank"
 msgstr "boşluk"
 
-#: appModules/messengerWindow/tabAddressBook.py:56
-#| msgid "(Press down arrow to display more options)"
+#: appModules/messengerWindow/tabAddressBook.py:72
 msgid "Press Alt + down arrow to open the context menu."
 msgstr "Bağlam menüsünü açmak için Alt + aşağı ok tuşlarına basın."
 
-#: appModules/messengerWindow/tabAddressBook.py:82
+#: appModules/messengerWindow/tabAddressBook.py:98
 msgid "Go to &address books and mailing lists tree"
 msgstr "&Adres defterleri ve posta listeleri ağacına gidin"
 
-#: appModules/messengerWindow/tabAddressBook.py:90
+#: appModules/messengerWindow/tabAddressBook.py:106
 msgid "Go to &contact table"
 msgstr "İletişim tablosuna &git"
 
-#: appModules/messengerWindow/tabAddressBook.py:112
-#| msgid "(Press down arrow to display more options)"
+#: appModules/messengerWindow/tabAddressBook.py:128
 msgid "Press Alt + down arrow to open the popup menu"
 msgstr "Açılır menüyü açmak için Alt + aşağı ok tuşlarına basın"
 
-#: appModules/messengerWindow/tabAddressBook.py:188
-#| msgid "Deactivations"
+#: appModules/messengerWindow/tabAddressBook.py:204
 msgid "Destinations from "
 msgstr "Gidilecek yerler "
 
-#: appModules/messengerWindow/tabAddressBook.py:220
-#: appModules/messengerWindow/tabAddressBook.py:320
-#| msgid " in "
+#: appModules/messengerWindow/tabAddressBook.py:236
+#: appModules/messengerWindow/tabAddressBook.py:336
 msgid "list in "
 msgstr "liste içinde "
 
@@ -399,15 +399,15 @@ msgstr "Hesap kurulumu"
 msgid "Add-ons for Thunderbird"
 msgstr "Thunderbird için eklenti"
 
-#: appModules/messengerWindow/tabs.py:196
+#: appModules/messengerWindow/tabs.py:197
 msgid "tab not found"
 msgstr "sekme bulunamadı"
 
-#: appModules/messengerWindow/tabs.py:269
+#: appModules/messengerWindow/tabs.py:270
 msgid "There is only one tab open."
 msgstr "Açık olan tek bir sekme var."
 
-#: appModules/messengerWindow/tabs.py:300
+#: appModules/messengerWindow/tabs.py:301
 #, python-brace-format
 msgid "Active tab {0} of {1} : {2}, "
 msgstr "{1} etkin sekme {0}: {2}, "
@@ -429,12 +429,10 @@ msgid "equal"
 msgstr "eşit"
 
 #: appModules/msgComposeWindow/menuCompose.py:52
-#: appModules/shared/quoteNav.py:75 appModules/shared/quoteNav.py:90
 msgid "Disabled"
 msgstr "Kullanılamaz"
 
 #: appModules/msgComposeWindow/menuCompose.py:52
-#: appModules/shared/quoteNav.py:85 appModules/shared/quoteNav.py:90
 msgid "Enabled"
 msgstr "Etkinleştirildi"
 
@@ -463,16 +461,16 @@ msgstr "Paragraf,&Yazı Tipi"
 msgid "void, From, To, Attachement, CC, BCC, Subject, Reply to"
 msgstr "iptal edilmiş, Kimden, Kime, Ek, CC, BCC, Konu, Yanıtla"
 
-#: appModules/msgComposeWindow/msgComposeWindow.py:97
+#: appModules/msgComposeWindow/msgComposeWindow.py:98
 msgid "No header."
 msgstr "Başlık yok."
 
-#: appModules/msgComposeWindow/msgComposeWindow.py:109
+#: appModules/msgComposeWindow/msgComposeWindow.py:110
 #, python-brace-format
 msgid "The field {0} is missing, type this command twice quickly to show it."
 msgstr "{0} alanı eksik, görüntülemek için bu komutu hızlıca iki kez yazın."
 
-#: appModules/msgComposeWindow/msgComposeWindow.py:112
+#: appModules/msgComposeWindow/msgComposeWindow.py:113
 msgid ""
 "You will find this field by pressing the button: Other addressing fields to "
 "show"
@@ -480,7 +478,7 @@ msgstr ""
 "Düğmeye basarak bu alanı bulacaksınız: Görüntülenecek diğer adresleme "
 "alanları"
 
-#: appModules/msgComposeWindow/msgComposeWindow.py:131
+#: appModules/msgComposeWindow/msgComposeWindow.py:132
 msgid ""
 "The attachments area is missing. Press Control+Shift+A to add attachements."
 msgstr ""
@@ -537,72 +535,77 @@ msgstr "a"
 msgid "r"
 msgstr "Y"
 
-#: appModules/msgComposeWindow/spellCheckDlg.py:133
+#: appModules/msgComposeWindow/spellCheckDlg.py:132
 #, python-brace-format
 msgid "replaced, {0} . by . {1}"
 msgstr "değiştirildi, {0} . dan . {1}"
 
-#: appModules/msgComposeWindow/spellCheckDlg.py:135
+#: appModules/msgComposeWindow/spellCheckDlg.py:134
 msgid "Replace : "
 msgstr "Değiştir  : "
 
-#: appModules/msgComposeWindow/spellCheckDlg.py:138
+#: appModules/msgComposeWindow/spellCheckDlg.py:137
 msgid " with : "
 msgstr " ile: "
 
-#: appModules/shared/menuSettings.py:60
-msgid "Message list : custom vocalization of rows."
-msgstr "İleti listesi : satırların özel seslendirilmesi."
+#: appModules/shared/checkListMenu.py:23
+msgid "List of choices"
+msgstr "Seçim listesi"
 
-#: appModules/shared/menuSettings.py:61
-msgid "Message list : force rows to be filled if always blank."
-msgstr "İleti listesi : her zaman boş satırları doldurulmaya zorla."
+#: appModules/shared/checkListMenu.py:74
+msgid "The options below cannot be checked at the same time :\n"
+msgstr "Aşağıdaki seçenekler aynı anda işaretlenemez:\n"
 
-#: appModules/shared/menuSettings.py:62
-#| msgid "Message list : use the alternate method to read the lines."
+#: appModules/shared/checkListMenu.py:77
+msgid "Press escape to return to the option list"
+msgstr "Seçenek listesine dönmek için Escape tuşuna basın"
+
+#: appModules/shared/checkListMenu.py:78
+msgid "Error in two  options - Thunderbird+G5"
+msgstr "İki seçenekte hata - Thunderbird+G5"
+
+#: appModules/shared/menuSettings.py:72
+msgid "custom vocalization of rows."
+msgstr "satırların seslendirilmesini özelleştir."
+
+#: appModules/shared/menuSettings.py:73
 msgid ""
-"Message list : Do not say the window and folder names when entering the list."
-msgstr "İleti listesi : Listeye girerken pencere ve klasör adlarını söyleme."
+"If custom vocalization, announce the current line after line deletion   (not "
+"recommanded for Braille)."
+msgstr ""
+"Özel seslendirme varsa, satır silindikten sonra geçerli satırı duyurun "
+"(Braille için önerilmez)."
 
-#: appModules/shared/menuSettings.py:62
+#: appModules/shared/menuSettings.py:74
+msgid "Do not say the window and folder names when entering the list."
+msgstr "Listeye girerken pencere ve klasör adlarını söyleme."
+
+#: appModules/shared/menuSettings.py:74
 msgid "Combine multiple 'RE' mentions into one"
 msgstr "Birden çok 'RE' sözünü bir araya getir"
 
-#: appModules/shared/menuSettings.py:63
+#: appModules/shared/menuSettings.py:75
 msgid "Delete the 'Re' mentions in the subject column"
 msgstr "Konu sütunundaki 'RE' ifadesini sil"
 
-#: appModules/shared/menuSettings.py:64
+#: appModules/shared/menuSettings.py:76
 msgid "Delete the colons  in the 'Re:' mentions"
 msgstr "'RE' ifadelerindeki 2 noktayı sil"
 
-#: appModules/shared/menuSettings.py:65
+#: appModules/shared/menuSettings.py:77
 msgid "Clean the names of correspondents in the message list"
 msgstr "İleti listesindeki kişilerin adlarını temizleyin"
 
-#: appModules/shared/menuSettings.py:67
+#: appModules/shared/menuSettings.py:78
 msgid "Hide mailing list names"
 msgstr "Posta listesi adlarını gizle"
 
-#: appModules/shared/menuSettings.py:68
-msgid "Edit words to hide in message subject"
-msgstr "Mesaj konu alanında gizlenecek kelimeleri düzenle"
-
-#: appModules/shared/menuSettings.py:69
+#: appModules/shared/menuSettings.py:79
 msgid "Announce 'junk' if displayed in the 'junk Status' column"
 msgstr ""
 "'Durum istenmeyen' sütununda görüntüleniyorsa 'istenmeyen' olarak duyur"
 
-#: appModules/shared/menuSettings.py:73
-msgid "Ignore acknowledgment requests"
-msgstr "Onay isteklerini yoksay"
-
-#: appModules/shared/menuSettings.py:74
-msgid "Always display the translations"
-msgstr "Çevirileri her zaman göster"
-
-#: appModules/shared/menuSettings.py:75
-#| msgid "selects the first unread message in the list from the folder tree."
+#: appModules/shared/menuSettings.py:83
 msgid ""
 "Access the first unread message when first activating the first tab, "
 "otherwise the last message."
@@ -611,33 +614,53 @@ msgstr ""
 "takdirde en son iletiyi görüntüler."
 
 #: appModules/shared/menuSettings.py:84
-msgid "Spell Check: Spell the misspelled word and the suggested word."
-msgstr "Yazım Denetimi: Yanlış yazılmış sözcüğü ve önerilen sözcüğü heceleyin."
+msgid "Ignore acknowledgment requests"
+msgstr "Onay isteklerini yoksay"
+
+#: appModules/shared/menuSettings.py:85
+msgid ""
+"Partially purify the message when reading it with Space or F4, otherwise "
+"purify it completely."
+msgstr ""
+"Mesajı Space veya F4 ile okurken kısmen arındırın, aksi halde tamamen "
+"arındırın."
 
 #: appModules/shared/menuSettings.py:86
-msgid "The Esc key closes the message being written"
-msgstr "Esc tuşu yazılmakta olan mesajı kapatır"
+msgid "Always display the  cleaned messages when reading them with Space or F4"
+msgstr "Temizlenen mesajları okurken her zaman Space veya F4 ile görüntüle"
 
 #: appModules/shared/menuSettings.py:87
 msgid ""
-"Single press to show the context menus, double press to write a grave "
-"accent  or Tilde or ¬¬."
-msgstr ""
-"Bağlamsal menüyü görüntülemek için tek tuş vuruşu, ² veya ³ veya bunların "
-"yerine geçenleri yazmak için çift tuş vuruşu."
+"Always display the translation of messages when reading them with Space or F4"
+msgstr "Boşluk veya F4 ile okurken her zaman mesajların çevirisini görüntüle"
 
-#: appModules/shared/menuSettings.py:98
+#: appModules/shared/menuSettings.py:91
+msgid "Spell Check: Spell the misspelled word and the suggested word."
+msgstr "Yazım Denetimi: Yanlış yazılmış sözcüğü ve önerilen sözcüğü heceleyin."
+
+#: appModules/shared/menuSettings.py:93
+msgid "The Esc key closes the message being written"
+msgstr "Esc tuşu yazılmakta olan mesajı kapatır"
+
+#: appModules/shared/menuSettings.py:94
+msgid ""
+"Single press on Shift+the key above the tab key to show the option menus, "
+"double press to write the corresponding printable character."
+msgstr ""
+"Seçenek menülerini göstermek için Shift+sekme tuşunun üzerindeki tuşa bir "
+"kez basın, karşılık gelen yazdırılabilir karakteri yazmak için iki kez basın."
+
+#: appModules/shared/menuSettings.py:99
 msgid "Message list : deactivate  tag management   to improve responsiveness."
 msgstr ""
 "Mesaj listesi : Yanıt verme hızını artırmak için etiket yönetimini devre "
 "dışı bırakın."
 
-#: appModules/shared/menuSettings.py:99
-#| msgid "Message list: do not manage the quick filter bar"
+#: appModules/shared/menuSettings.py:100
 msgid "Message list : do not play sound when list is filtered and gets focus."
 msgstr "İleti listesi : liste filtrelendiğinde ve odaklandığında ses çalınmaz."
 
-#: appModules/shared/menuSettings.py:100
+#: appModules/shared/menuSettings.py:101
 msgid ""
 "Separate reading window: do not read the cleaned version of the message when "
 "the window is opened."
@@ -645,279 +668,325 @@ msgstr ""
 "Ayrı okuma penceresi: Pencere açıldığında mesajın temizlenmiş halini "
 "okumayın."
 
-#: appModules/shared/menuSettings.py:101
+#: appModules/shared/menuSettings.py:102
 msgid "Address book : disable additional features of Thunderbird+G5."
 msgstr "Adres defteri : Thunderbird+G5'in ek özelliklerini devre dışı bırak."
 
-#: appModules/shared/menuSettings.py:170
+#: appModules/shared/menuSettings.py:166
+msgid "Unread"
+msgstr "Okunmamış"
+
+#: appModules/shared/menuSettings.py:183
 msgid "Words separated by semicolons :"
 msgstr "Noktalı virgülle ayrılan sözcükler:"
 
-#: appModules/shared/menuSettings.py:170
+#: appModules/shared/menuSettings.py:183
 msgid "Edit words to hide in the subject of messages"
 msgstr "Mesajların konu alanında gizlenecek kelimeleri düzenleme"
 
-#: appModules/shared/menuSettings.py:173
-msgid ""
-"Delay between 20 and 2000 milliseconds before filtered reading (default: "
-"100):"
-msgstr ""
-"Filtrelenmiş okumadan önce 20 ile 2000 milisaniye arasındaki gecikme "
-"(varsayılan: 100):"
+#: appModules/shared/menuSettings.py:186
+msgid "Delay before document focusing, 20 to 2000 ms::"
+msgstr "Belgeye odaklanmadan önceki gecikme, 20 ila 2000 ms::"
 
-#: appModules/shared/menuSettings.py:173
-msgid "Separate reading window"
-msgstr "Ayrı okuma penceresi"
+#: appModules/shared/menuSettings.py:186
+msgid "Special tabs"
+msgstr "Özel sekmeler"
 
-#: appModules/shared/menuSettings.py:193
+#: appModules/shared/menuSettings.py:206
 msgid "Backup file does not exist."
 msgstr "Yedekleme dosyası mevcut değil."
 
-#: appModules/shared/menuSettings.py:204
+#: appModules/shared/menuSettings.py:217
 msgid "The configuration has been reset to its default values"
 msgstr "Yapılandırma, varsayılan değerlerine sıfırlandı"
 
-#: appModules/shared/menuSettings.py:245
-#| msgid "Mmain window options"
+#: appModules/shared/menuSettings.py:260
+msgid "MessageList"
+msgstr "İleti Listesi"
+
+#: appModules/shared/menuSettings.py:261
+msgid "Edit words to hide in message subject"
+msgstr "Mesaj konu alanında gizlenecek kelimeleri düzenle"
+
+#: appModules/shared/menuSettings.py:262
+msgid "Other Options"
+msgstr "Diğer seçenekler"
+
+#: appModules/shared/menuSettings.py:263
 msgid "Main window options"
 msgstr "Ana pencere seçenekleri"
 
-#: appModules/shared/menuSettings.py:251
+#: appModules/shared/menuSettings.py:274 appModules/shared/menuSettings.py:344
 msgid "Write window options"
 msgstr "Oluştur pencere seçenekleri"
 
-#: appModules/shared/menuSettings.py:267
+#: appModules/shared/menuSettings.py:297 appModules/shared/menuSettings.py:366
 msgid "Deactivations"
 msgstr "Devre Dışı Bırakılanlar"
 
-#: appModules/shared/menuSettings.py:269
+#: appModules/shared/menuSettings.py:299
+msgid "&Focus and Startup Options"
+msgstr "&Odaklanma ve Başlatma Seçenekleri"
+
+#: appModules/shared/menuSettings.py:300
 msgid "Open sound folder..."
 msgstr "Ses klasörünü aç..."
 
-#: appModules/shared/menuSettings.py:270
+#: appModules/shared/menuSettings.py:301
 msgid "Backup current configuration file"
 msgstr "Geçerli yapılandırma dosyasını yedekle"
 
-#: appModules/shared/menuSettings.py:271
+#: appModules/shared/menuSettings.py:302
 msgid "Restore backed up configuration file"
 msgstr "Yedeklenen yapılandırmayı geri yükleyin"
 
-#: appModules/shared/menuSettings.py:272
+#: appModules/shared/menuSettings.py:303
 msgid "Reset configuration"
 msgstr "Yapılandırmayı sıfırla"
 
-#: appModules/shared/menuSettings.py:295
-msgid "Mentions"
-msgstr "Bahsetmeler"
+#: appModules/shared/menuSettings.py:321
+msgid "Message list options"
+msgstr "İleti listesi seçenekleri"
 
-#: appModules/shared/quoteNav.py:38
+#: appModules/shared/menuSettings.py:331
+msgid "Other  options"
+msgstr "Diğer seçenekler"
+
+#: appModules/shared/menuSettings.py:373
+msgid "Focus and Startup Options"
+msgstr "Odaklanma ve Başlangıç ​​Seçenekleri"
+
+#: appModules/shared/quoteNav.py:42
 msgid "On|Le%date_sender%wrote|écrit"
 msgstr "Tarihinde|On%date_sender%yazdı|wrote"
 
-#: appModules/shared/quoteNav.py:71
-msgid "message translation mode "
-msgstr "ileti çeviri modu "
+#: appModules/shared/quoteNav.py:76
+msgid "Enabling message translation mode, ready."
+msgstr "Mesaj çeviri modu etkinleştiriliyor, hazır."
 
-#: appModules/shared/quoteNav.py:83
+#: appModules/shared/quoteNav.py:77
+msgid "Disabling message translation mode, ready."
+msgstr "Mesaj çeviri modu devre dışı bırakılıyor, hazır."
+
+#: appModules/shared/quoteNav.py:90
 msgid "The Instant Translate add-on is not active or not installed."
 msgstr "Anında Çeviri eklentisi etkin veya yüklü değil."
 
-#: appModules/shared/quoteNav.py:88
-msgid "Translation display mode {}"
-msgstr "Çeviri görüntüleme modu {}"
+#: appModules/shared/quoteNav.py:96
+msgid "Enabling message display mode, ready."
+msgstr "Mesaj görüntüleme modu etkinleştiriliyor, hazır."
 
-#: appModules/shared/quoteNav.py:242
+#: appModules/shared/quoteNav.py:97
+msgid "Disabling message display mode, ready."
+msgstr "Mesaj görüntüleme modu devre dışı bırakılıyor, hazır."
+
+#: appModules/shared/quoteNav.py:228
 #, python-brace-format
 msgid "{0} messages in chronological order, "
 msgstr "Kronolojik sırayla {0} mesaj, "
 
-#: appModules/shared/quoteNav.py:248
+#: appModules/shared/quoteNav.py:234
 #, python-brace-format
 msgid "{0} messages, {1} lines, "
 msgstr "{0} mesaj, {1} satır, "
 
-#: appModules/shared/quoteNav.py:277
+#: appModules/shared/quoteNav.py:263
 msgid "Translation"
 msgstr "Çeviri"
 
-#: appModules/shared/quoteNav.py:284
+#: appModules/shared/quoteNav.py:285
 msgid "Preview copied: "
 msgstr "Önizleme kopyalandı: "
 
-#: appModules/shared/quoteNav.py:320
+#: appModules/shared/quoteNav.py:327
 msgid "Original Message|E-mail d'origine|Message d'origine"
 msgstr "Orijinal mesaj|Original Message"
 
-#: appModules/shared/quoteNav.py:339
+#: appModules/shared/quoteNav.py:353
 msgid "You are receiving this message because you are subscribed to the group"
 msgstr "Bu mesajı gruba abone olduğunuz için alıyorsunuz"
 
-#: appModules/shared/quoteNav.py:368
+#: appModules/shared/quoteNav.py:382
 #, python-format
 msgid " link %s "
 msgstr " bağlantı %s "
 
-#: appModules/shared/quoteNav.py:444
+#: appModules/shared/quoteNav.py:458
 msgid "From|De|Expéditeur"
 msgstr "İtibaren|Gönderen"
 
-#: appModules/shared/quoteNav.py:469
+#: appModules/shared/quoteNav.py:483
 msgid "wrote"
 msgstr "yazdı"
 
-#: appModules/shared/utils115.py:256
+#: appModules/shared/startupDlg.py:22
+msgid "Default (do nothing)"
+msgstr "Varsayılan (hiçbir şey yapma)"
+
+#: appModules/shared/startupDlg.py:23
+msgid "Last message in message list"
+msgstr "Mesaj listesindeki son mesaj"
+
+#: appModules/shared/startupDlg.py:24
+msgid "First message"
+msgstr "İlk mesaj"
+
+#: appModules/shared/startupDlg.py:25
+msgid "First unread message"
+msgstr "İlk okunmamış mesaj"
+
+#: appModules/shared/startupDlg.py:26
+msgid "Folder tree"
+msgstr "Klasör ağacı"
+
+#: appModules/shared/startupDlg.py:29
+msgid "Use this mode when starting Thunderbird"
+msgstr "Thunderbird'ü başlatırken bu modu kullanın"
+
+#: appModules/shared/startupDlg.py:89
+msgid ""
+"With the {} key in the main window or Space in the folder tree, bring the "
+"&focus to:"
+msgstr ""
+"Ana penceredeki {} tuşunu veya klasör ağacındaki Boşluk çubuğunu kullanarak "
+"&odağı şu noktaya getirin:"
+
+#: appModules/shared/textDialog.py:39
+msgid "Informations"
+msgstr "Bilgiler"
+
+#: appModules/shared/textDialog.py:72
+msgid "Co&py to Clipboard"
+msgstr "&Panoya kopyala"
+
+#: appModules/shared/textDialog.py:77
+msgid "Close"
+msgstr "Kapat"
+
+#: appModules/shared/textDialog.py:98 appModules/shared/utis.py:616
+msgid "Copied"
+msgstr "Kopyalandı"
+
+#: appModules/shared/textDialog.py:105
+msgid "Error, the information cannot be copied to the clipboard"
+msgstr "Hata, bilgiler panoya kopyalanamıyor"
+
+#: appModules/shared/utils115.py:451
 msgid "The preview pane is not displayed. Press F8 and try again please"
 msgstr "Önizleme bölmesi görüntülenmiyor. Lütfen F8'e basarak tekrar deneyin"
 
-#: appModules/shared/utils115.py:437 appModules/thunderbird.py:607
+#: appModules/shared/utils115.py:632 appModules/thunderbird.py:630
 msgid "Press right arrow and retry, please."
 msgstr "Sağ oka basın ve lütfen yeniden deneyin."
 
-#: appModules/shared/utils115.py:449 appModules/thunderbird.py:722
+#: appModules/shared/utils115.py:644 appModules/thunderbird.py:752
 msgid "The headers pane is not displayed. Please press F8 then try again"
 msgstr "Başlıklar bölmesi görüntülenmiyor. Lütfen F8'e basarak tekrar deneyin"
 
-#: appModules/shared/utils115.py:457
+#: appModules/shared/utils115.py:652
 msgid "The headers are not available"
 msgstr "Başlıklar kullanılamıyor"
 
-#: appModules/shared/utils115.py:549
+#: appModules/shared/utils115.py:744
 msgid "void,From,Subject: ,Date,To,CC,BCC,Reply to"
 msgstr "iptal edilmiş,Kimden,Konu: ,Tarih,Kime,CC,BCC,Yanıtla"
 
-#: appModules/shared/utils115.py:550
+#: appModules/shared/utils115.py:745
 #, python-brace-format
 msgid "The {0} header is missing from this message."
 msgstr "Bu mesajda {0} başlığı eksik."
 
-#: appModules/shared/utils115.py:561
+#: appModules/shared/utils115.py:756
 msgid "Copy to clipboard"
 msgstr "Panoya kopyala"
 
-#: appModules/shared/utils115.py:593
-#| msgid "No Attachement."
+#: appModules/shared/utils115.py:788
 msgid "No attachment."
 msgstr "Ek yok."
 
-#: appModules/shared/utils115.py:625
+#: appModules/shared/utils115.py:820
 msgid "Two presses to reach the list."
 msgstr "Listeye ulaşmak için iki kez basın."
 
-#: appModules/shared/utils115.py:639
+#: appModules/shared/utils115.py:838
 msgid "To the group, "
 msgstr "Gruba, "
 
-#: appModules/shared/utis.py:491
+#: appModules/shared/utis.py:517
 msgid "The status bar is not displayed."
 msgstr "Durum çubuğu görüntülenmiyor."
 
-#: appModules/shared/utis.py:590
-msgid "Copied"
-msgstr "Kopyalandı"
-
-#: appModules/shared/utis.py:614
+#: appModules/shared/utis.py:640
 msgid "No Attachement."
 msgstr "Ek yok."
 
-#: appModules/shared/utis.py:678
+#: appModules/shared/utis.py:704
 msgid "File not found"
 msgstr "Dosya bulunamadı"
 
-#: appModules/thunderbird.py:47
-#, python-brace-format
-msgid ""
-"Your current version of the Thunderbird+G5 add-on needs version {0} or "
-"higher of the Thunderbird application but your version is: {1}.\n"
-"Please update the Thunderbird application for the add-on to work properly."
-msgstr ""
-"Thunderbird+G5 eklentisinin mevcut sürümünün Thunderbird uygulamasının {0} "
-"veya üzeri bir sürümüne ihtiyacı var ancak sürümünüz: {1}.\n"
-"Eklentinin düzgün çalışması için lütfen Thunderbird uygulamasını güncelleyin."
-
-#: appModules/thunderbird.py:48
-msgid "Warning"
-msgstr "Uyarı"
-
-#: appModules/thunderbird.py:230
+#: appModules/thunderbird.py:290
 msgid "Sort by "
 msgstr "Sıralama ölçütü "
 
-#: appModules/thunderbird.py:249
-#| msgid "Unread "
-msgid "Unread"
-msgstr "Okunmamış"
-
-#: appModules/thunderbird.py:290
+#: appModules/thunderbird.py:343
 msgid "Starred"
 msgstr "Yıldızlı"
 
-#: appModules/thunderbird.py:318
+#: appModules/thunderbird.py:372
 msgid "attachment"
 msgstr "ek"
 
-#: appModules/thunderbird.py:322
+#: appModules/thunderbird.py:376
 msgid "Spam"
 msgstr "İstenmeyen"
 
-#: appModules/thunderbird.py:336
-msgid " of "
-msgstr " bölü "
-
-#: appModules/thunderbird.py:378
+#: appModules/thunderbird.py:423
 msgid "draft"
 msgstr "taslak"
 
-#: appModules/thunderbird.py:381
-msgid "replies to the sub-thread,"
-msgstr "alt konuya cevaplar,"
-
-#: appModules/thunderbird.py:383
-msgid "Close"
-msgstr "Kapat"
-
-#: appModules/thunderbird.py:394
-msgid "notified when you"
-msgstr "bildirim zamanı"
-
-#: appModules/thunderbird.py:398
-msgid "Ignore"
-msgstr "Yok say"
-
-#: appModules/thunderbird.py:404
+#: appModules/thunderbird.py:426
 msgid "bird thinks this message is Junk"
 msgstr "bird bu mesajın istenmeyen olduğunu düşünüyor"
 
-#: appModules/thunderbird.py:408
+#: appModules/thunderbird.py:430
 msgid "remote content"
 msgstr "uzak içerik"
 
-#: appModules/thunderbird.py:453
+#: appModules/thunderbird.py:434
+msgid "notified when you"
+msgstr "bildirim zamanı"
+
+#: appModules/thunderbird.py:438
+msgid "Ignore"
+msgstr "Yok say"
+
+#: appModules/thunderbird.py:469 appModules/thunderbird.py:513
 msgid "Filter removed"
 msgstr "Filtre kaldırıldı"
 
-#: appModules/thunderbird.py:511
+#: appModules/thunderbird.py:531
 msgid "Blank"
 msgstr "Boş"
 
-#: appModules/thunderbird.py:515
+#: appModules/thunderbird.py:535
 msgid "Status line without data"
 msgstr "Veri içermeyen durum satırı"
 
-#: appModules/thunderbird.py:517
+#: appModules/thunderbird.py:537
 msgid ""
 "Announces abbreviated status line and message filtering information if "
 "applicable"
 msgstr "Varsa kısaltılmış durum satırı ve ileti filtreleme bilgilerini duyurur"
 
-#: appModules/thunderbird.py:551
+#: appModules/thunderbird.py:571
 msgid "Smart reply to reply to a recipient or mailing list"
 msgstr "Bir alıcıya veya posta listesine yanıt vermek için akıllı yanıt"
 
-#: appModules/thunderbird.py:565
+#: appModules/thunderbird.py:586
 msgid "Sends Control+F4 to the current window."
 msgstr "Geçerli pencereye Control+F4 gönderir."
 
-#: appModules/thunderbird.py:590
+#: appModules/thunderbird.py:613
 msgid ""
 "In the main window, 1 press: Alt+1 to 8: reads the message header, Alt+9 "
 "announces the number of attachments, 2 presses: displays the header in an "
@@ -931,7 +1000,7 @@ msgstr ""
 "ulaşır. Yaz penceresinde, Alt1 ila 4, başlıkları okur, 2 basış başlığa "
 "ulaşır."
 
-#: appModules/thunderbird.py:651
+#: appModules/thunderbird.py:675
 msgid ""
 "Filtered reading of the document in the preview pane, reading tab, reading "
 "or Write window, from the list of messages or the document."
@@ -939,20 +1008,19 @@ msgstr ""
 "Mesaj listesinden veya belgeden önizleme bölmesinde, okuma sekmesinde, okuma "
 "veya oluşturma penceresinde belgenin filtrelenmiş okuması."
 
-#: appModules/thunderbird.py:657
+#: appModules/thunderbird.py:681
 msgid "Enables or disables  the translation mode of a message."
 msgstr "Bir iletinin çeviri modunu etkinleştirir veya devre dışı bırakır."
 
-#: appModules/thunderbird.py:663
-msgid "Enables or disables the display of translations in a window."
+#: appModules/thunderbird.py:687
+msgid ""
+"Enables or disables the display of the cleaned or translated   message in a "
+"window."
 msgstr ""
-"Çevirilerin bir pencerede görüntülenmesini etkinleştirir veya devre dışı "
-"bırakır."
+"Temizlenen veya çevrilen mesajın bir pencerede görüntülenmesini "
+"etkinleştirir veya devre dışı bırakır."
 
-#: appModules/thunderbird.py:670
-#| msgid ""
-#| "Folders : displays a menu allowing you to reach an unread folder of the "
-#| "current account."
+#: appModules/thunderbird.py:694
 msgid ""
 "Folders : displays the accounts menu then  the folders menu for the chosen "
 "account."
@@ -960,10 +1028,7 @@ msgstr ""
 "Klasörler : seçilen hesap için hesaplar menüsünü ve ardından klasörler "
 "menüsünü görüntüler."
 
-#: appModules/thunderbird.py:677
-#| msgid ""
-#| "Folders : displays a menu allowing you to reach an unread folder of the "
-#| "current account."
+#: appModules/thunderbird.py:701
 msgid ""
 "Folders : displays the accounts menu then the unread folders menu for the "
 "chosen account."
@@ -971,7 +1036,7 @@ msgstr ""
 "Klasörler : seçilen hesap için hesaplar menüsünü ve ardından okunmamış "
 "klasörler menüsünü görüntüler."
 
-#: appModules/thunderbird.py:690
+#: appModules/thunderbird.py:714
 msgid ""
 "Focus : 1 press select the current folder in the folder tree, 2 presesses "
 "display a menu  allowings to choose an mail account to reach in the folder "
@@ -981,28 +1046,28 @@ msgstr ""
 "klasör ağacında ulaşılacak bir posta hesabının seçilmesini sağlayan bir menü "
 "görüntüler"
 
-#: appModules/thunderbird.py:705
+#: appModules/thunderbird.py:735
 msgid ""
-"Focus : 1 press set focus on message list, 2 presesses set focus on message "
-"list and go to the last message"
+"Focus : selects a message in the message list from anywhere in the main "
+"window."
 msgstr ""
-"Odak : 1 defa basmak, mesaj listesine odaklanmayı ayarlar, 2 defaa basmak, "
-"mesaj listesine odaklanmayı ayarlar ve son mesaja gider"
+"Odak : Ana pencerenin herhangi bir yerinden mesaj listesindeki bir mesajı "
+"seçer."
 
-#: appModules/thunderbird.py:739
+#: appModules/thunderbird.py:769
 msgid "Attachments : announces or displays the attachment pane."
 msgstr "Ekler: Ekler bölmesini duyurur veya görüntüler."
 
-#: appModules/thunderbird.py:747
+#: appModules/thunderbird.py:777
 msgid "Press alt+upArrow before navigating through quotes in a message."
 msgstr ""
 "Bir mesajdaki alıntılar arasında gezinmeden önce alt+upArrow tuşlarına basın."
 
-#: appModules/thunderbird.py:756
+#: appModules/thunderbird.py:786
 msgid "Navigates through quotes in a message"
 msgstr "Bir mesajdaki alıntılar arasında gezinir"
 
-#: appModules/thunderbird.py:784
+#: appModules/thunderbird.py:802
 msgid ""
 "Shows the context menu of actions available in the various Thunderbird "
 "windows."
@@ -1010,11 +1075,11 @@ msgstr ""
 "Çeşitli Thunderbird pencerelerinde bulunan eylemlerin bağlam menüsünü "
 "görüntüler."
 
-#: appModules/thunderbird.py:804
+#: appModules/thunderbird.py:822
 msgid "Shows the Options context menu of Thunderbird+"
 msgstr "Thunderbird+ seçeneklerinin bağlam menüsünü görüntüler"
 
-#: appModules/thunderbird.py:812
+#: appModules/thunderbird.py:830
 msgid ""
 "Shows the dialog for editing the delay before reading the message of the "
 "separate reading window."
@@ -1022,27 +1087,23 @@ msgstr ""
 "Ayrı okuma penceresinin mesajını okumadan önceki gecikmeyi düzenlemek için "
 "iletişim kutusunu görüntüler."
 
-#: appModules/thunderbird.py:821
+#: appModules/thunderbird.py:839
 msgid "Present: Headers and message pane."
 msgstr "Mevcut: Başlıklar ve ileti bölmesi."
 
-#: appModules/thunderbird.py:823
+#: appModules/thunderbird.py:841
 msgid "Missing : headers and message pane."
 msgstr "Eksik : başlıklar ve ileti bölmesi."
 
-#: appModules/thunderbird.py:824
+#: appModules/thunderbird.py:842
 msgid "Turn on or off the preview messages panel"
 msgstr "İleti başlıklarını ve önizleme bölmesini gösterir veya gizler"
 
-#: appModules/thunderbird.py:829
+#: appModules/thunderbird.py:847
 msgid "Shows the add-on help in a web page"
 msgstr "Eklenti yardımını bir web sayfasında görüntüler"
 
-#: appModules/thunderbird.py:847
-msgid "of the test mode"
-msgstr "test modu"
-
-#: appModules/thunderbird.py:968
+#: appModules/thunderbird.py:1013
 msgid "Re "
 msgstr "Ynt "
 
@@ -1055,7 +1116,6 @@ msgid "Starts Thunderbird"
 msgstr "Thunderbird'ü başlatır"
 
 #: globalPlugins/ThunderbirdGlob.py:129
-#| msgid "Check for Thunderbird+ update"
 msgid "Check for an update"
 msgstr "Güncellemeleri denetle"
 
@@ -1183,7 +1243,7 @@ msgstr ""
 msgid "Undetermined version"
 msgstr "Belirsiz sürüm"
 
-#: installTasks.py:29
+#: installTasks.py:33
 msgid ""
 "Mozilla Apps Enhancements has been detected on your NVDA installation. In "
 "order for thunderbirdPlus to work without conflicts, the thunderbird module "
@@ -1197,58 +1257,162 @@ msgstr ""
 "ThunderbirdPlus'ın bakımını ve kurulumunu yapabilir misiniz?\\N\n"
 "Yanıt vermezseniz, kurulum sera iptal edilir."
 
-#: installTasks.py:31
+#: installTasks.py:35
 msgid "Running Mozilla Apps Enhancements detected"
 msgstr "Çalışan MozillaAppsEnhancements algılandı"
 
-#: installTasks.py:38
+#: installTasks.py:42
 msgid "Installation cancelled"
 msgstr "Kurulum iptal edildi"
 
-msgid "Address book : explicit announcement of contacts in the contact list."
-msgstr ""
-"Carnet d'adresses : annonce explicite des contacts dans la liste de contacts."
+#~ msgid "replies to the sub-thread,"
+#~ msgstr "alt konuya cevaplar,"
 
-msgid "Address book : do not customize contact table announcements."
-msgstr ""
-"Carnet d'adresses : ne pas personnaliser les annonces du tableau de contacts."
+#~ msgid "With 3 keyboard shortcuts, bring the &focus to :"
+#~ msgstr "3 klavye kısayoluyla &focus'u şuraya getirin:"
 
-msgid "Drag and drop done"
-msgstr "Glisser-déposer terminé"
+#~ msgid "Default"
+#~ msgstr "Varsayılan"
 
-msgid "Update : 1 press :  Check for update, 3 presses : force update."
-msgstr ""
-"Mise à jour : 1 appui : vérifier la mise à jour, 3 appuis : forcer la mise à "
-"jour."
+#, fuzzy
+#~| msgid ""
+#~| "Single press on Shift+the key above the tab key to show the option "
+#~| "menus, double press to write the corresponding printable character."
+#~ msgid ""
+#~ "Single press to show the context menus, double press to write a grave "
+#~ "accent  or Tilde or ¬¬."
+#~ msgstr ""
+#~ "Seçenek menülerini göstermek için Shift+sekme tuşunun üzerindeki tuşa bir "
+#~ "kez basın, karşılık gelen yazdırılabilir karakteri yazmak için iki kez "
+#~ "basın."
 
-msgid "list from "
-msgstr "listeden "
+#~ msgid ""
+#~ "Focus : 1 press set focus on message list, 2 presesses set focus on "
+#~ "message list and go to the last message"
+#~ msgstr ""
+#~ "Odak : 1 defa basmak, mesaj listesine odaklanmayı ayarlar, 2 defaa "
+#~ "basmak, mesaj listesine odaklanmayı ayarlar ve son mesaja gider"
 
-msgid ""
-"In order for Thunderbird+G5 to work properly, you need to update Thunderbird "
-"to version 115.6 or higher. If your version {} seems appropriate, restart "
-"NVDA."
-msgstr ""
-"Afin que Thunderbird+G5 fonctionne correctement, vous devez mettre à jour "
-"Thunderbird vers la version 115.6 ou supérieure. Si votre version {} semble "
-"appropriée, redémarrez NVDA."
+#~ msgid "Thunderbird Startup Options"
+#~ msgstr "Thunderbird Başlangıç ​​Seçenekleri"
 
-msgid ""
-"In order for Thunderbird+G5 to work properly, you need to update Thunderbird "
-"to version 115.6 or higher."
-msgstr ""
-"Pour que Thunderbird+G5 fonctionne correctement, vous devez mettre à jour "
-"Thunderbird vers la version 115.6 ou supérieure."
+#~ msgid "Startup options"
+#~ msgstr "Başlangıç ​​seçenekleri"
 
-msgid "https://www.rptools.org/NVDA-Thunderbird/get.php?pg=manual&v=g5&lang=en"
-msgstr ""
-"https://www.rptools.org/NVDA-Thunderbird/get.php?pg=manual&v=g5&lang=fr"
+#~ msgid "When starting Thunderbird, bring the &focus to :"
+#~ msgstr "Thunderbird'ü başlatırken &focus'u şuraya getirin:"
 
-msgid "1: Parent"
-msgstr "P&arent"
+#, python-brace-format
+#~ msgid ""
+#~ "Your current version of the Thunderbird+G5 add-on needs version {0} or "
+#~ "higher of the Thunderbird application but your version is: {1}.\n"
+#~ "Please update the Thunderbird application for the add-on to work properly."
+#~ msgstr ""
+#~ "Thunderbird+G5 eklentisinin mevcut sürümünün Thunderbird uygulamasının "
+#~ "{0} veya üzeri bir sürümüne ihtiyacı var ancak sürümünüz: {1}.\n"
+#~ "Eklentinin düzgün çalışması için lütfen Thunderbird uygulamasını "
+#~ "güncelleyin."
 
-msgid "Unread sibling Folders, menu"
-msgstr "Dossiers non lus frères"
+#~ msgid "Warning"
+#~ msgstr "Uyarı"
+
+#~ msgid "Image"
+#~ msgstr "Resim"
+
+#~ msgid "of the test mode"
+#~ msgstr "test modu"
+
+#~ msgid ""
+#~ "Delay between 20 and 2000 milliseconds before filtered reading (default: "
+#~ "100):"
+#~ msgstr ""
+#~ "Filtrelenmiş okumadan önce 20 ile 2000 milisaniye arasındaki gecikme "
+#~ "(varsayılan: 100):"
+
+#~ msgid "Separate reading window"
+#~ msgstr "Ayrı okuma penceresi"
+
+#, fuzzy
+#~| msgid "Enabling message translation mode, ready."
+#~ msgid "{} message translation mode, ready."
+#~ msgstr "Mesaj çeviri modu etkinleştiriliyor, hazır."
+
+#, fuzzy
+#~| msgid "Disabled"
+#~ msgid "Disabling"
+#~ msgstr "Kullanılamaz"
+
+#, fuzzy
+#~| msgid "Enabled"
+#~ msgid "Enabling"
+#~ msgstr "Etkinleştirildi"
+
+#, fuzzy
+#~| msgid "Enabling message display mode, ready."
+#~ msgid "{} message display mode, ready."
+#~ msgstr "Mesaj görüntüleme modu etkinleştiriliyor, hazır."
+
+#~ msgid "message translation mode "
+#~ msgstr "ileti çeviri modu "
+
+#~ msgid "Translation display mode {}"
+#~ msgstr "Çeviri görüntüleme modu {}"
+
+#~ msgid "Enables or disables the display of translations in a window."
+#~ msgstr ""
+#~ "Çevirilerin bir pencerede görüntülenmesini etkinleştirir veya devre dışı "
+#~ "bırakır."
+
+#, fuzzy
+#~| msgid ""
+#~| "If custom vocalization, announce the current line after line deletion   "
+#~| "(not recommanded for Braille)."
+#~ msgid "Announce new line after deleting lines (not recommended for Braille)"
+#~ msgstr ""
+#~ "Özel seslendirme varsa, satır silindikten sonra geçerli satırı duyurun "
+#~ "(Braille için önerilmez)."
+
+#, fuzzy
+#~| msgid "Message list : force rows to be filled if always blank."
+#~ msgid "force rows to be filled if always blank."
+#~ msgstr "İleti listesi : her zaman boş satırları doldurulmaya zorla."
+
+#, fuzzy
+#~| msgid "Message list options"
+#~ msgid "Message list  options"
+#~ msgstr "İleti listesi seçenekleri"
+
+#, fuzzy
+#~| msgid "custom vocalization of rows."
+#~ msgid "Message list : custom vocalization of rows."
+#~ msgstr "satırların seslendirilmesini özelleştir."
+
+#~ msgid "Message list : force rows to be filled if always blank."
+#~ msgstr "İleti listesi : her zaman boş satırları doldurulmaya zorla."
+
+#, fuzzy
+#~| msgid "Do not say the window and folder names when entering the list."
+#~ msgid ""
+#~ "Message list : Do not say the window and folder names when entering the "
+#~ "list."
+#~ msgstr "Listeye girerken pencere ve klasör adlarını söyleme."
+
+#~ msgid "Always display the translations"
+#~ msgstr "Çevirileri her zaman göster"
+
+#~ msgid "Mentions"
+#~ msgstr "Bahsetmeler"
+
+#~ msgid ""
+#~ "Address book : explicit announcement of contacts in the contact list."
+#~ msgstr ""
+#~ "Carnet d'adresses : annonce explicite des contacts dans la liste de "
+#~ "contacts."
+
+#~ msgid "Address book : do not customize contact table announcements."
+#~ msgstr ""
+#~ "Carnet d'adresses : ne pas personnaliser les annonces du tableau de "
+#~ "contacts."
 
 #~ msgid ""
 #~ "This add-on significantly increases the efficiency and comfort of using "
@@ -1267,8 +1431,21 @@ msgstr "Dossiers non lus frères"
 #~ msgid "Starting Thunderbird."
 #~ msgstr "Thunderbird başlatılıyor."
 
+#~ msgid "Drag and drop done"
+#~ msgstr "Glisser-déposer terminé"
+
+#, fuzzy
+#~| msgid "Other  options"
 #~ msgid "Update options"
-#~ msgstr "Güncelleme seçenekleri"
+#~ msgstr "Diğer seçenekler"
+
+#~ msgid "Update : 1 press :  Check for update, 3 presses : force update."
+#~ msgstr ""
+#~ "Mise à jour : 1 appui : vérifier la mise à jour, 3 appuis : forcer la "
+#~ "mise à jour."
+
+#~ msgid "list from "
+#~ msgstr "listeden "
 
 #~ msgid "Thunderbird+, launcher and update"
 #~ msgstr "Thunderbird+, başlatıcı ve güncelleme"
@@ -1278,6 +1455,22 @@ msgstr "Dossiers non lus frères"
 
 #~ msgid " text elements. Press Control to stop."
 #~ msgstr " metin öğeleri. Durdurmak için Kontrol'e basın."
+
+#~ msgid ""
+#~ "In order for Thunderbird+G5 to work properly, you need to update "
+#~ "Thunderbird to version 115.6 or higher. If your version {} seems "
+#~ "appropriate, restart NVDA."
+#~ msgstr ""
+#~ "Afin que Thunderbird+G5 fonctionne correctement, vous devez mettre à jour "
+#~ "Thunderbird vers la version 115.6 ou supérieure. Si votre version {} "
+#~ "semble appropriée, redémarrez NVDA."
+
+#~ msgid ""
+#~ "In order for Thunderbird+G5 to work properly, you need to update "
+#~ "Thunderbird to version 115.6 or higher."
+#~ msgstr ""
+#~ "Pour que Thunderbird+G5 fonctionne correctement, vous devez mettre à jour "
+#~ "Thunderbird vers la version 115.6 ou supérieure."
 
 #, fuzzy
 #~| msgid ", button, press twice to activate"
@@ -1434,6 +1627,11 @@ msgstr "Dossiers non lus frères"
 
 #~ msgid "No header"
 #~ msgstr "başlık yok "
+
+#~ msgid ""
+#~ "https://www.rptools.org/NVDA-Thunderbird/get.php?pg=manual&v=g5&lang=en"
+#~ msgstr ""
+#~ "https://www.rptools.org/NVDA-Thunderbird/get.php?pg=manual&v=g5&lang=fr"
 
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
@@ -1734,13 +1932,21 @@ msgstr "Dossiers non lus frères"
 #~ msgid "Allow Thunderbird to close with control+w or control+F4"
 #~ msgstr "Thunderbird'ün control+w veya control+F4 ile kapanmasına izin ver"
 
+#~ msgid "1: Parent"
+#~ msgstr "P&arent"
+
 #, fuzzy
 #~| msgid "Account"
 #~ msgid "Menu, Accounts"
 #~ msgstr "Hesap."
 
+#~ msgid "Unread sibling Folders, menu"
+#~ msgstr "Dossiers non lus frères"
+
+#, fuzzy
+#~| msgid "Message list options"
 #~ msgid "Message list not found."
-#~ msgstr "İleti listesi bulunamadı."
+#~ msgstr "İleti listesi seçenekleri"
 
 #~ msgid "Not read"
 #~ msgstr "Okunmadı"

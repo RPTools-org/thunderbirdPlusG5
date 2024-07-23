@@ -223,6 +223,7 @@ def installAddon(file):
 			beep(440, 5)
 			addon.requestRemove()
 	# to install the new version
+	killTB()
 	bundle = addonHandler.AddonBundle(file)
 	addonHandler.installAddonBundle(bundle)
 	# to restart NVDA
@@ -311,3 +312,10 @@ def getLatestVersion() :
 	except : return errMsg + " 3"
 	# browseableMessage (message =data, title = _("Addon update"), isHtml = False)
 	return  ver
+
+def killTB(wait=0.5) :
+	import psutil
+	for proc in psutil.process_iter():
+		if proc.name() == "thunderbird.exe":
+			proc.terminate()
+	time.sleep(wait)

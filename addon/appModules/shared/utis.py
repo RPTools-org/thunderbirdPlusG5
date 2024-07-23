@@ -56,6 +56,10 @@ def isChichi() :
 	# sharedVars.log(o, "Chichi : " + str(sharedVars.chichi))
 	return sharedVars.chichi
 
+def beepRepeat(freq, dur, repeats=1) :
+	for i in range(0, repeats) :
+		beep(freq,  dur)
+		sleep(.3)
 def noSpeechMessage(msg) :
 	speech.cancelSpeech()
 	message(msg)
@@ -70,8 +74,15 @@ def playSound (soundFile):
 def versionTB() :   
 	return int(globalVars.foregroundObject.appModule.productVersion.split(".") [0])
 
-def TBVersion() : # full version string
-	return globalVars.foregroundObject.appModule.productVersion
+def TBVersion(asInt=False) : # full version string
+	pv = globalVars.foregroundObject.appModule.productVersion
+	if not asInt : return pv
+	tv = pv.split(".")
+	tv[1] = str(tv[1]).rjust(2, "0") # minor version
+	tv[2]= "0" if not tv[2] else tv[2] # build
+	tv[2] = str(tv[2]).rjust(2, "0")
+	v = tv[0] +  tv[1] + tv[2]	
+	return int(v)
 
 def addonVersion(sp="%20") :
 	_curAddon = addonHandler.getCodeAddon()
@@ -127,7 +138,11 @@ def getIA2Attribute (obj,attribute_value=False,attribute_name ="id"):
 	r =obj.IA2Attributes[attribute_name]
 	return r if not attribute_value  else r ==attribute_value
 
-def findChildByRoleID(obj,ID, role, startIdx=0) : # attention : valeurs role de controlTypes.py
+def disableOvl(mode) :
+		sharedVars.objLooping = mode
+
+def findChildByRoleID(obj,ID, role, startIdx=0) : # attention : valeurs role de controlTypes.pyelse :
+
 	if obj  is None : return None
 
 	try : 
@@ -480,6 +495,17 @@ def strBetween(txt, sep1, sep2) :
 	if  pos2 < 0 : return ""
 	return txt[pos1+1:pos2]
 
+def truncateBefore(text, subStr) :
+	p = text.find(subStr)
+	if p == -1 : return text
+	return text[p:]
+
+
+def truncateAfter(text, subStr) :
+	p = text.find(subStr)
+	if p == -1 : return text
+	return text[0:p]
+	
 def getStatusBarText() :
 	o = globalVars.foregroundObject # frame
 	t = ""

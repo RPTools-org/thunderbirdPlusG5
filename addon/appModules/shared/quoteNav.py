@@ -1,9 +1,9 @@
- #-*- coding:utf-8 -*
+#-*- coding:utf-8 -*
 import addonHandler
 addonHandler.initTranslation()
 
 import re, speech, winUser
-from ui import message, browseableMessage
+from ui import message # , browseableMessage
 from core import callLater
 from core import callLater
 from tones import beep
@@ -15,9 +15,9 @@ import globalPluginHandler
 import controlTypes
 import treeInterceptorHandler, textInfos
 import sharedVars
-import utis 
-
-
+import utis
+import utils115 as utils
+import textDialog
 # Attention : 2 non printable chars used here :  Alt+0031 is used as a separator of quotes / messages.  Alt+0030 as a temporary replacement of \n
 CNL = chr(30) # char new line
 # CNQ = chr(31) # char new quote, hard coded as 
@@ -27,9 +27,13 @@ class QuoteNav() :
 	curItem =  lastItem = curQuote = 0
 
 	def __init__(self) :
+		self.clean = not sharedVars.oSettings.getOption("mainWindow", "CleanPreview") 
 		self.lItems  = self.lQuotes = []
+		self.nav = False
 		self.translate = False # 2024.01.02
-		self.browseTranslation = sharedVars.oSettings.getOption("messengerWindow", "displayTranslations")
+		self.browseTranslation = sharedVars.oSettings.getOption("mainWindow", "browseTranslation")
+		self.browsePreview = sharedVars.oSettings.getOption("mainWindow", "browsePreview")
+		self.fromSpellCheck = False
 		self.iTranslate = None
 		self.langTo = utis.getLang()
 
@@ -69,11 +73,13 @@ class QuoteNav() :
 		self.regSubject = re.compile(u"(Re:|Ré )")
 		self.regListName = re.compile ("\[.*\]|\{.*\}") # compile ("\[(.*)\]")
 	def toggleTranslation(self) :
-		msg = _("message translation mode ")
+		msgEnab = _("Enabling message translation mode, ready.")
+		msgDisab = _("Disabling message translation mode, ready.")
+
 		if self.translate : 
 			self.translate = False 
 			self.iTranslate = None
-			return message(msg + _("Disabled"))
+			return message(msgDisab)
 		try : 
 			self.iTranslate = [p for p in globalPluginHandler.runningPlugins if p.__module__ == 'globalPlugins.instantTranslate'][0]
 			# sharedVars.logte("Instant Translate :" + str(self.iTranslate))
@@ -83,31 +89,15 @@ class QuoteNav() :
 		if not self.iTranslate :
 			return message(_("The Instant Translate add-on is not active or not installed."))
 		self.translate = True
-		message(msg + _("Enabled"))
+		message(msgEnab)
 
-	def toggleBrowseTranslation(self) :
-		msg = _("Translation display mode {}")
-		self.browseTranslation = not   self.browseTranslation
-		state = _("Enabled"  if self.browseTranslation else _("Disabled"))
-		message(msg.format(state))
-
-	def readMail(self, oDoc, rev = False, spkMode=1): 
-		# focus = getFocusObject()
-		# setFocusObject(oDoc)
-		# treeInterceptor = treeInterceptorHandler.getTreeInterceptor(oDoc)
-		# setFocusObject(focus)
-		# if treeInterceptor:
-			# try:
-				# info = treeInterceptor.makeTextInfo("all")
-			# except:
-				# pass
-			# else:
-				# message(
-				# text=info.text,
-				# brailleText="\n".join((oDoc.name, info.text)))
-		# beep(432, 10)
-		# # browseableMessage(message= str(info.text), title= str(oDoc.name), isHtml=False)
-		# return
+	def toggleBrowseMessage(self) :
+		# Translators : brace symbols will be replaced by the words enabling or disabling
+		msgEnab = _("Enabling message display mode, ready.")
+		msgDisab = _("Disabling message display mode, ready.")
+		self.browsePreview = not   self.browsePreview
+		message(msgEnab if self.browsePreview else msgDisab)
+	def readMail(self, oFocus, oDoc, rev = False, spkMode=1): 
 		speech.cancelSpeech()
 		for i in range(0, 20) :
 			if oDoc.role == controlTypes.Role.DOCUMENT :
@@ -126,33 +116,26 @@ class QuoteNav() :
 				# sleep(0.1)
 				oDoc =  getFocusObject()
 
-	def setDoc(self, oDoc, nav=False): 
+	def setDoc(self, oDoc, nav=False, fromSpellCheck=False): 	
 		# converts the doc into HTML code
 		if not oDoc : return 0 
 		self.nav = nav
+		self.fromSpellCheck = fromSpellCheck
 		# self.text = "\n---" # alt+0031
 		self.text = "\n" # alt+0031
 		self.lItems = []
 		self.lQuotes = []
 		self.lastItem = -1
 		self.curItem = 0		
-		self.quoteMode = True
-		self.subject = ""
 		# document without subject as name 
 		parID = str(utis.getIA2Attribute(oDoc.parent))
-		if parID == "messageEditor" : 
+		if parID in ("messageEditor", "spellCheckDlg") :
 			self.quoteMode = False
-			fg = getForegroundObject()
-			sharedVars.curSubject = fg.name
-			self.quoteMode = False
-		elif parID == "spellCheckDlg" : 
-			# sharedVars.curSubject = parID
-			self.QoteMode = False
+		else :
+			self.quoteMode = True
 
-		self.subject  =sharedVars.curSubject.split(" - ")[0].strip() # ((" ,;:"))
-		if " " in self.subject :
-			p = self.subject.split(" ")
-			self.subject = p[len(p)-1].strip()
+		self.subject = getEndSubject(parID)
+		# sharedVars.logte("self.subject=" + self.subject)
 
 		o=oDoc.firstChild # section ou paragraph
 		# # sharedVars.logte(u"après  o.firstChild " + str(o.role)  + ", " + str(o.name))
@@ -203,6 +186,7 @@ class QuoteNav() :
 	
 
 	def setText(self, speakMode=1) : 
+		# textDialog.showText("code HTML", self.text) ; return
 		self.deleteBlocks()
 		# replace \n and <br> with 
 		self.text = self.regBrPLi.sub(CNL, self.text)
@@ -219,8 +203,9 @@ class QuoteNav() :
 			# beep(440, 20)
 		# removes multiple pseudo \n 
 		self.text=self.regMultiNL.sub(CNL,self.text)
-		self.cleanStdHeaders()
-		self.cleanMSHeaders()
+		if self.clean : 
+			self.cleanStdHeaders()
+			self.cleanMSHeaders()
 
 		# removes multiple  spaces again
 		self.text = self.regMultiSpaces.sub(" ", self.text)
@@ -274,18 +259,18 @@ class QuoteNav() :
 		if speakMode  > 0 :
 			message(msg + self.lItems[self.curItem])
 
-	def showTranslation(self, t) :
-		browseableMessage(message=t, title= _("Translation"), isHtml=False)
+	def displayMessage(self, subj, body) :
+		if subj == "" : subj = _("Translation")
+		textDialog.showText(title=subj, text=body, label="-")
 
-	def truncateSubj(self, text, minLen) :
-		text=self.regSubject.sub("",text)
-		text=self.regListName.sub("",text)
-		text=self.regMultiSpaces.sub(" ", text)
-		max = len(text)
-		# sharedVars.logte("TruncateSubj " + "{}, minLen : {}, maxLen : {}".format(text, minLen, max)) 
-		if minLen <= max : return text 
-		pos = minLen - 1
-		while pos < max :
+	def truncateSubj(self, text, wantedLen) :
+		# text=self.regSubject.sub("",text)
+		# text=self.regListName.sub("",text)
+		# text=self.regMultiSpaces.sub(" ", text)
+		lenText = len(text)
+		if lenText  <= wantedLen : return text 
+		pos = wantedLen - 1
+		while pos < lenText :
 			if text[pos] == " " :
 				return text[0:pos]
 			pos += 1
@@ -300,19 +285,25 @@ class QuoteNav() :
 			msg = _("Preview copied: ")
 		
 		if self.translate : 
-			t  = self.iTranslate.translateAndCache(sharedVars.curSubject, "auto", self.langTo).translation
-			t = self.truncateSubj(t, 25) + " :\n" 
-			t += self.iTranslate.translateAndCache(self.text.split("")[1]  , "auto", self.langTo).translation
-			if self.browseTranslation : self.showTranslation(t)
-			else : message(msg + t)
-		else :
-			message(msg + self.text)
+			subject =   self.iTranslate.translateAndCache(cleanSubject(sharedVars.curWinTitle), "auto", self.langTo).translation
+			subject = self.truncateSubj(subject, 25)
+			text = self.iTranslate.translateAndCache(self.text.split("")[1]  , "auto", self.langTo).translation
+			if self.browseTranslation or self.browsePreview and not self.fromSpellCheck : self.displayMessage(subject, text)
+			else : message(msg + subject + text)
+		else : # no translation
+			if self.browsePreview and not self.fromSpellCheck  : 
+				subject = cleanSubject(sharedVars.curWinTitle)
+				subject = self.truncateSubj(subject, 25)
+				self.displayMessage(subject, self.text)
+			else : 
+				message(msg + self.text)
 
 	def speakQuote(self, quote) :
 		if self.translate : 
 			quote  = self.iTranslate.translateAndCache(quote, "auto", self.langTo).translation
-		if self.browseTranslation : self.showTranslation(quote) 
+		if self.browseTranslation and not self.fromSpellCheck : self.displayMessage("", quote) 
 		else : message(quote)
+
 	def deleteMetas(self) :
 		lbl = "<meta "
 		metas = []
@@ -337,10 +328,17 @@ class QuoteNav() :
 		reg = re.compile("(\-{5} ?(" + s + ") ?\-{5})")
 		self.text = reg.sub("", self.text)
 
+		# delete Gmail's forwarded message
+		if self.text.find("-- Forwarded message") > -1 :
+			s = '<div dir="ltr" class="gmail_attr">---------- Forwarded message ---------'
+			reg = re.compile(s + ".+?\</div\>")
+			self.text = reg.sub("", self.text)
+
+		
 		self.deleteMetas()
 		# removes style css tag
 		if self.text.find("<style>") > 0 :
-			regExp = re.compile ("\<style\>.+?\</style\>")
+			regExp = re.compile("\<style\>.+?\</style\>")
 			self.text=regExp.sub (" ",self.text)
 
 		#  removes table of mozilla headers
@@ -679,3 +677,33 @@ def delMailAddrs(s) :
 	# response=json.loads(response)
 	# return response['lang']
 
+def getEndSubject(parentID) :
+	# fo = getFocusObject()
+	# role = fo.role
+	# s = ""
+	# if role in (controlTypes.Role.LISTITEM, controlTypes.Role.TREEVIEWITEM) and utils.hasID(fo, "threadTree-row") :
+		# s= utils.getColValue(fo, "subjectcol")
+	# else :
+	s  = utils.cleanWinTitle(sharedVars.curWinTitle)
+	# get 2 last words
+	aParts = s.split(" ")
+	arrLen = len(aParts)
+	if arrLen == 1 :
+		return aParts[0]
+	elif arrLen >= 2 : 
+		arrLen -= 1
+		return aParts[arrLen-1] + " " + aParts[arrLen]
+	return s
+
+	
+
+def cleanSubject(subject) :
+	subject = utils.cleanWinTitle(subject)
+	i = subject.rfind("]")
+	if i > -1 :
+		subject = subject[i:]
+	subject =  subject.replace("Re: ", "")
+	return subject
+		
+		
+	

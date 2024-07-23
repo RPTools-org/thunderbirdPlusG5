@@ -36,9 +36,10 @@ class SpellCheckDlg (IAccessible):
 		id =(self.IA2Attributes["id"] if hasattr (self,"IA2Attributes") and "id" in self.IA2Attributes else None)
 		if role == controlTypes.Role.EDITABLETEXT :
 			#beep(150, 30)
-			if _("None") in self.parent.getChild (1).name :
-				message(_("No misspelled words were found"))
+			# if _("None") in self.parent.getChild (1).name :
+				# message(_("No misspelled words were found"))
 			#self.name = ""
+
 			self.bindGestures ({"kb:nvda+tab":"reportFocus","kb:ALT+UPARROW":"reportFocus", "kb:enter":"enterFromEdit", "kb:shift+enter":"enterFromEdit", "kb:control+enter":"enterFromEdit", "kb:control+shift+enter":"enterFromEdit", "kb:alt+enter":"enterFromEdit", "kb:alt+i":"altLetter", "kb:alt+n":"altLetter", "kb:alt+r":"altLetter", "kb:alt+t":"altLetter", "kb:alt+a":"altLetter"})
 		""" elif role == (controlTypes.Role.LISTITEM if hasattr(controlTypes, "Role") else controlTypes.ROLE_LISTITEM) and not self.previous :self.keyboardShortcut =self.container.keyboardShortcut """
 
@@ -126,7 +127,6 @@ class SpellCheckDlg (IAccessible):
 	def script_reportFocus (self,gesture):
 		c = getLastScriptRepeatCount () 
 		misp = self.parent.getChild (1).name
-		#print (misp)
 		message(misp)
 		if c == 2 :
 			#speak ([u"Mot mal orthographié : " + misp])
@@ -140,7 +140,7 @@ class SpellCheckDlg (IAccessible):
 			speakSpelling (self.value)
 		elif c == 1 :
 			if not sharedVars.oQuoteNav : sharedVars.initQuoteNav()
-			sharedVars.oQuoteNav.setDoc(sharedVars.oEditing,  nav=True)
+			sharedVars.oQuoteNav.setDoc(sharedVars.oEditing, nav=True, fromSpellCheck=True)
 			sharedVars.oQuoteNav.setText(0) # speakMode=0 silent
 			sharedVars.oQuoteNav.findItem(misp)
 		# else :

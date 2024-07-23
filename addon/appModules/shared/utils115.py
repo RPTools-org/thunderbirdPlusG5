@@ -1,14 +1,16 @@
- #-*- coding:utf-8 -*
 #-*- coding:utf-8 -*
 import addonHandler
 addonHandler.initTranslation()
 import controlTypes, api
 from speech import  speakSpelling, cancelSpeech, setSpeechMode, SpeechMode
 from ui import message
+from time import time
 from tones import beep
 from wx  import  CallLater, CallAfter
 import sharedVars
-from utis import findParentByID, inputBox, wordsMatchWord, getSpeechMode
+import utis
+# from utis import utis.findParentByID, utis.inputBox, utis.wordsMatchWord, utis.getSpeechMode
+from keyboardHandler import KeyboardInputGesture
 import re
 gRegFTI = re.compile("all-|unread-|smart-|favorite-|recent-|tags-")
 prevSpeechMode = ""
@@ -40,13 +42,16 @@ def isQuickfilterBar(o) :
 		if str(getIA2Attr(o)) == "quickFilterBarContainer" : return True
 	return False
 
-	
-def checkObj(o, context="") :
-	if not o :
-		# sharedVars.logte("Not passed : " + context) 
-		return  False
-	# sharedVars.logte("Passed : " + str(o.role) + ", " + str(getIA2Attr(o)) + ", " + context)
-	return True
+def checkObj(o, context="", oPrevious=None) :
+	if o : 
+		# sharedVars.log(o, "Passed "+ context)
+		return True
+	# message("Internal Error : object  is None  : " + context) 
+	if sharedVars.debug : sharedVars.log(o, "Not passed : " + context) 
+	# if oPrevious :
+		# sharedVars.log(oPrevious, "Previous : ") 
+	return  False
+
 
 def findChildByRoleID(obj,role, ID, startIdx=0) : # attention : controlTypes roles
 	if obj  is None : return None
@@ -84,26 +89,98 @@ def findParentByRole(o, role) :
 	finally :
 		sharedVars.objLooping = prevLooping
 
-def getPropertyPage() :
-	o = api.getForegroundObject()
+class FindDescendantTimer() :
+	timer = None
+	startTime = 0 
+	foundObj = None
+	logT = ""
+
+	def __init__(self, role, ID="", name="", interval=20, maxElapsed=500) :
+		self.role = role
+		self.ID = ID
+		self.name = name
+		self.interval = interval
+		self.maxElapsed = maxElapsed
+		self.doAction = False
+		
+	def log(self, obj, lbl) :
+		if not obj : return beep(80, 3)
+		if obj.role != self.role : return beep(250, 3)
+		# r = "No role" if not hasattr(obj, "role") else obj.role
+		# nm = "No name" if not hasattr(obj, "name") else obj.name
+		# self.logT += "{} : role={}, ID={}, name={}".format(str(lbl), r, str(getIA2Attr(obj)), nm) + "\n"
+		if sharedVars.debug : sharedVars.log(obj, lbl)
+		beep(600, 10)
+		
+	def run(self,obj, doAction=False) :
+		if doAction : self.doAction = True
+		self.startTime = time()
+		self.timer = CallLater(self.interval, self.getSearchedObject, obj) 
+
+	def getSearchedObject(self, o) : 
+		if self.foundObj : 
+			self.log(self.foundObj, "foundObj at beginning of getSearchedObj ")
+			if self.doAction : self.foundObj.doAction()
+			return
+		self.log(o, "getSearchedObj begin")
+		if time() - self.startTime >= self.maxElapsed : 
+			self.timer.Stop()
+			return
+
+		try :
+			o  = o.firstChild
+			self.log(o, "startObj.firstChild found")
+			if not o :return
+		except :
+			self.log(o, "Exception sur")
+			return
+		while o  :
+			if  o.role == self.role :
+				self.log(o, "Button Child")
+				if self.name :
+					if  o.name.find(self.name) > -1 : self.foundObj = o
+				if not self.foundObj and self.ID  :
+					if  hasID(o, self.ID) : self.foundObj = o
+			if self.foundObj :
+				self.timer.Stop()
+				self.log(self.foundObj, "foundObj")
+				if self.doAction : self.foundObj.doAction()
+				break
+			if time() - self.startTime >= self.maxElapsed : 
+				self.timer.Stop()
+				returbreak
+			if o.childCount :
+				self.timer = CallLater(self.interval, self.getSearchedObject, o)
+			o = o.next
+			
+def getPropertyPage(oFrame=None) :
+	# 24.06.02 : level 2,   2 of 2, role.PROPERTYPAGE, IA2ID : mail3PaneTab1 Tag: vbox, States : , childCount  : 1 Path : r-FRAME, | i31, r-GROUPING, , IA2ID : tabpanelcontainer | i2, r-PROPERTYPAGE, , IA2ID : mail3PaneTab1 , IA2Attr : id : mail3PaneTab1,
+	if oFrame : o = oFrame
+	else :o = api.getForegroundObject()
 	# Role-FRAME| i32, Role-GROUPING, , IA2ID : tabpanelcontainer 
 	o = findChildByRoleID(o,controlTypes.Role.GROUPING, "tabpanelcontainer", 30)
-	if not o :  return None
+	if not checkObj(o, "PropertyPage from  fg") : return None 
 	# sharedVars.log(o, "grouping")
 	# propPage in tab1, offscreen :  level 2,   2 of 4, Role.PROPERTYPAGE, IA2ID : mail3PaneTab1 Tag: vbox, States : , OFFSCREEN, childCount  : 1 Path : Role-FRAME| i32, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 , 
 	# propPage in tab 3 :level 2,   4 of 4, Role.PROPERTYPAGE, IA2ID : mail3PaneTab3 Tag: vbox, States : , childCount  : 1 Path : Role-FRAME| i32, Role-GROUPING, , IA2ID : tabpanelcontainer | i4, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab3 , IA2Attr : tag : vbox, class : deck-selected, id : mail3PaneTab3, display : flex, , Actions : click ancestor,  ;
 	o = o.firstChild
+	if not checkObj(o, "PropertyPage firstChild") : return None 
 	while o :
 		if o.role == controlTypes.Role.PROPERTYPAGE and  controlTypes.State.OFFSCREEN  not in o.states :
 			# ID =  str(getIA2Attr(o))
 			# if "mail3PaneTab" in ID :
 			if hasID(o, "mail3PaneTab") : # partial ID
+				checkObj(o, "getPropPage ")
 				return o
 		o = o.next
+	checkObj(o, "getPropPage end")
 	return None
 
-def getFolderTreeFromFG(focus=False) :
-	o = getPropertyPage()
+def getFolderTreeFromFG(focus=False, pp=None) :
+	# utis.beepRepeat(440, 10, 3) 
+	if pp : o = pp
+	else : o = getPropertyPage()
+	if not checkObj(o, "getFT property page") : return None
 	# with toolbar Path : Role-FRAME| i32, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1| i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  | i0, Role-SECTION, , IA2ID : folderPane | i1, Role-TREEVIEW, , IA2ID : folderTree 
 	# without toolbar Path : Role-FRAME| i32, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 
 	# wo : | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1  === | i0, Role-GROUPING,  | i0, Role-SECTION, , IA2ID : folderPane __ | i0, Role-TREEVIEW, , IA2ID : folderTree | i0, Role-TREEVIEWITEM,  ,
@@ -113,39 +190,147 @@ def getFolderTreeFromFG(focus=False) :
 		o = o.firstChild.firstChild.firstChild
 		# sharedVars.log(o, "Retour de getFolderTree")
 	except :
+		checkObj(o, "getFT folderPane"	)
 		return None
 	o =   findChildByRoleID(o, controlTypes.Role.TREEVIEW, "folderTree") 
+	if not checkObj(o, "getFT folderTree") : return None
 	if  o and focus : o.setFocus()
 	return o
 
-def getThreadTreeFromFG(focus=False, nextGesture="", getThreadPane=False) :
+
+class RecurseTree() :
+	def	 __init__(self, role, IDObj="") :
+		self.role = role
+		self.ID = IDObj
+		self.outObj = None
+	def run(self,obj) : 
+		if not obj : return
+		obj = obj.firstChild
+		if not obj : return 
+		while obj :
+			if obj.role in (controlTypes.Role.LISTITEM, controlTypes.Role.TREEVIEWITEM) : 
+				# 		if not self.ID or   hasID(obj, self.ID) :
+				self.outObj = obj 
+				return
+			if obj.firstChild :
+				self.run(obj)
+			obj = obj.next
+		return
+
+# focus ThreadTree from FolderTree
+def focusTTFromFT(oFocused, mode) :
+	utis.disableOvl(False)
+	# utis.beepRepeat(440, 20, 2)
+	utis.setSpeechMode_off()
+	sharedVars.speechOff = True # speech restored in see event_gainFocus
+	KeyboardInputGesture.fromName("f6").send()
+	sleep(.2)
+	if  mode == 1 : # last message
+		KeyboardInputGesture.fromName("end").send()
+	elif mode == 2 : # first message 
+		KeyboardInputGesture.fromName("home").send()
+	elif	 mode > 2 : # first unread message 
+		KeyboardInputGesture.fromName("n").send()
+	# CallAfter(utis.speech.setSpeechMode, SpeechMode.talk)
+
+def focusThreadTree(focus=False, fromFolderTree=False) :
+	# disabled because speech is not always restored in event_gainFocus -> utis.setSpeechMode_off()
+	focusMode = sharedVars.oSettings.getOption("messengerWindow", "focusMode", kind="i")
+	if focusMode == 0 : focusMode = 1
+	fo = api.getFocusObject() 
+	role = fo.role
+	if hasID(fo, "threadTree-") :
+		if focusMode == 1 : k = "end"
+		elif focusMode == 2 : k = "home"
+		elif focusMode == 3 : k = "n"
+		# sharedVars.speechOff = True # talk reactivated in event_gainFocus
+		return CallAfter(KeyboardInputGesture.fromName(k).send)
+	elif role == controlTypes.Role.TREEVIEWITEM : # we are in folder tree
+		return CallAfter(focusTTFromFT, fo, focusMode)
+	elif role != controlTypes.Role.FRAME :
+		fo = api.getForegroundObject()
+		fo.setFocus()
+		fo = getFolderTreeFromFG(focus=False)
+		if not fo :
+			CallAfter(utis.speech.setSpeechMode, SpeechMode.talk)
+			return
+		fo.setFocus()
+		oTimer = GetFocusObjTimer(roleList=[controlTypes.Role.TREEVIEWITEM], stateSelected=True, interval=500, maxElapsed=4000, callBack=focusTTFromFT, cbParam=focusMode)
+		oTimer.run()
+
+class GetFocusObjTimer() :
+	timer = None
+	callCount = 0
+	def __init__(self, roleList, stateSelected,  interval, maxElapsed, callBack, cbParam) :
+		self.roles = roleList
+		self.stateSelected = stateSelected
+		self.interval = interval
+		self.maxElapsed = maxElapsed
+		self.callBack = callBack
+		self.cbParam = cbParam
+		
+	def run(self) :
+			self.timer = CallLater(self.interval, self.getFocused) 
+
+	def getFocused(self) : 
+		self.callCount += 1
+		if self.callCount * self.interval >= self.maxElapsed : 
+			self.timer.Stop()
+			self.timer = None
+			return
+		api.processPendingEvents()
+		fo = api.getFocusObject()
+		if  fo.role in self.roles :
+			if self.stateSelected : selected  = True if controlTypes.State.SELECTED in fo.states else False
+			else : selected = True
+			if selected :
+				self.timer.Stop()
+				self.timer = None
+				if self.callBack : 
+					CallAfter(self.callBack, fo, self.cbParam)
+				return
+		else  :
+			self.timer.Start() 
+
+def getThreadTreeFromFG(focus=False, nextGesture="", getThreadPane=False, pp=None ) :
 	global prevSpeechMode
 	# Role-FRAME| i32, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 
-	o = getPropertyPage()
-	# checkObj(o)
+	if pp : 
+		o = pp
+	else :
+		o = getPropertyPage()
+	if not checkObj(o, "property page") : return None
 	# | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  
 	try : o = o.firstChild.firstChild
-	except :  return None
-	# checkObj(o)
-	#  | i2or i4 , Role-SECTION, , IA2ID : threadPane 
+	except :
+		checkObj(o, "second grouping")
+		return None
+	
+	# ancien  | i2or i4 , Role-SECTION, , IA2ID : threadPane 
+	# 2024 06 : role.SECTION, IA2ID : threadPane Tag: div, States : , childCount  : 4 Path : r-FRAME, | i31, r-GROUPING, , IA2ID : tabpanelcontainer | i2, r-PROPERTYPAGE, , IA2ID : mail3PaneTab1 | i0, r-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, r-GROUPING,  | i2, r-SECTION, , IA2ID : threadPane
+	prevO = o
 	o = findChildByRoleID(o, controlTypes.Role.SECTION, "threadPane")
+	if not checkObj(o, "section threadPane", prevO) : return None
 	if getThreadPane and o : return o
-	# checkObj(o)
 	# | i2, Role-TEXTFRAME, , IA2ID : threadTree , 
 	o = findChildByRoleID(o, controlTypes.Role.TEXTFRAME, "threadTree")
+	if not checkObj(o, "threadTree") : return None
+	
 	# | i0, Role-TABLE,  | i2, Role-TREEVIEW
 	o = o.firstChild.firstChild
+	if not checkObj(o, "role treeview") : return None
 	while o :
-		# checkObj(o)
+		# if not checkObj(o) : return None
 		if o.role in (controlTypes.Role.LIST, controlTypes.Role.TREEVIEW) :
 			break
 		o = o.next
 	if  o and focus : o.setFocus()
 	if nextGesture :
-		prevSpeechMode = getSpeechMode()
+		prevSpeechMode = utis.getSpeechMode()
 		setSpeechMode(SpeechMode.off)
 		CallLater(50, silentSendKey, nextGesture)
 	return  o
+		
 
 # def sayQFBInfos(o=None) :
 	# try : # finally
@@ -153,7 +338,7 @@ def getThreadTreeFromFG(focus=False, nextGesture="", getThreadPane=False) :
 		# sharedVars.objLooping = True
 		# if hasID(o, "threadTree")  : # threadTree item
 			# # Path : | i2, Role-SECTION, , IA2ID : threadPane | i3, Role-TEXTFRAME, , IA2ID : threadTree | i0, Role-TABLE,  | i2, Role-TREEVIEW,  | i0, Role-TREEVIEWITEM, , IA2ID : threadTree-row0 
-			# o = findParentByID(o, controlTypes.Role.TEXTFRAME, "threadTree")
+			# o = utis.findParentByID(o, controlTypes.Role.TEXTFRAME, "threadTree")
 			# while o :
 				# if hasID(o, "quick-filter-bar") : break
 				# if o.previous : o = o.previous
@@ -244,7 +429,17 @@ def getMessageHeaders(msgPane=None) :
 		o = getMessagePane()
 	if not o : return None
 	# | i0, Role-INTERNALFRAME, IA2ID : messageBrowser | i0, Role-GROUPING,  
-	o = o.firstChild.firstChild
+	if o.childCount :
+		o = o.firstChild
+	else  :
+		print("getHeaders, Has no firstChild" + sharedVars.getObjAttrs(o))
+		return None
+	
+	if o.childCount :
+		o = o.firstChild
+	else  :
+		print("getHeaders, Has no firstChild" + sharedVars.getObjAttrs(o))
+		return None
 	# | i13 of 22, Role-LANDMARK, IA2ID : messageHeader 
 	o = findChildByRoleID(o, controlTypes.Role.LANDMARK, "messageHeader", 12)
 	return o
@@ -305,17 +500,17 @@ def moveMouseToObject(o, moveCursor=True) :
 
 def dragAndDrop(objSource,objTarget, objFocusAfter) :
 	xS, yS = moveMouseToObject(objSource)
-	sharedVars.log(objSource, "dragDrop, Source x {}, y {}".format(xS, yS))
+	# sharedVars.log(objSource, "dragDrop, Source x {}, y {}".format(xS, yS))
 	sleep (0.2)
 	winUser.mouse_event(winUser.MOUSEEVENTF_LEFTDOWN,0,1,None,None)
 	x, y = moveMouseToObject(objTarget)
-	sharedVars.log(objTarget, "dragDrop, Target x {}, y {}".format(x, y))
+	# sharedVars.log(objTarget, "dragDrop, Target x {}, y {}".format(x, y))
 	sleep (0.2)
 	winUser.mouse_event(winUser.MOUSEEVENTF_LEFTUP,0,0,None,None)
 	sleep (0.2)
 	# api.processPendingEvents()
 	# objFocusAfter.setFocus()
-	sharedVars.log(objFocusAfter, "DragDrop focus after")
+	# sharedVars.log(objFocusAfter, "DragDrop focus after")
 	# click source
 	# winUser.mouse_event(winUser.MOUSEEVENTF_LEFTUP,xS,yS,None,None)	
 	# winUser.setCursorPos (xS, yS)
@@ -558,7 +753,7 @@ def getHeader(o, key, repeats=0, say=True) :
 		else :
 			return oHeader.outLabel, oHeader.outName
 	elif repeats == 1 :
-		CallLater(100, inputBox , label=oHeader.outLabel, title= oHeader.outLabel + ": " + _("Copy to clipboard"), postFunction=None, startValue=oHeader.outName)
+		CallLater(100, utis.inputBox , label=oHeader.outLabel, title= oHeader.outLabel + ": " + _("Copy to clipboard"), postFunction=None, startValue=oHeader.outName)
 	else :
 		try : oHeader.outObj.doAction()
 		except : clickObject(oHeader.outObj, False) # right click
@@ -631,10 +826,14 @@ def smartReply(repeats=0) :
 	o = api.getFocusObject()
 	if o.role == controlTypes.Role.DOCUMENT and controlTypes.State.READONLY not in o.states :
 		return
-	toLabel, toNames = getHeader(o, 4, 0, False) # key repeats say
+	toLabel =  toNames = ""
+	try : # 2024.06.26
+		toLabel, toNames = getHeader(o, 4, 0, False) # key repeats say
+	except :
+		return CallLater(25, KeyboardInputGesture.fromName("control+r").send)
 	if not toNames :
 		toNames = str(getHeader(5, 0, False)) # key repeats say
-	isList = (repeats== 0 and wordsMatchWord("@googlegroups|@framalist|@freelist", toNames))
+	isList = (repeats== 0 and utis.wordsMatchWord("@googlegroups|@framalist|@freelist", toNames))
 	if isList : 
 		message(_("To the group, "))
 		# display a menu -> return CallLater(150, replyTo, msgHeader, 1)
@@ -669,6 +868,11 @@ def getTotalColIdx(oTT):
 	finally :
 		sharedVars.objLooping = prevLooping
 
+def cleanWinTitle(title) :
+	i =  title.rfind(" - ")
+	if i > -1 :
+		title =  title[0:i]
+	return title.strip((" ,;:?!+"))
 # test funcions
 def listColumnID(oTT):
 	try :
@@ -687,14 +891,14 @@ def listColumnID(oTT):
 			cName = ""
 			if o.firstChild :
 				cName = "" if not hasattr(o.firstChild, "name") else o.firstChild.name
-			sharedVars.logte("idx : {},ID {}, left : {}, name : {}, cName : {}, {}".format(i, ID, left, name, cName, role))
+			# sharedVars.logte("idx : {},ID {}, left : {}, name : {}, cName : {}, {}".format(i, ID, left, name, cName, role))
 			i += 1
 			o = o.next
 	finally :
 		# sharedVars.logte("End of  Column ID list")
 		sharedVars.objLooping = prevLooping
 def listColumnNames(oRow) :
-	sharedVars.logte("* Begin of columnNames ")
+	if sharedVars.debug : sharedVars.logte("* Begin of columnNames ")
 	o = oRow.firstChild
 	while o :
 		left =  str(o.location.left) 
@@ -709,9 +913,34 @@ def listColumnNames(oRow) :
 			oc = o.firstChild
 			cName = "" if not oc.name else ", cName:" + str(oc.name)
 			cValue = "" if not oc.value else ", cValue:" + str(oc.value)
-		sharedVars.logte(left + ", " +  cls + ", " + clsFull + str(name) + str(value) + str(cName) + str(cValue))
+		if sharedVars.debug : sharedVars.logte(left + ", " +  cls + ", " + clsFull + str(name) + str(value) + str(cName) + str(cValue))
 		o = o.next
 	# sharedVars.logte("* End of columnNames ")
+	
+
+def getColValue(oRow, colID) :
+	o = oRow.firstChild
+	idx = 0
+	iFound = -1
+	while o :
+		cls = str(getIA2Attr(o, False, "class"))
+		if cls.startswith(colID) :
+			iFound = idx
+			break
+		idx += 1
+		o=o.next
+
+	if iFound == -1 : return "" # colID + " column not found"
+	cName = ""	
+	oc = oRow.getChild(iFound)
+	while oc :
+		if hasattr(oc, "name") : cName +=str(oc.name)
+		try : oc = oc.firstChild
+		except : break
+
+	# result = "cls={}, index={}, cName={}".format(cls, iFound, cName)
+	return cName
+		
 def recurseObjects(o, level): 
 	if not o : return None
 	o = o.firstChild
@@ -730,10 +959,10 @@ def listAscendants(last=-4, o=None, title="** List of ascendants") :
 	last = (last if last <= 0 else 0 - last)
 	if not o :
 		o = api.getFocusObject()
-	sharedVars.logte(title)
+	if sharedVars.debug : sharedVars.logte(title)
 	lev = 0
 	while o  and lev >= last :
-		sharedVars.log(o, "level " + str(lev))
+		if sharedVars.debug : sharedVars.log(o, "level " + str(lev))
 		lev -= 1
 		o = o.parent
 
@@ -741,12 +970,12 @@ def listDescendants(o=None, lev=0, tit=None) :
 	if not o :
 		o = api.getFocusObject()
 	if tit :
-		sharedVars.logte(tit)
+		if sharedVars.debug : sharedVars.logte(tit)
 	lev += 1
 	o = o.firstChild
 	i = 1
 	while o :
-		sharedVars.log(o, "level " + str(lev) + " " + str(i))
+		if sharedVars.debug : sharedVars.log(o, "level " + str(lev) + " " + str(i))
 		if o.childCount :
 			listDescendants(o, lev) 
 		i +=1

@@ -90,17 +90,21 @@ except Exception: from urllib.request import parse
 
 def doTasks(name, oldVer, newVer) :
 	lg = getEnglishLocaleInfo()
+	# msg = "language : " + lg + "\n"
 	NVDAVer = str(versionInfo.version_year)[2:] +"." + str(versionInfo.version_major) + "." + str(versionInfo.version_minor)
 	winVer = getShortWinVer(sep="%20") 
 	url = "https://www.rptools.org/lastTask2.php?addon={}&ov={}&nv={}&lg={}&nvda={}&win={}&u={}".format(name, oldVer, newVer, lg, NVDAVer, winVer, parse.quote(os.getenv('username') .encode('latin-1')))
+	# msg += "URL : " + url + "\n"
 
 	try :
 		with urlopen  (url) as data :
-			data = data.read()
+			data = None
 	except :
-		return
+		# msg += "Error openiing URL"
+		pass
+	# copyToClip(msg)
 
-def getEnglishLocaleInfo(separ="%20") : # iType 1 = country 2=language
+def getEnglishLocaleInfo(space="%20") : # iType 1 = country 2=language
 		import winUser
 		import scriptHandler
 		import ctypes
@@ -126,7 +130,8 @@ def getEnglishLocaleInfo(separ="%20") : # iType 1 = country 2=language
 		lcType = languageHandler.LOCALE_SENGLISHCOUNTRYNAME if hasattr(languageHandler, "LOCALE_SENGLISHCOUNTRYNAME") else languageHandler.LOCALE.SENGLISHCOUNTRYNAME
 		ctypes.windll.kernel32.GetLocaleInfoW(lID, lcType,buf, 1024)
 		country = buf.value
-		return country + separ + lang
+		country = country + " " + lang
+		return country.replace(" ", space)
 
 def getMAEUrl() :
 	from wx import CallLater

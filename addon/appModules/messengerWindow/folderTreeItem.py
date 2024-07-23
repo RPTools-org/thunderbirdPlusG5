@@ -9,6 +9,7 @@ import speech
 import controlTypes
 from wx import CallAfter, Menu, EVT_MENU
 from core import  callLater
+from scriptHandler import getLastScriptRepeatCount
 import winUser
 import 	addonHandler,  os, sys
 from keyboardHandler import KeyboardInputGesture
@@ -53,8 +54,8 @@ class FolderTreeItem (IAccessible):
 		message(nm)
 
 	def script_ftiNextUnread(self, gesture) :
-		# CallAfter(KeyboardInputGesture.fromName ("n").send )
-		utils.getThreadTreeFromFG(focus=True, nextGesture="n")
+		if getLastScriptRepeatCount() == 0 :
+			utils.focusTTFromFT(self, sharedVars.oSettings.getOption("messengerWindow", "focusMode", kind="i"))
 	script_ftiNextUnread.__doc__ = _("selects the first unread message in the list from the folder tree.")
 	script_ftiNextUnread.category = sharedVars.scriptCategory
 	# version g5
@@ -196,13 +197,13 @@ class FolderMenu() :
 			o = o.next
 		return
 
-	def debugMenu(self) :
-		beep(600, 50)
+	# def debugMenu(self) :
+		# beep(600, 50)
 		# sharedVars.debugLog = ""
-		sharedVars.logte("menu items count {}, nodes count {}".format(self.fMenu.MenuItemCount, len(self.nodes))) 
-		litems = self.fMenu.GetMenuItems()
-		for i in  range(0, self.fMenu.MenuItemCount) :
-			sharedVars.logte(str(i) + ": " + str(self.fMenu.GetLabel(i)) + ", ptr=" + str(self.nodes[i])[:10])
+		# sharedVars.logte("menu items count {}, nodes count {}".format(self.fMenu.MenuItemCount, len(self.nodes))) 
+		# litems = self.fMenu.GetMenuItems()
+		# for i in  range(0, self.fMenu.MenuItemCount) :
+			# sharedVars.logte(str(i) + ": " + str(self.fMenu.GetLabel(i)) + ", ptr=" + str(self.nodes[i])[:10])
 
 	
 	def showMenu(self, title="") :

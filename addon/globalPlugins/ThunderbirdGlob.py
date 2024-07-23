@@ -267,4 +267,3 @@ def toggleUpdateState() :
 	except :
 		return wx.CallAfter(ui.message, _("Error saving update settings file."))
 	wx.CallAfter(ui.message, _("Automatic update has been disabled."))
-

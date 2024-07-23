@@ -4,7 +4,7 @@
 * URL: [thunderbird+ G5 and G4 add-ons home page][4] ;
   [History of changes at RPTools.org][5] ;
   [Contact in French or English][6] ;
-* Download [stable version][1]
+* Download [stable version][3]
 * Download [Latest version from RPTools.org][3] ;
 * NVDA compatibility: 2021.1 and later;
 * [Source code on gitHub][2]
@@ -48,8 +48,9 @@ These shortcuts are for the folder tree, message list, and message preview pane.
 Note: these last two shortcuts can be modified or swapped via the Input Gestures dialog.
 * alt+Home : one press selects the current folder in the folder tree, two presses displays a menu allowing you to choose the email account to reach in the tree
 * Control+Alt+Home : Same but for folders with unread messages. (2023.10.31)
-* Tab: goes to the next pane, straight away.
-* Escape: returns to the previous PANE, without detour.<br>
+* Tab: brings the focus to the next pane and in particular:<br>
+From the list of messages and if the preview pane is displayed: One press: brings the focus to the body of the message, Two presses: brings the focus to the banner of the reply buttons and headers of the message. (v.2404.23)* Escape: returns to the previous PANE, without detour.<br>
+* Escape : returns to the previous pane ; 
 Escape also allows you to alternate between the folder tree and the message list.
 * Shift+Tab: its native behavior has been preserved in this version.
 
@@ -101,10 +102,11 @@ also read the section [Choice and order of columns](#cols)
 
 <!-- end 2023.10.31 -->
 
+* Tab if the preview pane is displayed  : One press: brings the focus to the body of the message, Two presses: brings the focus to the banner of the reply buttons and message headers. (v.2404.23)
 * Escape in the message list: if a filter is active, it is deactivated and the message list remains selected. Otherwise, this shortcut gives focus to the folder tree.
 * NVDA+up arrow or NVDA+l (laptop) in message list:<br>
 One press: announces the current line of the message list. The NVDA+Tab shortcut produces the same result but without using this add-on.<br>
-Two presses: displays the details of the line in a text window which allows analysis of the line using the keyboard.
+Two presses: displays the details of the line in a text window which allows analysis of the line using the keyboard. from version 2404.23, this is the original line if custom vocalization of lines is active.
 * Control+right arrow in messages grouped by conversation : selects the last message in the conversation. This is first expanded if it is collapsed. (2312.14.00)
 * Control+left arrow in messages grouped by conversations : selects the first message in the conversation. This is first expanded if it is collapsed.<br>These last two shortcuts need the "Total" column to work.
 * Spacebar, F4, or Alt+down arrow: Reads a clean or translated version of the message from the preview pane, without leaving the message list.<br>
@@ -357,7 +359,7 @@ Set Start with Inbox options:
 * Set the options then restart Thunderbird.
 
 
-[1]: https://github.com/RPTools-org/thunderbirdPlusG5/releases/download/v2404.10.00/thunderbirdPlusG5-2404.10.00.nvda-addon
+[1]: https://github.com/RPTools-org/thunderbirdPlusG5/releases/download/v2404.23.00/thunderbirdPlusG5-2404.23.00.nvda-addon
 
 [2]: https://github.com/RPTools-org/thunderbirdPlusG5/
 

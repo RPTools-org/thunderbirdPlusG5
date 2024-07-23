@@ -45,6 +45,7 @@ TTIDefGestures = {
 	"kb:control+leftArrow" : "goGroupedFirst", 	
 	"kb:control+rightArrow" : "goGroupedLast", 	
 	# "kb:delete" : "deleteMsg",
+	# "kb:shift+delete" : "deleteMsg",
 	"kb:a" : "sayShortcut",
 	# "kb:shift+c" : "sayShortcut",
 	# "kb:j" : "sayShortcut",
@@ -98,18 +99,20 @@ class MessageListItem(IAccessible):
 	timer = None
 	timerCount = 0
 	def initOverlayClass (self):
+		# if sharedVars.lastKey == "del" : message(self.name)
+			
 		self.bindGestures(TTIDefGestures)
 		if not sharedVars.TTnoTags :
 			self.bindGestures(TTITagGestures)
+		if sharedVars.handleDelete:
+			self.bindGesture("kb:delete", "deleteMsg")
 
 	def script_sayLine(self, gesture):
-		rc =  getLastScriptRepeatCount ()
-		nm = self.name
+		rc =  int(getLastScriptRepeatCount ())
 		if rc > 0 :
-			browseableMessage (message=nm.replace(", ", "\n"), title = _("Line details") + " - ThunderbirdPlus", isHtml = False)
+			browseableMessage (message=sharedVars.curTTRow.replace(", ", "\n"), title = _("Line details") + " - ThunderbirdPlus", isHtml = False)
 		else : # 1 press
-			if sharedVars.TTClean or sharedVars.TTFillRow : message(sharedVars.curTTRow)
-			else :  message(self.name)
+			message(self.name)
 	script_sayLine.__doc__ = _("Message list : One press announces the current line, two presses displays the line text in a window.")
 	script_sayLine.category=sharedVars.scriptCategory
 
@@ -318,7 +321,7 @@ class MessageListItem(IAccessible):
 				sleep(0.1)
 				api.processPendingEvents()
 			if not o : return # 2023-09-12 gesture.send()
-			else : return sharedVars.oQuoteNav.readMail(o, ("shift" in gesture.modifierNames))
+			else : return sharedVars.oQuoteNav.readMail(self, o, ("shift" in gesture.modifierNames))
 		else : return gesture.send()
 	script_readPreview.__doc__ = _("Filtered reading of the message preview pane without leaving the list.")
 	script_readPreview.category=sharedVars.scriptCategory
@@ -329,16 +332,10 @@ class MessageListItem(IAccessible):
 		sharedVars.msgOpened = True
 		return gesture.send()
 		
-	# def script_deleteMsg(self,gesture):
-		# # sharedVars.logte("Before delete : " + sharedVars.curTTRow) 
-		# # gesture.send()
-		# # sleep(.5)
-		# # callLater(200, fSayTTi) 
-		# if sharedVars.gTimer : beep(100, 5) ; return
-		# gesture.send()
-		# sharedVars.gTimer = callLater(50,  differMsg, True)
-		
-
+	def script_deleteMsg(self,gesture):
+		CallAfter(focusNewRow,self.next, self.parent) 
+		gesture.send()
+	
 	def script_sayShortcut (self,gesture):
 		global gSaying
 		rc = getLastScriptRepeatCount() 
@@ -570,3 +567,13 @@ class GetDescObject() :
 			if obj.childCount > 0 :
 				self.run(obj)
 			obj = obj.next
+
+def focusNewRow(obj, oParent) :
+	# beep(440, 10)
+	if obj : speech.speakText(obj.name)
+	else : 
+		sm = utis.getSpeechMode()
+		utis.setSpeechMode_off()
+		KeyboardInputGesture.fromName("upArrow").send()
+		utis.setSpeechMode(sm)
+		KeyboardInputGesture.fromName("downArrow").send()

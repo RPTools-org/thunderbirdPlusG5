@@ -303,8 +303,8 @@ class DragDropper() :
 			# if o.name :
 				# break
 			# o = o.parent
-		ID = "ID : " + str(utils.getIA2Attr(o))
-		sharedVars.logte("* {} object under cursor x : {} y{}, {}, {}".format(label, x, y, self.getObjectProps(o), ID))
+		# ID = "ID : " + str(utils.getIA2Attr(o))
+		# sharedVars.logte("* {} object under cursor x : {} y{}, {}, {}".format(label, x, y, self.getObjectProps(o), ID))
 
 	def logLeftButtonState(self, label) :
 		sharedVars.logte(label)

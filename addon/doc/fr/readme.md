@@ -4,7 +4,7 @@
 * URL: [Page d'accueil des extensions thunderbird+ G5 et G4][4] ;
   [Historique des changements][5] ;
   [Contact][6] ;
-* Télécharger : [Version stable][1]
+* Télécharger : [Version stable][3]
 * Télécharger : [Dernière version sur RPTools.org][3] ;
 * Ccompatibilité NVDA : 2021.1 et ultérieures ;
 * [Code Source  sur gitHub][2]
@@ -48,6 +48,8 @@ Ces raccourcis concernent l'arborescence des dossiers, la liste de messages et l
 Note : ces deux derniers raccourcis peuvent être modifiés ou permutés via le dialogue des Gestes de commande.
 * alt+Début : 1 appui sélectionne le dossier courant dans l'arborescence des dossiers, 2 appuis affiche un menu permettant de choisir le compte de messagerie à atteindre dans l'arborescence 
 * Control+Alt+Début : idem mais pour les dossiers avec des messages non lus. (2023.10.31)
+* Tab : amène le focus au volet  suivant et en particulier :<br>
+ Depuis la liste de messages et si le volet d'aperçu est affiché : Un appui : amène le focus au corps du message, Deux appuis : amène le focus à la bannière des boutons de réponse et entêtes du message. (v.2404.23) 
 * Echappe : revient au volet précédent, sans détour. 
 Echappe permet aussi d'alterner entre l'arborescence des dossiers et la liste de messages. 
 * Maj+Tab : son comportement natif a été conservé dans cette version.
@@ -100,10 +102,11 @@ lisez aussi la section [Choix et agencement des colonnes](#cols)
 
 <!-- end 2023.11.10 -->
 
+* Tab si le volet d'aperçu est affiché : 1 appui : amène le focus au corps du message, 2 appuis : amène le focus à la bannière des boutons de réponse et entêtes du message. (v.2404.23) 
 * Echappe dans la liste de messages : si un filtre est actif, il est désactivé et la liste de messages reste sélectionnée. Sinon, ce raccourci donne le focus à l'arborescence des dossiers.
 * NVDA+flèche haut ou NVDA+l (laptop) dans la liste de messages :<br>
 Un appui : annonce la ligne courante de la liste de messages. Le raccourci NVDA+Tab produit le même résultat mais sans passer par cette extension.<br>
-Deux appuis : affiche le détail de la ligne dans une fenêtre de texte qui permet l'analyse de la ligne au clavier.
+Deux appuis : affiche le détail de la ligne dans une fenêtre de texte qui permet l'analyse de la ligne au clavier. A partir de la version 2404.23, il s'agit de la ligne d'origine si la vocalisation personnalisé des lignes est active.
 * Control+flèche droite en mode conversations groupées : sélectionne le dernnier message de la conversation. Celle-ci est d'abord développée si elle est réduite. (2312.14.00)
 * Control+flèche gauche en mode conversations groupées : sélectionne le premier message de la conversation. Celle-ci est d'abord développée si elle est réduite.<br>Ces deux derniers raccourcis ont besoin de la colonne   "Total" pour fonctionner.
 * Espace, F4 ou Alt+flèche bas : lit une version épurée ou traduite du message du volet d'aperçu, sans quitter la liste de messages.<br>
@@ -355,7 +358,7 @@ Régler les options de Start with Inbox :
 *  Réglez les options puis redémarrez Thunderbird.
 
 
-[1]: https://github.com/RPTools-org/thunderbirdPlusG5/releases/download/v2404.10.00/thunderbirdPlusG5-2404.10.00.nvda-addon
+[1]: https://github.com/RPTools-org/thunderbirdPlusG5/releases/download/v2404.23.00/thunderbirdPlusG5-2404.23.00.nvda-addon
 
 [2]: https://github.com/RPTools-org/thunderbirdPlusG5/
 
