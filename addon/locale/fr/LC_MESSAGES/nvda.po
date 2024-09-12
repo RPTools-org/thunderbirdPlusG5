@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Thunderbird+G5\n"
-"POT-Creation-Date: 2024-06-26 07:31+0200\n"
+"POT-Creation-Date: 2024-09-10 06:43+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Pierre-Louis R. <plr.listes@rptools.org>\n"
 "Language-Team: Pierre-Louis Renaud\n"
@@ -47,7 +47,7 @@ msgstr "Dossiers unifiés"
 msgid "Tags"
 msgstr "Etiquettes"
 
-#: appModules/messengerWindow/folderTreeItem.py:179 appModules/thunderbird.py:310
+#: appModules/messengerWindow/folderTreeItem.py:179 appModules/thunderbird.py:308
 msgid "Collapsed"
 msgstr "Réduit"
 
@@ -281,7 +281,7 @@ msgstr "Inverse l'état lu et  non lu  du message sélectionné"
 msgid "unread"
 msgstr "non lu"
 
-#: appModules/messengerWindow/messageListItem.py:522 appModules/thunderbird.py:340
+#: appModules/messengerWindow/messageListItem.py:522 appModules/thunderbird.py:338
 msgid "Read"
 msgstr "Lu"
 
@@ -362,10 +362,6 @@ msgstr "Configuration du compte"
 msgid "Add-ons for Thunderbird"
 msgstr "Modules pour Thunderbird"
 
-#: appModules/messengerWindow/tabs.py:197
-msgid "tab not found"
-msgstr "tab non trouvé"
-
 #: appModules/messengerWindow/tabs.py:270
 msgid "There is only one tab open."
 msgstr "Il n'y a qu'un onglet d'ouvert."
@@ -424,84 +420,76 @@ msgstr "Paragraphe,P&olice de caractère"
 msgid "void, From, To, Attachement, CC, BCC, Subject, Reply to"
 msgstr "rien, De, Pour, Pièce jointe, Copie à, Copie cachée à, Sujet, Réponse à"
 
-#: appModules/msgComposeWindow/msgComposeWindow.py:97
+#: appModules/msgComposeWindow/msgComposeWindow.py:98
 msgid "No header."
 msgstr "Pas d'entête."
 
-#: appModules/msgComposeWindow/msgComposeWindow.py:109
+#: appModules/msgComposeWindow/msgComposeWindow.py:110
 #, python-brace-format
 msgid "The field {0} is missing, type this command twice quickly to show it."
 msgstr "Le champ {0} est absent, refrappez deux fois rapidement cette commande pour l'afficher."
 
-#: appModules/msgComposeWindow/msgComposeWindow.py:112
+#: appModules/msgComposeWindow/msgComposeWindow.py:113
 msgid "You will find this field by pressing the button: Other addressing fields to show"
 msgstr "Vous trouverez ce champ en actionnant le bouton : Autres champs d'adressage à afficher"
 
-#: appModules/msgComposeWindow/msgComposeWindow.py:131
+#: appModules/msgComposeWindow/msgComposeWindow.py:132
 msgid "The attachments area is missing. Press Control+Shift+A to add attachements."
 msgstr "La zone des pièces jointes est absente. Pressez Control+Maj+A pour en ajouter."
 
-#: appModules/msgComposeWindow/spellCheckDlg.py:39
-msgid "None"
-msgstr "Aucun"
-
-#: appModules/msgComposeWindow/spellCheckDlg.py:40
-msgid "No misspelled words were found"
-msgstr "Aucun mot mal écrit n'a été trouvé"
-
-#: appModules/msgComposeWindow/spellCheckDlg.py:72
+#: appModules/msgComposeWindow/spellCheckDlg.py:73
 msgid "Check Spelling "
 msgstr "Vérification"
 
-#: appModules/msgComposeWindow/spellCheckDlg.py:72
+#: appModules/msgComposeWindow/spellCheckDlg.py:73
 msgid "Spell check complete."
 msgstr "Vérification de l'orthographe terminée"
 
-#: appModules/msgComposeWindow/spellCheckDlg.py:77
+#: appModules/msgComposeWindow/spellCheckDlg.py:78
 #, python-format
 msgid "Misspelled word: %s"
 msgstr "Mot mal orthographié : %s"
 
-#: appModules/msgComposeWindow/spellCheckDlg.py:80
+#: appModules/msgComposeWindow/spellCheckDlg.py:81
 #, python-format
 msgid "Replace with: %s"
 msgstr "Remplacer par : %s"
 
-#: appModules/msgComposeWindow/spellCheckDlg.py:83
+#: appModules/msgComposeWindow/spellCheckDlg.py:84
 #, python-format
 msgid "Misspelled word : %s, no suggestion."
 msgstr "Mot mal orthographié : %s, pas de suggestion."
 
-#: appModules/msgComposeWindow/spellCheckDlg.py:90
+#: appModules/msgComposeWindow/spellCheckDlg.py:91
 msgid "i"
 msgstr "i"
 
-#: appModules/msgComposeWindow/spellCheckDlg.py:91
+#: appModules/msgComposeWindow/spellCheckDlg.py:92
 msgid "l"
 msgstr "n"
 
-#: appModules/msgComposeWindow/spellCheckDlg.py:92
+#: appModules/msgComposeWindow/spellCheckDlg.py:93
 msgid "d"
 msgstr "a"
 
-#: appModules/msgComposeWindow/spellCheckDlg.py:93
+#: appModules/msgComposeWindow/spellCheckDlg.py:94
 msgid "a"
 msgstr "t"
 
-#: appModules/msgComposeWindow/spellCheckDlg.py:94
+#: appModules/msgComposeWindow/spellCheckDlg.py:95
 msgid "r"
 msgstr "r"
 
-#: appModules/msgComposeWindow/spellCheckDlg.py:132
+#: appModules/msgComposeWindow/spellCheckDlg.py:133
 #, python-brace-format
 msgid "replaced, {0} . by . {1}"
 msgstr "remplacé, {0} . par . {1}"
 
-#: appModules/msgComposeWindow/spellCheckDlg.py:134
+#: appModules/msgComposeWindow/spellCheckDlg.py:135
 msgid "Replace : "
 msgstr "Remplacer  : "
 
-#: appModules/msgComposeWindow/spellCheckDlg.py:137
+#: appModules/msgComposeWindow/spellCheckDlg.py:138
 msgid " with : "
 msgstr " par : "
 
@@ -788,11 +776,11 @@ msgstr "Informations"
 msgid "Co&py to Clipboard"
 msgstr "&Copier dans le presse-papier"
 
-#: appModules/shared/textDialog.py:77 appModules/thunderbird.py:439
+#: appModules/shared/textDialog.py:77
 msgid "Close"
 msgstr "Fermer"
 
-#: appModules/shared/textDialog.py:98 appModules/shared/utis.py:605
+#: appModules/shared/textDialog.py:98 appModules/shared/utis.py:616
 msgid "Copied"
 msgstr "Copié"
 
@@ -800,196 +788,200 @@ msgstr "Copié"
 msgid "Error, the information cannot be copied to the clipboard"
 msgstr "Erreur, les informations ne peuvent pas être copiées dans le presse-papiers"
 
-#: appModules/shared/utils115.py:441
+#: appModules/shared/utils115.py:437
+msgid "Filtered : "
+msgstr "Filtrés : "
+
+#: appModules/shared/utils115.py:456
+msgid "Filter : "
+msgstr "Filtre : "
+
+#: appModules/shared/utils115.py:545
 msgid "The preview pane is not displayed. Press F8 and try again please"
 msgstr "Le volet d'aperçu n'est pas affiché. Pressez F8 et recommencez SVP"
 
-#: appModules/shared/utils115.py:622 appModules/thunderbird.py:673
+#: appModules/shared/utils115.py:726 appModules/thunderbird.py:634
 msgid "Press right arrow and retry, please."
 msgstr "Veuillez presser flèche droite puis réessayez."
 
-#: appModules/shared/utils115.py:634 appModules/thunderbird.py:795
+#: appModules/shared/utils115.py:738 appModules/thunderbird.py:756
 msgid "The headers pane is not displayed. Please press F8 then try again"
 msgstr "Le volet des entêtes n'est pas affiché. Veuillez presser F8 puis réessayer"
 
-#: appModules/shared/utils115.py:642
+#: appModules/shared/utils115.py:746
 msgid "The headers are not available"
 msgstr "Les entête ne sont pas disponibles."
 
-#: appModules/shared/utils115.py:734
+#: appModules/shared/utils115.py:838
 msgid "void,From,Subject: ,Date,To,CC,BCC,Reply to"
 msgstr "rien,De,Objet: ,Date,Pour,Copie à,Copie cachée à,Répondre à"
 
-#: appModules/shared/utils115.py:735
+#: appModules/shared/utils115.py:839
 #, python-brace-format
 msgid "The {0} header is missing from this message."
 msgstr "L'entête {0} est absent de ce message."
 
-#: appModules/shared/utils115.py:746
+#: appModules/shared/utils115.py:850
 msgid "Copy to clipboard"
 msgstr "Copier dans le presse-papiers"
 
-#: appModules/shared/utils115.py:778
+#: appModules/shared/utils115.py:882
 msgid "No attachment."
 msgstr "Aucune pièce jointe."
 
-#: appModules/shared/utils115.py:810
+#: appModules/shared/utils115.py:914
 msgid "Two presses to reach the list."
 msgstr "Deux appuis pour accéder à la liste."
 
-#: appModules/shared/utils115.py:824
+#: appModules/shared/utils115.py:932
 msgid "To the group, "
 msgstr "A la liste, "
 
-#: appModules/shared/utis.py:506
+#: appModules/shared/utis.py:517
 msgid "The status bar is not displayed."
 msgstr "La barre d'état n'est pas affichée."
 
-#: appModules/shared/utis.py:629
+#: appModules/shared/utis.py:640
 msgid "No Attachement."
 msgstr "Pas de pièce jointe."
 
-#: appModules/shared/utis.py:693
+#: appModules/shared/utis.py:704
 msgid "File not found"
 msgstr "Fichier non trouvé : "
 
-#: appModules/thunderbird.py:292
+#: appModules/thunderbird.py:290
 msgid "Sort by "
 msgstr "Trier par "
 
-#: appModules/thunderbird.py:345
+#: appModules/thunderbird.py:343
 msgid "Starred"
 msgstr "Suivi"
 
-#: appModules/thunderbird.py:373
+#: appModules/thunderbird.py:372
 msgid "attachment"
 msgstr "PJ"
 
-#: appModules/thunderbird.py:377
+#: appModules/thunderbird.py:376
 msgid "Spam"
 msgstr "Spam"
 
-#: appModules/thunderbird.py:434
+#: appModules/thunderbird.py:423
 msgid "draft"
 msgstr "brouillon"
 
-#: appModules/thunderbird.py:437
-msgid "replies to the sub-thread,"
-msgstr "réponses au sous-fil de di, "
-
-#: appModules/thunderbird.py:450
-msgid "notified when you"
-msgstr "notification quand"
-
-#: appModules/thunderbird.py:454
-msgid "Ignore"
-msgstr "Ignorer"
-
-#: appModules/thunderbird.py:460
+#: appModules/thunderbird.py:426
 msgid "bird thinks this message is Junk"
 msgstr "ird pense que"
 
-#: appModules/thunderbird.py:464
+#: appModules/thunderbird.py:430
 msgid "remote content"
 msgstr "contenu distant"
 
-#: appModules/thunderbird.py:514 appModules/thunderbird.py:558
+#: appModules/thunderbird.py:434
+msgid "notified when you"
+msgstr "notification quand"
+
+#: appModules/thunderbird.py:438
+msgid "Ignore"
+msgstr "Ignorer"
+
+#: appModules/thunderbird.py:474 appModules/thunderbird.py:518
 msgid "Filter removed"
 msgstr "Filtre supprimé"
 
-#: appModules/thunderbird.py:576
+#: appModules/thunderbird.py:535
 msgid "Blank"
 msgstr "Vide"
 
-#: appModules/thunderbird.py:580
+#: appModules/thunderbird.py:539
 msgid "Status line without data"
 msgstr "Ligne d'état sans données"
 
-#: appModules/thunderbird.py:582
+#: appModules/thunderbird.py:541
 msgid "Announces abbreviated status line and message filtering information if applicable"
 msgstr "Annonce la ligne d'état abrégée et les informations de filtrage de messages s'il y a lieu"
 
-#: appModules/thunderbird.py:616
+#: appModules/thunderbird.py:575
 msgid "Smart reply to reply to a recipient or mailing list"
 msgstr "Smart reply pour répondre à un destinataire ou à une liste de diffusion"
 
-#: appModules/thunderbird.py:631
+#: appModules/thunderbird.py:590
 msgid "Sends Control+F4 to the current window."
 msgstr "Envoie Control+F4 à la fenêtre courante."
 
-#: appModules/thunderbird.py:656
+#: appModules/thunderbird.py:617
 msgid "In the main window, 1 press: Alt+1 to 8: reads the message header, Alt+9 announces the number of attachments, 2 presses: displays the header in an edit box or for Alt+9, reaches the list of attachments, 3 presses: reaches the header in the headers area. In the Write window, Alt1 to 4, reads the headers, 2 presses reaches the header."
 msgstr "Dans la fenêtre principale,  1 appui : Alt+1  à 8: lit l'entête  du message, Alt+9 annonce le nombre de pièces jointes, 2 appuis : affiche l'entête dans une boîte d'édition ou pour Alt+9, atteint la liste des pièces jointes, 3 appuis : atteint l'entête dans la zone des entêtes. Dans la fenêtre de rédaction, Alt1 à 4, lit les entêtes,  2 appuis atteint l'entête."
 
-#: appModules/thunderbird.py:718
+#: appModules/thunderbird.py:679
 msgid "Filtered reading of the document in the preview pane, reading tab, reading or Write window, from the list of messages or the document."
 msgstr "Lecture épurée du  document dans  le volet d'aperçu, l'onglet de lecture, la fenêtre de lecture ou de rédaction, depuis la liste de messages ou le document."
 
-#: appModules/thunderbird.py:724
+#: appModules/thunderbird.py:685
 msgid "Enables or disables  the translation mode of a message."
 msgstr "Active ou désactive le mode de traduction d'un message."
 
-#: appModules/thunderbird.py:730
+#: appModules/thunderbird.py:691
 msgid "Enables or disables the display of the cleaned or translated   message in a window."
 msgstr "Active ou désactive l'affichage du message épuré ou traduit dans une fenêtre."
 
-#: appModules/thunderbird.py:737
+#: appModules/thunderbird.py:698
 msgid "Folders : displays the accounts menu then  the folders menu for the chosen account."
 msgstr "Dossiers : affiche le menu des comptes puis celui des dossiers du compte choisi"
 
-#: appModules/thunderbird.py:744
+#: appModules/thunderbird.py:705
 msgid "Folders : displays the accounts menu then the unread folders menu for the chosen account."
 msgstr "Dossiers : affiche le menu des comptes puis celui des dossiers non lus du compte choisi"
 
-#: appModules/thunderbird.py:757
+#: appModules/thunderbird.py:718
 msgid "Focus : 1 press select the current folder in the folder tree, 2 presesses display a menu  allowings to choose an mail account to reach in the folder tree"
 msgstr "Focus : 1 appui sélectionne le dossier courant dans l'arborescence des dossiers, 2 appuis affiche un menu permettant de choisir le compte de messagerie à atteindre dans l'arborescence des dossiers. "
 
-#: appModules/thunderbird.py:778
+#: appModules/thunderbird.py:739
 msgid "Focus : selects a message in the message list from anywhere in the main window."
 msgstr "Focus : sélectionne un message dans la liste des messages depuis n'importe où dans la fenêtre principale."
 
-#: appModules/thunderbird.py:812
+#: appModules/thunderbird.py:773
 msgid "Attachments : announces or displays the attachment pane."
 msgstr "Pièces jointes : annonce ou affiche ce panneau."
 
-#: appModules/thunderbird.py:820
+#: appModules/thunderbird.py:781
 msgid "Press alt+upArrow before navigating through quotes in a message."
 msgstr "Pressez alt+flèche haut avant de naviguer dans les citations"
 
-#: appModules/thunderbird.py:829
+#: appModules/thunderbird.py:790
 msgid "Navigates through quotes in a message"
 msgstr "Navigue dans les citations d'un message"
 
-#: appModules/thunderbird.py:845
+#: appModules/thunderbird.py:806
 msgid "Shows the context menu of actions available in the various Thunderbird windows."
 msgstr "Affiche le menu contextuel des actions  disponibles dans les différentes fenêtres de Thunderbird."
 
-#: appModules/thunderbird.py:865
+#: appModules/thunderbird.py:826
 msgid "Shows the Options context menu of Thunderbird+"
 msgstr "Affiche le menu contextuel des options de Thunderbird+"
 
-#: appModules/thunderbird.py:873
+#: appModules/thunderbird.py:834
 msgid "Shows the dialog for editing the delay before reading the message of the separate reading window."
 msgstr "Affiche le dialogue d'édition du délai avant lecture du message de la fenêtre séparée de lecture."
 
-#: appModules/thunderbird.py:882
+#: appModules/thunderbird.py:843
 msgid "Present: Headers and message pane."
 msgstr "Présent : volet des entêtes et du message."
 
-#: appModules/thunderbird.py:884
+#: appModules/thunderbird.py:845
 msgid "Missing : headers and message pane."
 msgstr "Absent : volet des entêtes et du message."
 
-#: appModules/thunderbird.py:885
+#: appModules/thunderbird.py:846
 msgid "Turn on or off the preview messages panel"
 msgstr "Affiche ou masque le volet des entêtes et d'aperçu du message."
 
-#: appModules/thunderbird.py:890
+#: appModules/thunderbird.py:851
 msgid "Shows the add-on help in a web page"
 msgstr "Affiche l'aide de l'extension dans une page web"
 
-#: appModules/thunderbird.py:1056
+#: appModules/thunderbird.py:1010
 msgid "Re "
 msgstr "Ré "
 
@@ -1033,7 +1025,7 @@ msgstr "Erreur d'enregistrement du fichier de paramètres de mise à jour."
 msgid "Automatic update has been disabled."
 msgstr "La mise à jour automatique a bien été désactivée."
 
-#: globalPlugins/shared/notif.py:121
+#: globalPlugins/shared/notif.py:123
 msgid "Error saving of :\n"
 msgstr "Erreur d'enregistrement de:\n"
 
@@ -1066,7 +1058,7 @@ msgstr "Voulez-vous mettre à jour la version {0} vers la version {1} ?"
 msgid "ThunderbirdPlusG5 add-on update"
 msgstr "Mise à jour de l'extension thunderbirdPlusG5"
 
-#: globalPlugins/shared/updateLite.py:136 globalPlugins/shared/updateLite.py:237
+#: globalPlugins/shared/updateLite.py:136 globalPlugins/shared/updateLite.py:238
 msgid "Addon update"
 msgstr "Mise à jour de l'extension"
 
@@ -1094,7 +1086,7 @@ msgstr "Erreur de fichier vide"
 msgid ", cannot delete : "
 msgstr ", ne peut supprimer : "
 
-#: globalPlugins/shared/updateLite.py:207 globalPlugins/shared/updateLite.py:269
+#: globalPlugins/shared/updateLite.py:207 globalPlugins/shared/updateLite.py:270
 msgid "Saving error of :\n"
 msgstr "Erreur d'enregistrement de :\n"
 
@@ -1102,15 +1094,15 @@ msgstr "Erreur d'enregistrement de :\n"
 msgid "Error saving addon to temporary file."
 msgstr "Erreur d'enregistrement de l'extension dans un fichier temporaire."
 
-#: globalPlugins/shared/updateLite.py:255
+#: globalPlugins/shared/updateLite.py:256
 msgid "The update will be offered again in 3 days. In the meantime, you can press AltGr+Shift+grave to perform an update search."
 msgstr "La   mise à jour  sera à nouveau proposée dans 3 jours. Entretemps, vous pourrez presser AltGr+Maj+puissance2 pour effectuer une recherche de mise à jour."
 
-#: globalPlugins/shared/updateLite.py:260
+#: globalPlugins/shared/updateLite.py:261
 msgid "Automatic update has been disabled. press AltGr+Shift+grave for a manual update."
 msgstr "La mise à jour automatique a été désactivée. presser    AltGr+Maj+puissance2 pour une mise à jour manuelle."
 
-#: globalPlugins/shared/updateLite.py:301
+#: globalPlugins/shared/updateLite.py:302
 msgid "Undetermined version"
 msgstr "Version indéterminée"
 
@@ -1130,6 +1122,18 @@ msgstr "Mozilla Apps Enhancements en cours d'exécution détecté"
 #: installTasks.py:42
 msgid "Installation cancelled"
 msgstr "Installation annulée."
+
+#~ msgid "tab not found"
+#~ msgstr "tab non trouvé"
+
+#~ msgid "None"
+#~ msgstr "Aucun"
+
+#~ msgid "No misspelled words were found"
+#~ msgstr "Aucun mot mal écrit n'a été trouvé"
+
+#~ msgid "replies to the sub-thread,"
+#~ msgstr "réponses au sous-fil de di, "
 
 #~ msgid "With 3 keyboard shortcuts, bring the &focus to :"
 #~ msgstr "Avec 3 raccourcis clavier, amenez le &focus sur :"

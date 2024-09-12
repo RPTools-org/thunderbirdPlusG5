@@ -463,17 +463,22 @@ class AppModule(thunderbird.AppModule):
 	def script_sharedEscape(self, gesture) :
 		o=api.getFocusObject()
 		role = o.role
+		curTreeType = utils.currentTree(o, role)
+		if curTreeType == "f" :
+			return KeyboardInputGesture.fromName ("f6").send()  
+			
 		ID = str(utils.getIA2Attr(o))
-		if ID.startswith("threadTree-row") :
-			if hasFilter(o, ID) :
-				wx.CallAfter(ui.message, _("Filter removed"))
-				return gesture.send()
-			return utils.getFolderTreeFromFG(True)
-		elif  utils.isFolderTreeItem(o, ID) : 
-			if utils.getIA2Attr(o, "2", "level") :
-				return utis.sendKey("tab", 1)
-			else :
-				return utils.getThreadTreeFromFG(True)
+		if curTreeType == "t" : # threadTree
+			if ID.startswith("threadTree-row") :
+				if hasFilter(o, ID) :
+					wx.CallAfter(ui.message, _("Filter removed"))
+					return gesture.send()
+			return KeyboardInputGesture.fromName ("shift+f6").send() # utils.getFolderTreeFromFG(True)
+		# elif  utils.isFolderTreeItem(o, ID) : 
+			# if utils.getIA2Attr(o, "2", "level") :
+				# return utis.sendKey("tab", 1)
+			# else :
+				# return utils.getThreadTreeFromFG(True)
 		elif  "Recipient" in ID  or "expandedsubjectBox" in ID or "Recipient" in str(utils.getIA2Attr(o.parent)) : # header pane
 			return KeyboardInputGesture.fromName ("shift+f6").send()
 		elif role in  (controlTypes.Role.BUTTON, controlTypes.Role.TOGGLEBUTTON)  and ID.startswith("attachment") :
@@ -508,7 +513,7 @@ class AppModule(thunderbird.AppModule):
 		elif role == controlTypes.Role.EDITABLETEXT and utils.hasID(o.parent, "MsgHeadersToolbar") : # write window
 			if sharedVars.oSettings.getOption("compose", "closeMessageWithEscape") :
 				return KeyboardInputGesture.fromName ("control+w").send () 
-		elif  role in (controlTypes.Role.LIST, controlTypes.Role.TREEVIEW) and utils.hasID(o.parent.parent, "threadTree") :
+		elif  role in (controlTypes.Role.LIST, controlTypes.Role.TREEVIEW, controlTypes.Role.TABLE) and utils.hasID(o.parent.parent, "threadTree") : # 2024.09.08  added Role.TABLE
 			if hasFilter(o, "threadTree-row") :
 				wx.CallAfter(ui.message, _("Filter removed"))
 				return gesture.send()
@@ -526,7 +531,6 @@ class AppModule(thunderbird.AppModule):
 	def script_sharedAltEnd(self, gesture) :
 		o = api.getFocusObject()
 		if utils.hasID(o, "threadTree") or utils.hasID(o.parent, "quickFilterBarContainer") :
-			# utils.sayQFBInfos(o)
 			msg = utils.getMessageStatus()
 			if not msg  : msg = _("Blank")
 			ui.message(msg)
@@ -848,35 +852,27 @@ class AppModule(thunderbird.AppModule):
 	script_showHelp.category = sharedVars.scriptCategory
 
 	def script_displayDebug(self, gesture) :
-		# import versionInfo
-		# text = str(versionInfo.version_year)[2:] +"." + str(versionInfo.version_major) + "." + str(versionInfo.version_minor)
-		# api.copyToClip(text)
-		
-		# text = langUtils.getPHPTable()
-		# api.copyToClip(text)
-		# return
-		# utis.listGestFromScanCodes()
-		# return
-		# winVerAlert()
-		# if sharedVars.curFrame == "messengerWindow" :
-			# utis.isChichi()
-			# sharedVars.debugLog += "\nChichi : " + str(sharedVars.chichi)
-		# # sharedVars.debugLog += "\nObjLooping : " + str(sharedVars.objLooping) + "\n"
-		# # sharedVars.debugLog += "\nvirtualSpellChk : " + str(sharedVars.virtualSpellChk) + "\n"
 		debugShow(self, False)
 
 	def script_initDebug(self, gesture) :
-		# disabModes : 0 nothing, 1 choose overlay, 2 : object init, 3 gainFocus 
-		self.disabMode +=1
-		if self.disabMode > 3 : self.disabMode = 0
-		if self.disabMode == 0 : mode = u"Aucune désactivation"
-		elif self.disabMode == 1 : mode = u"Désactivation de l'intercepteur."
-		elif self.disabMode == 2 : mode = u"Désactivation de l'initialisation des objets NVDA."
-		elif self.disabMode == 3 : mode = u"Désactivation de  gain focus."
-		else : mode = "disabMode = " + str(self.disabMode)
+		if sharedVars.debug :
+			sharedVars.debug = False
+			ui.message("Debug mode is disabled")
+		else :
+			sharedVars.debug = True
+			ui.message("Debug mode is enabled")
 
-		ui.message(mode)
-	
+		# # disabModes : 0 nothing, 1 choose overlay, 2 : object init, 3 gainFocus 
+		# self.disabMode +=1
+		# if self.disabMode > 3 : self.disabMode = 0
+		# if self.disabMode == 0 : mode = u"Aucune désactivation"
+		# elif self.disabMode == 1 : mode = u"Désactivation de l'intercepteur."
+		# elif self.disabMode == 2 : mode = u"Désactivation de l'initialisation des objets NVDA."
+		# elif self.disabMode == 3 : mode = u"Désactivation de  gain focus."
+		# else : mode = "disabMode = " + str(self.disabMode)
+
+		# ui.message(mode)
+
 	__gestures = {
 		# utis.gestureFromScanCode(41, "kb:") :"showContextMenu", # 41 is the scancode of the key above Tab
 		# utis.gestureFromScanCode(41, "kb:shift+") :"showOptionMenu", 
@@ -944,7 +940,8 @@ class AppModule(thunderbird.AppModule):
 	}
 
 def debugShow(appMod, auto) :
-	# sharedVars.logte("curWinTitle=" + sharedVars.curWinTitle)
+	sharedVars.debugLog = "Debug mode : {}, TB branch : {}".format(str(sharedVars.debug), sharedVars.TBMajor) + "\n" + "\n" + sharedVars.debugLog
+	# sharedredVars.logte("curWinTitle=" + sharedVars.curWinTitle)
 	# nom = utils.getColValue(api.getFocusObject(), "subjectcol")
 	# sharedVars.logte("Valeur colonne=" + nom) 
 	# oRow = api.getFocusObject()
@@ -956,14 +953,14 @@ def debugShow(appMod, auto) :
 		# textDialog.showText(title="Log", text=sharedVars.debugLog)
 		# return
 	# provisoire
-	textDialog.showText(title="Log", text=sharedVars.debugLog)
+	# textDialog.showText(title="Log", text=sharedVars.debugLog)
 	# sharedVars.log(no, "Nav object")
 	fo = api.getFocusObject()
 	if utils.hasID(fo, "threadTree-row"	) :
 		# sharedVars.logte("Current row original name :\n" + sharedVars.curTTRow)
 		utils.listAscendants(-6)
 		utils.listDescendants(fo, 0, "* List of descendants")
-		utils.listColumnNames(fo) 
+		# utils.listColumnNames(fo) 
 	else :
 		utils.listAscendants(-6)
 		utils.listDescendants(fo, 0, "* List of descendants")
@@ -1016,6 +1013,13 @@ def removeResponseMention (appMod,s,mode):
 	return s 
 
 def hasFilter(o, ID=None) :
+	if sharedVars.TBMajor > 127 : 
+		tp = utis.findParentByID(o,controlTypes.Role.SECTION, "threadPane")
+		if not tp : return False 
+		cnt, inf = utils.getFilterInfos128(tp)
+		return True if cnt else False
+	
+	# TB 115
 	if not ID :
 		ID = str(utils.getIA2Attr(o))
 	if ID.startswith("threadTree-row") :

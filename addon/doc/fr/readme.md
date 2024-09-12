@@ -1,10 +1,10 @@
-# Thunderbird+G5 pour Thunderbird >= 115
+# Thunderbird+G5 pour Thunderbird 115 et 128 ESR
 
 * Auteurs: Pierre-Louis Renaud (de Thunderbird 78 à 115) & Cyrille Bougot (TB 102), Daniel Poiraud (de TB 78 à 91), Yannick (TB 45 à 60);
 * URL: [Page d'accueil des extensions thunderbird+ G5 et G4][4] ;
-  [Historique des changements][5] ;
+  [Historique des changements et compléments de documentation][5] ;
   [Contact][6] ;
-* Télécharger : [Version stable][3]
+* Installation : menu NVDA / Outils / Add-on store / onglet extensions disponibles ou mises à jour ;;
 * Télécharger : [Dernière version sur RPTools.org][3] ;
 * Ccompatibilité NVDA : 2021.1 et ultérieures ;
 * [Code Source  sur gitHub][2]

@@ -1,10 +1,10 @@
-# Thunderbird+G5 for Thunderbird >= 115
+# Thunderbird+G5 for Thunderbird 115 and 128 ESR
 
 * Authors: Pierre-Louis Renaud (From Thunderbird 78 to 115) & Cyrille Bougot (TB 102), Daniel Poiraud (From TB 78 to 91), Yannick (TB 45 to 60);
 * URL: [thunderbird+ G5 and G4 add-ons home page][4] ;
-  [History of changes at RPTools.org][5] ;
+  [History of changes and additional documentation][5] ;
   [Contact in French or English][6] ;
-* Download [stable version][3]
+* Installation: NVDA menu / Tools / Add-on store / available extensions or updates tab;;
 * Download [Latest version from RPTools.org][3] ;
 * NVDA compatibility: 2021.1 and later;
 * [Source code on gitHub][2]

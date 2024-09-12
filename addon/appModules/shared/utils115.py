@@ -34,6 +34,21 @@ def isFolderTreeItem(fti, ID="") :
 	if  gRegFTI.findall(ID) : return True
 	return False
 
+def currentTree(o, role) :
+	if role not in (controlTypes.Role.TREEVIEWITEM, controlTypes.Role.LISTITEM, controlTypes.Role.TABLE) : 
+		return ""
+	o = o.parent
+	while o :
+		r = o.role
+		if r ==  controlTypes.Role.TEXTFRAME :
+			if hasID(o, "threadTree") :
+				return "t"
+		if r == controlTypes.Role.TREEVIEW :
+			if hasID(o, "folderTree") :
+				return "f"
+		o = o.parent
+	return""
+			
 def isQuickfilterBar(o) :
 	try : o = o.parent
 	except : return False
@@ -376,7 +391,7 @@ def getThreadTreeFromFG(focus=False, nextGesture="", getThreadPane=False, pp=Non
 	# finally :
 		# sharedVars.objLooping = prevLooping
 
-def getMessageStatus(infoIdx=-1)  :
+def getMessageStatus115(infoIdx=-1)  :
 	try : # finally
 		prevLooping = sharedVars.objLooping
 		sharedVars.objLooping = True
@@ -386,13 +401,15 @@ def getMessageStatus(infoIdx=-1)  :
 		# level 9,          2 of 3, name : 11 messages sélectionnés, Role.STATICTEXT, left:359, States :  Path : Role-FRAME| i31, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  | i2, Role-SECTION, , IA2ID : threadPane | i0, Role-SECTION, , IA2ID : threadPaneHeaderBar | i0, Role-SECTION,  | i1, Role-SECTION, , IA2ID : threadPaneFolderCountContainer | i2, Role-STATICTEXT,  
 		# level 9,          3 of 3, Role.STATICTEXT, left:493, States :  Path : Role-FRAME| i31, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  | i2, Role-SECTION, , IA2ID : threadPane | i0, Role-SECTION, , IA2ID : threadPaneHeaderBar | i0, Role-SECTION,  | i1, Role-SECTION, , IA2ID : threadPaneFolderCountContainer | i3, Role-STATICTEXT,  
 		# get threadPane
-		o = getThreadTreeFromFG(focus=False, nextGesture="", getThreadPane=True)
+		threadPane = getThreadTreeFromFG(focus=False, nextGesture="", getThreadPane=True)
 		# get | i0, Role-SECTION, , IA2ID : threadPaneHeaderBar | i0, Role-SECTION,  
-		o = o.firstChild.firstChild
+		o = threadPane.firstChild.firstChild
 		# get | i1, Role-SECTION, , IA2ID : threadPaneFolderCountContainer 
+		# the following line is OK in TB 128.
 		o = findChildByRoleID(o, controlTypes.Role.SECTION, "threadPaneFolderCountContainer")
-		# return "examine le journal tbp	"
+		# sharedVars.log(o, "threadPaneFolderCountContainer") 
 		if not o : return ""
+
 		if infoIdx > -1 and infoIdx < 4 : 
 			try : return o.getChild(infoIdx).name
 			except : return ""
@@ -408,6 +425,83 @@ def getMessageStatus(infoIdx=-1)  :
 	finally :
 		sharedVars.objLooping = prevLooping
 
+def getFilterInfos128(threadPane, infos=False) :
+	# children of threadPane : | i1, 86, , IA2ID : quick-filter-bar | i0, 86, , IA2ID : quickFilterBarContainer | i7, 91, , IA2ID : qfb-results-label
+	o = findChildByRoleID(threadPane, controlTypes.Role.SECTION, ID="quick-filter-bar",startIdx=0)
+	if not o : return "", "" 
+	o = oContainer  = findChildByRoleID(o, controlTypes.Role.SECTION, ID="quickFilterBarContainer",startIdx=0)
+	if not o : return "", ""
+	o = findChildByRoleID(o, controlTypes.Role.TEXTFRAME, ID="qfb-results-label",startIdx=6)
+	count = ""
+	if o and o.firstChild :
+		count = _("Filtered : ") + str(o.firstChild.name) + " / "
+	if not infos :
+		return count, ""
+	# 2. retrieve filter infos
+	word = options = ""
+	# keyword edit : path = | i0, 86, , IA2ID : quickFilterBarContainer | i1, 91, , IA2ID : qfb-qs-textbox | i0, 39,  | i0, 8,  ,  
+	o = oContainer.getChild(1).firstChild.firstChild # new in TB 128
+	if o.role == controlTypes.Role.EDITABLETEXT and o.value :
+		word = str(o.value)
+	# toggle buttons
+	o = oContainer.getChild(2) # unread toggle button
+	while o :
+		if o.role ==  controlTypes.Role.TOGGLEBUTTON and controlTypes.State.PRESSED in o.states :
+			options += o.name + ", "
+		# # sharedVars.log(o, "child")
+		o = o.next
+	# # sharedVars.logte(infos)	
+	filtExpr = ""
+	if word or options : 
+		filtExpr = ", " + _("Filter : ")
+	if word :
+		filtExpr += word + ", "
+	if options :
+		filtExpr += options
+	return count, filtExpr
+def getMessageStatus128(infoIdx=-1)  :
+	# returns total messages, filter infos
+	try : # finally
+		prevLooping = sharedVars.objLooping
+		sharedVars.objLooping = True
+		# level 8,         1 of 1, Role.SECTION, IA2ID : threadPaneFolderCountContainer, left:272 Tag: div, States : , childCount  : 4 Path : Role-FRAME| i31, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  | i2, Role-SECTION, , IA2ID : threadPane | i0, Role-SECTION, , IA2ID : threadPaneHeaderBar | i0, Role-SECTION,  | i1, Role-SECTION, , IA2ID : threadPaneFolderCountContainer 
+		# level 9,          0 of 3, name : 13 messages, Role.STATICTEXT, left:281, States :  Path : Role-FRAME| i31, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  | i2, Role-SECTION, , IA2ID : threadPane | i0, Role-SECTION, , IA2ID : threadPaneHeaderBar | i0, Role-SECTION,  | i1, Role-SECTION, , IA2ID : threadPaneFolderCountContainer | i0, Role-STATICTEXT,  
+		# level 9,          1 of 3, Role.STATICTEXT, left:347, States :  Path : Role-FRAME| i31, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  | i2, Role-SECTION, , IA2ID : threadPane | i0, Role-SECTION, , IA2ID : threadPaneHeaderBar | i0, Role-SECTION,  | i1, Role-SECTION, , IA2ID : threadPaneFolderCountContainer | i1, Role-STATICTEXT,  
+		# level 9,          2 of 3, name : 11 messages sélectionnés, Role.STATICTEXT, left:359, States :  Path : Role-FRAME| i31, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  | i2, Role-SECTION, , IA2ID : threadPane | i0, Role-SECTION, , IA2ID : threadPaneHeaderBar | i0, Role-SECTION,  | i1, Role-SECTION, , IA2ID : threadPaneFolderCountContainer | i2, Role-STATICTEXT,  
+		# level 9,          3 of 3, Role.STATICTEXT, left:493, States :  Path : Role-FRAME| i31, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  | i2, Role-SECTION, , IA2ID : threadPane | i0, Role-SECTION, , IA2ID : threadPaneHeaderBar | i0, Role-SECTION,  | i1, Role-SECTION, , IA2ID : threadPaneFolderCountContainer | i3, Role-STATICTEXT,  
+		# get threadPane
+		threadPane = getThreadTreeFromFG(focus=False, nextGesture="", getThreadPane=True)
+		# get | i0, Role-SECTION, , IA2ID : threadPaneHeaderBar | i0, Role-SECTION,  
+		o = threadPane.firstChild.firstChild
+		# get | i1, Role-SECTION, , IA2ID : threadPaneFolderCountContainer 
+		# the following line is OK in TB 128.
+		o = findChildByRoleID(o, controlTypes.Role.SECTION, "threadPaneFolderCountContainer")
+		# sharedVars.log(o, "threadPaneFolderCountContainer") 
+		if not o : return ""
+		# 128 specific
+		if infoIdx > -1 and infoIdx < 4 : 
+			try : return o.getChild(infoIdx).name
+			except : return ""
+		# all fields
+		# filtered message count
+		t, filterInfos = getFilterInfos128(threadPane, infos=True)
+		o = o.firstChild
+		while o :
+			# sharedVars.log(o, "Nombre ")
+			if o.name :
+				t += o.name + ", "
+			o = o.next
+		if t : t = t[:-2]
+		return t + filterInfos 
+	finally :
+		sharedVars.objLooping = prevLooping
+
+def getMessageStatus(infoIdx=-1)  :
+	if sharedVars.TBMajor < 128 :
+		return getMessageStatus115(infoIdx)
+	else :
+		return getMessageStatus128(infoIdx)
+		
 def silentSendKey(key) :
 	KeyboardInputGesture.fromName (key).send()
 	setSpeechMode(prevSpeechMode)

@@ -22,7 +22,7 @@ scriptCategory = "Thunderbird+G5"
 virtualSpellChk = False
 delayFocusDoc = 20
 testMode = False
-debugLog = ""
+debugLog = "" 
 
 import quoteNav
 def initQuoteNav() :

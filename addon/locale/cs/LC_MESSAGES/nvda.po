@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Thunderbird+G5\n"
-"POT-Creation-Date: 2024-07-10 06:59+0200\n"
+"POT-Creation-Date: 2024-09-10 06:52+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Pierre-Louis R. <plr.listes@rptools.org>\n"
 "Language-Team: Jarek Krcmar\n"
@@ -361,10 +361,6 @@ msgstr "Nastavení účtu"
 #: appModules/messengerWindow/tabs.py:74
 msgid "Add-ons for Thunderbird"
 msgstr "Doplňky pro Thunderbird"
-
-#: appModules/messengerWindow/tabs.py:197
-msgid "tab not found"
-msgstr "karta nenalezena"
 
 #: appModules/messengerWindow/tabs.py:270
 msgid "There is only one tab open."
@@ -792,44 +788,52 @@ msgstr "Zkopírováno"
 msgid "Error, the information cannot be copied to the clipboard"
 msgstr "Chyba, informace nelze zkopírovat do schránky"
 
-#: appModules/shared/utils115.py:451
+#: appModules/shared/utils115.py:437
+msgid "Filtered : "
+msgstr "Filtrováno: "
+
+#: appModules/shared/utils115.py:456
+msgid "Filter : "
+msgstr "Filtr: "
+
+#: appModules/shared/utils115.py:545
 msgid "The preview pane is not displayed. Press F8 and try again please"
 msgstr "Podokno náhledu se nezobrazuje. Stiskněte F8 a zkuste to znovu"
 
-#: appModules/shared/utils115.py:632 appModules/thunderbird.py:630
+#: appModules/shared/utils115.py:726 appModules/thunderbird.py:634
 msgid "Press right arrow and retry, please."
 msgstr "Stiskněte šipku vpravo a zkuste to znovu, prosím."
 
-#: appModules/shared/utils115.py:644 appModules/thunderbird.py:752
+#: appModules/shared/utils115.py:738 appModules/thunderbird.py:756
 msgid "The headers pane is not displayed. Please press F8 then try again"
 msgstr "Podokno záhlaví se nezobrazuje. Stiskněte prosím klávesu F8 a zkuste to znovu"
 
-#: appModules/shared/utils115.py:652
+#: appModules/shared/utils115.py:746
 msgid "The headers are not available"
 msgstr "Záhlaví nejsou k dispozici"
 
-#: appModules/shared/utils115.py:744
+#: appModules/shared/utils115.py:838
 msgid "void,From,Subject: ,Date,To,CC,BCC,Reply to"
 msgstr "void,Od,Předmět: ,Datum,Komu,CC,BCC,Odpovědět"
 
-#: appModules/shared/utils115.py:745
+#: appModules/shared/utils115.py:839
 #, python-brace-format
 msgid "The {0} header is missing from this message."
 msgstr "V této zprávě chybí záhlaví {0}."
 
-#: appModules/shared/utils115.py:756
+#: appModules/shared/utils115.py:850
 msgid "Copy to clipboard"
 msgstr "Vložit do schránky"
 
-#: appModules/shared/utils115.py:788
+#: appModules/shared/utils115.py:882
 msgid "No attachment."
 msgstr "Bez přílohy."
 
-#: appModules/shared/utils115.py:820
+#: appModules/shared/utils115.py:914
 msgid "Two presses to reach the list."
 msgstr "Dvěma stisknutími se dostanete na seznam."
 
-#: appModules/shared/utils115.py:838
+#: appModules/shared/utils115.py:932
 msgid "To the group, "
 msgstr "do skupiny,"
 
@@ -881,103 +885,103 @@ msgstr "upozornění na to, že jste"
 msgid "Ignore"
 msgstr "Ignorovat"
 
-#: appModules/thunderbird.py:469 appModules/thunderbird.py:513
+#: appModules/thunderbird.py:474 appModules/thunderbird.py:518
 msgid "Filter removed"
 msgstr "Filtr odstraněn"
 
-#: appModules/thunderbird.py:531
+#: appModules/thunderbird.py:535
 msgid "Blank"
 msgstr "Prázdný"
 
-#: appModules/thunderbird.py:535
+#: appModules/thunderbird.py:539
 msgid "Status line without data"
 msgstr "Stavový řádek bez dat"
 
-#: appModules/thunderbird.py:537
+#: appModules/thunderbird.py:541
 msgid "Announces abbreviated status line and message filtering information if applicable"
 msgstr "oznamuje zkrácený stavový řádek a případné informace o filtrování zpráv."
 
-#: appModules/thunderbird.py:571
+#: appModules/thunderbird.py:575
 msgid "Smart reply to reply to a recipient or mailing list"
 msgstr "Chytrá odpověď pro odpověď příjemci nebo seznamu adresátů"
 
-#: appModules/thunderbird.py:586
+#: appModules/thunderbird.py:590
 msgid "Sends Control+F4 to the current window."
 msgstr "Odešle Control+F4 do aktuálního okna."
 
-#: appModules/thunderbird.py:613
+#: appModules/thunderbird.py:617
 msgid "In the main window, 1 press: Alt+1 to 8: reads the message header, Alt+9 announces the number of attachments, 2 presses: displays the header in an edit box or for Alt+9, reaches the list of attachments, 3 presses: reaches the header in the headers area. In the Write window, Alt1 to 4, reads the headers, 2 presses reaches the header."
 msgstr "V hlavním okně 1 stiskněte: Alt+1 až 8: přečte záhlaví zprávy, Alt+9 oznámí počet příloh, 2 stisky: zobrazí záhlaví v editačním poli nebo pro Alt+9 dosáhne seznamu příloh, 3 stisky: dosáhne záhlaví v oblasti záhlaví. V okně pro zápis Alt1 až 4 čte záhlaví, 2 stisky dosáhne záhlaví."
 
-#: appModules/thunderbird.py:675
+#: appModules/thunderbird.py:679
 msgid "Filtered reading of the document in the preview pane, reading tab, reading or Write window, from the list of messages or the document."
 msgstr "Filtrované čtení dokumentu v podokně náhledu, kartě čtení, okně čtení nebo zápisu ze seznamu zpráv nebo dokumentu."
 
-#: appModules/thunderbird.py:681
+#: appModules/thunderbird.py:685
 msgid "Enables or disables  the translation mode of a message."
 msgstr "Povolí nebo zakáže režim překladu zprávy."
 
-#: appModules/thunderbird.py:687
+#: appModules/thunderbird.py:691
 msgid "Enables or disables the display of the cleaned or translated   message in a window."
 msgstr "Povolí nebo zakáže zobrazení vyčištěné nebo přeložené zprávy v okně."
 
-#: appModules/thunderbird.py:694
+#: appModules/thunderbird.py:698
 msgid "Folders : displays the accounts menu then  the folders menu for the chosen account."
 msgstr "Složky: zobrazí nabídku účtů a poté nabídku složek pro vybraný účet."
 
-#: appModules/thunderbird.py:701
+#: appModules/thunderbird.py:705
 msgid "Folders : displays the accounts menu then the unread folders menu for the chosen account."
 msgstr "Složky: zobrazí nabídku účtů a poté nabídku nepřečtených složek pro vybraný účet."
 
-#: appModules/thunderbird.py:714
+#: appModules/thunderbird.py:718
 msgid "Focus : 1 press select the current folder in the folder tree, 2 presesses display a menu  allowings to choose an mail account to reach in the folder tree"
 msgstr "Zaměření: 1 stisknutím vyberte aktuální složku ve stromu složek, 2 stisknutím zobrazíte nabídku umožňující vybrat poštovní účet, do kterého se chcete dostat ve stromu složek"
 
-#: appModules/thunderbird.py:735
+#: appModules/thunderbird.py:739
 msgid "Focus : selects a message in the message list from anywhere in the main window."
 msgstr "Focus : vybere zprávu ze seznamu zpráv odkudkoli v hlavním okně."
 
-#: appModules/thunderbird.py:769
+#: appModules/thunderbird.py:773
 msgid "Attachments : announces or displays the attachment pane."
 msgstr "Přílohy: oznamuje nebo zobrazuje selhání přílohy."
 
-#: appModules/thunderbird.py:777
+#: appModules/thunderbird.py:781
 msgid "Press alt+upArrow before navigating through quotes in a message."
 msgstr "Před procházením uvozovek ve zprávě stiskněte alt+šipku nahoru."
 
-#: appModules/thunderbird.py:786
+#: appModules/thunderbird.py:790
 msgid "Navigates through quotes in a message"
 msgstr "Prochází uvozovkami ve zprávě"
 
-#: appModules/thunderbird.py:802
+#: appModules/thunderbird.py:806
 msgid "Shows the context menu of actions available in the various Thunderbird windows."
 msgstr "Zobrazí kontextovou nabídku akcí dostupných v různých oknech Thunderbirdu."
 
-#: appModules/thunderbird.py:822
+#: appModules/thunderbird.py:826
 msgid "Shows the Options context menu of Thunderbird+"
 msgstr "Zobrazí kontextovou nabídku Možnosti aplikace Thunderbird+"
 
-#: appModules/thunderbird.py:830
+#: appModules/thunderbird.py:834
 msgid "Shows the dialog for editing the delay before reading the message of the separate reading window."
 msgstr "Zobrazí dialogové okno pro úpravu prodlevy před přečtením zprávy samostatného okna pro čtení."
 
-#: appModules/thunderbird.py:839
+#: appModules/thunderbird.py:843
 msgid "Present: Headers and message pane."
 msgstr "Přítomni: Záhlaví a panel zpráv."
 
-#: appModules/thunderbird.py:841
+#: appModules/thunderbird.py:845
 msgid "Missing : headers and message pane."
 msgstr "Chybí : záhlaví a podokno zpráv."
 
-#: appModules/thunderbird.py:842
+#: appModules/thunderbird.py:846
 msgid "Turn on or off the preview messages panel"
 msgstr "Zapnutí nebo vypnutí panelu náhledu zpráv"
 
-#: appModules/thunderbird.py:847
+#: appModules/thunderbird.py:851
 msgid "Shows the add-on help in a web page"
 msgstr "Zobrazí nápovědu doplňku na webové stránce"
 
-#: appModules/thunderbird.py:1013
+#: appModules/thunderbird.py:1010
 msgid "Re "
 msgstr "Re "
 
@@ -1021,7 +1025,7 @@ msgstr "Chyba při ukládání souboru s nastavením aktualizace."
 msgid "Automatic update has been disabled."
 msgstr "Automatická aktualizace byla zakázána."
 
-#: globalPlugins/shared/notif.py:121
+#: globalPlugins/shared/notif.py:123
 msgid "Error saving of :\n"
 msgstr "Chybné uložení :\n"
 
@@ -1054,7 +1058,7 @@ msgstr "Chcete aktualizovat verzi {0} na verzi {1}?"
 msgid "ThunderbirdPlusG5 add-on update"
 msgstr "Aktualizace doplňku ThunderbirdPlusG5"
 
-#: globalPlugins/shared/updateLite.py:136 globalPlugins/shared/updateLite.py:237
+#: globalPlugins/shared/updateLite.py:136 globalPlugins/shared/updateLite.py:238
 msgid "Addon update"
 msgstr "Aktualizace doplňku"
 
@@ -1082,7 +1086,7 @@ msgstr "Chyba prázdného souboru"
 msgid ", cannot delete : "
 msgstr ", nelze vymazat : "
 
-#: globalPlugins/shared/updateLite.py:207 globalPlugins/shared/updateLite.py:269
+#: globalPlugins/shared/updateLite.py:207 globalPlugins/shared/updateLite.py:270
 msgid "Saving error of :\n"
 msgstr "Chyba ukládání :\\n\n"
 
@@ -1090,15 +1094,15 @@ msgstr "Chyba ukládání :\\n\n"
 msgid "Error saving addon to temporary file."
 msgstr "Chyba při ukládání doplňku do dočasného souboru."
 
-#: globalPlugins/shared/updateLite.py:255
+#: globalPlugins/shared/updateLite.py:256
 msgid "The update will be offered again in 3 days. In the meantime, you can press AltGr+Shift+grave to perform an update search."
 msgstr "Aktualizace bude znovu nabídnuta za 3 dny. Do té doby můžete stisknutím kláves AltGr+Shift+grave provést vyhledání aktualizace."
 
-#: globalPlugins/shared/updateLite.py:260
+#: globalPlugins/shared/updateLite.py:261
 msgid "Automatic update has been disabled. press AltGr+Shift+grave for a manual update."
 msgstr "Automatická aktualizace byla vypnuta. pro ruční aktualizaci stiskněte AltGr+Shift+grave."
 
-#: globalPlugins/shared/updateLite.py:301
+#: globalPlugins/shared/updateLite.py:302
 msgid "Undetermined version"
 msgstr "Neurčená verze"
 
@@ -1118,6 +1122,9 @@ msgstr "Bylo zjištěno spuštění MozillaAppsEnhancements"
 #: installTasks.py:42
 msgid "Installation cancelled"
 msgstr "Instalace zrušena"
+
+#~ msgid "tab not found"
+#~ msgstr "karta nenalezena"
 
 #~ msgid "None"
 #~ msgstr "Žádný"

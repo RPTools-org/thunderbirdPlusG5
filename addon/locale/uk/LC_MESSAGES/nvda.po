@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: thunderbirdPlusG5\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
-"POT-Creation-Date: 2024-07-10 06:52+0200\n"
-"PO-Revision-Date: 2024-07-10 06:59+0200\n"
+"POT-Creation-Date: 2024-09-10 06:51+0200\n"
+"PO-Revision-Date: 2024-09-10 06:52+0200\n"
 "Last-Translator: Pierre-Louis R. <plr.listes@rptools.org>\n"
 "Language-Team: \n"
 "Language: uk_UA\n"
@@ -366,10 +366,6 @@ msgstr "Налаштування облікового запису"
 #: appModules/messengerWindow/tabs.py:74
 msgid "Add-ons for Thunderbird"
 msgstr "Додатки для Thunderbird"
-
-#: appModules/messengerWindow/tabs.py:197
-msgid "tab not found"
-msgstr "вкладку не знайдено"
 
 #: appModules/messengerWindow/tabs.py:270
 msgid "There is only one tab open."
@@ -797,44 +793,52 @@ msgstr "Скопійовано"
 msgid "Error, the information cannot be copied to the clipboard"
 msgstr "Помилка, інформацію неможливо скопіювати в буфер обміну"
 
-#: appModules/shared/utils115.py:451
+#: appModules/shared/utils115.py:437
+msgid "Filtered : "
+msgstr "Відфільтровано:"
+
+#: appModules/shared/utils115.py:456
+msgid "Filter : "
+msgstr "Фільтр:"
+
+#: appModules/shared/utils115.py:545
 msgid "The preview pane is not displayed. Press F8 and try again please"
 msgstr "Панель повідомлень приховано. Будь ласка, натисніть F8 і спробуйте щераз"
 
-#: appModules/shared/utils115.py:632 appModules/thunderbird.py:630
+#: appModules/shared/utils115.py:726 appModules/thunderbird.py:634
 msgid "Press right arrow and retry, please."
 msgstr "Натисніть стрілку вправо та повторіть спробу."
 
-#: appModules/shared/utils115.py:644 appModules/thunderbird.py:752
+#: appModules/shared/utils115.py:738 appModules/thunderbird.py:756
 msgid "The headers pane is not displayed. Please press F8 then try again"
 msgstr "Панель повідомлень приховано. Натисніть F8 і повторіть спробу"
 
-#: appModules/shared/utils115.py:652
+#: appModules/shared/utils115.py:746
 msgid "The headers are not available"
 msgstr "Заголовки недоступні"
 
-#: appModules/shared/utils115.py:744
+#: appModules/shared/utils115.py:838
 msgid "void,From,Subject: ,Date,To,CC,BCC,Reply to"
 msgstr "порожньо,Від,Тема: ,Дата,Кому,Копія,Прихована копія,Відповісти"
 
-#: appModules/shared/utils115.py:745
+#: appModules/shared/utils115.py:839
 #, python-brace-format
 msgid "The {0} header is missing from this message."
 msgstr "У цьому повідомленні відсутній заголовок {0}."
 
-#: appModules/shared/utils115.py:756
+#: appModules/shared/utils115.py:850
 msgid "Copy to clipboard"
 msgstr "Копіювати в буфер обміну"
 
-#: appModules/shared/utils115.py:788
+#: appModules/shared/utils115.py:882
 msgid "No attachment."
 msgstr "Без вкладень."
 
-#: appModules/shared/utils115.py:820
+#: appModules/shared/utils115.py:914
 msgid "Two presses to reach the list."
 msgstr "Два натискання, щоб відкрити список."
 
-#: appModules/shared/utils115.py:838
+#: appModules/shared/utils115.py:932
 msgid "To the group, "
 msgstr "До групи, "
 
@@ -886,103 +890,103 @@ msgstr "запитує сповіщення після прочитання"
 msgid "Ignore"
 msgstr "Ігнорувати"
 
-#: appModules/thunderbird.py:469 appModules/thunderbird.py:513
+#: appModules/thunderbird.py:474 appModules/thunderbird.py:518
 msgid "Filter removed"
 msgstr "Фільтр видалено"
 
-#: appModules/thunderbird.py:531
+#: appModules/thunderbird.py:535
 msgid "Blank"
 msgstr "Порожньо"
 
-#: appModules/thunderbird.py:535
+#: appModules/thunderbird.py:539
 msgid "Status line without data"
 msgstr "Рядок стану без даних"
 
-#: appModules/thunderbird.py:537
+#: appModules/thunderbird.py:541
 msgid "Announces abbreviated status line and message filtering information if applicable"
 msgstr "Оголошує скорочений рядок стану та інформацію про фільтрування повідомлень, якщо це можливо"
 
-#: appModules/thunderbird.py:571
+#: appModules/thunderbird.py:575
 msgid "Smart reply to reply to a recipient or mailing list"
 msgstr "Швидка відповідь, щоб відповісти одержувачу або списку розсилки"
 
-#: appModules/thunderbird.py:586
+#: appModules/thunderbird.py:590
 msgid "Sends Control+F4 to the current window."
 msgstr "Надсилає Control+F4 до поточного вікна."
 
-#: appModules/thunderbird.py:613
+#: appModules/thunderbird.py:617
 msgid "In the main window, 1 press: Alt+1 to 8: reads the message header, Alt+9 announces the number of attachments, 2 presses: displays the header in an edit box or for Alt+9, reaches the list of attachments, 3 presses: reaches the header in the headers area. In the Write window, Alt1 to 4, reads the headers, 2 presses reaches the header."
 msgstr "В головному вікні, просте натискання: alt+1 до 8 - читає заголовок повідомлення, alt+9 - оголошує кількість вкладень. Подвійне натискання: виводить заголовок у вікні редагування, або для Alt+9 - переходить до списку вкладень. Потрійне натискання: потрапляє на заголовок в області заголовків. У вікні редагування, просте натискання: alt+1 до 4 - читає заголовки, подвійне: потрапляє на заголовок."
 
-#: appModules/thunderbird.py:675
+#: appModules/thunderbird.py:679
 msgid "Filtered reading of the document in the preview pane, reading tab, reading or Write window, from the list of messages or the document."
 msgstr "Фільтроване читання документа в області попереднього перегляду, вкладці, вікні перегляду чи редагування, зі списку повідомлень або документа."
 
-#: appModules/thunderbird.py:681
+#: appModules/thunderbird.py:685
 msgid "Enables or disables  the translation mode of a message."
 msgstr "Вмикає або вимикає режим перекладу повідомлення."
 
-#: appModules/thunderbird.py:687
+#: appModules/thunderbird.py:691
 msgid "Enables or disables the display of the cleaned or translated   message in a window."
 msgstr "Вмикає або вимикає відображення очищеного чи перекладеного повідомлення у вікні."
 
-#: appModules/thunderbird.py:694
+#: appModules/thunderbird.py:698
 msgid "Folders : displays the accounts menu then  the folders menu for the chosen account."
 msgstr "Теки : відображає меню облікових записів, а потім меню тек для вибраного облікового запису."
 
-#: appModules/thunderbird.py:701
+#: appModules/thunderbird.py:705
 msgid "Folders : displays the accounts menu then the unread folders menu for the chosen account."
 msgstr "Теки : відображає меню облікових записів, а потім меню непрочитаних тек для вибраного облікового запису."
 
-#: appModules/thunderbird.py:714
+#: appModules/thunderbird.py:718
 msgid "Focus : 1 press select the current folder in the folder tree, 2 presesses display a menu  allowings to choose an mail account to reach in the folder tree"
 msgstr "Фокус: одне натискання вибирає поточну теку в дереві папок, Два натискання відкриває меню, яке дає змогу вибрати поштову скриньку в дереві тек"
 
-#: appModules/thunderbird.py:735
+#: appModules/thunderbird.py:739
 msgid "Focus : selects a message in the message list from anywhere in the main window."
 msgstr "Фокус : вибирає повідомлення у списку повідомлень з будь-якого місця в головному вікні."
 
-#: appModules/thunderbird.py:769
+#: appModules/thunderbird.py:773
 msgid "Attachments : announces or displays the attachment pane."
 msgstr "Вкладення : оголошує або показує панель вкладень."
 
-#: appModules/thunderbird.py:777
+#: appModules/thunderbird.py:781
 msgid "Press alt+upArrow before navigating through quotes in a message."
 msgstr "Натисніть alt+стрілка вгору Перед переміщенням по цитатах в повідомленні."
 
-#: appModules/thunderbird.py:786
+#: appModules/thunderbird.py:790
 msgid "Navigates through quotes in a message"
 msgstr "Переміщується між цитатами в повідомленні"
 
-#: appModules/thunderbird.py:802
+#: appModules/thunderbird.py:806
 msgid "Shows the context menu of actions available in the various Thunderbird windows."
 msgstr "Показує контекстне меню дій, доступних у різних вікнах Thunderbird."
 
-#: appModules/thunderbird.py:822
+#: appModules/thunderbird.py:826
 msgid "Shows the Options context menu of Thunderbird+"
 msgstr "Показує контекстне меню параметрів Thunderbird+"
 
-#: appModules/thunderbird.py:830
+#: appModules/thunderbird.py:834
 msgid "Shows the dialog for editing the delay before reading the message of the separate reading window."
 msgstr "Показує діалог для редагування затримки перед початком читання повідомлення в окремому вікні перегляду."
 
-#: appModules/thunderbird.py:839
+#: appModules/thunderbird.py:843
 msgid "Present: Headers and message pane."
 msgstr "Показано: панель повідомлень."
 
-#: appModules/thunderbird.py:841
+#: appModules/thunderbird.py:845
 msgid "Missing : headers and message pane."
 msgstr "Приховано : панель повідомлень."
 
-#: appModules/thunderbird.py:842
+#: appModules/thunderbird.py:846
 msgid "Turn on or off the preview messages panel"
 msgstr "Показує або приховує панель повідомлень"
 
-#: appModules/thunderbird.py:847
+#: appModules/thunderbird.py:851
 msgid "Shows the add-on help in a web page"
 msgstr "Показує довідку додатка у браузері"
 
-#: appModules/thunderbird.py:1013
+#: appModules/thunderbird.py:1010
 msgid "Re "
 msgstr "Re "
 
@@ -1026,7 +1030,7 @@ msgstr "Помилка збереження файлу налаштувань о
 msgid "Automatic update has been disabled."
 msgstr "Автоматичне оновлення вимкнено."
 
-#: globalPlugins/shared/notif.py:121
+#: globalPlugins/shared/notif.py:123
 msgid "Error saving of :\n"
 msgstr "Помилка збереження :\n"
 
@@ -1059,7 +1063,7 @@ msgstr "Ви бажаєте оновити версію {0} до версії {1
 msgid "ThunderbirdPlusG5 add-on update"
 msgstr "Оновлення додатка ThunderbirdPlusG5"
 
-#: globalPlugins/shared/updateLite.py:136 globalPlugins/shared/updateLite.py:237
+#: globalPlugins/shared/updateLite.py:136 globalPlugins/shared/updateLite.py:238
 msgid "Addon update"
 msgstr "Оновлення додатка"
 
@@ -1087,7 +1091,7 @@ msgstr "Помилка порожнього файлу"
 msgid ", cannot delete : "
 msgstr ", неможливо видалити: "
 
-#: globalPlugins/shared/updateLite.py:207 globalPlugins/shared/updateLite.py:269
+#: globalPlugins/shared/updateLite.py:207 globalPlugins/shared/updateLite.py:270
 msgid "Saving error of :\n"
 msgstr "Помилка збереження :\n"
 
@@ -1095,15 +1099,15 @@ msgstr "Помилка збереження :\n"
 msgid "Error saving addon to temporary file."
 msgstr "Помилка збереження додатка в тимчасовий файл."
 
-#: globalPlugins/shared/updateLite.py:255
+#: globalPlugins/shared/updateLite.py:256
 msgid "The update will be offered again in 3 days. In the meantime, you can press AltGr+Shift+grave to perform an update search."
 msgstr "Оновлення буде запропоновано знову через 3 дні. Тим часом ви можете натиснути shift+ctrl+алт+`, щоб виконати пошук оновлень."
 
-#: globalPlugins/shared/updateLite.py:260
+#: globalPlugins/shared/updateLite.py:261
 msgid "Automatic update has been disabled. press AltGr+Shift+grave for a manual update."
 msgstr "Автоматичне оновлення вимкнено. Натисніть shift+ctrl+алт+` для ручного оновлення."
 
-#: globalPlugins/shared/updateLite.py:301
+#: globalPlugins/shared/updateLite.py:302
 msgid "Undetermined version"
 msgstr "Невизначена версія"
 
@@ -1122,6 +1126,9 @@ msgstr "Зафіксовано роботу Mozilla Apps Enhancements"
 #: installTasks.py:42
 msgid "Installation cancelled"
 msgstr "Встановлення скасовано"
+
+#~ msgid "tab not found"
+#~ msgstr "вкладку не знайдено"
 
 #~ msgid "None"
 #~ msgstr "Жодного"
