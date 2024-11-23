@@ -47,7 +47,7 @@ class MainMenu() :
 		# mainMenu.Append (11, _("Chichi's page"))
 		mainMenu.Append (9, _("Write to support (after reading the manual and the change history)"))
 		mainMenu.Append (10, _("Join the thunderbird-dv mailing list (French)"))
-		mainMenu.Append (15, _("Update"))
+		# removed 2411.22mainMenu.Append (15, _("Update"))
 		# #divers		
 		# subMenu =Menu ()
 		# #s=u"Convertir un lien &vidéo en flu RSS,Choisir et agencer les colonnes de la liste de messages".split (",")

@@ -2,7 +2,8 @@
 import addonHandler
 addonHandler.initTranslation()
 import controlTypes, api
-from speech import  speakSpelling, cancelSpeech, setSpeechMode, SpeechMode
+from speech import  speakMessage, speakSpelling, cancelSpeech, setSpeechMode, SpeechMode
+import braille
 from ui import message
 from time import time
 from tones import beep
@@ -12,14 +13,26 @@ import utis
 # from utis import utis.findParentByID, utis.inputBox, utis.wordsMatchWord, utis.getSpeechMode
 from keyboardHandler import KeyboardInputGesture
 import re
+
 gRegFTI = re.compile("all-|unread-|smart-|favorite-|recent-|tags-")
 prevSpeechMode = ""
+def brailleMessage(text, speak=False) : 
+	if speak : 
+		speakMessage("Braille : ")
+	braille.handler.message(text)
+
 def hasID(obj, IA2ID) :
 	# IA2ID can be the n first chars of the ID
 	r= hasattr (obj,"IA2Attributes") and "id" in obj.IA2Attributes.keys()
 	if not r :return False
 	r =str(obj.IA2Attributes["id"])
 	return True if r.startswith(IA2ID) else False 
+
+def hasIA2Class(obj, IA2Class) :
+	r= hasattr (obj,"IA2Attributes") and "class" in obj.IA2Attributes.keys()
+	if not r :return False
+	r =str(obj.IA2Attributes["class"])
+	return True if r.startswith(IA2Class) else False 
 
 def getIA2Attr(obj,attribute_value=False,attribute_name ="id"):
 	r= hasattr (obj,"IA2Attributes") and attribute_name in obj.IA2Attributes.keys ()
@@ -1027,8 +1040,11 @@ def getColValue(oRow, colID) :
 	if iFound == -1 : return "" # colID + " column not found"
 	cName = ""	
 	oc = oRow.getChild(iFound)
+	sep = " : "
 	while oc :
-		if hasattr(oc, "name") : cName +=str(oc.name)
+		if hasattr(oc, "name") : 
+			cName +=str(oc.name) + sep
+			sep = ""
 		try : oc = oc.firstChild
 		except : break
 

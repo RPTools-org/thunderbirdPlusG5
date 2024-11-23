@@ -1,4 +1,3 @@
-#-*- coding:utf-8 -*
 # ThunderbirdPlusG5 for Thunderbird 115+
 
 from nvdaBuiltin.appModules import thunderbird
@@ -124,7 +123,8 @@ class AppModule(thunderbird.AppModule):
 		self.regExp_nameListGroup, self.regExp_AnnotationResponse, self.regExp_mailAddress  =compile ("\[.*\]|\{.*\}"), compile("re[ ]*:[ ]", IGNORECASE), compile ("\S+?@\S+?\.\S+")
 		# self.regExp_listGroupName = compile ("\[(.*)\]") # |\{?*\}") # first occurrence of the list group name
 		self.regExp_removeMultiBlank =compile (" {2,}")
-		self.regExp_removeSymbols =compile ("\d+|&|_|@.+|=|\.| via .*")
+		self.regExp_removeSymDigits =compile ("\d+|&|_|@.+|=|\.| via .*")
+		self.regExp_removeSymbols =compile (r"&|_|@.+|=|\. | via .*")
 		#wx.CallLater(25000, debugShow, self, True)
 		k =  utis.gestureFromScanCode(41)
 		self.bindGesture("kb:control+" + k, "showContextMenu") # 41 is the scancode of the key above Tab
@@ -141,9 +141,7 @@ class AppModule(thunderbird.AppModule):
 	def chooseNVDAObjectOverlayClasses(self, obj, clsList):
 		if sharedVars.objLooping  or self.disabMode == 1 : return
 		role = obj.role
-		# sharedVars.curFrame = sharedVars.curTab = ""
-		# The block prevents slow down  of write mode
-		if  role == controlTypes.Role.DOCUMENT  and  controlTypes.State.EDITABLE in obj.states :
+		if role == controlTypes.Role.DOCUMENT  and  controlTypes.State.EDITABLE in obj.states :
 			sharedVars.oEditing = obj ; sharedVars.curFrame = "msgcomposeWindow" ; sharedVars.curTab = "comp"
 			return
 		# reduce verbosity
@@ -161,8 +159,11 @@ class AppModule(thunderbird.AppModule):
 			# sharedVars.curTab = messengerWindow.tabs.getTabTypeFromName(obj.name, "document")
 			# return
 		#  list of messages 			
-		if role in (controlTypes.Role.LIST, controlTypes.Role.TREEVIEW) and utils.hasID(obj.parent.parent, "threadTree") :
-			clsList.insert(0, ListTreeView)
+		try :
+			if  role in (controlTypes.Role.LIST, controlTypes.Role.TREEVIEW) and utils.hasID(obj.parent.parent, "threadTree") :
+				clsList.insert(0, ListTreeView)
+		except :
+			pass
 			return
 		if role in (controlTypes.Role.LISTITEM, controlTypes.Role.TREEVIEWITEM) :
 			if ID.startswith("threadTree-row") :
@@ -175,22 +176,27 @@ class AppModule(thunderbird.AppModule):
 				clsList.insert(0, messengerWindow.folderTreeItem.FolderTreeItem)
 				sharedVars.curFrame = "messengerWindow" ; sharedVars.curTab = "main"
 				return
-				# spellCheck dialog
-		if ID.startswith("ReplaceWordInput") : clsList.insert (0,msgComposeWindow. spellCheckDlg.SpellCheckDlg); return
+		# spellCheck dialog
+		if   obj.windowClassName == "MozillaDialogClass" and (ID.startswith("ReplaceWordInput") or  utils.hasIA2Class(obj, "spell-check")) :
+			sharedVars.curTab = sharedVars.curFrame = "spellcheckDlg"
+			clsList.insert (0,msgComposeWindow. spellCheckDlg.SpellCheckDlg); return
 		# special tabs documents 
 		# if role == controlTypes.Role.DOCUMENT : 
 			# parID = str(utils.getIA2Attr(obj.parent))
 			# if parID == "messagepane" : sharedVars.curTab = "main" ; return
 			# elif  parID.startswith("addressBookTab") : sharedVars.curFrame = "messengerWindow" ; sharedVars.curTab = "sp:addressbook" ; return
 			# else : sharedVars.curTab = messengerWindow.tabs.specialTabType(obj.name, True)
-		if sharedVars.TBMajor == 115 and sharedVars.curTab == "sp:addressbook" :
-			if not  sharedVars.noAddressBook and role in (controlTypes.Role.TREEVIEWITEM, controlTypes.Role.BUTTON, controlTypes.Role.EDITABLETEXT) :
-				clsList.insert(0, messengerWindow.tabAddressBook.AddressBook)
+
+		if sharedVars.curTab == "sp:addressbook" :
+			if not  sharedVars.noAddressBook :  # and role in (controlTypes.Role.TREEVIEWITEM, controlTypes.Role.BUTTON, controlTypes.Role.EDITABLETEXT) :
+				if sharedVars.TBMajor < 128 :  clsList.insert(0, messengerWindow.tabAddressBook.AddressBook115)
+				else : clsList.insert(0, messengerWindow.tabAddressBook.AddressBook)
 
 	# def event_foreground(self, obj,nextHandler):
-		# # if not self.verChecked :
-			# # self.verChecked = True
-		# checkTBVersion()
+		# if obj.role == controlTypes.Role.FRAME :
+			# fc = obj.firstChild
+			# if  fc  and utils.hasID(fc, "mispelled") :
+				# sharedVars.curFrame = sharedVars.curTab = "spellCheckDlg"
 		# nextHandler()
 
 	def event_NVDAObject_init(self, obj):
@@ -207,7 +213,7 @@ class AppModule(thunderbird.AppModule):
 				obj.name = self.buildColumnNames(obj)
 				if not sharedVars.curTTRow : sharedVars.curTTRow = obj.name
 			except : 
-				beep(100, 15)
+				#beep(100, 15)
 				sharedVars.curTTRow = "Error rebuilding row"
 
 	# def fillRow(self, obj) :
@@ -240,6 +246,10 @@ class AppModule(thunderbird.AppModule):
 		if self.disabMode == 3 : return nextHandler()
 		role = obj.role
 		# api.setNavigatorObject(obj) # 2311.12.08
+		if sharedVars.menuClosing and role == controlTypes.Role.TREEVIEWITEM :
+			sharedVars.menuClosing = False
+			utis.setSpeech(True)
+		
 		if  role == controlTypes.Role.UNKNOWN :
 			if obj.parent and obj.parent.role in(controlTypes.Role.LIST, controlTypes.Role.TREEVIEW) :
 				# beep(100, 10)
@@ -253,11 +263,22 @@ class AppModule(thunderbird.AppModule):
 			if sharedVars.oSettings.getOption("deactiv", "SWRnoRead") :
 				return nextHandler()
 			return wx.CallAfter(sharedVars.oQuoteNav.readMail, obj, obj, False)
+		if sharedVars.curTab == "sp:addressbook" and sharedVars.TBMajor > 127 :
+			messengerWindow.tabAddressBook.abGainFocus(obj)
+
 		nextHandler()
 		
 	def event_focusEntered (self,obj,nextHandler):
 		role, ID  = obj.role, str(utils.getIA2Attr(obj))
 		# sharedVars.log(obj, "current ")
+		if  sharedVars.curFrame == "msgcomposeWindow" and ID == "msgIdentity" :
+			return #  No nextHandler()
+		# if sharedVars.menuClosing  and role != controlTypes.Role.TREEVIEWITEM:
+			# sharedVars.log(obj, "menuClosing ") 
+			# if hasattr(obj, "name") :
+				# obj.name = ""
+			# # menuClosing is set to False  in event_gainFocus
+			# return
 		#  Role.TEXTFRAME, IA2ID : threadTree Tag: tree-view, States : , FOCUSABLE, childCount  : 1 Path : Role-FRAME| i32, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  | i2, Role-SECTION, , IA2ID : threadPane | i2, Role-TEXTFRAME, , IA2ID : threadTree , IA2Attr : id : threadTree, display : flex, class : tree-view-scrollable-container, tag : tree-view,  ;
 		if sharedVars.TTnoFolderName and role in  (controlTypes.Role.LIST, controlTypes.Role.TREEVIEW) and utils.hasID(obj.parent.parent, "threadTree") :
 			# beep(440, 5)
@@ -365,8 +386,10 @@ class AppModule(thunderbird.AppModule):
 					if  oCell.firstChild :
 						s= oCell.firstChild.name
 						if sharedVars.namesCleaned : # corresp name 
-							s = self.regExp_removeSymbols.sub (" ",s) 
-							s = utis.truncateAfter(s, "<")
+							s = self.regExp_removeSymDigits.sub (" ", s)
+						else : 
+							s = self.regExp_removeSymbols.sub (" ", s)
+						s = utis.truncateAfter(s, "<")
 				elif "attachmentcol" in longID :
 					if oCell.firstChild :
 						s = _("attachment") 
@@ -456,6 +479,10 @@ class AppModule(thunderbird.AppModule):
 		elif utils.isFolderTreeItem(o, ID) : 
 			return wx.CallAfter(specialSendKey, "f6")
 		elif sharedVars.curTab == "sp:addressbook" :
+			if sharedVars.TBMajor > 127 :
+				nextGesture = messengerWindow.tabAddressBook.getNextControl(o, ID)
+				return KeyboardInputGesture.fromName(nextGesture).send()
+			# tb 115
 			if ID.startswith("searchInput") :
 				return KeyboardInputGesture.fromName ("f6").send () 
 		return gesture.send()
@@ -487,14 +514,17 @@ class AppModule(thunderbird.AppModule):
 			return KeyboardInputGesture.fromName ("shift+f6").send()
 		elif  utils.hasID(o.parent, "attachmentBucket") :  # attachment list in write window
 			return KeyboardInputGesture.fromName ("shift+f6").send()
-		elif sharedVars.curTab == "sp:addressbook" :
-			if ID.startswith("cards-row") or ID.startswith("searchInput") or ID.startswith("cards") :
-				return KeyboardInputGesture.fromName ("shift+f6").send () 
-			elif role == controlTypes.Role.TREEVIEWITEM and (ID.startswith("list") or utils.hasID(o.parent, "books")) :
-				return KeyboardInputGesture.fromName ("f6").send () 
-			elif role == controlTypes.Role.BUTTON :
-				return KeyboardInputGesture.fromName ("shift+tab").send () 
-			else : return gesture.send()
+		elif sharedVars.curTab == "sp:addressbook"   and role !=  controlTypes.Role.MENUITEM :
+			if sharedVars.TBMajor > 127 :
+				messengerWindow.tabAddressBook.getPreviousControl(o, ID)
+			else : # TB 115
+				if ID.startswith("cards-row") or ID.startswith("searchInput") or ID.startswith("cards") :
+					return KeyboardInputGesture.fromName ("shift+f6").send () 
+				elif role == controlTypes.Role.TREEVIEWITEM and (ID.startswith("list") or utils.hasID(o.parent, "books")) :
+					return KeyboardInputGesture.fromName ("f6").send () 
+				elif role == controlTypes.Role.BUTTON :
+					return KeyboardInputGesture.fromName ("shift+tab").send () 
+				else : return gesture.send()
 		elif role == controlTypes.Role.DOCUMENT  and controlTypes.State.READONLY in o.states :
 			if utils.isSeparMsgWnd() :
 				return KeyboardInputGesture.fromName ("control+w").send () 

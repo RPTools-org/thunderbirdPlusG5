@@ -71,30 +71,14 @@ Note: The label of the first key to the left of backspace varies depending on th
 
 This custom mode, disabled by default, allows more comfortable listening to lines in the message list.
 
-However, it has some disadvantages:
+You can activate this mode by pressing shift+power2 and selecting from the menu the item "Oprtions for the main window" then "List of messages". In the list of options, check the option "Message list: Custom vocalization of lines";
 
-* It is not compatible with the card view of the message list. To return to the table view, go to the message list, press Shift+Tab to the "Message list options" button, press Enter and in the context menu, check "Table view".
-* On slower PCs, it may cause a noticeable slowdown in navigation with the arrows in the message list.
-* If you press down arrow on the last line, it will not be announced.
+This list of options also contains other customization options that only work if custom vocalization is enabled.
 
-You can activate this mode by pressing shift+ key above Tab and selecting the "Main window options" item in the menu then checking the "Message list: custom vocalization of rows" option.
-
-This submenu also contains other customization options that only work if custom vocalization is enabled.
-<br>
-Remark :
-
-Some users are experiencing a problem with blank lines in normal mode. If you are in this case, activate "Message list: force filling of rows if always blank" option.
-
-But ideally, this problem should be solved by creating a new user profile in Thunderbird, which involves reconfiguring email accounts.
-
-#### Tip for custom vocalization of rows
-
-You can use the two columns "Reading Status" and "Status" together to combine their respective advantages:
-
-* The "Reading Status" column announces "unread" when you press the letter m to reverse the reading status.
-* The "Status" column announces the statuses "New", "Replied" and "Transferred".
-* The add-on will ensure that "Unread" is only announced once and that "Read" is never announced.
-
+* The "Reading Status" column announces "unread" does not announce the "read" status;
+* The "Status" column, recommended, announces the statuses "New", "Answered" and "Transferred". <br>
+Note: If you type the letter "m" to reverse the status of the message, this column must be present in the list of messages for the new status to be announced.
+* The extension will ensure that "Unread" is only announced once and that "Read" is never announced.
 <br>
 also read the section [Choice and order of columns](#cols)
 
@@ -278,27 +262,31 @@ The following shortcuts are available from the replacement word editing area:
 * Alt+Enter: adds the word declared as misspelled to the dictionary.
 
 ## Address book, easier management (v.2024.02.07)
-The add-on improves address book announcements and provides you with keyboard commands that allow you to organize address books and mailing lists via virtual drag and drop.
 
-### Improved annoucements
+The extension improves address book announcements and provides you with keyboard commands that allow you to organize address books and mailing lists via virtual drag and drop.
 
-* Address books and mailing lists tree : the add-on also announces the type of an element: address book or list of the parent address book,
-* contact list: the add-on also announces the email address of the selected contact.
+### Improved ads
 
-### Command Summary
+* Tree of address books and mailing lists: the extension also announces the type of an element: address book or list of the parent address book,
+* contact list: pressing space announces the detailed contact file, pressing twice announces and copies the file to the clipboard.<br>
+Note: if this list is in "Table presentation" mode, uncheck this case via the "List display options" button which is located above the list of contacts. 
 
-* Tab key from search field: Goes directly to the contacts table by skipping the "List display options" button. This button remains accessible with shift+Tab from the contacts table; .
-* Escape key:
+### Order Summary
 
-	* From the address book tree, bring the focus to the search field;
+* Tab from the address book and mailing list tree: accesses the search field in the book or list selected in the tree. 
+* Tab from search field: Goes directly to the contacts table by skipping the "List display options" button. This remains accessible with shift+Tab from the contacts table;  .  
+* escapes:
+
+	* From the address book tree, bring the focus to the "Create a new address book" button in the button bar above the tree. From one of these buttons, the escape key brings the focus to the tree;
 	* From the search field, bring the focus to the address book tree;
 	* From the contacts table, bring the focus to the search field;
  
-* Control+Applications or key above Tab: opens a context menu including: Go to   address books and mailing lists tree, Access the contacts table, New address book, New contact, New list , Import. Aside from the first two, these items come from the Address Book toolbar.
-* letter "a" from the contacts table: drags and drops the selected contacts to the mailing list or address book defined as destination. The first time you press this key, you are asked for the destination via a menu. Then you won't be asked for the destination again until you change the source list or address book.
-* letter "d" from the contacts table: displays the menu of lists and  address books destinations.
+* Control+Applications or key above Tab: opens a context menu including: Access the tree of address books and mailing lists, Access the contacts table, New address book, New contact, New list , Import. Aside from the first two, these items come from the Address Book toolbar. 
+* letter "a" from the contacts table: drags and drops the selected contacts to the distribution list or address book defined as destination. The first time you press this key, you are asked for the destination via a menu. Then you won't be asked for the destination again until you change the source list or address book.
+* letter "d" from the contacts table: displays the menu of lists and destination address books.
 
-### Example 1: Creating a mailing list in the Personal Address Book
+
+Tip: You can also use navigation keys on a web page.   The letter "e" takes you directly to the search field and the letter "t" takes you to the contacts table.### Example 1: Creating a mailing list in the Personal Address Book
 
 * Go to the address book tree and select "Personal addresses". A new list is created only in the selected address book, it is not possible from "All address books";
 * Press Control+Applications or the key above Tab and in the menu, press Enter on: New list;

@@ -44,14 +44,14 @@ TTIDefGestures = {
 	"kb(laptop):nvda+l" : "sayLine",
 	"kb:control+leftArrow" : "goGroupedFirst", 	
 	"kb:control+rightArrow" : "goGroupedLast", 	
+	"kb:a" : "sayShortcut",
+	"kb:f" : "showFilterBar",
 	# "kb:delete" : "deleteMsg",
 	# "kb:shift+delete" : "deleteMsg",
-	"kb:a" : "sayShortcut",
 	# "kb:shift+c" : "sayShortcut",
-	# "kb:j" : "sayShortcut",
-	# "kb:shift+j" : "sayShortcut",
-	"kb:f" : "showFilterBar",
-	# "kb:m" : "toggleUnread"
+	# "kb:j" : "toggleJunk",
+	# "kb:shift+j" : "toggleJunk",
+	"kb:m" : "toggleUnread"
 } 
 
 TTITagGestures = {
@@ -159,8 +159,10 @@ class MessageListItem(IAccessible):
 		c = GetDescObject(controlTypes.Role.STATICTEXT, controlTypes.Role.GRAPHIC)
 		c.run(oCell)
 		name = ""
-		if c.mainObj and c.mainObj.name : name  =  str(c.mainObj.name)
-		if c.secondObj and c.secondObj.name : name += str(c.secondObj.name)
+		if c.mainObj and c.mainObj.name : 
+			name  =  str(c.mainObj.name)
+		if c.secondObj and c.secondObj.name : 
+			name += str(c.secondObj.name)
 		if not name :
 			return message(_("No") + " " + lbl)
 		
@@ -380,26 +382,53 @@ class MessageListItem(IAccessible):
 	script_showFilterBar.__doc__ = _("Shows the quick filter bar from the message list.")
 	script_showFilterBar.category=sharedVars.scriptCategory
 
-	def script_toggleUnread(self,gesture):
-		sharedVars.lastKey = "Del"
-		gesture.send ()
-		# callLater(600, sayTTi)
+	# def script_toggleUnread(self,gesture):
+		# sharedVars.lastKey = "Del"
+		# gesture.send ()
+		# # callLater(600, sayTTi)
 		
-		# sel = utils.getMessageStatus(infoIdx=2)
-		# if sel  :
-			# message(_("{} applied. ").format(_("read or unread")) + ", " + sel) 
-		# else :
-			# sleep(.1)
-			# s = getStatus(self, "read")
-			# if not s : 
-				# s  = _("Status column not found. Read or Unread applied.")
-			# else :
-				# s += " " + _("Applied to: ") + self.name 
-			# message(s)
-			# # causes the line to be reread at the wrong time > self.name =  self.appModule.buildColumnNames(self)
-			# sharedVars.curTTRow = self.appModule.buildColumnNames(self)
+		# # sel = utils.getMessageStatus(infoIdx=2)
+		# # if sel  :
+			# # message(_("{} applied. ").format(_("read or unread")) + ", " + sel) 
+		# # else :
+			# # sleep(.1)
+			# # s = getStatus(self, "read")
+			# # if not s : 
+				# # s  = _("Status column not found. Read or Unread applied.")
+			# # else :
+				# # s += " " + _("Applied to: ") + self.name 
+			# # message(s)
+			# # # causes the line to be reread at the wrong time > self.name =  self.appModule.buildColumnNames(self)
+			# # sharedVars.curTTRow = self.appModule.buildColumnNames(self)
+	# script_toggleUnread.__doc__ = _("Reverses the read and unread status of the selected message")
+	# script_toggleUnread.category=sharedVars.scriptCategory
+	def script_toggleUnread(self, gesture) :
+		gesture.send()
+		sleep(.2)
+		value = utils.getColValue(self, "statuscol")
+		if not value :
+			value = _("The reading status has been changed.")
+		elif value.endswith(" : ") : 
+			value += _("Unread")
+		message(value)
 	script_toggleUnread.__doc__ = _("Reverses the read and unread status of the selected message")
 	script_toggleUnread.category=sharedVars.scriptCategory
+
+	# script_toggleUnread.__doc__ = _("Reverses the read and unread status of the selected message")
+	# script_toggleUnread.category=sharedVars.scriptCategory
+	
+	# def script_toggleJunk(self, gesture) :
+		# gesture.send()
+		# # callLater(200, reportFocusedLine) 
+		# sleep(.3)
+		# value = utils.getColValue(self, "tree-view-row-spam junkstatuscol-")
+		# if not value :
+			# value = _("The junk or acceptable status  has been changed.")
+		# elif value.endswith(" : ") : 
+			# value += _("acceptable")
+		# message(value)
+	# script_toggleJunk.__doc__ = _("Reverses the junk and acceptable status of the selected message")
+	# script_toggleJunk.category=sharedVars.scriptCategory
 
 	def script_goGroupedFirst(self, gesture) :
 		if  sharedVars.totalColIdx == -1 : return # no Total column
@@ -577,3 +606,9 @@ def focusNewRow(obj, oParent) :
 		KeyboardInputGesture.fromName("upArrow").send()
 		utis.setSpeechMode(sm)
 		KeyboardInputGesture.fromName("downArrow").send()
+
+# def reportFocusedLine() :
+	# #speech.cancelSpeech()
+	# fo = api.getFocusObject()
+	# if fo.name :
+		# message(fo.name)

@@ -59,8 +59,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		if notif.	checkNotif() :
 			beep(440, 30)
 			wx.CallLater(200, notif.showNotif)
-		else :
-			wx.CallLater(3000, updateLite.checkUpdate, True) # auto
+		# else :
+			# wx.CallLater(3000, updateLite.checkUpdate, True) # auto
 
 	def RestoreSpeechAndSay(msg, focusName=False) :
 		if focusName :
@@ -126,8 +126,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def  script_searchUpdate(self, gesture) :
 		self.updateMenu = wx.Menu()
-		self.updateMenu.Append(0, _("Check for an update"))
-		self.updateMenu.Append(1, getUpdateLabel())
+		# self.updateMenu.Append(0, _("Check for an update"))
+		# self.updateMenu.Append(1, getUpdateLabel())
 		lbl =  _("Install version {}")
 		lbl = lbl.format(updateLite.getLatestVersion())
 		self.updateMenu.Append(2, lbl)

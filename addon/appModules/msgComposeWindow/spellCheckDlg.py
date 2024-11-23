@@ -3,7 +3,7 @@
 
 from scriptHandler import getLastScriptRepeatCount
 import speech 
-from speech import speak, speakSpelling
+from speech import speakMessage, speakSpelling
 from tones  import beep
 from NVDAObjects.IAccessible import IAccessible
 import controlTypes
@@ -44,8 +44,16 @@ class SpellCheckDlg (IAccessible):
 		""" elif role == (controlTypes.Role.LISTITEM if hasattr(controlTypes, "Role") else controlTypes.ROLE_LISTITEM) and not self.previous :self.keyboardShortcut =self.container.keyboardShortcut """
 
 	def event_gainFocus (self):
-		if self.role == controlTypes.Role.EDITABLETEXT :
-			self.sayWords()
+		role = self.role
+		if role == controlTypes.Role.EDITABLETEXT :
+			self.setEditLabel()
+			if  sharedVars.oSettings.getOption("msgcomposeWindow", "spellWords") :
+				CallAfter(self.sayWords)
+		elif role == controlTypes.Role.BUTTON :
+			ID = str(utis.getIA2Attribute(self))
+			if ID == "Close" or ID == "Send" :
+				self.setCloseBtnLabel()
+
 		super (SpellCheckDlg,self).event_gainFocus ()
 
 	def script_enterFromEdit (self,gesture):
@@ -63,26 +71,46 @@ class SpellCheckDlg (IAccessible):
 				self.pressButton ("replaceAll")
 			else :
 				self.pressButton ("replace")
-		self.sayWords()
+		# self.sayWords()
 	script_enterFromEdit.__doc__ = u"gère différentes combinaisons autour de Enter pour simuler les boutons de correction"
 
-	def sayWords(self) :
-		#global lastWord, newWord
-		#newWord=self.parent.getChild (1).name
-		misp = self.parent.getChild (1).name
-		if _("Check Spelling ") in misp : return message(_("Spell check complete."))
-		spell = sharedVars.oSettings.getOption("msgcomposeWindow", "spellWords")
-		replace= self.value
-		if replace :
-			#if lastWord != newWord : message ("Mispelled word : %s" % misp)
-			message (_("Misspelled word: %s") % misp)
-			if spell: speakSpelling (misp)
-			#if  lastWord != newWord : message ("Remplacer par : %s" % replace)
-			message(_("Replace with: %s") % replace)
-			if spell : speakSpelling (replace)
+	def setEditLabel(self) :
+		oMispLabel = self.parent.firstChild
+		mispName = oMispLabel.next.name #  child 1
+		if controlTypes.State.UNAVAILABLE in oMispLabel.states : 
+			return message(mispName)
+		self._replaceLabel = self.name # needed in self.sayWords
+		self.name =  oMispLabel.name +" : " + mispName + ", " + self._replaceLabel
+
+	def setCloseBtnLabel(self) :
+		# self is the close or send button
+		oMispLabel = self.parent.firstChild
+		if controlTypes.State.UNAVAILABLE in oMispLabel.states :
+			label = ""
 		else :
-			message(_("Misspelled word : %s, no suggestion.") % misp)
-		#lastWord = newWord
+			label = oMispLabel.name + " "
+		mispValue = self.parent.getChild(1).name
+		self.name = label + mispValue + " " + self.name
+
+	def sayWords(self, sayRole=True) :
+		cancelSpeech =   sharedVars.oSettings.getOption("msgcomposeWindow", "spellCancelSpeech") 
+		if cancelSpeech : speech.cancelSpeech()
+		oMispLabel = self.parent.firstChild
+		mispValue = oMispLabel.next.name #  child 1
+		
+		replaceValue = self.value
+		if sayRole : tRole = 			self.role.displayString +": "
+		else : tRole = ""
+
+		if replaceValue :
+			if cancelSpeech :speakMessage(oMispLabel.name + " " + mispValue)
+			else : speakMessage(mispValue)
+			speakSpelling (mispValue)
+			speakMessage(self._replaceLabel + replaceValue)
+			speakSpelling (replaceValue)
+			if tRole : speakMessage(tRole)
+		else :
+			speakMessage(mispValue)
 
 	def script_altLetter (self, gesture) :
 		# beep (500, 50)
@@ -117,34 +145,24 @@ class SpellCheckDlg (IAccessible):
 		#cmdVol = #speech.VolumeCommand
 		#cmdVol(0.4)
 		message (obj.name)
-		#cmdVol(1)
+		obj.setFocus()
 		obj.doAction ()
-			# added 2022-08-09
-		if sayMisp  : # 2022-08-09
+
 			# self.script_reportFocus(None)
-			self.sayWords()
+			# self.sayWords()
 
 	def script_reportFocus (self,gesture):
 		c = getLastScriptRepeatCount () 
 		misp = self.parent.getChild (1).name
-		message(misp)
-		if c == 2 :
-			#speak ([u"Mot mal orthographié : " + misp])
-			speak ([(_("replaced, {0} . by . {1}")).format((" . ").join (list (self.parent.getChild(1).name)), (" . ").join (list (self.value)))],symbolLevel  =0)
-		elif c == 0 :
-			a = _("Replace : ") + misp + " : "
-			message  (a)
-			speakSpelling (misp)
-			a = _(" with : ") + self.value + " : "
-			message  (a)
-			speakSpelling (self.value)
+		if c == 0 :
+			CallAfter(self.sayWords, False)
 		elif c == 1 :
 			if not sharedVars.oQuoteNav : sharedVars.initQuoteNav()
 			sharedVars.oQuoteNav.setDoc(sharedVars.oEditing, nav=True, fromSpellCheck=True)
 			sharedVars.oQuoteNav.setText(0) # speakMode=0 silent
 			sharedVars.oQuoteNav.findItem(misp)
-		# else :
-			# copyToClip (misp)
-			# message(misp + _(", copied to clipboard"))
-	script_reportFocus.__doc__ = u"Lire ou épeler le mot mal orthographié et le mot proposé par NVDA+Tab"
+		else :
+			copyToClip (misp)
+			message(misp + _(", copied to clipboard"))
+	script_reportFocus.__doc__ = _("Announce or spell the misspelled word and the suggested word.")
 

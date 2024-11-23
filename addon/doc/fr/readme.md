@@ -71,28 +71,13 @@ Note : Le libellé de la première touche à gauche de retour-arrière varie en 
 
 Ce modepersonnalisé, désactivé par défaut, permet une écoute plus confortable des lignes de la liste de messages.
 
-Il présente cependant certains inconvénients :
+Vous pouvez activer ce mode en pressant majuscule+puissance2 et en sélectionnant dans le menu  l'élément "Oprtions pour la fenêtre principale" puis "Liste des messages". Dans la liste des options, cochez  l'option "Liste de messages :  vocalisation personnalisée des lignes" ;
 
-* Il n'est pas compatible avec la vue en fiches de la liste de messages. Pour revenir à la vue en tableau, placez vous dans la liste de messages, pressez Maj+Tab jusqu'au bouton "Options de la liste de messages", pressez Entrée et dans le menu contextuel, cochez "Vue en tableau".
-* Sur les PC moins rapides, il peut provoquer un  ralentissement perceptible de la navigation avec les flèches dans la liste de messages. 
-* Si vous pressez flèche bas sur la dernière ligne, celle-ci ne sera pas annoncée.
+Cette liste d'options  contient également d'autres options  de personnalisation qui ne fonctionnent que si la vocalisation personnalisée est activée.
 
-Vous pouvez activer ce mode en pressant majuscule+puissance2 et en sélectionnant dans le menu  l'élément "Oprtions pour la fenêtre principale" puis en cochant l'option "Liste de messages :  vocalisation personnalisée des lignes".
-
-Ce sous-menu contient également d'autres options  de personnalisation qui ne fonctionnent que si la vocalisation personnalisée est activée.
-<br>
-Remarque :
-
-Certains utilisateurs rencontrent un problème de lignes vides  dans le mode normal. Si vous êtes dans ce cas, activez l'option "Liste messages : forcer le remplissage des lignes si toujours vides".
-
-Mais idéalement, ce problème devrait être résolu en créant un nouveau profil utilisateur dans Thunderbird, ce qui implique une reconfiguration des comptes de messagerie.
-
-#### Astuce pour la vocalisation personnalisée des lignes
-
-Vous pouvez utiliser conjointement les deux colonnes "Statut de lecture" et "Statut" pour combiner  leurs avantages respectifs :
-
-* La colonne "Statut de lecture" annonce "non lu" lorsque vous pressez la lettre m pour inverser le statut de lecture.
-* La colonne "Statut" annonce quant à elle les statuts "Nouveau", "Répondu" et  "Transféré".
+* La colonne "Statut de lecture" annonce "non lu" n'annonce pas le statut "lu" ;
+* La colonne "Statut", recommandée,  annonce quant à elle les statuts "Nouveau", "Répondu" et  "Transféré". <br>
+Note : Si gous  frappez la lettre "m" pour inverser le statut du message, cette colonne doit être présente dans la liste des messages pour que le nouveau statut soit annoncé.
 * L'extension fera en sorte que "Non lu" ne soit annoncé q'qu'une seule fois et que "Lu" ne le soit jamais.
 
 <br>
@@ -282,19 +267,26 @@ L'extension améliore les annonces du carnet d'adresses et vous propose des comm
 ### Annonces améliorées
 
 * Arborescence des carnets d'adresses et listes de diffusion :  l'extension annonce aussi le type d'un élément :carnet d'adresse ou liste du carnet d'adresses parent,
-* liste de contacts : l'extension annonce aussi l'adresse mail du contact sélectionné.
+* liste de contacts :   un appui sur espace annonce la fiche détaillé du contact, deux appuis annonce et copie la fiche dans le press-papiers.<br>
+Note : si cette  liste  est en mode "Présentation en tableau", décochez cette cas via le bouton "Options d'affichage de la liste" qui se trouve au-dessus de la liste des contacts. 
 
 ### Résumé des commandes
-* Touche Tab  depuis le champ de recherche : accède directement au tableau des contacts en sautant le bouton "Options d'affichage de la liste". Celui-ci reste accessible avec maj+Tab depuis le tableau des contacts;  .  
-* Touche échappe :
 
-	* Depuis l'arborescence des carnets d'adresses, amène le focus au champ de recherche;
+* Tab  depuis l'arborescence des carnets d'adresses et listes de diffusion : accède au champ de recherche dans le carnet ou la liste sélectionnée dans l'arborescence. 
+* Tab  depuis le champ de recherche : accède directement au tableau des contacts en sautant le bouton "Options d'affichage de la liste". Celui-ci reste accessible avec maj+Tab depuis le tableau des contacts;  .  
+* échappe :
+
+	* Depuis l'arborescence des carnets d'adresses, amène le focus sur le bouton   "Créer un nouveau carnet d'adresses" de la   barre de boutons située au-dessus de l'arborescence. Depuis un de ces boutons, la touche échappe amène le focus à l'arborescence ;
 	* Depuis le champ de recherche, amène lle focus à l'arborescence des carnets d'adresses;
 	* Depuis le tableau des contacts, amène le focus au champ de recherche;
  
 * Control+Applications ou touche au dessus de Tab : ouvre un menu contextuel comprenant : Accédez à l'arborescence des carnets d'adresses et des listes de diffusion, Accéder au tableau des contacts, Nouveau carnet d’adresses, Nouveau contact, Nouvelle liste, Importer. Hormis les deux premiers, ces éléments proviennent de la barre d'outils du carnet d'adresses. 
 * lettre "a" depuis le tableau des contacts : effectue un glisser-déposer des contacts sélectionnés vers la liste de diffusion ou le carnet d'adresses défini comme destination. La première fois que vous pressez cette touche, la destination vous est demandée via un menu. Ensuite, la destination ne vous sera plus demandée tant que vous ne modifiez pas la liste ou le carnet d'adresses source.
 * lettre "d" depuis le tableau des contacts : affiche le menu des listes et des carnets d'adresses  de destination.
+
+
+Astuce : vous pouvez aussi utiliser  les touches de navigation dans une page web.   La lettre "e" permet d'atteindre directement  le champ de recherche et la lettre "t" permet d'atteindre le tableau des contacts. 
+
 
 ### Exemple 1 : création d'une liste de diffusion dans le carnet d'adresses personnelles 
 

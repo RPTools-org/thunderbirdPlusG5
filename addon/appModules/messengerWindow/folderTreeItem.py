@@ -246,11 +246,12 @@ class FolderMenu() :
 		
 			if self.type == 0 : # regular menu item, request to focus folderTree
 				# beep(100, 30)
+				utis.setSpeech(False)
+				sharedVars.menuClosing = True 
 				o.scrollIntoView()
 				o.doAction()
 				o.setFocus()
-				if controlTypes.State.COLLAPSED  in o.states :
-					CallAfter(KeyboardInputGesture.fromName("rightArrow").send)
+				# if controlTypes.State.COLLAPSED  in o.states : CallAfter(KeyboardInputGesture.fromName("rightArrow").send)
 			elif self.type == 1 : # request to display folders of the choosen  account 
 				# beep(250, 40)
 				o.scrollIntoView()

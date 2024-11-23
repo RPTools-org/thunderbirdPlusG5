@@ -1,4 +1,6 @@
 #-*- coding:utf-8 -*
+import addonHandler
+addonHandler.initTranslation()
 
 import api, config, sys, glob, shutil
 import gui, wx # Ajouté par Abdel.
@@ -6,14 +8,13 @@ from checkListMenu import CheckListMenu # Ajouté par Abdel.
 from startupDlg import  StartupDialog
 from configobj import ConfigObj
 import re
-import addonHandler,  os, sys
+import os, sys
 import globalPluginHandler
 import  sharedVars, utis
 from wx import Menu, EVT_MENU, EVT_MENU_CLOSE, CallAfter, CallLater 
 from ui import  message
 from speech import cancelSpeech
 from tones import beep
-addonHandler.initTranslation()
 
 
 class  Settings() :
@@ -36,34 +37,23 @@ class  Settings() :
 		self.load()
 		# sharedVars.log(None, "Option VirtualSpellChk : " + str(self.options["msgcomposeWindow"]["virtualSpellChk"]))
 		# sharedVars.log(None, "virtualSpellChk avant initDegfaults : " + str(sharedVars.virtualSpellChk)) 
-		self.initDefaults()
 
 	def initDefaults(self) :
 		# default option values if ini file does not exist
-		if  not os.path.exists(self.iniFile) :
-			# self.options = self.option_messengerWindow = self.option_msgcomposeWindow = self.option_startup = None
-			self.options["messengerWindow"]["namesCleaned"] = True
-			self.options["messengerWindow"]["separateCols"] = True
-			self.options["messengerWindow"]["responseMentionGroup"] = True
-			self.options["messengerWindow"]["junkStatusCol"] = True
-			self.options["messengerWindow"]["delayFocusDoc"] = "25"
-			self.options["messengerWindow"]["focusMode"] = "1"
-			self.options["messengerWindow"]["focusOnStartup"] = False
-			sharedVars.delayFocusDoc = 25
-		if 			not self.options["messengerWindow"]["focusMode"] :
-			# beep(80, 30)
-			self.options["messengerWindow"]["focusMode"] = "1"
-			self.options["messengerWindow"]["focusOnStartup"] = False
-
-			# made by deactiv or the  "start with inbox" thunderbird addon ->self.options["startup"]["alwaysMainTab"] = True
-
-			self.options["msgcomposeWindow"]["closeMessageWithEscape"] = True
-			self.options["msgcomposeWindow"]["spellWords"] = True 
-			# self.options["msgcomposeWindow"]["virtualSpellChk"] = False
-			self.options["msgcomposeWindow"]["onePress"] = True
-		#if self.getOption ("messengerWindow", "separateCols") : self.colSepar = ", "
-		# debug logging
-		# désactivé sharedVars.debug = self.getOption("startup", "logging")
+		if   os.path.exists(self.iniFile) : return
+		
+		self.options["messengerWindow"]["responseMentionGroup"] = True
+		self.options["messengerWindow"]["junkStatusCol"] = True
+		self.options["messengerWindow"]["delayFocusDoc"] = "25"
+		sharedVars.delayFocusDoc = 25
+		# if 			not self.options["messengerWindow"]["focusMode"] :
+		# self.options["messengerWindow"]["focusMode"] = "1"
+		
+		if "spellcancelSpeech" not in self.options["msgcomposeWindow"] : self.options["msgcomposeWindow"].update({"spellcancelSpeech":False})
+		self.options["msgcomposeWindow"]["closeMessageWithEscape"] = True
+		self.options["msgcomposeWindow"]["spellWords"] = True 
+		# self.options["msgcomposeWindow"]["virtualSpellChk"] = False
+		self.options["msgcomposeWindow"]["onePress"] = True
 
 	def load(self):
 		adPath = self.addonPath
@@ -74,7 +64,7 @@ class  Settings() :
 		"TTnoFolderName" : _("Do not say the window and folder names when entering the list."),		"responseMentionGroup" : _("Combine multiple 'RE' mentions into one"),
 		"responseMentionRemove" : _("Delete the 'Re' mentions in the subject column"),
 		"responseMentionDelColon" : _("Delete the colons  in the 'Re:' mentions"),
-		"namesCleaned" : _("Clean the names of correspondents in the message list"),
+		"namesCleaned" : _("Delete digits and dots from the name of the correspondents"),
 		"listGroupName" : _("Hide mailing list names"),
 		"junkStatusCol" : _("Announce 'junk' if displayed in the 'junk Status' column"),
 		}
@@ -89,6 +79,7 @@ class  Settings() :
 
 		self.option_msgcomposeWindow={
 		"spellWords" : _("Spell Check: Spell the misspelled word and the suggested word."),
+		"spellCancelSpeech" : _("Spell Check: Cancel speech before announcing and spelling these words"),
 		# "virtualSpellChk" : _("Enable improved Spell Check while typing."),
 		"closeMessageWithEscape" : _("The Esc key closes the message being written"),
 		"onePress" : _("Single press on Shift+the key above the tab key to show the option menus, double press to write the corresponding printable character.")
@@ -110,6 +101,7 @@ class  Settings() :
 			for key in keyValue : 
 				if not key in self.options[section] : self.options[section].update({key:False})
 
+		self.initDefaults()
 		self.setSharedVars(section="messengerWindow")
 		section = self.options["messengerWindow"]
 		if "delayFocusDoc" not in section  : self.options["messengerWindow"].update({"delayFocusDoc":"25"})
@@ -117,7 +109,7 @@ class  Settings() :
 		if "focusMode" not in section  :
 			self.options["messengerWindow"].update({"focusMode":"1"})
 			self.options["messengerWindow"].update({"focusOnStartup":"False"})
-			self.options.write()
+			# self.options.write()
 			self.options["messengerWindow"]["focusMode"] = "1"
 			self.options["messengerWindow"]["focusOnStartup"] = False
 		else : # options are in section, we change their type
@@ -151,6 +143,8 @@ class  Settings() :
 		# sharedVars.log(None, str(utis.objSoundFiles))
 		# set sharedVars for optimization
 		sharedVars.virtualSpellChk = False # self.getOption ("msgcomposeWindow", "virtualSpellChk")
+		if   not os.path.exists(self.iniFile) :
+			self.options.write()
 		return
 		
 	def setSharedVars(self, section) :

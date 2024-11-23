@@ -1,7 +1,7 @@
 #-*- coding:utf-8 -*
 debug = False
 TBMajor = 0
-objLooping = False
+objLooping = menuClosing =  False
 speechOff = False
 gTimer = None
 lastKey = ""
