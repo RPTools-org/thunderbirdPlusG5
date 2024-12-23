@@ -234,6 +234,9 @@ class FolderMenu() :
 		# if len(self.nodes) :
 		self.fMenu.Bind (EVT_MENU,self.onMenu)
 		# self.debugMenu()
+		if sharedVars.speechOff :
+			speech.setSpeechMode(speech.SpeechMode.talk)
+			sharedVars.speechOff = False
 		callLater(50, self.sayMenuTitle, self.unread, title)
 		utis.showNVDAMenu  (self.fMenu)
 		# else : message(_("No unread folders for this account."))

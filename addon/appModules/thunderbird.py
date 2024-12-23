@@ -151,7 +151,6 @@ class AppModule(thunderbird.AppModule):
 		if role == controlTypes.Role.FRAME : 
 			sharedVars.curWinTitle = obj.name
 			return messengerWindow.tabs.setCurFrameTab(obj)
-		elif role == controlTypes.Role.DIALOG :  sharedVars.curFrame = "dialog" ; sharedVars.curTab = ID ; return
 		
 		if sharedVars.curFrame == "messengerWindow"and role == controlTypes.Role.DOCUMENT :
 			if obj.name : sharedVars.curWinTitle = obj.name
@@ -177,9 +176,12 @@ class AppModule(thunderbird.AppModule):
 				sharedVars.curFrame = "messengerWindow" ; sharedVars.curTab = "main"
 				return
 		# spellCheck dialog
-		if   obj.windowClassName == "MozillaDialogClass" and (ID.startswith("ReplaceWordInput") or  utils.hasIA2Class(obj, "spell-check")) :
-			sharedVars.curTab = sharedVars.curFrame = "spellcheckDlg"
-			clsList.insert (0,msgComposeWindow. spellCheckDlg.SpellCheckDlg); return
+		if   obj.windowClassName == "MozillaDialogClass" :
+			# if ID.startswith("ReplaceWordInput") or  utils.hasIA2Class(obj, "spell-check") : #  or (role == controlTypes.Role.LISTITEM and utils.hasID(obj.parent, ""SuggestedList")) :
+			if ID.startswith("ReplaceWordInput") or (role == controlTypes.Role.LISTITEM and utils.hasID(obj.parent, "SuggestedList")) :
+				# sharedVars.log(obj, "Spellcheck control")
+				sharedVars.curTab = sharedVars.curFrame = "spellcheckDlg"
+				clsList.insert (0,msgComposeWindow. spellCheckDlg.SpellCheckDlg); return
 		# special tabs documents 
 		# if role == controlTypes.Role.DOCUMENT : 
 			# parID = str(utils.getIA2Attr(obj.parent))
@@ -192,12 +194,15 @@ class AppModule(thunderbird.AppModule):
 				if sharedVars.TBMajor < 128 :  clsList.insert(0, messengerWindow.tabAddressBook.AddressBook115)
 				else : clsList.insert(0, messengerWindow.tabAddressBook.AddressBook)
 
-	# def event_foreground(self, obj,nextHandler):
-		# if obj.role == controlTypes.Role.FRAME :
-			# fc = obj.firstChild
-			# if  fc  and utils.hasID(fc, "mispelled") :
-				# sharedVars.curFrame = sharedVars.curTab = "spellCheckDlg"
-		# nextHandler()
+	def event_foreground(self, obj,nextHandler):
+		# sharedVars.log(obj, "Foreground")
+		if obj.role == controlTypes.Role.DIALOG :
+			if "|dlg" not  in sharedVars.curFrame : sharedVars.curFrame += "|dlg"
+			# sharedVars.log(obj, "Dialog, curframe = " +  sharedVars.curFrame) 
+		elif  obj.role == controlTypes.Role.FRAME :
+			sharedVars.curFrame = sharedVars.curFrame.replace("|dlg", "")
+			# sharedVars.log(obj, "FRAME, curframe = " +  sharedVars.curFrame) 
+		nextHandler()
 
 	def event_NVDAObject_init(self, obj):
 		if self.disabMode == 2 : return
@@ -242,7 +247,12 @@ class AppModule(thunderbird.AppModule):
 		if sharedVars.speechOff :
 			speech.setSpeechMode(speech.SpeechMode.talk)
 			sharedVars.speechOff = False
-		if  sharedVars.curFrame == "msgcomposeWindow" : return nextHandler()
+		# sharedVars.log(obj, "GainFocus")
+
+		if  sharedVars.curFrame == "msgcomposeWindow" :
+			# beep(440, 5)
+			nextHandler()
+			return
 		if self.disabMode == 3 : return nextHandler()
 		role = obj.role
 		# api.setNavigatorObject(obj) # 2311.12.08
@@ -271,6 +281,7 @@ class AppModule(thunderbird.AppModule):
 	def event_focusEntered (self,obj,nextHandler):
 		role, ID  = obj.role, str(utils.getIA2Attr(obj))
 		# sharedVars.log(obj, "current ")
+		# sharedVars.log(obj, "FocusEntered")
 		if  sharedVars.curFrame == "msgcomposeWindow" and ID == "msgIdentity" :
 			return #  No nextHandler()
 		# if sharedVars.menuClosing  and role != controlTypes.Role.TREEVIEWITEM:
@@ -679,8 +690,13 @@ class AppModule(thunderbird.AppModule):
 				return messengerWindow.folderTreeItem.fMenuFolders(o, (mainKey == "downArrow"))
 			elif  ID.startswith("ReplaceWordInput") : 
 				# spellCheckDialog
-				return o.script_reportFocus(gesture)
-		
+				if mainKey == "upArrow" :
+					return o.script_reportFocus(gesture)
+				elif mainKey == "downArrow" :
+					return o.script_focusSuggested(gesture)
+			elif  utils.hasID(o.parent, "SuggestedList") :
+				# spellCheckDialog
+				return o.script_focusEdit(gesture)
 		return gesture.send()
 		
 	def script_sharedF4(self, gesture) :
@@ -971,7 +987,9 @@ class AppModule(thunderbird.AppModule):
 
 def debugShow(appMod, auto) :
 	sharedVars.debugLog = "Debug mode : {}, TB branch : {}".format(str(sharedVars.debug), sharedVars.TBMajor) + "\n" + "\n" + sharedVars.debugLog
-	# sharedredVars.logte("curWinTitle=" + sharedVars.curWinTitle)
+	sharedVars.log(api.getFocusObject(), "* FocusObject")
+	sharedVars.log(api.getNavigatorObject(), "* NavigatorObject")
+	# sharedVars.logte("curWinTitle=" + sharedVars.curWinTitle)
 	# nom = utils.getColValue(api.getFocusObject(), "subjectcol")
 	# sharedVars.logte("Valeur colonne=" + nom) 
 	# oRow = api.getFocusObject()
@@ -1079,6 +1097,9 @@ def activateTB() :
 
 	tbTitle = " Thunderbird"
 	hwFG = winUser.getForegroundWindow()
+	winClass = winUser.getClassName(hwFG) 
+	sharedVars.logte("ActivateTB window class : {}, curFrame : {}, curTab : {}".format(winClass, sharedVars.curFrame, sharedVars.curTab))
+	if "Mozilla" not in winClass : return None
 	winTitle = winUser.getWindowText(hwFG)
 	if "bird Beta" in winTitle :
 		tbTitle = "bird Beta"

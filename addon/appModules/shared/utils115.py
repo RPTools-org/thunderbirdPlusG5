@@ -88,7 +88,7 @@ def findChildByRoleID(obj,role, ID, startIdx=0) : # attention : controlTypes rol
 		prevLooping = sharedVars.objLooping
 		sharedVars.objLooping = True
 		try:
-			if startIdx : o = obj.getChild(startIdx)
+			if startIdx > 0 : o = obj.getChild(startIdx)
 			else : o = obj.firstChild
 		except :
 			o = obj.firstChild
@@ -96,9 +96,13 @@ def findChildByRoleID(obj,role, ID, startIdx=0) : # attention : controlTypes rol
 		while o:
 			if o.role == role :
 				if  hasID(o, ID) :
+					if ID == "tabpanelcontainer" : sharedVars.groupingIdx = startIdx 
 					# sharedVars.log(o, "toolbar found ")
 					return o
 			o = o.next
+			startIdx += 1
+			
+			
 		return None
 	finally :
 		sharedVars.objLooping = prevLooping
@@ -109,7 +113,7 @@ def findParentByRole(o, role) :
 		prevLooping = sharedVars.objLooping
 		sharedVars.objLooping = True
 		while o :
-			# if sharedVars.debug : sharedVars.log(o, " parent ", False)
+			# sharedVars.log(o, "findParentByRole parent ")
 			if o.role == role :
 					return o
 			o = o.parent

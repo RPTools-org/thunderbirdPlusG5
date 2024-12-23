@@ -6,7 +6,7 @@ speechOff = False
 gTimer = None
 lastKey = ""
 oCurFrame = None
-groupingIdx = 25 # index of child object of role grouping in the foregroundObject children  
+groupingIdx = 0 # computed index of child object of role grouping in the foregroundObject children  
 curFrame = curWinTitle = ""
 curTab = "init2"
 curTTRow = ""  # current thread tree row

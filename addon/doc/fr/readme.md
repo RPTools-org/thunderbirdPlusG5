@@ -21,7 +21,7 @@ Elle améliore votre productivité en fournissant des commandes qui n'existent p
 * Un accès direct aux pièces jointes.
 * Des raccourcis de consultation et d'accès directs aux champs d'adressage de la fenêtre de rédaction.
 * Une amélioration considérable de l'utilisation du dialogue de vérification orthographique.
-* Une gestion plus faciele  des carnets d'adresses et des listes de diffusion (v.2402.14.00).
+* Une gestion plus facile des carnets d'adresses et des listes de diffusion (v.2402.14.00).
 * Un menu de mise à jour de l'extension (v.2402.14.00)
 * et bien d'autres choses encore... 
 
@@ -44,7 +44,8 @@ Ces raccourcis concernent l'arborescence des dossiers, la liste de messages et l
 
 * control+(touche au-dessus de Tab) : Un appui place le focus dans la liste de messages, deux appuis place le focus dans la liste de messages puis sélectionne le dernier message.
 * Alt+c : affiiche le menu des comptes puis le menu des dossiers du compte choisi. Depuis la version 2312.14, supporte le mode "dossiers unifiés" de l'arborescence des dossiers.
-* Control+Alt+c : affiiche le menu des comptes puis le menu des dossiers non lus du compte choisi. (2023.11.15)* Tab : va au volet suivant, sans détour.<br>
+* Control+Alt+c : affiche le menu des comptes puis le menu des dossiers non lus du compte choisi. (2023.11.15)
+* Tab : va au volet suivant, sans détour.<br>
 Note : ces deux derniers raccourcis peuvent être modifiés ou permutés via le dialogue des Gestes de commande.
 * alt+Début : 1 appui sélectionne le dossier courant dans l'arborescence des dossiers, 2 appuis affiche un menu permettant de choisir le compte de messagerie à atteindre dans l'arborescence 
 * Control+Alt+Début : idem mais pour les dossiers avec des messages non lus. (2023.10.31)
@@ -57,7 +58,7 @@ Echappe permet aussi d'alterner entre l'arborescence des dossiers et la liste de
 ### Navigation parmi les onglets de la fenêtre principale
 
 * Control+Tab avec ou sans la touche majuscule et control+1 à 9 : L'extension intercepte les changements d'onglet afin d'annoncer leur numéro d'ordre et le nombre total d'onglets.<br>
-En outre, l'extension donne le focus au contenu de l'onglet lors de sa première activation. Pour le premier onglet, le focus peut être amené au dernier message de la liste de messages ou premier message non lu. Via le menu des options / Options pour la fenêtre principale, vous pouvez cocher l'option intitulée : Accéder au premier message non lu lors de la première activation du premier onglet, sinon au dernier message (v.2402.14.00));
+En outre, l'extension donne le focus au contenu de l'onglet lors de sa première activation. Pour le premier onglet, le focus peut être amené au dernier message de la liste de messages ou premier message non lu. Via le menu des options / Options pour la fenêtre principale, vous pouvez cocher l'option intitulée : Accéder au premier message non lu lors de la première activation du premier onglet, sinon au dernier message (v.2402.14.00);
 * Control+la première touche située à gauche de retour-arrière : affiche un menu avec la liste des onglets existants. Pressez Entrée sur un élément de menu pour activer l'onglet correspondant.
 * Alt+la première touche située à gauche de retour-arrière : affiche le menu contextuel des onglets.Ce menu est natif de Thunderbird.
 
@@ -71,13 +72,13 @@ Note : Le libellé de la première touche à gauche de retour-arrière varie en 
 
 Ce modepersonnalisé, désactivé par défaut, permet une écoute plus confortable des lignes de la liste de messages.
 
-Vous pouvez activer ce mode en pressant majuscule+puissance2 et en sélectionnant dans le menu  l'élément "Oprtions pour la fenêtre principale" puis "Liste des messages". Dans la liste des options, cochez  l'option "Liste de messages :  vocalisation personnalisée des lignes" ;
+Vous pouvez activer ce mode en pressant majuscule+puissance2 et en sélectionnant dans le menu  l'élément "Options pour la fenêtre principale" puis "Liste des messages". Dans la liste des options, cochez  l'option "Liste de messages :  vocalisation personnalisée des lignes" ;
 
 Cette liste d'options  contient également d'autres options  de personnalisation qui ne fonctionnent que si la vocalisation personnalisée est activée.
 
 * La colonne "Statut de lecture" annonce "non lu" n'annonce pas le statut "lu" ;
 * La colonne "Statut", recommandée,  annonce quant à elle les statuts "Nouveau", "Répondu" et  "Transféré". <br>
-Note : Si gous  frappez la lettre "m" pour inverser le statut du message, cette colonne doit être présente dans la liste des messages pour que le nouveau statut soit annoncé.
+Note : Si vous  frappez la lettre "m" pour inverser le statut du message, cette colonne doit être présente dans la liste des messages pour que le nouveau statut soit annoncé.
 * L'extension fera en sorte que "Non lu" ne soit annoncé q'qu'une seule fois et que "Lu" ne le soit jamais.
 
 <br>
@@ -184,7 +185,7 @@ Remarque : groups.io n'est pas concerné par cette fonctionnalité.
 
 Cette procédure est native de Thunderbird 115 mais elle est expliquée ici car elle est mal documentée.
 
-* Pressez Maj+tab depuis la liste de messages  pour gous placer dans la liste des entêtes de colonnes.
+* Pressez Maj+tab depuis la liste des messages  pour vous placer dans la liste des entêtes de colonnes.
 * Utilisez  les flèches gauche et droite  pour sélectionner une colonne.
 * Lorsque vous atteingnez la colonne spéciale "Choisir les colonnes à afficher", pressez entrée dessus.
 * Dans le menu, cochez ou décochez des colonnes puis pressez Echappe pour fermer ce menu. 
@@ -208,7 +209,7 @@ Depuis la version 2312.14.00,  le mode "Dossiers unifiés" est pris en charge. D
 
 * NVDA+flèche haut ou NVDA+l (portable) : annonce le nom du dossier sélectionné. NVDA ne le fait plus par lui-même.  
 * Espace sur un dossier non lu : place le focus sur le premier message non lu dans la liste de messages.
-* Entrée  ouAlt+flèche haut : affiche un menu de tous les dossiers du compte auquel le dossier sélectionné appartient.
+* Entrée  ou Alt+flèche haut : affiche un menu de tous les dossiers du compte auquel le dossier sélectionné appartient.
 * Control+Entrée ou Alt+flèche bas : affiche un menu des dossiers non lus du compte auquel le dossier sélectionné appartient.
 <br>Dans les deux cas, le dernier élément du menu permet d'afficher le menu des comptes. Vous pouvez presser la barre d'espace pour choisir un compte à partir de là.
 * Maj+Entrée :  affiche un menu contenant tous les comptes et dossiers de l'arborescence.
@@ -216,7 +217,7 @@ Depuis la version 2312.14.00,  le mode "Dossiers unifiés" est pris en charge. D
 
 Remarques :
 
-Pour ces deux dernières commandes, un certain temps sécoulera avant l'affichage du menu car lle script doit parcourir toute l'arborescence pour construire le menu.
+Pour ces deux dernières commandes, un certain temps sécoulera avant l'affichage du menu car le script doit parcourir toute l'arborescence pour construire le menu.
 
 Utilisez plutôt une de ces deux  petites astuces :
 
@@ -266,18 +267,18 @@ L'extension améliore les annonces du carnet d'adresses et vous propose des comm
 
 ### Annonces améliorées
 
-* Arborescence des carnets d'adresses et listes de diffusion :  l'extension annonce aussi le type d'un élément :carnet d'adresse ou liste du carnet d'adresses parent,
+* Arborescence des carnets d'adresses et listes de diffusion :  l'extension annonce aussi le type d'un élément : carnet d'adresse ou liste du carnet d'adresses parent,
 * liste de contacts :   un appui sur espace annonce la fiche détaillé du contact, deux appuis annonce et copie la fiche dans le press-papiers.<br>
-Note : si cette  liste  est en mode "Présentation en tableau", décochez cette cas via le bouton "Options d'affichage de la liste" qui se trouve au-dessus de la liste des contacts. 
+Note : si cette  liste  est en mode "Présentation en tableau", décochez cette case via le bouton "Options d'affichage de la liste" qui se trouve au-dessus de la liste des contacts.
 
 ### Résumé des commandes
 
 * Tab  depuis l'arborescence des carnets d'adresses et listes de diffusion : accède au champ de recherche dans le carnet ou la liste sélectionnée dans l'arborescence. 
-* Tab  depuis le champ de recherche : accède directement au tableau des contacts en sautant le bouton "Options d'affichage de la liste". Celui-ci reste accessible avec maj+Tab depuis le tableau des contacts;  .  
+* Tab  depuis le champ de recherche : accède directement au tableau des contacts en sautant le bouton "Options d'affichage de la liste". Celui-ci reste accessible avec maj+Tab depuis le tableau des contacts;
 * échappe :
 
 	* Depuis l'arborescence des carnets d'adresses, amène le focus sur le bouton   "Créer un nouveau carnet d'adresses" de la   barre de boutons située au-dessus de l'arborescence. Depuis un de ces boutons, la touche échappe amène le focus à l'arborescence ;
-	* Depuis le champ de recherche, amène lle focus à l'arborescence des carnets d'adresses;
+	* Depuis le champ de recherche, amène le focus à l'arborescence des carnets d'adresses;
 	* Depuis le tableau des contacts, amène le focus au champ de recherche;
  
 * Control+Applications ou touche au dessus de Tab : ouvre un menu contextuel comprenant : Accédez à l'arborescence des carnets d'adresses et des listes de diffusion, Accéder au tableau des contacts, Nouveau carnet d’adresses, Nouveau contact, Nouvelle liste, Importer. Hormis les deux premiers, ces éléments proviennent de la barre d'outils du carnet d'adresses. 
@@ -290,12 +291,12 @@ Astuce : vous pouvez aussi utiliser  les touches de navigation dans une page web
 
 ### Exemple 1 : création d'une liste de diffusion dans le carnet d'adresses personnelles 
 
-*  Placez-vous dans l'arborescence des carnets d'adresses et sélectionnez "Adresses personnelles". Une novelle liste se crée uniquement dans le carnet sélectionné ;
+* Placez-vous dans l'arborescence des carnets d'adresses et sélectionnez "Adresses personnelles". Une nouvelle liste se crée uniquement dans le carnet sélectionné ;
 * Pressez Control+Applications ou la touche au-dessus de Tab et dans le menu, pressez Entrée sur  : Nouvelle liste;
 * Dans le dialogue qui s'est ouvert, entrez le nom de la liste, par exemple : Ma famille. Vous pouvez ajouter des contacts via ce dialogue mais pour l'exemple,  fermez ce dialogue via le bouton OK;
 * De retour  dans l'arborescence des carnets d'adresses et des listes, vous constatez l'apparition de : Ma famille, liste de Adresses personnelles, <br>
 Sélectionnez "Adresses personnelles" ;
-* Pressez la touche Tab pour entrer un mot-clé de recherche  ou Tabulez  jusqu'au tableau des contacts ou utilisez   le menu Control+Applications ou touche au-dessus de Tab;
+* Pressez la touche Tab pour entrer un mot-clé de recherche  ou Tabulez  jusqu'au tableau des contacts ou utilisez   le menu Control+Applications ou la touche au-dessus de Tab;
 * Dans le tableau des contacts, sélectionnez un ou plusieurs contacts via la méthode standard des Control+Espace, Control+flèche vers le bas, Control+Espace, etc; 
 * Pressez la lettre a pour les glisser-déposer dans la liste de diffusion. La première fois, le menu des destinations autorisées sera affiché. Sélectionnez l'élément "Nom de la nouvelle liste" puis pressezEntrée. Lors des prochains appuis sur la lettre a, la même destination sera utilisée sans afficher ce menu. 
 * A la fin de l'opération de glisser-déposer, un bip sera joué  et le focus sera donné au champ de recherche.
@@ -311,7 +312,7 @@ Sélectionnez "Adresses personnelles" ;
 6. Cela fait, le focus est donné au champ de recherche. Entrez éventuellement un nom puis réitérez les opérations 2 à 5.
 
 
-## Menu de mise à jour de l'extension (v.2402.26.00)
+## Menu de mise à jour de l'extension (supprimé dans la version 2411.27)
 
 Pour accéder à ce menu, vous pouvez presser AltGr+Majuscule+touche au-dessus de la touche Tab  ou procéder comme  suit :
 
@@ -322,9 +323,9 @@ Pour accéder à ce menu, vous pouvez presser AltGr+Majuscule+touche au-dessus d
 
 ## Compléments externes
 
-### Extension Start With inbox pour Thunderbird 115 (2023.10.31)1
+### Extension Start With inbox pour Thunderbird 115 (2023.10.31)
 
-Au démarrage de Thunderbird, Cette extension   sélectionne   automatiquement au choix :
+Au démarrage de Thunderbird, cette extension   sélectionne   automatiquement au choix :
 
 * le  dossier "Courrier entrant" du compte de votre choix dans larborescence des dossiers.
 * Le dernier message du dossier courrier entrant du compte choisi. 

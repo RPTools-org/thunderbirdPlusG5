@@ -72,7 +72,10 @@ def playSound (soundFile):
 		pass #son non trouvé
 
 def versionTB() :   
-	return int(globalVars.foregroundObject.appModule.productVersion.split(".") [0])
+	try :
+		return int(globalVars.foregroundObject.appModule.productVersion.split(".") [0])
+	except :
+		return 128
 
 def TBVersion(asInt=False) : # full version string
 	pv = globalVars.foregroundObject.appModule.productVersion

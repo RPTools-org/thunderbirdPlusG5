@@ -5,6 +5,7 @@ from scriptHandler import getLastScriptRepeatCount
 import speech 
 from speech import speakMessage, speakSpelling
 from tones  import beep
+# from time import sleep
 from NVDAObjects.IAccessible import IAccessible
 import controlTypes
 # controlTypes module compatibility with old versions of NVDA
@@ -24,6 +25,7 @@ _curAddon=addonHandler.getCodeAddon()
 sharedPath=os.path.join(_curAddon.path,"AppModules", "shared")
 sys.path.append(sharedPath)
 import  utis, sharedVars 
+from utils115 import findChildByRoleID
 del sys.path[-1]
 addonHandler.initTranslation()
 
@@ -40,8 +42,10 @@ class SpellCheckDlg (IAccessible):
 				# message(_("No misspelled words were found"))
 			#self.name = ""
 
-			self.bindGestures ({"kb:nvda+tab":"reportFocus","kb:ALT+UPARROW":"reportFocus", "kb:enter":"enterFromEdit", "kb:shift+enter":"enterFromEdit", "kb:control+enter":"enterFromEdit", "kb:control+shift+enter":"enterFromEdit", "kb:alt+enter":"enterFromEdit", "kb:alt+i":"altLetter", "kb:alt+n":"altLetter", "kb:alt+r":"altLetter", "kb:alt+t":"altLetter", "kb:alt+a":"altLetter"})
-		""" elif role == (controlTypes.Role.LISTITEM if hasattr(controlTypes, "Role") else controlTypes.ROLE_LISTITEM) and not self.previous :self.keyboardShortcut =self.container.keyboardShortcut """
+			self.bindGestures ({"kb:nvda+tab":"reportFocus","kb:ALT+UPARROW":"reportFocus","kb:alt+downArrow":"focusSuggested", "kb:enter":"enterFromEdit", "kb:shift+enter":"enterFromEdit", "kb:control+enter":"enterFromEdit", "kb:control+shift+enter":"enterFromEdit", "kb:alt+enter":"enterFromEdit", "kb:alt+i":"altLetter", "kb:alt+n":"altLetter", "kb:alt+r":"altLetter", "kb:alt+t":"altLetter", "kb:alt+a":"altLetter"})
+		elif role == controlTypes.Role.LISTITEM :
+			if utis.getIA2Attribute(self.parent, "SuggestedList", "id") :
+				self.bindGestures ({"kb:ALT+upArrow":"focusEdit", "kb:enter":"enterFromList", "kb:shift+enter":"enterFromList"})
 
 	def event_gainFocus (self):
 		role = self.role
@@ -49,10 +53,13 @@ class SpellCheckDlg (IAccessible):
 			self.setEditLabel()
 			if  sharedVars.oSettings.getOption("msgcomposeWindow", "spellWords") :
 				CallAfter(self.sayWords)
-		elif role == controlTypes.Role.BUTTON :
-			ID = str(utis.getIA2Attribute(self))
-			if ID == "Close" or ID == "Send" :
-				self.setCloseBtnLabel()
+		elif role == controlTypes.Role.LISTITEM :
+			if  sharedVars.oSettings.getOption("msgcomposeWindow", "spellWords") :
+				CallAfter(speakSpelling, self.name)
+		# 2024-12-19 disabled code  role == controlTypes.Role.BUTTON :
+			# ID = str(utis.getIA2Attribute(self))
+			# if ID == "Close" or ID == "Send" :
+				# self.setCloseBtnLabel()
 
 		super (SpellCheckDlg,self).event_gainFocus ()
 
@@ -73,6 +80,18 @@ class SpellCheckDlg (IAccessible):
 				self.pressButton ("replace")
 		# self.sayWords()
 	script_enterFromEdit.__doc__ = u"gère différentes combinaisons autour de Enter pour simuler les boutons de correction"
+
+	def script_enterFromList(self,gesture):
+		# self is the listitem  field  in suggestedList
+		speech.cancelSpeech()
+		if "shift" in  gesture.modifierNames : 
+			self.pressButton ("replaceAll")
+		else :
+			self.pressButton ("replace")
+		# self.sayWords()
+	script_enterFromList.__doc__ = u"Liste des mots suggérés Entrée remplace le mot mal orthographié, shift+Entrée remplace tous ces mots."
+
+
 
 	def setEditLabel(self) :
 		oMispLabel = self.parent.firstChild
@@ -112,6 +131,22 @@ class SpellCheckDlg (IAccessible):
 		else :
 			speakMessage(mispValue)
 
+	def script_focusEdit(self, gesture) :
+		# we are in suggested list
+		o = self.parent.parent # frame
+		o = findChildByRoleID(o, controlTypes.Role.EDITABLETEXT, "ReplaceWordInput")
+		# sharedVars.log(o, "editable")
+		if o :
+			o.setFocus()
+
+	def script_focusSuggested(self, gesture) :
+		# we are in edit
+		o = self.parent # frame
+		o = findChildByRoleID(o, controlTypes.Role.LIST, "SuggestedList")
+		if o :
+			o.setFocus()
+		
+
 	def script_altLetter (self, gesture) :
 		# beep (500, 50)
 		mk = gesture.mainKeyName
@@ -126,9 +161,12 @@ class SpellCheckDlg (IAccessible):
 		#self.sayWords1 ()
 
 	def pressButton (self, btnID, sayMisp=False) :
-		oDlg = self.parent # v3 TB 91
+		oDlg = self.parent
+		if self.role == controlTypes.Role.LISTITEM :
+			oDlg= oDlg.parent
+		# sharedVars.log(oDlg, "oDlg") 
 		#oDlg.parent.name = ""
-		#message ("oDlg role :" + str(oDlg.role) + ", name : "+ str(oDlg.name))
+		# message ("oDlg role :" + str(oDlg.role) + ", name : "+ str(oDlg.name))
 		o = oDlg.firstChild
 		btnID = btnID.lower()
 		obj = None
@@ -146,7 +184,7 @@ class SpellCheckDlg (IAccessible):
 		#cmdVol(0.4)
 		message (obj.name)
 		obj.setFocus()
-		obj.doAction ()
+		CallLater(600, obj.doAction)
 
 			# self.script_reportFocus(None)
 			# self.sayWords()
