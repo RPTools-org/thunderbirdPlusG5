@@ -70,6 +70,8 @@ class  Settings() :
 		}
 
 		self.option_mainWindow={
+		"ftNoEscape" : _("Folder tree: escape does not bring focus to the message list"),
+		"ttNoEscape" : _("message list: escape does not bring focus to the folder tree"),
 		"firstTabActivation" : _("Access the first unread message when first activating the first tab, otherwise the last message."),
 		"withoutReceipt" : _("Ignore acknowledgment requests"),
 		"CleanPreview" : _("Partially purify the message when reading it with Space or F4, otherwise purify it completely."),
@@ -122,7 +124,6 @@ class  Settings() :
 		else : # option  exists   as string  in the ini file
 			self.regex_removeInSubject = re.compile(makeRegex(section["removeInSubject"]))
 
-		
 		# coptions for deactiv : speed needed
 		self.setSharedVars(section="deactiv")
 		

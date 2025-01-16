@@ -216,13 +216,14 @@ def findChildByIDRev(obj,id) : # attention : valeurs role de controlTypes.py
 def findParentByID(o, role, ID) :
 	if str(getIA2Attribute(o)) == ID :
 		return o
-	try : 
+	try :  # finally
 		prevLooping = sharedVars.objLooping
 		sharedVars.objLooping = True
 		while o :
-			if sharedVars.debug : sharedVars.log(o, " parent ", False)
+			if sharedVars.debug : sharedVars.log(o, " findParentByID parent ", False)
 			if o.role == role :
 				if str(getIA2Attribute(o)) == ID :
+					if sharedVars.debug : sharedVars.log(o, " findParentByID found ", False)
 					return o
 			o = o.parent
 

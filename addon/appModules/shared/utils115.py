@@ -48,7 +48,7 @@ def isFolderTreeItem(fti, ID="") :
 	return False
 
 def currentTree(o, role) :
-	if role not in (controlTypes.Role.TREEVIEWITEM, controlTypes.Role.LISTITEM, controlTypes.Role.TABLE) : 
+	if role not in (controlTypes.Role.TREEVIEWITEM, controlTypes.Role.LISTITEM, controlTypes.Role.TABLE, controlTypes.Role.TREEVIEW, controlTypes.Role.LIST) : 
 		return ""
 	o = o.parent
 	while o :
@@ -443,9 +443,13 @@ def getMessageStatus115(infoIdx=-1)  :
 		sharedVars.objLooping = prevLooping
 
 def getFilterInfos128(threadPane, infos=False) :
+	if not threadPane :
+		threadPane = getThreadTreeFromFG(focus=False, nextGesture="", getThreadPane=True)
+		if not threadPane : beep(100, 30)
+		else : beep(440, 30)
 	# children of threadPane : | i1, 86, , IA2ID : quick-filter-bar | i0, 86, , IA2ID : quickFilterBarContainer | i7, 91, , IA2ID : qfb-results-label
 	o = findChildByRoleID(threadPane, controlTypes.Role.SECTION, ID="quick-filter-bar",startIdx=0)
-	if not o : return "", "" 
+	if not o : return "", ""
 	o = oContainer  = findChildByRoleID(o, controlTypes.Role.SECTION, ID="quickFilterBarContainer",startIdx=0)
 	if not o : return "", ""
 	o = findChildByRoleID(o, controlTypes.Role.TEXTFRAME, ID="qfb-results-label",startIdx=6)
@@ -454,7 +458,7 @@ def getFilterInfos128(threadPane, infos=False) :
 		count = _("Filtered : ") + str(o.firstChild.name) + " / "
 	if not infos :
 		return count, ""
-	# 2. retrieve filter infos
+	# 2. retrieve filter expression
 	word = options = ""
 	# keyword edit : path = | i0, 86, , IA2ID : quickFilterBarContainer | i1, 91, , IA2ID : qfb-qs-textbox | i0, 39,  | i0, 8,  ,  
 	o = oContainer.getChild(1).firstChild.firstChild # new in TB 128

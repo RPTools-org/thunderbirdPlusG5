@@ -111,6 +111,9 @@ class QuoteNav() :
 					callLater(250, self.setText, spkMode) 
 					# self.sayDraftText()
 					break
+				elif result == 3 :  # after  an exception with IAccessible.queryInterface
+					message(self.text)
+					break
 			else : 
 				beep(150, 5)
 				# sleep(0.1)
@@ -138,16 +141,17 @@ class QuoteNav() :
 		# sharedVars.logte("self.subject=" + self.subject)
 
 		o=oDoc.firstChild # section ou paragraph
-		# # sharedVars.logte(u"après  o.firstChild " + str(o.role)  + ", " + str(o.name))
+		# 2025-01-10 log à désactiver
+		# sharedVars.log(o, u"après  oDoc.firstChild ")
 		if not o : return 0
 		cCount =  oDoc.childCount
 		
 		if o.next :
+			# sharedVars.log(o.next, "quoteNav, o.next  ") 
 			# beep(800, 40)
 			#html simple
 			# self.text = "\n---" 
 			i = 1
-			# if cCount > 75 : message(str(cCount) + _(" text elements. Press Control to stop."))
 			while o :
 				# # sharedVars.logte(u"HTML elem:" + str(o.role)  + ", " + str(o.name))
 				try : 
@@ -155,8 +159,8 @@ class QuoteNav() :
 					s=obj.innerHTML 
 					if not s :s= o.name
 				except :
-					s = "error retriving innerHTML"
-					pass
+					self.getMessageByObjects(oDoc.firstChild, "HTML")
+					return 3
 				if s :self.text += s + CNL # + CNL required for not self.quoteMode
 				if cCount > 75 and s and self.regTextTags.search(s) :
 					beep(250,5)
@@ -166,11 +170,28 @@ class QuoteNav() :
 				try : o=o.next
 				except : break
 		else: # plain Text
+			# sharedVars.log(o, "quoteNav plainText before queryInterface o") 
 			# self.text = "\n---"
-			o = o.IAccessibleObject.QueryInterface(ISimpleDOMNode)
+			try :
+				o = o.IAccessibleObject.QueryInterface(ISimpleDOMNode)
+			except :
+				self.getMessageByObjects(o, "TEXT")
+				return 3
 			# # sharedVars.logte("brut:" + str(o))
 			self.text += str(o.innerHTML)
 		return 1
+
+	def getMessageByObjects(self, obj,kind="") :
+		# message("Please wait " + " " + kind)
+		message(_("Please wait"))
+		i = 0
+		for child in obj.recursiveDescendants:
+			if hasattr(child, "name") :
+				if child.name :
+					self.text += str(child.name) + "\n"
+					i += 1
+			if i == 75 : 
+				break
 
 	def sayDraftText(self) :
 		self.text=self.regHTMLChars.sub(" ",self.text)
@@ -704,6 +725,4 @@ def cleanSubject(subject) :
 		subject = subject[i:]
 	subject =  subject.replace("Re: ", "")
 	return subject
-		
-		
 	

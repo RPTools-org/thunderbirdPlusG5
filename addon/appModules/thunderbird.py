@@ -444,37 +444,87 @@ class AppModule(thunderbird.AppModule):
 					# pass
 		# nextHandler()
 		
-	def event_alert (self,obj,nextHandler):
-		# fo = api.getFocusObject()
-		# isThreadTree = utils.hasID(fo, "threadTree") 
+	# def event_alert (self,obj,nextHandler):
+		# # fo = api.getFocusObject()
+		# # isThreadTree = utils.hasID(fo, "threadTree") 
 		
-		role = obj.role
-		if role != controlTypes.Role.ALERT  : return
-		o = obj.getChild(1).firstChild
-		msg = str(o.name)
-		msg = msg.replace("bird Beta", "bird") 
+		# role = obj.role
+		# if role != controlTypes.Role.ALERT  : return # nextHandler()
+		# try :
+			# o = obj.getChild(1).firstChild
+		# except :
+			# return nextHandler()
+		# msg = str(o.name)
+		# msg = msg.replace("bird Beta", "bird") 
+		# #Translators: alert : this is a draft
+		# if _("draft") in msg :
+			# return
+		# #Translators: alert : Thunderbird thinks this message is fraudulent
+		# elif _("bird thinks this message is Junk") in msg : # indésirable
+			# beep (200, 2)
+			# return
+		# #Translators: alert : remote content 
+		# elif _("remote content") in msg :
+			# # beep(250, 70)
+			# return
+		# #Translators: 2022-12-12 alert X @gmail.com has asked to be notified when you read this message.
+		# elif _("notified when you") in msg :  # demande accusé réception
+			# if sharedVars.oSettings.getOption("mainWindow", "withoutReceipt") :
+				# return
+			# #Translators:  Ignore button in alert in TB
+			# oBtn = findButtonByName(obj, _("Ignore"))
+			# if oBtn :
+				# wx.CallLater (30, focusAlert, "", oBtn)
+			# return
+		# nextHandler
+
+	def event_alert (self,obj,nextHandler):
+		label = ""
+		lButtons = []
+		# log = "Alert dialog\n"
+		for child in obj.recursiveDescendants:
+			role = child.role
+			ID = str(utils.getIA2Attr(child))
+			if role in (controlTypes.Role.LABEL, controlTypes.Role.STATICTEXT) :
+				lbl = str(child.name)
+				if lbl not in label :
+					label += ID + "|" + lbl
+				else :
+					child.name = ""
+				# log += label + "\n"
+			elif role == controlTypes.Role.BUTTON :
+				lButtons.append(child)
+				IA2Class = utils.getIA2Attr(child, False, "class") # for addon adding
+				if not	 IA2Class : IA2Class = ""
+				if "popup-notification-primary" in IA2Class :
+					speech.cancelSpeech()
+					# sharedVars.logte("button prmary message = " + label)
+					child.setFocus()
+					# beep(600, 30)
+					return # nextHandler()
+				# log += "Button Id=" + ID + ", " + str(IA2Class) + " " + str(child.name) + "\n"
+		# log += "end alert\n"
+		# sharedVars.logte(log)
 		#Translators: alert : this is a draft
-		if _("draft") in msg :
+		if _("draft") in label :
 			return
 		#Translators: alert : Thunderbird thinks this message is fraudulent
-		elif _("bird thinks this message is Junk") in msg : # indésirable
+		elif _("bird thinks this message is Junk") in label : # indésirable
 			beep (200, 2)
 			return
 		#Translators: alert : remote content 
-		elif _("remote content") in msg :
-			# beep(250, 70)
+		elif _("remote content") in label :
 			return
 		#Translators: 2022-12-12 alert X @gmail.com has asked to be notified when you read this message.
-		elif _("notified when you") in msg :  # demande accusé réception
+		elif _("notified when you") in label :  # demande accusé réception
 			if sharedVars.oSettings.getOption("mainWindow", "withoutReceipt") :
 				return
-			#Translators:  Ignore button in alert in TB
-			oBtn = findButtonByName(obj, _("Ignore"))
-			if oBtn :
-				wx.CallLater (30, focusAlert, "", oBtn)
-			return
-		nextHandler
+			else :
+				speech.cancelSpeech()
+				lButtons[1].setFocus()
 
+		# nextHandler()
+		
 	# gesture scripts
 	def script_sharedTab(self, gesture) :
 		o=globalVars.focusObject 
@@ -503,20 +553,23 @@ class AppModule(thunderbird.AppModule):
 		role = o.role
 		curTreeType = utils.currentTree(o, role)
 		if curTreeType == "f" :
-			return KeyboardInputGesture.fromName ("f6").send()  
+			if not sharedVars.oSettings.getOption("mainWindow", "ftNoEscape") :
+				return KeyboardInputGesture.fromName ("f6").send()  
+			else :
+				ui.message(o.name + ", " + str(messengerWindow.folderTreeItem.fGetAccountNode(o).name))
 			
 		ID = str(utils.getIA2Attr(o))
 		if curTreeType == "t" : # threadTree
-			if ID.startswith("threadTree-row") :
+			if hasFilter(o, ID) :
+				gesture.send()
 				if hasFilter(o, ID) :
-					wx.CallAfter(ui.message, _("Filter removed"))
-					return gesture.send()
-			return KeyboardInputGesture.fromName ("shift+f6").send() # utils.getFolderTreeFromFG(True)
-		# elif  utils.isFolderTreeItem(o, ID) : 
-			# if utils.getIA2Attr(o, "2", "level") :
-				# return utis.sendKey("tab", 1)
-			# else :
-				# return utils.getThreadTreeFromFG(True)
+					gesture.send()
+				callLater(100, sayFilterRemoved)
+			else :
+				if not sharedVars.oSettings.getOption("mainWindow", "ttNoEscape") :
+					return KeyboardInputGesture.fromName ("shift+f6").send() # utils.getFolderTreeFromFG(True)
+				else :
+					ui.message(o.name)
 		elif  "Recipient" in ID  or "expandedsubjectBox" in ID or "Recipient" in str(utils.getIA2Attr(o.parent)) : # header pane
 			return KeyboardInputGesture.fromName ("shift+f6").send()
 		elif role in  (controlTypes.Role.BUTTON, controlTypes.Role.TOGGLEBUTTON)  and ID.startswith("attachment") :
@@ -554,12 +607,7 @@ class AppModule(thunderbird.AppModule):
 		elif role == controlTypes.Role.EDITABLETEXT and utils.hasID(o.parent, "MsgHeadersToolbar") : # write window
 			if sharedVars.oSettings.getOption("compose", "closeMessageWithEscape") :
 				return KeyboardInputGesture.fromName ("control+w").send () 
-		elif  role in (controlTypes.Role.LIST, controlTypes.Role.TREEVIEW, controlTypes.Role.TABLE) and utils.hasID(o.parent.parent, "threadTree") : # 2024.09.08  added Role.TABLE
-			if hasFilter(o, "threadTree-row") :
-				wx.CallAfter(ui.message, _("Filter removed"))
-				return gesture.send()
-			else :
-				return KeyboardInputGesture.fromName ("shift+f6").send () 
+		# elif  role in (controlTypes.Role.LIST, controlTypes.Role.TREEVIEW, controlTypes.Role.TABLE) and utis.findParentByID(o, controlTypes.Role.TEXTFRAME, "threadTree") :  # modified 2025-01-09
 		elif o.parent.role == controlTypes.Role.INTERNALFRAME and  utils.hasID(o.parent, "accountCentralBrowser") :
 			return KeyboardInputGesture.fromName ("shift+f6").send () 
 		elif role == controlTypes.Role.BUTTON : 
@@ -571,7 +619,7 @@ class AppModule(thunderbird.AppModule):
 		
 	def script_sharedAltEnd(self, gesture) :
 		o = api.getFocusObject()
-		if utils.hasID(o, "threadTree") or utils.hasID(o.parent, "quickFilterBarContainer") :
+		if utils.currentTree(o, o.role) == "t"  or utils.hasID(o.parent, "quickFilterBarContainer") :
 			msg = utils.getMessageStatus()
 			if not msg  : msg = _("Blank")
 			ui.message(msg)
@@ -1015,8 +1063,8 @@ def debugShow(appMod, auto) :
 	#sharedVars.debugLog += "\ncurFrame : {0}, curTab : {1},".format(appMod.curFrame, sharedVars.curTab) + "\n"
 	sharedVars.debugLog += "\ncurTab : {0}, curFrame : {1},".format(sharedVars.curTab, sharedVars.curFrame) + "\n"
 	# sharedVars.logte("sharedVars.curSubject :" + sharedVars.curSubject)
-	if sharedVars.oQuoteNav :
-		sharedVars.logte("oQuoteNav.subject : " + sharedVars.oQuoteNav.subject)
+	# if sharedVars.oQuoteNav :
+		# sharedVars.logte("oQuoteNav.subject : " + sharedVars.oQuoteNav.subject)
 	sharedVars.logte("GroupingIdx = " + str(sharedVars.groupingIdx))
 	# ui.browseableMessage (message = sharedVars.debugLog, title = "TB+G5 log", isHtml = False)
 	textDialog.showText(title="Log", text=sharedVars.debugLog)
@@ -1063,7 +1111,6 @@ def removeResponseMention (appMod,s,mode):
 def hasFilter(o, ID=None) :
 	if sharedVars.TBMajor > 127 : 
 		tp = utis.findParentByID(o,controlTypes.Role.SECTION, "threadPane")
-		if not tp : return False 
 		cnt, inf = utils.getFilterInfos128(tp)
 		return True if cnt else False
 	
@@ -1098,7 +1145,7 @@ def activateTB() :
 	tbTitle = " Thunderbird"
 	hwFG = winUser.getForegroundWindow()
 	winClass = winUser.getClassName(hwFG) 
-	sharedVars.logte("ActivateTB window class : {}, curFrame : {}, curTab : {}".format(winClass, sharedVars.curFrame, sharedVars.curTab))
+	# sharedVars.logte("ActivateTB window class : {}, curFrame : {}, curTab : {}".format(winClass, sharedVars.curFrame, sharedVars.curTab))
 	if "Mozilla" not in winClass : return None
 	winTitle = winUser.getWindowText(hwFG)
 	if "bird Beta" in winTitle :
@@ -1116,7 +1163,7 @@ def activateTB() :
 		o =  api.getFocusObject()
 		wcn =  o.windowClassName
 		if  wcn == "MozillaWindowClass" :
-			sharedVars.log(o, "ActivateTB, focus object is of mozilla window class")
+			# sharedVars.log(o, "ActivateTB, focus object is of mozilla window class")
 			return o 
 		elif  wcn == "MozillaDialogClas" :
 			return None
@@ -1153,3 +1200,15 @@ def focusTaskbar() :
 			return
 		try : o = o.next
 		except : break
+
+def sayFilterRemoved() :
+	infos  =  utils.getMessageStatus128()
+	fo = api.getFocusObject()
+	role = fo.role
+	if role in (controlTypes.Role.TABLE, controlTypes.Role.LIST, controlTypes.Role.TREEVIEW) :
+		cc = fo.childCount
+		if cc == 0 :
+			beep(120, 40)
+			infos = _("No messages displayed") + ", " + infos
+			
+	ui.message(_("Filter removed") + infos)

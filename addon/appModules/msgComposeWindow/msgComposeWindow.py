@@ -117,7 +117,9 @@ class MsgComposeWindow():
 		else :
 			if not oField.hasFocus :
 				oField.setFocus()
-				if mainKeyName == 1 : oField.doAction() #  opens from: combobox
+				if mainKeyName == 1 : # 2025-01-10 open from combo box
+					CallLater(100, KeyboardInputGesture.fromName("alt+downArrow").send)				
+				
 	# attachments
 	def getAttachments(self) :
 		# 0 sur 0, name : update-settings .ini 155 octet, role.LISTITEM=15 Tag: richlistitem, états : , FOCUSED, SELECTED, SELECTABLE, FOCUSABLE, childCount  : 4 
