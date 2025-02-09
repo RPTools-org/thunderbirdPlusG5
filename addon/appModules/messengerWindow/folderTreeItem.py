@@ -93,7 +93,7 @@ def fMenuFolders(o, unread=False) :
 	if ID not in "all,smart,unread,tags" :
 		# return message(_("Instead press Alt+c, this menu is only supported in All Folders or Unified Folders modes"))
 		return callLater(10, fMenuAccounts, (1 if not unread else 2))
-	lvl = str(utils.getIA2Attr(o, False, "level"))
+	lvl = o.positionInfo['level']
 	rec = True
 	ty = 0  # normal folder items, not accounts only
 	folderMode = "smart0" # smart  without exclusion of names without @
@@ -101,13 +101,13 @@ def fMenuFolders(o, unread=False) :
 		o = fGetAccountNode(o)
 		folderMode = "all"
 		nm = str(o.name) 
-	elif ID == "smart" and lvl == "2" :
+	elif ID == "smart" and lvl == 2 :
 		nm = o.name
 		o = o.parent
 		ty = 0
 		rec = False
 		# beep(200, 40)
-	elif ID == "smart" and lvl == "3" :
+	elif ID == "smart" and lvl == 3 :
 		nm = _("Unified folders")
 		o = o.parent
 	elif ID == "tags" :
@@ -122,17 +122,15 @@ def fMenuFolders(o, unread=False) :
 	# callLater(10, m.showMenu, title="")
 
 	callLater(10, m.showMenu, title=nm)
+
 def fGetAccountNode(oNode) :
 	o = oNode
-	lvl = ""
 	while o :
 		if o.role == controlTypes.Role.TREEVIEWITEM :
-			lvl = str(utils.getIA2Attr(o, False, "level"))
-			if lvl == "2" :
+			if   o.positionInfo['level'] == 2 :
 				return o
 		o = o.parent
-	return None
-	
+	return oNode
 
 def showAccountMenu(oNode, ty=1) :
 	o = fGetAccountNode(oNode)
@@ -167,10 +165,9 @@ class FolderMenu() :
 			nm = coll = ""
 			if o.role == controlTypes.Role.TREEVIEWITEM :
 				nm = str(o.name)
-				lvl = str(utils.getIA2Attr(o, False, "level"))
-
+				lvl = o.positionInfo['level']
 				if self.all :  
-					if lvl == "2" : 
+					if lvl == 2 : 
 						if self.unread and nm.endswith("-") : o = o.next ; continue 
 						if  self.mode == "smart" and "@" not in o.name : o = o.next ; continue
 						self.account = " (" + nm + ") "
@@ -180,11 +177,11 @@ class FolderMenu() :
 				else : coll =  ", "
 				if self.unread :
 					if not gRegUnread.search(nm) or gRegExcludeFolders.search(nm) or nm.endswith("-") : OK = False
-				elif  self.mode == "smart" and lvl == "2" and  "@" not in nm  and _("Inbox") not in nm : OK = False
+				elif  self.mode == "smart" and lvl == 2 and  "@" not in nm  and _("Inbox") not in nm : OK = False
 				elif self.mode ==  "smart0" :
-					if lvl == "2"  : 
+					if lvl == 2  : 
 						coll += " " + str(_("Account") if "@" in nm else _("Unified")) + ", "
-					elif lvl == "3" : coll += _("Unified") + ", "
+					elif lvl == 3 : coll += _("Unified") + ", "
 					
 				if OK and nm :
 					# self.fMenu.Append (self.idx, o.name + self.account + coll)
@@ -245,10 +242,11 @@ class FolderMenu() :
 		if str(self.nodes[evt.Id]).startswith("<NVDAObject") :   # pointer, not accounts menu
 			# beep(440, 10)
 			o = self.nodes[evt.Id]
+			self.nodes  = [] # 2025-02-07
 			if self.type > 0 and self.mode == "smart" and o.name.startswith(_("Inbox")) : self.type = 0
 		
 			if self.type == 0 : # regular menu item, request to focus folderTree
-				# beep(100, 30)
+				# beep(100, 30)a
 				utis.setSpeech(False)
 				sharedVars.menuClosing = True 
 				o.scrollIntoView()

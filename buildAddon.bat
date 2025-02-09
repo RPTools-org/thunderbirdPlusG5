@@ -1,5 +1,5 @@
 @echo off
-title Build Thhunderbird+ add-on
+title Build Thhunderbird+G5 add-on
 
 
 rem if exist .\addon\buildVars.py (

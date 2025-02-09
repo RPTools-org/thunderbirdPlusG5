@@ -27,6 +27,8 @@ class StartupDialog(wx.Dialog):
 		
 		# check box
 		self.focusOnStartupChk = wx.CheckBox(panel, wx.ID_ANY, _("Use this mode when starting Thunderbird"))
+		self.startWithInboxChk = wx.CheckBox(panel, wx.ID_ANY, _("The folder tree is preselected by the StartWithInbox add-on for Thunderbird"))
+		
 		# ok_button = wx.Button(panel, label=_("OK"))
 		okButton = wx.Button(panel, id=wx.ID_OK, label="OK")
 		okButton.Bind(wx.EVT_BUTTON, self.onOK)
@@ -42,8 +44,9 @@ class StartupDialog(wx.Dialog):
 		elif mode == 3 :self.firstUnreadMsgRadio.SetValue(True)
 		elif mode == 4 :self.folderTreeRadio.SetValue(True)
 
+		# checkboxes
 		self.focusOnStartupChk.SetValue(self.options.options["messengerWindow"]["focusOnStartup"])
-
+		self.startWithInboxChk.SetValue(self.options.options["messengerWindow"]["focusStartWithInbox"])
 
 		self.sizer = wx.BoxSizer(wx.VERTICAL)
 		self.sizer.Add(self.focusLbl, 0, wx.EXPAND | wx.ALL, 5)
@@ -53,8 +56,9 @@ class StartupDialog(wx.Dialog):
 		self.sizer.Add(self.firstUnreadMsgRadio, 0, wx.ALL, 5)
 		self.sizer.Add(self.folderTreeRadio, 0, wx.ALL, 5)
 		self.sizer.Add(self.focusOnStartupChk, 0, wx.ALL, 5)
+		self.sizer.Add(self.startWithInboxChk, 0, wx.ALL, 5)
 		self.sizer.Add(okButton, 0, wx.ALL | wx.CENTER, 5)
-		
+
 		panel.SetSizer(self.sizer)
 		panel.SetSizer(self.sizer)
 		self.sizer.Fit(self)
@@ -67,6 +71,7 @@ class StartupDialog(wx.Dialog):
 		elif self.folderTreeRadio.GetValue() : mode = "4"
 		self.options.options["messengerWindow"]["focusMode"] = int(mode)
 		self.options.options["messengerWindow"]["focusOnStartup"] = self.focusOnStartupChk.GetValue()
+		self.options.options["messengerWindow"]["focusStartWithInbox"] = self.startWithInboxChk.GetValue()
 		self.options.options.write()
 		# self.Close()
 		return self.Destroy()

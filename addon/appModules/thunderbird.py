@@ -40,17 +40,37 @@ sharedVars.scriptCategory = _curAddon.manifest['summary']
 # Extension modules import
 from . import messengerWindow, msgComposeWindow # , addressbookWindow
 from scriptHandler import getLastScriptRepeatCount
-
 def TBStartup() :
 	#  sharedVars.objLooping was  set tot  True in __init__
 	sharedVars.TBMajor = utis.versionTB()
-	# startup modes : 0 nothing, 1 : last msg, 2 : first msg, 3 : first unread, 4 : folderTree
+	o =  api.getFocusObject()
+	if o.role != controlTypes.Role.FRAME  or  not utils.hasID(o.getChild(1), "toolbar-context-menu"):
+		return utis.disableOvl(False)
+	
+	# focus modes : 0 nothing, 1 : last msg, 2 : first msg, 3 : first unread, 4 : folderTree
 	focusMode = sharedVars.oSettings.getOption("messengerWindow","focusMode", kind="i")
 	focusOnStartup = sharedVars.oSettings.getOption("messengerWindow","focusOnStartup", kind="b")
-	# ui.message("TBStartup, focusMode = [{}], focusOnStartup={}".format(focusMode, "True" if focusOnStartup else "False"))
 
 	if not focusOnStartup or not focusMode :  
 		return utis.disableOvl(False)
+		# StartWithInbox preselected the folderTree
+	if sharedVars.oSettings.getOption("messengerWindow","focusStartWithInbox", kind="b"):
+		utis.disableOvl(False)
+		if focusMode == 4 : 
+			return # folderTree 
+		# for i in range(0, 5) :
+			# goodRole = False
+			# if hasattr(o, "role") :
+				# if o.role == controlTypes.Role.TREEVIEWITEM : goodRole = True
+			# if goodRole and utils.focusTTFromFT(fo, focusMode) :
+				# break
+			# sleep(.5)
+			# o = api.getFocusObject()
+		# else :
+			# beep(150, 60)
+		oTimer = utils.GetFocusObjTimer(roleList=[controlTypes.Role.TREEVIEWITEM], stateSelected=True, interval=500, maxElapsed=7000, callBack=utils.focusTTFromFT, cbParam=focusMode)
+		oTimer.run()
+		return
 	fo = activateTB()
 	if not fo or fo.role != controlTypes.Role.FRAME :
 		return utis.disableOvl(False)
@@ -206,8 +226,13 @@ class AppModule(thunderbird.AppModule):
 
 	def event_NVDAObject_init(self, obj):
 		if self.disabMode == 2 : return
+		
 		if sharedVars.curTab != "main" : return
 		if obj.role in (controlTypes.Role.LISTITEM, controlTypes.Role.TREEVIEWITEM) and  utils.hasID(obj, "threadTree-row") :
+			# if controlTypes.State.SELECTED not in obj.states : 
+				# obj.doAction()
+				# beep(100, 60)
+				# ui.message(obj.name)
 			if not sharedVars.TTClean : 
 				sharedVars.curTTRow = obj.name
 				return
@@ -247,7 +272,6 @@ class AppModule(thunderbird.AppModule):
 		if sharedVars.speechOff :
 			speech.setSpeechMode(speech.SpeechMode.talk)
 			sharedVars.speechOff = False
-		# sharedVars.log(obj, "GainFocus")
 
 		if  sharedVars.curFrame == "msgcomposeWindow" :
 			# beep(440, 5)
@@ -549,6 +573,8 @@ class AppModule(thunderbird.AppModule):
 		return gesture.send()
 
 	def script_sharedEscape(self, gesture) :
+		if sharedVars.curTab == "message" :
+			return gesture.send()
 		o=api.getFocusObject()
 		role = o.role
 		curTreeType = utils.currentTree(o, role)
@@ -564,7 +590,7 @@ class AppModule(thunderbird.AppModule):
 				gesture.send()
 				if hasFilter(o, ID) :
 					gesture.send()
-				callLater(100, sayFilterRemoved)
+				callLater(50, sayFilterRemoved)
 			else :
 				if not sharedVars.oSettings.getOption("mainWindow", "ttNoEscape") :
 					return KeyboardInputGesture.fromName ("shift+f6").send() # utils.getFolderTreeFromFG(True)
@@ -591,7 +617,8 @@ class AppModule(thunderbird.AppModule):
 				else : return gesture.send()
 		elif role == controlTypes.Role.DOCUMENT  and controlTypes.State.READONLY in o.states :
 			if utils.isSeparMsgWnd() :
-				return KeyboardInputGesture.fromName ("control+w").send () 
+				# 2025-02-08 : control+w replaced with escape. works bettter   in some situations
+				return KeyboardInputGesture.fromName ("escape").send () 
 			if o.parent.role == controlTypes.Role.INTERNALFRAME and utils.getIA2Attr(o.parent, "messagepane") :
 				return KeyboardInputGesture.fromName ("shift+f6").send () 
 		elif role == controlTypes.Role.LINK  : # inpreview Pane document or accountCentral doc
@@ -735,6 +762,7 @@ class AppModule(thunderbird.AppModule):
 					return 
 				return sharedVars.oQuoteNav.readMail(fo, o,(mainKey == "upArrow")) # with quote list
 			elif utils.isFolderTreeItem(o, ID) :
+				# sharedVars.log(o, "folderTreeItem before call of fmenuFolder")
 				return messengerWindow.folderTreeItem.fMenuFolders(o, (mainKey == "downArrow"))
 			elif  ID.startswith("ReplaceWordInput") : 
 				# spellCheckDialog
@@ -1210,5 +1238,4 @@ def sayFilterRemoved() :
 		if cc == 0 :
 			beep(120, 40)
 			infos = _("No messages displayed") + ", " + infos
-			
 	ui.message(_("Filter removed") + infos)

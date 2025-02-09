@@ -40,6 +40,10 @@ def getIA2Attr(obj,attribute_value=False,attribute_name ="id"):
 	r =obj.IA2Attributes[attribute_name]
 	return r if not attribute_value  else r ==attribute_value
 
+def getTVItemLevel(obj) :
+	if obj.role != controlTypes.Role.TREEVIEWITEM : return 0
+	return obj.positionInfo['level']
+	
 def isFolderTreeItem(fti, ID="") :
 	if fti.role != controlTypes.Role.TREEVIEWITEM : return False 
 	if not ID :
@@ -251,19 +255,49 @@ class RecurseTree() :
 
 # focus ThreadTree from FolderTree
 def focusTTFromFT(oFocused, mode) :
-	utis.disableOvl(False)
-	# utis.beepRepeat(440, 20, 2)
-	utis.setSpeechMode_off()
-	sharedVars.speechOff = True # speech restored in see event_gainFocus
-	KeyboardInputGesture.fromName("f6").send()
-	sleep(.2)
-	if  mode == 1 : # last message
-		KeyboardInputGesture.fromName("end").send()
-	elif mode == 2 : # first message 
-		KeyboardInputGesture.fromName("home").send()
-	elif	 mode > 2 : # first unread message 
-		KeyboardInputGesture.fromName("n").send()
-	# CallAfter(utis.speech.setSpeechMode, SpeechMode.talk)
+	try : # finally
+		utis.disableOvl(True)
+		# utis.beepRepeat(440, 20, 2)
+		utis.setSpeechMode_off()
+		# sharedVars.speechOff = True # speech restored in see event_gainFocus
+		# if	 mode > 2 : # first unread message 
+			# KeyboardInputGesture.fromName("n").send()
+			# return True
+
+		# the closest common ancestor of folderTree and ThreadTree is: the rol internal frame  object
+		oFocused = oFocused.parent
+		o = None
+		while oFocused :
+			if oFocused.role == controlTypes.Role.INTERNALFRAME :
+				if hasID(oFocused, "mail3PaneTabBrowser") :
+					o = oFocused
+					break
+			oFocused =  oFocused.parent
+		if not o : return False
+		
+		o = o.firstChild # grouping
+		# | i2, SECTION, , IA2ID : threadPane | i2, TEXTFRAME, , IA2ID : threadTree , 
+		o = findChildByRoleID(o, controlTypes.Role.SECTION, "threadPane")
+		o = findChildByRoleID(o, controlTypes.Role.TEXTFRAME, "threadTree")
+		o = o.firstChild.firstChild # first level table 
+		while o :
+			if o.role in (controlTypes.Role.TABLE, controlTypes.Role.LIST) :
+				break
+			o = o.next
+		if not o :
+			return False
+		o.setFocus()
+		utis.speech.setSpeechMode(SpeechMode.talk)
+		if  mode == 1 : # last message
+			KeyboardInputGesture.fromName("end").send()
+		elif  mode == 2 : # first message
+			KeyboardInputGesture.fromName("home").send()
+		elif	 mode > 2 : # first unread message 
+			KeyboardInputGesture.fromName("n").send()
+		return True
+	finally :
+		utis.disableOvl(False)
+		utis.speech.setSpeechMode(SpeechMode.talk)
 
 def focusThreadTree(focus=False, fromFolderTree=False) :
 	# disabled because speech is not always restored in event_gainFocus -> utis.setSpeechMode_off()
@@ -533,8 +567,13 @@ def getMessagePane() : # in the main window
 	# | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  
 	try : o = o.firstChild.firstChild
 	except : return None
-	# | i4, Role-SECTION, , IA2ID : messagePane 
-	o = findChildByRoleID(o, controlTypes.Role.SECTION, "messagePane") 
+	if sharedVars.TBMajor < 135 :
+		# | i4, Role-SECTION, , IA2ID : messagePane 
+		o = findChildByRoleID(o, controlTypes.Role.SECTION, "messagePane") 
+	else :
+		# i4, Role-TEXTFRAME, , IA2ID : messagePane 
+		o = findChildByRoleID(o, controlTypes.Role.TEXTFRAME, "messagePane") 
+	sharedVars.log(o, "getMessagePane, Role Section : ")
 	return o
 
 def getMessageHeaders(msgPane=None) :
