@@ -573,7 +573,7 @@ def getMessagePane() : # in the main window
 	else :
 		# i4, Role-TEXTFRAME, , IA2ID : messagePane 
 		o = findChildByRoleID(o, controlTypes.Role.TEXTFRAME, "messagePane") 
-	sharedVars.log(o, "getMessagePane, Role Section : ")
+	# sharedVars.log(o, "getMessagePane, Role Section : ")
 	return o
 
 def getMessageHeaders(msgPane=None) :

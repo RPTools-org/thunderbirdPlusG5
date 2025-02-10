@@ -42,7 +42,7 @@ class SpellCheckDlg (IAccessible):
 				# message(_("No misspelled words were found"))
 			#self.name = ""
 
-			self.bindGestures ({"kb:nvda+tab":"reportFocus","kb:ALT+UPARROW":"reportFocus","kb:alt+downArrow":"focusSuggested", "kb:enter":"enterFromEdit", "kb:shift+enter":"enterFromEdit", "kb:control+enter":"enterFromEdit", "kb:control+shift+enter":"enterFromEdit", "kb:alt+enter":"enterFromEdit", "kb:alt+i":"altLetter", "kb:alt+n":"altLetter", "kb:alt+r":"altLetter", "kb:alt+t":"altLetter", "kb:alt+a":"altLetter"})
+			self.bindGestures ({"kb:nvda+tab":"reportFocus","kb:ALT+UPARROW":"reportFocus","kb:alt+downArrow":"focusSuggested", "kb:enter":"enterFromEdit", "kb:shift+enter":"enterFromEdit", "kb:control+enter":"enterFromEdit", "kb:control+shift+enter":"enterFromEdit", "kb:alt+enter":"enterFromEdit", "kb:alt+i":"altLetter", "kb:alt+n":"altLetter", "kb:alt+r":"altLetter", "kb:alt+t":"altLetter", "kb:alt+a":"altLetter", "kb:control+space":"spaceFromEdit"})
 		elif role == controlTypes.Role.LISTITEM :
 			if utis.getIA2Attribute(self.parent, "SuggestedList", "id") :
 				self.bindGestures ({"kb:ALT+upArrow":"focusEdit", "kb:enter":"enterFromList", "kb:shift+enter":"enterFromList"})
@@ -101,15 +101,9 @@ class SpellCheckDlg (IAccessible):
 		self._replaceLabel = self.name # needed in self.sayWords
 		self.name =  oMispLabel.name +" : " + mispName + ", " + self._replaceLabel
 
-	def setCloseBtnLabel(self) :
-		# self is the close or send button
-		oMispLabel = self.parent.firstChild
-		if controlTypes.State.UNAVAILABLE in oMispLabel.states :
-			label = ""
-		else :
-			label = oMispLabel.name + " "
-		mispValue = self.parent.getChild(1).name
-		self.name = label + mispValue + " " + self.name
+	def script_spaceFromEdit(self, gesture) :
+		# control+space press the close or send button
+		self.pressButton ("_close_")
 
 	def sayWords(self, sayRole=True) :
 		cancelSpeech =   sharedVars.oSettings.getOption("msgcomposeWindow", "spellCancelSpeech") 
@@ -175,7 +169,7 @@ class SpellCheckDlg (IAccessible):
 				ID = (o.IA2Attributes["id"] if hasattr (o,"IA2Attributes") and "id" in o.IA2Attributes else False)
 				if  ID :
 					ID = ID.lower ()
-					if ID == btnID :
+					if ID == btnID or (btnID == "_close_" and ID in ("close", "send")) :
 						obj = o
 						break
 			o = o.next
