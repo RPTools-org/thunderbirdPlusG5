@@ -1132,7 +1132,8 @@ def listDescendants(o=None, lev=0, tit=None) :
 	o = o.firstChild
 	i = 1
 	while o :
-		if sharedVars.debug : sharedVars.log(o, "level " + str(lev) + " " + str(i))
+		if sharedVars.debug : 
+			sharedVars.log(o, "level " + str(lev) + " " + str(i))
 		if o.childCount :
 			listDescendants(o, lev) 
 		i +=1

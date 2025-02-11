@@ -290,13 +290,16 @@ class AppModule(thunderbird.AppModule):
 				self.initTimer()
 				self.timer = callLater(300, KeyboardInputGesture.fromName("control+space").send)
 			return nextHandler()
-		elif  sharedVars.msgOpened and role == controlTypes.Role.DOCUMENT : # separate message window
-			sharedVars.msgOpened = False
-			speech.cancelSpeech()
-			# below : Separate reading window: do not read the cleaned version of the message when the window is opened.
-			if sharedVars.oSettings.getOption("deactiv", "SWRnoRead") :
-				return nextHandler()
-			return wx.CallAfter(sharedVars.oQuoteNav.readMail, obj, obj, False)
+		elif role == controlTypes.Role.DOCUMENT  and controlTypes.State.READONLY in obj.states :
+			if not sharedVars.msgOpened :
+				sharedVars.curTab = "msgPreview"
+			elif  sharedVars.msgOpened :  # separate message window	
+				sharedVars.msgOpened = False
+				speech.cancelSpeech()
+				# below : Separate reading window: do not read the cleaned version of the message when the window is opened.
+				if sharedVars.oSettings.getOption("deactiv", "SWRnoRead") :
+					return nextHandler()
+				return wx.CallAfter(sharedVars.oQuoteNav.readMail, obj, obj, False)
 		if sharedVars.curTab == "sp:addressbook" and sharedVars.TBMajor > 127 :
 			messengerWindow.tabAddressBook.abGainFocus(obj)
 
@@ -575,6 +578,8 @@ class AppModule(thunderbird.AppModule):
 	def script_sharedEscape(self, gesture) :
 		if sharedVars.curTab == "message" :
 			return gesture.send()
+		elif sharedVars.curTab == "msgPreview" :
+			return KeyboardInputGesture.fromName ("shift+f6").send()  
 		o=api.getFocusObject()
 		role = o.role
 		curTreeType = utils.currentTree(o, role)
@@ -615,12 +620,12 @@ class AppModule(thunderbird.AppModule):
 				elif role == controlTypes.Role.BUTTON :
 					return KeyboardInputGesture.fromName ("shift+tab").send () 
 				else : return gesture.send()
-		elif role == controlTypes.Role.DOCUMENT  and controlTypes.State.READONLY in o.states :
-			if utils.isSeparMsgWnd() :
-				# 2025-02-08 : control+w replaced with escape. works bettter   in some situations
-				return KeyboardInputGesture.fromName ("escape").send () 
-			if o.parent.role == controlTypes.Role.INTERNALFRAME and utils.getIA2Attr(o.parent, "messagepane") :
-				return KeyboardInputGesture.fromName ("shift+f6").send () 
+		# elif role == controlTypes.Role.DOCUMENT  and controlTypes.State.READONLY in o.states :
+			# if utils.isSeparMsgWnd() :
+				# # 2025-02-08 : control+w replaced with escape. works bettter   in some situations
+				# return KeyboardInputGesture.fromName ("escape").send () 
+			# if o.parent.role == controlTypes.Role.INTERNALFRAME and utils.getIA2Attr(o.parent, "messagepane") :
+				# return KeyboardInputGesture.fromName ("shift+f6").send () 
 		elif role == controlTypes.Role.LINK  : # in preview Pane document or accountCentral doc
 			# before 135 Role.INTERNALFRAME, IA2ID : messagepane Tag: browser, States : , FOCUSABLE, childCount  : 1 Path : Role-FRAME| i31, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  | i4, Role-SECTION, , IA2ID : messagePane | i0, Role-INTERNALFRAME, , IA2ID : messageBrowser | i0, Role-GROUPING,  | i15, Role-INTERNALFRAME, , IA2ID : messagepane , 
 			# tb 135 : level -6   : TEXTFRAME, ID : messagePane, class : MozillaWindowClass, childCount : 1
