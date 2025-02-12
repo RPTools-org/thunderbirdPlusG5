@@ -626,7 +626,7 @@ class AppModule(thunderbird.AppModule):
 				# return KeyboardInputGesture.fromName ("escape").send () 
 			# if o.parent.role == controlTypes.Role.INTERNALFRAME and utils.getIA2Attr(o.parent, "messagepane") :
 				# return KeyboardInputGesture.fromName ("shift+f6").send () 
-		elif role == controlTypes.Role.LINK  : # in preview Pane document or accountCentral doc
+		elif role ==  controlTypes.Role.LINK  : # in preview Pane document or accountCentral doc
 			# before 135 Role.INTERNALFRAME, IA2ID : messagepane Tag: browser, States : , FOCUSABLE, childCount  : 1 Path : Role-FRAME| i31, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  | i4, Role-SECTION, , IA2ID : messagePane | i0, Role-INTERNALFRAME, , IA2ID : messageBrowser | i0, Role-GROUPING,  | i15, Role-INTERNALFRAME, , IA2ID : messagepane , 
 			# tb 135 : level -6   : TEXTFRAME, ID : messagePane, class : MozillaWindowClass, childCount : 1
 			if sharedVars.TBMajor < 135 :
@@ -649,6 +649,10 @@ class AppModule(thunderbird.AppModule):
 		elif role == controlTypes.Role.BUTTON : 
 			# level 1,  40 of 51, name : Aller au jour précédent, Role.BUTTON, IA2ID : previous-day-button
 			if ID == "previous-day-button" : return KeyboardInputGesture.fromName ("shift+f6").send ()
+			if sharedVars.TBMajor < 135 :
+				if  utis.findParentByID(o, controlTypes.Role.SECTION, "messagePane") : return KeyboardInputGesture.fromName("shift+f6").send()
+			else : # >= 135
+				if  utis.findParentByID(o, controlTypes.Role.TEXTFRAME, "messagePane") : return KeyboardInputGesture.fromName("shift+f6").send()
 			if utis.findParentByID(o, controlTypes.Role.INTERNALFRAME, "accountCentralBrowser") :
 				return KeyboardInputGesture.fromName ("shift+f6").send ()
 		return gesture.send()
