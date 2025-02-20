@@ -1,3 +1,4 @@
+
 #-*- coding:utf-8 -*
 # Thunderbird+ 4.x, context menu for main Window
 
@@ -102,7 +103,7 @@ class MainMenu() :
 
 	def script_clickToolBarAttachment (self,gesture = None):
 		CPC=clientObject.CreatePropertyCondition
-		versionTB=utis.versionTB()
+		versionTB=utis.TBMajor()
 		objFirstGrouping=(utis.getObjFirstGrouping(self) if utis.getObjFirstGrouping(self) else utis.getObjFirstGrouping2(self))
 		if versionTB<68 :
 			o = objFirstGrouping.FindAll (TreeScope_Children,CPC(UIA_ControlTypePropertyId, UIA_ToolBarControlTypeId))

@@ -71,11 +71,11 @@ def playSound (soundFile):
 		# deactivated for those who don't like sound -> beep(440, 80)
 		pass #son non trouvé
 
-def versionTB() :   
+def TBMajor() :   
 	try :
-		return int(globalVars.foregroundObject.appModule.productVersion.split(".") [0])
+		return   int(globalVars.foregroundObject.appModule.productVersion.split(".") [0])
 	except :
-		return 128
+		return 0
 
 def TBVersion(asInt=False) : # full version string
 	pv = globalVars.foregroundObject.appModule.productVersion

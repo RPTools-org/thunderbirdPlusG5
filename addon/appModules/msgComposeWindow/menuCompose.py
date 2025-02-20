@@ -15,7 +15,7 @@ _curAddon=addonHandler.getCodeAddon()
 sharedPath=os.path.join(_curAddon.path,"AppModules", "shared")
 sys.path.append(sharedPath)
 import  utis, sharedVars
-from utis import getIA2Attribute, showNVDAMenu , versionTB,  getElementWalker
+from utis import getIA2Attribute, showNVDAMenu , TBMajor,  getElementWalker
 del sys.path[-1]
 addonHandler.initTranslation()
 
