@@ -577,10 +577,7 @@ class AppModule(thunderbird.AppModule):
 		return gesture.send()
 
 	def script_sharedEscape(self, gesture) :
-		if sharedVars.curTab == "message" :
-			# sharedVars.logte("sharedEscape, curTab = message, send alt+f4")
-			return KeyboardInputGesture.fromName ("alt+f4").send()  
-		elif sharedVars.curTab == "msgPreview" :
+		if sharedVars.curTab == "msgPreview" :
 			# sharedVars.logte("sharedEscape, curTab = msgPreview, send shift+f6")
 			return KeyboardInputGesture.fromName ("shift+f6").send()  
 		o=api.getFocusObject()
@@ -604,6 +601,11 @@ class AppModule(thunderbird.AppModule):
 					return KeyboardInputGesture.fromName ("shift+f6").send() # utils.getFolderTreeFromFG(True)
 				else :
 					ui.message(o.name)
+		if sharedVars.curTab == "message" :
+			if sharedVars.debug :
+				beep(600, 40)
+				sharedVars.debugLog= "sharedEscape, curTab = message, send alt+f4" + "\n" + sharedVars.debugLog
+			return KeyboardInputGesture.fromName ("alt+f4").send()  
 		elif  "Recipient" in ID  or "expandedsubjectBox" in ID or "Recipient" in str(utils.getIA2Attr(o.parent)) : # header pane
 			return KeyboardInputGesture.fromName ("shift+f6").send()
 		elif role in  (controlTypes.Role.BUTTON, controlTypes.Role.TOGGLEBUTTON)  and ID.startswith("attachment") :
