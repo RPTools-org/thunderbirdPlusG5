@@ -208,7 +208,7 @@ class AppModule(thunderbird.AppModule):
 			# elif  parID.startswith("addressBookTab") : sharedVars.curFrame = "messengerWindow" ; sharedVars.curTab = "sp:addressbook" ; return
 			# else : sharedVars.curTab = messengerWindow.tabs.specialTabType(obj.name, True)
 
-		if utis.TBMajor() == 0 : sharedVars.TBMajor = utis.TBMajor()
+		if sharedVars.TBMajor < 115 : sharedVars.TBMajor = utis.TBMajor()
 
 		if sharedVars.curTab == "sp:addressbook" :
 			if not  sharedVars.noAddressBook :  # and role in (controlTypes.Role.TREEVIEWITEM, controlTypes.Role.BUTTON, controlTypes.Role.EDITABLETEXT) :
@@ -605,7 +605,8 @@ class AppModule(thunderbird.AppModule):
 			if sharedVars.debug :
 				beep(600, 40)
 				sharedVars.debugLog= "sharedEscape, curTab = message, send alt+f4" + "\n" + sharedVars.debugLog
-			return KeyboardInputGesture.fromName ("alt+f4").send()  
+			# this closes TB sometimes -> return KeyboardInputGesture.fromName ("alt+f4").send()  
+			return KeyboardInputGesture.fromName ("escape").send()  
 		elif  "Recipient" in ID  or "expandedsubjectBox" in ID or "Recipient" in str(utils.getIA2Attr(o.parent)) : # header pane
 			return KeyboardInputGesture.fromName ("shift+f6").send()
 		elif role in  (controlTypes.Role.BUTTON, controlTypes.Role.TOGGLEBUTTON)  and ID.startswith("attachment") :
@@ -635,7 +636,8 @@ class AppModule(thunderbird.AppModule):
 			elif context == "preview" :
 					return KeyboardInputGesture.fromName ("shift+f6").send ()
 			elif context == "msgWindow" :
-					return KeyboardInputGesture.fromName ("alt+f4").send ()
+					# return KeyboardInputGesture.fromName ("alt+f4").send ()
+					return KeyboardInputGesture.fromName ("escape").send ()
 		elif role ==  controlTypes.Role.LINK  : # in preview Pane document or accountCentral doc
 			# before 135 Role.INTERNALFRAME, IA2ID : messagepane Tag: browser, States : , FOCUSABLE, childCount  : 1 Path : Role-FRAME| i31, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  | i4, Role-SECTION, , IA2ID : messagePane | i0, Role-INTERNALFRAME, , IA2ID : messageBrowser | i0, Role-GROUPING,  | i15, Role-INTERNALFRAME, , IA2ID : messagepane , 
 			# tb 135 : level -6   : TEXTFRAME, ID : messagePane, class : MozillaWindowClass, childCount : 1
@@ -666,7 +668,7 @@ class AppModule(thunderbird.AppModule):
 			elif context == "preview" :
 					return KeyboardInputGesture.fromName ("shift+f6").send ()
 			elif context == "msgWindow" :
-					return KeyboardInputGesture.fromName ("alt+f4").send ()
+					return KeyboardInputGesture.fromName ("escape").send () # was alt+f4
 			# level 1,  40 of 51, name : Aller au jour précédent, Role.BUTTON, IA2ID : previous-day-button
 			if ID == "previous-day-button" : return KeyboardInputGesture.fromName ("shift+f6").send ()
 			# spaces button

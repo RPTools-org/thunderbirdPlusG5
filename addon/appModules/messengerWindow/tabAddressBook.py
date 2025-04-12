@@ -142,6 +142,7 @@ def getContactDetails(o) :
 	nm = oCD.outName
 	# sharedVars.logte("Names " + nm)
 	return nm
+	# Thunderbird 128 +
 class AddressBook(IAccessible):
 	ABMenu = None
 	ABMenuPointers = None
@@ -477,7 +478,7 @@ class AddressBook115(IAccessible):
 				return
 			except : return message(self.name)
 		elif role == controlTypes.Role.TREEVIEWITEM : # books tree
-			if oDragDropper : oDragDropper = None
+			if oDragDropper128 : oDragDropper = None
 			if ID.startswith("book-") : name2 = ", " + _("Address book")
 			if ID.startswith("list-") : name2 = getParentBook(self)
 		elif role == controlTypes.Role.EDITABLETEXT :
@@ -541,7 +542,8 @@ class AddressBook115(IAccessible):
 		# name = o.name + ", " if o.name else ""
 		# name += o.role.displayString
 		msg = ""
-		if utils.hasID(o, "toolbarCreateBook") : msg = _("Press Alt + down arrow to open the popup menu")  
+		if utils.hasID(o, "toolbarCreateBook") : 
+			msg = _("Press Alt + down arrow to open the popup menu")  
 		callLater(100, utis.enableSpeechAndSay, msg, True)
 		o.doAction()
 		self.ABMenu = self.ABMenuPointers = None
