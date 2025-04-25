@@ -243,10 +243,10 @@ class FolderMenu() :
 			# beep(440, 10)
 			o = self.nodes[evt.Id]
 			self.nodes  = [] # 2025-02-07
-			if self.type > 0 and self.mode == "smart" and o.name.startswith(_("Inbox")) : self.type = 0
-		
+			if self.type > 0 and self.mode == "smart" and o.name.startswith(_("Inbox")) : 
+				self.type = 0
 			if self.type == 0 : # regular menu item, request to focus folderTree
-				# beep(100, 30)a
+				# beep(100, 30)
 				utis.setSpeech(False)
 				sharedVars.menuClosing = True 
 				o.scrollIntoView()

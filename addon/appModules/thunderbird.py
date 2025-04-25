@@ -18,6 +18,7 @@ import gui
 import wx
 from core import callLater
 import globalCommands, globalVars	
+import config
 from re import compile,IGNORECASE
 
 # shared modules import
@@ -273,6 +274,10 @@ class AppModule(thunderbird.AppModule):
 		if sharedVars.speechOff :
 			speech.setSpeechMode(speech.SpeechMode.talk)
 			sharedVars.speechOff = False
+		if sharedVars.rowDeleting  :
+			# we are in the colum headers
+			callLater(50, utils.focusTTRow)
+			return  nextHandler()
 
 		if  sharedVars.curFrame == "msgcomposeWindow" :
 			# beep(440, 5)
@@ -284,7 +289,10 @@ class AppModule(thunderbird.AppModule):
 		if sharedVars.menuClosing and role == controlTypes.Role.TREEVIEWITEM :
 			sharedVars.menuClosing = False
 			utis.setSpeech(True)
-		
+		# if sharedVars.TBMajor > 135 and sharedVars.curTab == "main" and role in  (controlTypes.Role.LIST, controlTypes.Role.TABLE) :
+			# callLater(100, self.focusMessageItem, "gainFocus", time())
+			# return nextHandler()
+
 		if  role == controlTypes.Role.UNKNOWN :
 			if obj.parent and obj.parent.role in(controlTypes.Role.LIST, controlTypes.Role.TREEVIEW) :
 				# beep(100, 10)
@@ -316,12 +324,18 @@ class AppModule(thunderbird.AppModule):
 				# obj.name = ""
 			# # menuClosing is set to False  in event_gainFocus
 			# return
+		# # 2025 04 23 : rewritten below
+			# if sharedVars.rowDeleting and role in (controlTypes.Role.LIST, controlTypes.Role.TABLE) :
+				# sharedVars.rowDeleting = False
+				# # beep(250, 60)
+				# ui.message("focusEntered rowDeleting")
+				# return nextHandler()
 		#   silencify folderTree and threadTree
-		if sharedVars.curTab == "main" and sharedVars.TTnoFolderName and role in  (controlTypes.Role.LIST, controlTypes.Role.TABLE, controlTypes.Role.TREEVIEW) :
-			if role == controlTypes.Role.TABLE and obj.parent.role == controlTypes.Role.TABLE   :
-				return
-			globalVars.foregroundObject.name  = ""
-			obj.name = "" 
+		if sharedVars.curTab == "main"  and role in  (controlTypes.Role.LIST, controlTypes.Role.TABLE, controlTypes.Role.TREEVIEW) :
+			if sharedVars.TTnoFolderName :
+				obj.name = "" ; globalVars.foregroundObject.name  = ""
+			if sharedVars.TBMajor > 135  and role in  (controlTypes.Role.LIST, controlTypes.Role.TABLE) : # message list
+				callLater(100, self.focusMessageItem, "focusEnterred", time())
 			return nextHandler()
 		elif role == controlTypes.Role.TEXTFRAME and ID == "threadTree" :
 			if not sharedVars.oSettings.getOption("deactiv", "TTnoFilterSnd") :
@@ -330,7 +344,26 @@ class AppModule(thunderbird.AppModule):
 			sharedVars.totalColIdx = utils.getTotalColIdx(obj)
 
 		nextHandler()
-		
+
+	def focusMessageItem(self, context, startTime) :
+		o =  api.getFocusObject()
+		if o.role in   (controlTypes.Role.LIST, controlTypes.Role.TABLE) :
+			# beep(700, 40)
+			# sharedVars.logte(context  + " : " + now.strftime("%H:%M:%S.%f")[:-4])
+			# prevSpeak = config.conf["keyboard"]["speakTypedCharacters"]
+			# config.conf["keyboard"]["speakTypedCharacters"] = False
+			speech.cancelSpeech()
+			speech.setSpeechMode(speech.SpeechMode.off)
+			KeyboardInputGesture.fromName("control+space").send()
+			# sleep(0.02)
+			api.processPendingEvents()
+			o = api.getFocusObject()
+			KeyboardInputGesture.fromName("control+space").send()
+			speech.setSpeechMode(speech.SpeechMode.talk)
+			ui.message(o.name)
+			# config.conf["keyboard"]["speakTypedCharacters"] = prevSpeak
+			
+	
 	# G5 : buildColumnID() : used in messageListItem.
 	def buildColumnID(self, oTT):
 		try :

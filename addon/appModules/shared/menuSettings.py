@@ -60,7 +60,7 @@ class  Settings() :
 		# adPath is the root of the addon path
 		self.option_messengerWindow ={
 		"TTClean" : _("custom vocalization of rows."),
-		"handleDelete" : _("If custom vocalization, announce the current line after line deletion   (not recommanded for Braille)."),
+		"handleDelete" : _("After deleting a message, force the selection of the new current line."),
 		"TTnoFolderName" : _("Do not say the window and folder names when entering the list."),		"responseMentionGroup" : _("Combine multiple 'RE' mentions into one"),
 		"responseMentionRemove" : _("Delete the 'Re' mentions in the subject column"),
 		"responseMentionDelColon" : _("Delete the colons  in the 'Re:' mentions"),

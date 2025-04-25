@@ -1,5 +1,6 @@
 #-*- coding:utf-8 -*
 debug = False
+rowDeleting = False
 TBMajor = 0
 objLooping = menuClosing =  False
 speechOff = False

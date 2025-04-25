@@ -3,9 +3,10 @@ import addonHandler
 addonHandler.initTranslation()
 import controlTypes, api
 from speech import  speakMessage, speakSpelling, cancelSpeech, setSpeechMode, SpeechMode
+
 import braille
 from ui import message
-from time import time
+from time import time, sleep
 from tones import beep
 from wx  import  CallLater, CallAfter
 import sharedVars
@@ -20,6 +21,62 @@ def brailleMessage(text, speak=False) :
 	if speak : 
 		speakMessage("Braille : ")
 	braille.handler.message(text)
+
+# def focusMenuBar() :
+	# # Path : Role-FRAME| i33, Role-TOOLBAR, , IA2ID : toolbar-menubar | i0, Role-MENUBAR, , IA2ID : mail-menubar | i0, Role-MENUITEM, , IA2ID : menu_File 
+	# o =  api.getForegroundObject()
+	# o = o.getChild(30)
+	# while o :
+		# if o.role == controlTypes.Role.TOOLBAR :
+			# break
+		# o = o.next
+
+	# if not o : return None
+	# o = o.firstChild.firstChild
+	# if not o :  return None
+	# if o.role == controlTypes.Role.MENUITEM : 
+		# o.doAction()
+		# o.setFocus()
+		# return o
+
+def threadTreeType(oRow) :
+	retVal = 10 # normal
+	# 2025 04 24 
+	o= oRow.firstChild
+	while o :
+		if hasIA2Class(o, "locationcol-column") :
+			retVal = 20 # unified
+			break
+		o = o.next
+	try :
+		if  oRow.next :
+			retVal += 1
+	except :
+		pass
+	return retVal
+	
+def focusTTRow() :
+	if sharedVars.rowDeleting  == 0 : 
+		setSpeechMode(SpeechMode.talk)
+		return
+	if sharedVars.rowDeleting < 20  : # normal TT
+		sharedVars.rowDeleting = 0
+		setSpeechMode(SpeechMode.talk)
+		CallAfter(KeyboardInputGesture.fromName("tab").send)
+		return
+	# 20 or 21  = unified folder		
+	hasNext = True if 	sharedVars.rowDeleting == 21 else False
+	sharedVars.rowDeleting = 0
+	setSpeechMode(SpeechMode.talk)
+	message(_("Please wait"))
+	KeyboardInputGesture.fromName("tab").send()
+	if hasNext  :
+		CallLater(500, KeyboardInputGesture.fromName("downArrow").send)
+		CallLater(700, KeyboardInputGesture.fromName("upArrow").send)
+	else :
+		CallLater(500, KeyboardInputGesture.fromName("upArrow").send)
+		CallLater(700, KeyboardInputGesture.fromName("downArrow").send)
+
 
 def hasID(obj, IA2ID) :
 	# IA2ID can be the n first chars of the ID
@@ -299,7 +356,8 @@ def focusTTFromFT(oFocused, mode) :
 		if not o :
 			return False
 		o.setFocus()
-		utis.speech.setSpeechMode(SpeechMode.talk)
+		# utis.speech.setSpeechMode(SpeechMode.talk)
+		setSpeechMode(SpeechMode.talk)
 		if  mode == 1 : # last message
 			KeyboardInputGesture.fromName("end").send()
 		elif  mode == 2 : # first message
@@ -309,7 +367,8 @@ def focusTTFromFT(oFocused, mode) :
 		return True
 	finally :
 		utis.disableOvl(False)
-		utis.speech.setSpeechMode(SpeechMode.talk)
+		# utis.speech.setSpeechMode(SpeechMode.talk)
+		setSpeechMode(SpeechMode.talk)
 
 def focusThreadTree(focus=False, fromFolderTree=False) :
 	# disabled because speech is not always restored in event_gainFocus -> utis.setSpeechMode_off()
@@ -330,7 +389,8 @@ def focusThreadTree(focus=False, fromFolderTree=False) :
 		fo.setFocus()
 		fo = getFolderTreeFromFG(focus=False)
 		if not fo :
-			CallAfter(utis.speech.setSpeechMode, SpeechMode.talk)
+			# CallAfter(utis.speech.setSpeechMode, SpeechMode.talk)
+			CallAfter(setSpeechMode, SpeechMode.talk)
 			return
 		fo.setFocus()
 		oTimer = GetFocusObjTimer(roleList=[controlTypes.Role.TREEVIEWITEM], stateSelected=True, interval=500, maxElapsed=4000, callBack=focusTTFromFT, cbParam=focusMode)
@@ -695,7 +755,6 @@ def getOneMessageGrouping() :
 	return o.firstChild
 
 	# for message list item
-from time import sleep
 from keyboardHandler import KeyboardInputGesture
 import winUser
 
