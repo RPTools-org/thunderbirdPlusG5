@@ -150,6 +150,10 @@ class AppModule(thunderbird.AppModule):
 		self.bindGesture("kb:control+" + k, "showContextMenu") # 41 is the scancode of the key above Tab
 		self.bindGesture("kb:shift+" + k,  "showOptionMenu") 
 		self.bindGesture("kb:" + k, "sharedGrave") # 41 is the scancode of the key above Tab
+		globalVars.TBPropertyPage = None
+		globalVars.TBFolderTree = None
+		globalVars.TBThreadTree = None
+		globalVars.TBThreadPane = None
 		callLater(1500, TBStartup)
 
 		
@@ -218,6 +222,12 @@ class AppModule(thunderbird.AppModule):
 
 	def event_foreground(self, obj,nextHandler):
 		# sharedVars.log(obj, "Foreground")
+		if obj.role == controlTypes.Role.FRAME and  sharedVars.replyTo :
+			# obj.name = sharedVars.replyTo + str(obj.name)
+			ui.message(sharedVars.replyTo + " " + str(obj.name)) 
+			sharedVars.replyTo = ""
+			return # nextHandler()
+	
 		if obj.role == controlTypes.Role.DIALOG :
 			if "|dlg" not  in sharedVars.curFrame : sharedVars.curFrame += "|dlg"
 			# sharedVars.log(obj, "Dialog, curframe = " +  sharedVars.curFrame) 
@@ -274,17 +284,21 @@ class AppModule(thunderbird.AppModule):
 		if sharedVars.speechOff :
 			speech.setSpeechMode(speech.SpeechMode.talk)
 			sharedVars.speechOff = False
-		if sharedVars.rowDeleting  :
-			# we are in the colum headers
-			callLater(50, utils.focusTTRow)
-			return  nextHandler()
-
 		if  sharedVars.curFrame == "msgcomposeWindow" :
-			# beep(440, 5)
-			nextHandler()
-			return
-		if self.disabMode == 3 : return nextHandler()
+			return nextHandler()
 		role = obj.role
+		if sharedVars.nPressed : 
+			sharedVars.nPressed = False
+			if role == controlTypes.Role.TABLE :
+				callLater(100, self.focusMessageItem, "gainFocus", time(), obj)
+			return nextHandler()
+		# if sharedVars.rowAfterDelete :
+			# if  sharedVars.moveFocusAfterDel :
+				# sharedVars.rowAfterDelete = None
+				# callLater(50, KeyboardInputGesture.fromName("f6").send)
+				# return nextHandler()
+			# return
+		if self.disabMode == 3 : return nextHandler()
 		# api.setNavigatorObject(obj) # 2311.12.08
 		if sharedVars.menuClosing and role == controlTypes.Role.TREEVIEWITEM :
 			sharedVars.menuClosing = False
@@ -324,12 +338,7 @@ class AppModule(thunderbird.AppModule):
 				# obj.name = ""
 			# # menuClosing is set to False  in event_gainFocus
 			# return
-		# # 2025 04 23 : rewritten below
-			# if sharedVars.rowDeleting and role in (controlTypes.Role.LIST, controlTypes.Role.TABLE) :
-				# sharedVars.rowDeleting = False
-				# # beep(250, 60)
-				# ui.message("focusEntered rowDeleting")
-				# return nextHandler()
+
 		#   silencify folderTree and threadTree
 		if sharedVars.curTab == "main"  and role in  (controlTypes.Role.LIST, controlTypes.Role.TABLE, controlTypes.Role.TREEVIEW) :
 			if sharedVars.TTnoFolderName :
@@ -345,8 +354,11 @@ class AppModule(thunderbird.AppModule):
 
 		nextHandler()
 
-	def focusMessageItem(self, context, startTime) :
-		o =  api.getFocusObject()
+	def focusMessageItem(self, context, startTime, oFocus=None) :
+		if not oFocus :
+			o =  api.getFocusObject()
+		else :
+			o = oFocus
 		if o.role in   (controlTypes.Role.LIST, controlTypes.Role.TABLE) :
 			# beep(700, 40)
 			# sharedVars.logte(context  + " : " + now.strftime("%H:%M:%S.%f")[:-4])
@@ -748,16 +760,16 @@ class AppModule(thunderbird.AppModule):
 		if not messengerWindow.tabs.activateTab(self, fo, newTabIdx) :
 			return gesture.send()
 
-	def script_sharedCtrlR(self, gesture) :
-		# if not sharedVars.oSettings.getOption("deactiv", "TTnoSmartReply") : return gesture.send()
-		rc = int(getLastScriptRepeatCount())
-		self.initTimer()
-		if rc > 0 :
-			self.timer = wx.CallLater(25, utils.smartReply, rc)
-		else :
-			self.timer = wx.CallLater(200, utils.smartReply, rc)
-	script_sharedCtrlR.__doc__ = _("Smart reply to reply to a recipient or mailing list")
-	script_sharedCtrlR.category = sharedVars.scriptCategory
+	def script_smartReplyToSender(self, gesture) :
+		wx.CallLater(25, utils.smartReplyV2,False, 0)
+	script_smartReplyToSender.__doc__ = _("Smart reply : replies to the sender or to the  group")
+	script_smartReplyToSender.category = sharedVars.scriptCategory
+
+	def script_smartReplyToAll(self, gesture) :
+		wx.CallLater(25, utils.smartReplyV2, True, 0)
+	script_smartReplyToAll.__doc__ = _("Smart reply : with Shift,  replies to all or to the sender in a group")
+	script_smartReplyToAll.category = sharedVars.scriptCategory
+
 
 	def  script_sharedAltEqual(self, gesture) : # native context menu of active tab
 		if sharedVars.curFrame != "messengerWindow" : return
@@ -887,6 +899,19 @@ class AppModule(thunderbird.AppModule):
 		wx.CallLater(50, messengerWindow.folderTreeItem.fMenuAccounts, 1)
 	script_sharedAltC.__doc__ = _("Folders : displays the accounts menu then  the folders menu for the chosen account.")
 	script_sharedAltC.category = sharedVars.scriptCategory
+
+	def script_sharedAltX(self, gesture) :
+		if sharedVars.curTab !=  "main" : return gesture.send()
+		wx.CallLater(50, messengerWindow.folderTreeItem.fMenuInboxes, False)
+	script_sharedAltX.__doc__ = _("Folders : displays the menu of all inbox folders")
+	script_sharedAltX.category = sharedVars.scriptCategory
+
+	def script_sharedAltV(self, gesture) :
+		if sharedVars.curTab !=  "main" : return gesture.send()
+		wx.CallLater(50, messengerWindow.folderTreeItem.fMenuInboxes, True)
+	script_sharedAltV.__doc__ = _("Folders : displays the menu of unread inbox folders")
+	script_sharedAltV.category = sharedVars.scriptCategory
+
 
 	def script_sharedAltCtrlC(self, gesture) :
 		if sharedVars.curTab !=  "main" : return gesture.send()
@@ -1024,6 +1049,14 @@ class AppModule(thunderbird.AppModule):
 	script_sharedAltD.__doc__ = _("Shows the dialog for editing the delay before reading the message of the separate reading window.")
 	script_sharedAltD.category = sharedVars.scriptCategory
 
+	def script_sharedAltDelete(self,gesture):
+		if sharedVars.curFrame == "messengerWindow" :
+			wx.CallLater(20, sharedVars.oSettings.editDeleteDelays)
+			return
+		return gesture.send()
+	script_sharedAltDelete__doc__ = _("Shows the dialog for editing the two delays used for focusing after deleting a message.")
+	script_sharedAltDelete.category = sharedVars.scriptCategory
+
 	def script_previewPane(self, gesture) :
 		if globalVars.focusObject.role  not in (controlTypes.Role.TREEVIEWITEM , controlTypes.Role.LISTITEM) : 
 			return gesture.send()
@@ -1096,6 +1129,8 @@ class AppModule(thunderbird.AppModule):
 		"kb:alt+9": "sharedAltPageDown", # attachments
 		"kb:alt+c": "sharedAltC",
 		"kb:alt+control+c": "sharedAltCtrlC",
+		"kb:alt+x": "sharedAltX",
+		"kb:alt+v": "sharedAltV",
 		"kb:alt+home": "sharedAltHome",
 		"kb:alt+control+home": "sharedAltHome",
 		"kb:alt+pagedown":"sharedAltPageDown",
@@ -1103,6 +1138,7 @@ class AppModule(thunderbird.AppModule):
 		"kb:alt+leftArrow": "sharedAltArrow",
 		"kb:alt+rightArrow": "sharedAltArrow",
 		"kb:alt+downArrow": "sharedAltArrow",
+		
 		"kb:alt+shift+downArrow": "sharedAltArrow",
 		"kb:alt+upArrow": "sharedAltArrow",
 		"kb:f4": "sharedF4",
@@ -1129,14 +1165,16 @@ class AppModule(thunderbird.AppModule):
 		"kb:control+0": "sharedCtrlN",
 		utis.gestureFromScanCode(13, "kb:control+") : "sharedCtrlN", # 13 : first hey at the left of backspace
 		utis.gestureFromScanCode(13, "kb:alt+") : "sharedAltEqual",
-		# "kb:alt+pageup": "sharedCtrlR", # smart reply
-		"kb:control+r": "sharedCtrlR", # smart reply
+		# "kb:alt+pageup": "smartReplyToSender", # smart reply
+		"kb:control+t": "smartReplyToSender",
+		"kb:control+shift+t": "smartReplyToAll", 
 		# "kb:control+f4": "sendCtrlF4",
 		# "kb:control+w": "sendCtrlF4",
 		"kb:control+backspace": "sendCtrlF4",
 		# _("kb:shift+control+²") :"showOptionMenu",
 		# _("kb:control+²") :"showContextMenu",
 		"kb:alt+d":"sharedAltD",
+		"kb:alt+delete":"sharedAltDelete",
 		"kb:f8":"previewPane",
 		"kb:control+f1": "showHelp",
 		"kb:alt+f12": "displayDebug",

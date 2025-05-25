@@ -14,14 +14,13 @@ import api
 import ui
 import speech
 import wx
-from .shared import updateLite
-from .shared import notif
+# from .shared import notif
 from .shared import winUtils
 from time import time, sleep
 import winUser
 from winUser import getKeyNameText, setCursorPos 
 from tones import beep
-import winKernel, globalVars
+import globalVars
 import os, sys
 
 def gestureFromScanCode(sc, prefix) :
@@ -30,13 +29,13 @@ def gestureFromScanCode(sc, prefix) :
 	k = getKeyNameText(sc, 0)
 	return prefix + k
 
-def setTBOnTop() :
-	hWindow = winUtils.findWindowFromExeName("thunderbird.exe")
-	if hWindow and winUser.getForegroundWindow() != hWindow :
-		winUser.setForegroundWindow(hWindow)
-	else :
-		# beep(250, 5)
-		wx.CallLater(500, setTBOnTop) 
+# def setTBOnTop() :
+	# hWindow = winUtils.findWindowFromExeName("thunderbird.exe")
+	# if hWindow and winUser.getForegroundWindow() != hWindow :
+		# winUser.setForegroundWindow(hWindow)
+	# else :
+		# # beep(250, 5)
+		# wx.CallLater(500, setTBOnTop) 
 
 
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
@@ -47,20 +46,24 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	timerStartedAt = 0
 
 	def __init__(self, *args, **kwargs):
-		# beep(150, 60)
-		# self.loadCfg()
 		super (GlobalPlugin, self).__init__(*args, **kwargs)
-		# if  getProcessIDFromExe("thunderbird.exe") == 0 : # TB is not  running
-			# globalVars.TBStep = 0
-		# else : globalVars.TBStep = 5
+		globalVars.TBPropertyPage = None
 		hTaskBar = ctypes.windll.user32.FindWindowExA(None, None, b"Shell_TrayWnd", None)
 		if not hTaskBar or  globalVars.appArgs.launcher : 
 			return
-		if notif.	checkNotif() :
-			beep(440, 30)
-			wx.CallLater(200, notif.showNotif)
-		# else :
-			# wx.CallLater(3000, updateLite.checkUpdate, True) # auto
+		# if notif.	checkNotif() :
+			# beep(440, 30)
+			# wx.CallLater(200, notif.showNotif)
+		# # else :
+			# # wx.CallLater(3000, updateLite.checkUpdate, True) # auto
+		scriptDir  = os.path.dirname(os.path.abspath(__file__))
+		iniFile =  scriptDir + f"\showChangelog.ini"
+		if os.path.exists(iniFile) :
+			wx.CallLater(5000, showChangelog) 
+			try:
+				os.remove(iniFile)
+			except FileNotFoundError:
+				ui.message("The followingficherd could not be deleted because not found:\n" + iniFile)
 
 	def RestoreSpeechAndSay(msg, focusName=False) :
 		if focusName :
@@ -77,14 +80,17 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			self.timer = None
 
 
-	# def event_foreground(self, obj, nextHandler) :
-		# beep(200, 2)
-		# # print("Event_foreground " + str(obj.role))
-		# if obj.role == controlTypes.Role.WINDOW : 
-			# if "Thunderbird" not in obj.name and getProcessIDFromExe("thunderbird.exe")== 0 :
-				# # beep(200, 2)
-				# globalVars.TBStep=0
-		# nextHandler()
+	def event_foreground(self, obj, nextHandler) :
+		if obj.role not in (controlTypes.Role.PANE, controlTypes.Role.FRAME, controlTypes.Role.WINDOW) :
+			return nextHandler()
+		if globalVars.TBPropertyPage  and not winUtils.findWindowByPartialTitle(" - Mozilla Thunderbird") :
+			# wx.CallLater(1000, ui.message, "Reset of globalVars, Eventt foreground role={}, class={}, name={}".format(obj.role.name, obj.windowClassName, "" if not obj.name else obj.name))
+			globalVars.TBPropertyPage = None
+			globalVars.TBFolderTree = None
+			globalVars.TBThreadTree = None
+			globalVars.TBThreadPane = None
+		nextHandler()
+		
 
 	# def notifyAppmodule(self):
 		# obj=api.getForegroundObject()
@@ -102,15 +108,16 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def script_startTB(self, gesture) :
 		forced = False if getLastScriptRepeatCount() == 0 else True
 		if not forced :
-			hWindow = winUtils.findWindowFromExeName("thunderbird.exe")
-			if hWindow :
-				winUser.setForegroundWindow(hWindow)
+			hWindowList = winUtils.findWindowByPartialTitle(" - Mozilla Thunderbird")
+			if hWindowList :
+				hWindowList.sort(reverse=False)				
+				winUser.setForegroundWindow(hWindowList[0])
 				# ui.message("Title : {}, hWindow : {}".format(winUser.getWindowText(hWindow), hWindow))
 				return
 			# focusTaskButton()
 		tbPaths = ("C:\\Program Files\\Mozilla Thunderbird\\thunderbird.exe", "C:\\Program Files (x86)\\Mozilla Thunderbird\\thunderbird.exe")
 		idx = -1
-		if  os.path.exists(tbPaths[0]) :
+		if os.path.exists(tbPaths[0]) :
 			idx = 0 
 		elif   os.path.exists(tbPaths[1]) :
 			idx = 1
@@ -119,7 +126,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 			ui.message(_("Thunderbird.exe not found in C:\\Program files"))
 			return
 		startProgramMaximized(tbPaths[idx])
-		wx.CallLater(300, setTBOnTop)
+		# wx.CallLater(300, setTBOnTop)
 		return
 	script_startTB.__doc__ = _("Starts Thunderbird")
 	script_startTB.category= ADDON_SUMMARY
@@ -216,19 +223,23 @@ def setSpeechMode_off():
 		# ("szExeFile", ctypes.c_wchar * 260)
 	# ]
 
-# def getProcessIDFromExe(exeName):
-	# FSnapshotHandle = winKernel.kernel32.CreateToolhelp32Snapshot (2,0)
-	# FProcessEntry32 = processEntry32W()
-	# FProcessEntry32.dwSize = ctypes.sizeof(processEntry32W)
-	# ContinueLoop = winKernel.kernel32.Process32FirstW(FSnapshotHandle, ctypes.byref(FProcessEntry32))
-	# pID = 0
-	# while ContinueLoop:
-		# if exeName == FProcessEntry32.szExeFile :
-			# pID = FProcessEntry32.th32ProcessID
-			# break
-		# ContinueLoop = winKernel.kernel32.Process32NextW(FSnapshotHandle, ctypes.byref(FProcessEntry32))
-	# winKernel.kernel32.CloseHandle(FSnapshotHandle)
-	# return pID
+import psutil
+
+def getPidByName(process_name):
+	# Search for the PID of an application from its executable name.
+	# Args:
+		# process_name (str): The name of the application executable (for example, "notepad.exe").
+	# Returns:List: A PID list corresponding to the application.
+	# Return an empty list if no application is found.
+	pids = []
+	for proc in psutil.process_iter(['pid', 'name']):
+		try:
+			if proc.info['name'].lower() == process_name.lower():
+				pids.append(proc.info['pid'])
+		except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+			# Gérer les erreurs potentielles (processus disparu, accès refusé, etc.)
+			pass
+	return pids
 
 def showNVDAMenu (menu):
 	setCursorPos(100,100)
@@ -267,3 +278,15 @@ def toggleUpdateState() :
 	except :
 		return wx.CallAfter(ui.message, _("Error saving update settings file."))
 	wx.CallAfter(ui.message, _("Automatic update has been disabled."))
+
+def showChangelog() :
+	pageName = "TB+G5-history.html"
+	from languageHandler import getLanguage
+	lang = getLanguage()
+	if "fr" in lang :
+		url = "https://www.rptools.org/NVDA-Thunderbird/" + pageName
+	else :
+		url = "https://www-rptools-org.translate.goog/NVDA-Thunderbird/" + pageName + "?_x_tr_sl=fr&_x_tr_tl=@lg&_x_tr_hl=@lg&_x_tr_pto=sc"
+		url = url.replace("@lg", lang)
+	#  the translated content is displayeed via javascript so it cannot be displayed with ui.browseableMessage()
+	os.startfile (url)

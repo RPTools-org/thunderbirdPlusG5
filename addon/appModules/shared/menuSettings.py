@@ -47,6 +47,11 @@ class  Settings() :
 		self.options["messengerWindow"]["delayFocusDoc"] = "25"
 		sharedVars.delayFocusDoc = 25
 		# if 			not self.options["messengerWindow"]["focusMode"] :
+
+		self.options["messengerWindow"]["deleteDelays"] = "50 50"
+		sharedVars.deleteDelays = [50, 50]
+
+
 		# self.options["messengerWindow"]["focusMode"] = "1"
 		
 		if "spellcancelSpeech" not in self.options["msgcomposeWindow"] : self.options["msgcomposeWindow"].update({"spellcancelSpeech":False})
@@ -60,7 +65,8 @@ class  Settings() :
 		# adPath is the root of the addon path
 		self.option_messengerWindow ={
 		"TTClean" : _("custom vocalization of rows."),
-		"handleDelete" : _("After deleting a message, force the selection of the new current line."),
+		# Translators : A smart  folder is a folder that unifies folders of the same type through all  mail accounts
+		"moveFocusAfterDel" : _("After deleting a message in a smart folder, force the selection of the next message."),
 		"TTnoFolderName" : _("Do not say the window and folder names when entering the list."),		"responseMentionGroup" : _("Combine multiple 'RE' mentions into one"),
 		"responseMentionRemove" : _("Delete the 'Re' mentions in the subject column"),
 		"responseMentionDelColon" : _("Delete the colons  in the 'Re:' mentions"),
@@ -110,6 +116,10 @@ class  Settings() :
 		sharedVars.delayFocusDoc = section.as_int("delayFocusDoc")
 		if "focusStartWithInbox" not in section  :
 			self.options["messengerWindow"].update({"focusStartWithInbox":"False"})
+		if "deleteDelays" not in section  : self.options["messengerWindow"].update({"deleteDelays":"50 50"})
+		temp = section["deleteDelays"]
+		temp = temp.split(" ")
+		sharedVars.deleteDelays = [int(temp[0]), int(temp[1])]
 
 		if "focusMode" not in section  :
 			self.options["messengerWindow"].update({"focusMode":"1"})
@@ -161,7 +171,7 @@ class  Settings() :
 			sharedVars.TTnoFolderName = pSection.as_bool ("TTnoFolderName")
 			sharedVars.listGroupName = pSection.as_bool("listGroupName")
 			sharedVars.junkStatusCol = pSection.as_bool("junkStatusCol")
-			sharedVars.handleDelete = pSection.as_bool("handleDelete")
+			sharedVars.moveFocusAfterDel  = pSection.as_bool("moveFocusAfterDel")
 			sharedVars.unread = _("Unread")
 			#  merge 3 mutually exclusive boolean  variables into one numeric variable 
 			if pSection.as_bool("responseMentionGroup") : self.responseMode = 1
@@ -183,6 +193,11 @@ class  Settings() :
 
 	def editDelay(self) :
 		utis.inputBox(label=_("Delay before document focusing, 20 to 2000 ms::"), title= _("Special tabs"), postFunction=saveDelay, startValue=sharedVars.delayFocusDoc)
+
+	def editDeleteDelays(self) :
+		stVal = str(sharedVars.deleteDelays[0]) + " " + str(sharedVars.deleteDelays[1])
+		utis.inputBox(label=_("Delay 1 space Delay 2 in ms:"), title= _("Focusing delays after deleting a message"), postFunction=saveDeleteDelays, startValue=stVal)
+
 	def openSoundFolder(self) :
 		soundPath = api.config.getUserDefaultConfigPath() + "\\TB+Sounds"
 		if  not os.path.exists(soundPath) :  return beep(100, 30)
@@ -439,4 +454,19 @@ def saveDelay(strDelay) :
 		return beep(250, 50) # CallLater(50, message, u"Le délai doit être compris entre 20 et 2000 milli-secondes !")
 	sharedVars.delayFocusDoc = iDelay
 	sharedVars.oSettings.options["messengerWindow"].update({"delayFocusDoc":strDelay})
+	sharedVars.oSettings.options.write()
+
+def saveDeleteDelays(strDelays) :
+	if strDelays == "ibCancel" : return
+	cancelSpeech()
+	delays = strDelays.split(" ")
+	if len(delays) != 2 :
+		beep(100, 40)
+		return
+	try :
+		delays[0] = int(delays[0])
+		delays[1] = int(delays[1])
+	except : return beep(100, 50) # return CallLater(50, message, u"La valeur doit être un nombre")
+	sharedVars.deleteDelays = delays
+	sharedVars.oSettings.options["messengerWindow"].update({"deleteDelays":strDelays})
 	sharedVars.oSettings.options.write()

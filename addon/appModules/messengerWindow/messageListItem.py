@@ -51,6 +51,9 @@ TTIDefGestures = {
 	"kb:a" : "sayShortcut",
 	"kb:f" : "showFilterBar",
 	# "kb:delete" : "deleteMsg",
+	"kb:home" : "gotoMsg",
+	"kb:end" : "gotoMsg",
+	"kb:n" : "gotoMsg",
 	# "kb:shift+delete" : "deleteMsg",
 	# "kb:shift+c" : "sayShortcut",
 	# "kb:j" : "toggleJunk",
@@ -107,9 +110,9 @@ class MessageListItem(IAccessible):
 		self.bindGestures(TTIDefGestures)
 		if not sharedVars.TTnoTags :
 			self.bindGestures(TTITagGestures)
-		if sharedVars.handleDelete :
+		if sharedVars.TTClean or sharedVars.moveFocusAfterDel :
 			self.bindGesture("kb:delete", "deleteMsg")
-
+			
 	def script_sayLine(self, gesture):
 		rc =  int(getLastScriptRepeatCount ())
 		if rc > 0 :
@@ -267,6 +270,8 @@ class MessageListItem(IAccessible):
 		return setToStr(TagSet, _("Tags"), _("No tag."))
 
 	def script_sayMessageTags(self,gesture):
+		if controlTypes.State.COLLAPSED in self.states :
+			return message(_("No tag on a collapsed discussion"))
 		lblTags = _("Tags")
 		#Translators: Tags feature
 		lblNoTags = _("No tag.")
@@ -287,7 +292,7 @@ class MessageListItem(IAccessible):
 		if not tagChanged  :tagChanged = prevTagSet.difference(newTagSet)
 		# return message("tagChanged" + str(tagChanged))
 		msg  = list(tagChanged)[0]+" "+(lblAdded,lblRemoved)[len(prevTagSet)>len(newTagSet)]
-		msg ="{0}, {1}".format(msg,setToStr(newTagSet, lblTags, lblNoMore))
+		msg ="{0}, {1}".format(msg, setToStr(newTagSet, lblTags, lblNoMore))
 		message(msg)
 		#message(u"Changé" + str(tagChanged))
 		#message(u"étiquettes : " + str(newTagSet))
@@ -352,15 +357,49 @@ class MessageListItem(IAccessible):
 		sharedVars.msgOpened = True
 		return gesture.send()
 		
+	def isUnifiedRow(self, oRow) :
+		self.unifiedNextRow = False
+		if not oRow : return
+		for c in oRow.children :
+			if utils.hasIA2Class(c, "location") :
+				self.unifiedNextRow = True
+				break
+	# def focusNewRow(self) :
+		# if self.unifiedNextRow : # if  sharedVars.moveFocusAfterDel :
+			# KeyboardInputGesture.fromName("control+space").send()
+			# speech.setSpeechMode(speech.SpeechMode.talk)
+			# sharedVars.rowAfterDelete = None
+			# CallLater(50, KeyboardInputGesture.fromName("control+space").send)
+			# return
+
+		# speech.setSpeechMode(speech.SpeechMode.talk)
+		# if not sharedVars.rowAfterDelete : 
+			# msg = _("No message selected, press Escape or Shift+Tab")
+		# else :
+			# msg =  str(sharedVars.rowAfterDelete.name)
+		# message(msg)
+		# sharedVars.rowAfterDelete = None
+		
 	def script_deleteMsg(self,gesture):
 		if controlTypes.State.COLLAPSED in self.states :
 			return gesture.send()
-
-		speech.cancelSpeech()
-		message(_("Please wait"))
-		sharedVars.rowDeleting = utils.threadTreeType(self)
+		CallAfter(focusNewRow2, self.next, self.previous)
 		gesture.send()
-		callLater(50, focusNewRow)
+		return
+		# speech.cancelSpeech()
+		# sharedVars.rowAfterDelete = nextRow(self)
+		# if sharedVars.moveFocusAfterDel :
+			# message(_("Please wait"))
+			# self.isUnifiedRow(sharedVars.rowAfterDelete)
+		# else :
+			# self.unifiedNextRow = False
+
+		# gesture.send()
+		# callLater(50, self.focusNewRow)
+
+	def script_gotoMsg(self, gesture) :
+		sharedVars.nPressed = True
+		gesture.send()
 		
 	def script_sayShortcut (self,gesture):
 		global gSaying
@@ -604,7 +643,7 @@ class GetDescObject() :
 		self.secondRole = secondRole
 		self.ID = ID
 		self.mainObj = self.secondObj = None # object found after the run methode
-		
+		self.unifiedNextRow = False
 	def run(self, obj) :
 		if not obj : return
 		obj = obj.firstChild
@@ -628,20 +667,6 @@ def closeMenu(startTime) :
 	if sharedVars.debug : beep(440, 40)
 	KeyboardInputGesture.fromName("tab").send()
 	speech.setSpeechMode(speech.SpeechMode.talk)
-def focusNewRow() :
-	if not sharedVars.debug : speech.setSpeechMode(speech.SpeechMode.off)
-	KeyboardInputGesture.fromName("shift+tab").send()
-	return
-
-	# browseableMessage (message="", title="Message deleted")
-	# display TB main menu
-	# KeyboardInputGesture.fromName("f10").send()
-	# callLater(500, closeMenu, time())
-	# o =  utils.focusMenuBar() 
-	# if o : callLater(200, closeMenu, o, time())
-	CallLater(500, closeMenu, time())
-	KeyboardInputGesture.fromName("shift+tab").send()
-	
 # def reportFocusedLine() :
 	# #speech.cancelSpeech()
 	# fo = api.getFocusObject()
@@ -655,4 +680,42 @@ def selLine(gest) :
 		fo.doAction()
 		message(fo.name)
 		beep(100, 40)
+
+def nextRow(oRow) :
+	if oRow.next :
+		return oRow.next
+	if oRow.previous :
+		return oRow.previous
+	beep(100, 40)
+	return None
+	# if oRow.next : 
+		# o = oRow.next
+		# if o.next : # and o.next.role in (controlTypes.Role.LISTITEM, controlTypes.Role.TREEVIEWITEM) :
+			# return o
+		# if oRow.previous :
+			# return o.previous
+	# return None
+
+def focusNewRow2(nextRow, prevRow) :
+	delay1 = sharedVars.deleteDelays[0] /1000 
+	delay2 = sharedVars.deleteDelays[1] /1000 
 	
+	sm = utis.getSpeechMode()
+	utis.setSpeechMode_off()
+	name = ""
+	if nextRow : 
+		name = nextRow.name
+		sleep(delay1)
+		KeyboardInputGesture.fromName("downArrow").send()
+		sleep(delay2)
+		KeyboardInputGesture.fromName("upArrow").send()
+	elif  prevRow : 
+		name = prevRow.name
+		sleep(delay1)
+		KeyboardInputGesture.fromName("upArrow").send()
+		sleep(delay2)
+		KeyboardInputGesture.fromName("downArrow").send()
+	utis.setSpeechMode(sm)
+	message(name)
+
+

@@ -24,6 +24,7 @@ addonHandler.initTranslation()
 from re import  compile,IGNORECASE
 gRegExcludeFolders =compile (_("Drafts|Deleted") + "|\-, \d")
 gRegUnread = compile (", \d+")
+# level 2 Yahoo IMAP@-, 121 messages non lus réduit 5 sur 11
 
 lastSearch = ""
 
@@ -41,7 +42,7 @@ class FolderTreeItem (IAccessible):
 	# def showAccountMenu(self, ty=1) :
 		# o = fGetAccountNode(self)
 		# if not o : beep(100, 15) ; return
-		# # __init__(self, startNode, unread=False, recurs=True, type=0, allFolders=False) :
+		# # __init__(self, startNode, unread=False, recurs=True, type=0, allFolders=0) :
 		# m = FolderMenu(o.parent, unread=False, recurs=False, type=ty)
 		# callLater(10, m.showMenu, title="")
 
@@ -72,16 +73,17 @@ class FolderTreeItem (IAccessible):
 	def script_menuAllFolders(self, gesture) :
 		o = fGetAccountNode(self)
 		if not o : beep(100, 15) ; return
-		m = FolderMenu(o.parent, unread=False, recurs=True, allFolders=True)
+		m = FolderMenu(o.parent, unread=False, recurs=True, allFolders=1)
 		callLater(10, m.showMenu,title="All Folders, menu")
 	script_menuAllFolders.__doc__ = _("Folders : display a menu  of all accounts and folders.")
 	script_menuAllFolders.category = sharedVars.scriptCategory
 
 	def script_menuAllUnread(self, gesture) :
-		o = fGetAccountNode(self)
-		if not o : return
-		m = FolderMenu(o.parent, unread=True, recurs=True, allFolders=True)
-		callLater(10, m.showMenu,title="All Folders, menu")
+		showInboxMenu(self, unreadOnly=True)
+		# o = fGetAccountNode(self)
+		# if not o : return
+		# m = FolderMenu(o.parent, unread=True, recurs=True, allFolders=1)
+		# callLater(10, m.showMenu,title="All Folders, menu")
 	script_menuAllUnread.__doc__ = _("Folders : display a menu of all unread accounts and folders.")
 	script_menuAllUnread.category = sharedVars.scriptCategory
 
@@ -116,7 +118,7 @@ def fMenuFolders(o, unread=False) :
 		folderMode = "tags"
 		nm = _("Tags")
 		
-	# __init__(self, startNode, unread=False, recurs=True, type=0, allFolders=False) :
+	# __init__(self, startNode, unread=False, recurs=True, type=0, allFolders=0) :
 	m = FolderMenu(o, unread, rec, ty) 
 	m.mode = folderMode
 	# callLater(10, m.showMenu, title="")
@@ -135,13 +137,81 @@ def fGetAccountNode(oNode) :
 def showAccountMenu(oNode, ty=1) :
 	o = fGetAccountNode(oNode)
 	if not o : beep(100, 15) ; return
-	# __init__(self, startNode, unread=False, recurs=True, type=0, allFolders=False) :
+	# __init__(self, startNode, unread=False, recurs=True, type=0, allFolders=0) :
 	m = FolderMenu(o.parent, unread=False, recurs=False, type=ty)
 	callLater(10, m.showMenu, title="")
 
+def showInboxMenu(oNode, unreadOnly) :
+	oAccount  = fGetAccountNode(oNode)
+	if not oAccount  : beep(100, 15) ; return
+	oAccount = oAccount.parent.firstChild
+	while oAccount :
+		name 		 = str(oAccount.name)
+		if controlTypes.State.COLLAPSED  in oAccount.states :
+			o = oAccount
+			name += ", " + controlTypes.State.COLLAPSED.displayString
+		else :
+			o = oAccount.getChild(1).firstChild
+			name += ", " + o.name
+		if o.role == controlTypes.Role.TREEVIEWITEM : 
+			if not unreadOnly or (unreadOnly and  gRegUnread.search(name)) :
+				sharedVars.logte(name)
+		oAccount = oAccount.next 
+
+
 from utis import showNVDAMenu
+class InboxesMenu() :
+	def __init__(self, oFirstAccount, unreadOnly=False) :
+		self.idx = 0
+		self.ibMenu = Menu()
+		self.ibFolders = []
+		self.showInboxMenu(oFirstAccount, unreadOnly) 
+
+	def showInboxMenu(self, oAccount, unreadOnly) :
+		while oAccount :
+			name 		 = str(oAccount.name)
+			if controlTypes.State.COLLAPSED  in oAccount.states :
+				# o = oAccount
+				oAccount = oAccount.next
+				continue
+				name += ", " + controlTypes.State.COLLAPSED.displayString
+			else :
+				o = oAccount.getChild(1).firstChild
+				name += ", " + o.name
+			if o.role == controlTypes.Role.TREEVIEWITEM : 
+				if not unreadOnly or (unreadOnly and  gRegUnread.search(name)) :
+					# sharedVars.logte(name)
+					self.ibMenu.Append (self.idx, name)
+					self.ibFolders.append(o)
+					self.idx +=1
+			oAccount = oAccount.next 
+
+		if len(self.ibFolders) == 0 :
+			message(_("No unread Inbox folder  found")) 
+			return
+		if  unreadOnly :
+			title = _("Unread inbox Folders, menu")
+		else : 
+			title = _("All inbox Folders, menu")
+		
+		callLater(50, self.sayMenuTitle, title)
+		self.ibMenu.Bind (EVT_MENU,self.onIbMenu)
+		utis.showNVDAMenu  (self.ibMenu)
+	def sayMenuTitle(self, menuName) :
+		speech.cancelSpeech()
+		return message(menuName)
+
+	def onIbMenu(self, evt):
+		o = self.ibFolders[evt.Id]
+		self.ibFolders  = [] # freess memory after usage
+		utis.setSpeech(False)
+		sharedVars.menuClosing = True 
+		o.scrollIntoView()
+		o.doAction()
+		o.setFocus()
+
 class FolderMenu() :
-	def __init__(self, startNode, unread=False, recurs=True, type=0, allFolders=False) :
+	def __init__(self, startNode, unread=False, recurs=True, type=0, allFolders=0) :
 		self.fti = startNode
 		self.unread = unread
 		self.recurs = recurs
@@ -166,7 +236,7 @@ class FolderMenu() :
 			if o.role == controlTypes.Role.TREEVIEWITEM :
 				nm = str(o.name)
 				lvl = o.positionInfo['level']
-				if self.all :  
+				if self.all == 1 :  
 					if lvl == 2 : 
 						if self.unread and nm.endswith("-") : o = o.next ; continue 
 						if  self.mode == "smart" and "@" not in o.name : o = o.next ; continue
@@ -281,7 +351,16 @@ class FolderMenu() :
 		else :			
 			msg = _("Menu, folders of ") + accountName
 		message(msg)
-		
+
+def  fMenuInboxes(unread) :
+	o = utils.getFolderTreeFromFG()
+	if not o : return beep(100, 30)
+	# get the   first item
+	try : o = o.firstChild.firstChild.firstChild
+	except : return beep(100, 30)
+	m = InboxesMenu(oFirstAccount=o, unreadOnly=unread)
+	# sharedVars.log(o, "folderTree  first item")
+
 def fMenuAccounts(type=1) :
 	o = utils.getFolderTreeFromFG()
 	if not o : return beep(100, 30)
@@ -308,6 +387,6 @@ def fMenuAccounts(type=1) :
 
 def fMenuFolderFromAccount(accountNode, unrd=False) :
 	speech.cancelSpeech()
-	# __init__(self, startNode, unread=False, recurs=True, type=0, allFolders=False) 
+	# __init__(self, startNode, unread=False, recurs=True, type=0, allFolders=0) 
 	m = FolderMenu(startNode=accountNode, unread=unrd,recurs=True, type=0)
 	callLater(10, m.showMenu, title=accountNode.name)

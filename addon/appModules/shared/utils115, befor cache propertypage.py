@@ -10,7 +10,6 @@ from time import time, sleep
 from tones import beep
 from wx  import  CallLater, CallAfter
 import sharedVars
-import globalVars
 import utis
 # from utis import utis.findParentByID # , utis.inputBox, utis.wordsMatchWord, utis.getSpeechMode
 from keyboardHandler import KeyboardInputGesture
@@ -210,8 +209,6 @@ class FindDescendantTimer() :
 			o = o.next
 			
 def getPropertyPage(oFrame=None) :
-	if globalVars.TBPropertyPage :
-		return globalVars.TBPropertyPage
 	# 24.06.02 : level 2,   2 of 2, role.PROPERTYPAGE, IA2ID : mail3PaneTab1 Tag: vbox, States : , childCount  : 1 Path : r-FRAME, | i31, r-GROUPING, , IA2ID : tabpanelcontainer | i2, r-PROPERTYPAGE, , IA2ID : mail3PaneTab1 , IA2Attr : id : mail3PaneTab1,
 	if oFrame : o = oFrame
 	else :o = api.getForegroundObject()
@@ -229,16 +226,12 @@ def getPropertyPage(oFrame=None) :
 			# if "mail3PaneTab" in ID :
 			if hasID(o, "mail3PaneTab") : # partial ID
 				checkObj(o, "getPropPage , befor return o")
-				globalVars.TBPropertyPage = o
 				return o
 		o = o.next
 	checkObj(o, "getPropPage before return None")
 	return None
 
 def getFolderTreeFromFG(focus=False, pp=None) :
-	if globalVars.TBFolderTree :
-		if focus : globalVars.TBFolderTree.setFocus()
-		return globalVars.TBFolderTree
 	# utis.beepRepeat(440, 10, 3) 
 	if pp : o = pp
 	else : o = getPropertyPage()
@@ -257,7 +250,6 @@ def getFolderTreeFromFG(focus=False, pp=None) :
 	o =   findChildByRoleID(o, controlTypes.Role.TREEVIEW, "folderTree") 
 	if not checkObj(o, "getFT folderTree") : return None
 	if  o and focus : o.setFocus()
-	globalVars.TBFolderTree = o
 	return o
 
 
@@ -390,12 +382,6 @@ class GetFocusObjTimer() :
 
 def getThreadTreeFromFG(focus=False, nextGesture="", getThreadPane=False, pp=None ) :
 	global prevSpeechMode
-	if getThreadPane and globalVars.TBThreadPane : 
-		return globalVars.TBThreadPane
-	if globalVars.TBThreadTree :
-		# 2025-05-22 : focus and  nextGesture   are never used
-		if focus : globalVars.TBThreadTree.setFocus()
-		return globalVars.TBThreadTree
 	# Role-FRAME| i32, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 
 	if pp : 
 		o = pp
@@ -413,9 +399,7 @@ def getThreadTreeFromFG(focus=False, nextGesture="", getThreadPane=False, pp=Non
 	prevO = o
 	o = findChildByRoleID(o, controlTypes.Role.SECTION, "threadPane")
 	if not checkObj(o, "section threadPane", prevO) : return None
-	if getThreadPane and o : 
-		globalVars.TBThreadPane = o
-		return o
+	if getThreadPane and o : return o
 	# | i2, Role-TEXTFRAME, , IA2ID : threadTree , 
 	o = findChildByRoleID(o, controlTypes.Role.TEXTFRAME, "threadTree")
 	if not checkObj(o, "threadTree") : return None
@@ -433,7 +417,6 @@ def getThreadTreeFromFG(focus=False, nextGesture="", getThreadPane=False, pp=Non
 		prevSpeechMode = utis.getSpeechMode()
 		setSpeechMode(SpeechMode.off)
 		CallLater(50, silentSendKey, nextGesture)
-	globalVars.TBThreadTree = o
 	return  o
 		
 
@@ -602,12 +585,11 @@ def silentSendKey(key) :
 def getMessagePane() : # in the main window
 	# level 8,         15 of 15, Role.INTERNALFRAME, IA2ID : messagepane Tag: browser, States : , FOCUSABLE, childCount  : 1 Path : Role-FRAME| i32, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 
 	o = getPropertyPage()
-	# if sharedVars.debug : sharedVars.log(o, "getPreviewPane, Expected propertyPage")
+	if sharedVars.debug : sharedVars.log(o, "getPreviewPane, Expected propertyPage")
 	if not o : return None
 	# | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  
 	o = findChildByRoleID(o, controlTypes.Role.INTERNALFRAME, "mail3PaneTabBrowser") 
-	if not checkObj(o, "getPreviewPane, expected INTERNALFRAME mail3PaneTabBrowser1") : 
-		return None 
+	if not checkObj(o, "getPreviewPane, expected INTERNALFRAME mail3PaneTabBrowser1") : return None 
 	
 	o = findChildByRole(o, controlTypes.Role.GROUPING) 
 	if not checkObj(o, "getPreviewPane, expected Grouping") : return None 
@@ -1207,7 +1189,7 @@ def smartReplyV2(shift, repeats=0) :
 			oBtnSender = b
 		elif ID == "hdrReplyToSenderButton" :
 			oBtnSender = b
-			if not shift : senderType = "senderIfNotGroup"
+			if not shift : senderType = "recip"
 		elif ID =="hdrReplyListButton" :
 			oBtnList = b
 			if not shift : senderType = "recip"
@@ -1216,14 +1198,15 @@ def smartReplyV2(shift, repeats=0) :
 	# end for
 	senderDesc  = ""
 	o = None
-	if senderType in ("sender", "senderIfNotGroup") :
+	if senderType == "sender" :
 		# IA2ID = headerSenderToolbarContainer in , Role.SECTION
 		if oMsgHeader : o = getChildByRoleIDName(oMsgHeader, controlTypes.Role.SECTION, ID="headerSenderToolbarContainer", name="", idx=0)
 		# IA2ID = expandedfromRow in , Role.SECTION
 		if o : o = getChildByRoleIDName(o, controlTypes.Role.SECTION, ID="expandedfromRow", name="", idx=1)
 		# IA2ID = expandedfromBox in , Role.SECTION
 		if o : o = getChildByRoleIDName(o, controlTypes.Role.SECTION, ID="expandedfromBox", name="", idx=1)
-		if o : o = getChildByRoleIDName(o, controlTypes.Role.LIST, ID="", name="", idx=0)
+		# Translators: De
+		if o : o = getChildByRoleIDName(o, controlTypes.Role.LIST, ID="", name=_("De"), idx=0)
 		# IA2ID = fromRecipient0 in , Role.LISTITEM
 		if o : o = getChildByRoleIDName(o, controlTypes.Role.LISTITEM, ID="fromRecipient0", name=_("Jean-Paul Dany via groups.io <"), idx=0)
 		# IA2ID = fromRecipient0Display in , Role.TEXTFRAME
@@ -1231,14 +1214,12 @@ def smartReplyV2(shift, repeats=0) :
 		if o : o = getChildByRoleIDName(o, controlTypes.Role.STATICTEXT, ID="", name="", idx=0)
 		if o :
 			senderDesc = _("To") + str(o.name)
-			if senderType == "senderIfNotGroup" :
-				if "groups." in senderDesc or "lists." in senderDesc :
-					senderType = "recip"
-	if senderType == "recip" :
+	elif senderType == "recip" :
 		# IA2ID = expandedtoRow in , Role.SECTION
 		if oMsgHeader : o = getChildByRoleIDName(oMsgHeader, controlTypes.Role.SECTION, ID="expandedtoRow", name="", idx=1)
 		# IA2ID = expandedtoBox in , Role.SECTION
 		if o : o = getChildByRoleIDName(o, controlTypes.Role.SECTION, ID="expandedtoBox", name="", idx=1)
+		# Translators: Pour
 		if o : o = getChildByRoleIDName(o, controlTypes.Role.LIST, ID="", name="", idx=0)
 		if o: senderDesc =  o.name
 		# address of the recipient

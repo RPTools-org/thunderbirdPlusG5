@@ -1,6 +1,8 @@
 #-*- coding:utf-8 -*
 debug = False
-rowDeleting = False
+replyTo = ""
+nPressed = False
+# rowAfterDelete = None
 TBMajor = 0
 objLooping = menuClosing =  False
 speechOff = False
@@ -22,7 +24,7 @@ lockEditMenu = None
 scriptCategory = "Thunderbird+G5"
 virtualSpellChk = False
 delayFocusDoc = 20
-testMode = False
+deleteDelays = [50, 50]  
 debugLog = "" 
 
 import quoteNav
