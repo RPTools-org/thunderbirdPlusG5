@@ -5,7 +5,7 @@
   [History of changes and additional documentation][5] ;
   [Contact in French or English][6] ;
 * Installation: NVDA menu / Tools / Add-on store / available extensions or updates tab;;
-* Download [Latest version from RPTools.org][3] ;
+* Download [all version from RPTools.org][3] ;
 * NVDA compatibility: 2021.1 and later;
 * [Source code on gitHub][2]
 
@@ -34,7 +34,7 @@ Note: The named key (key above Tab) in the remainder of this page designates the
 
 ### General shortcuts
 
-* (key above Tab): displays the menu of various add-on commands, including add-on update.
+* Control+(key above Tab): displays the menu of various add-on commands, including add-on update.
 * Shift+(key above Tab): Displays the add-on options menu.
 * Control+F1: displays the current page. For some clarification you can [visit version4 documentation][7]
 * F8 to show or hide the preview pane: this command is voiced by the add-on.
@@ -42,10 +42,13 @@ Note: The named key (key above Tab) in the remainder of this page designates the
 ### Navigating between main window panes
 These shortcuts are for the folder tree, message list, and message preview pane.
 
-* control+(key above Tab): One press places the focus in the message list, two presses places the focus in the message list then selects the last message.
+* (key above Tab): One press places the focus in the message list, two presses places the focus in the message list then selects the last message.
 * Alt+c: displays the accounts menu then the folders menu of the chosen account. Since version 2312.14, supports the "unified folders" mode of the folder tree.
-* Control+Alt+c: displays the accounts menu then the unread folders menu for the chosen account. (2023.11.15)<br>
-Note: these last two shortcuts can be modified or swapped via the Input Gestures dialog.
+* Control+Alt+c: displays the accounts menu then the unread folders menu for the chosen account. (2023.11.15)
+* Alt+X: displays a menu of all "inbox" folders through all your email accounts; (2025.06.01)
+* Alt+v: displays a menu with unread "inbox" folders through  all your accounts;. (2025.06.01) <br>
+This is interesting when you have specific folders for your personal messages and those of the discussion groups;<br>
+Note: these last three shortcuts can be modified or swapped via the Input Gestures dialog.
 * alt+Home : one press selects the current folder in the folder tree, two presses displays a menu allowing you to choose the email account to reach in the tree
 * Control+Alt+Home : Same but for folders with unread messages. (2023.10.31)
 * Tab: brings the focus to the next pane and in particular:<br>
@@ -139,6 +142,16 @@ The shortcuts below allow vocal management of tags without having to navigate th
 * Shift+0: Removes all tags from the selected message.
 * alt+0: Announces all tags in the message.
 
+### Gocalization of the deletion of messages (2025.06.01)
+
+The add-on differs the vocalization of the following message after deleting a message to overcome a Thunderbird bug.
+
+For this, a prior adjustment is necessary.
+
+* Alt+Delete: Displays a dialogue that allows you to enter the two deadlines between supporting the Delete key and selecting the following message. This period may be modified according to the speed of your PC. With a Core i7 G6 to 4 GHz, this period can be set over 25ms.
+
+This delay is especially important in the event that the tree structure is in unified file mode.
+
 ### Vocalization of shortcuts a, c, j and m of the message list
 From version 2023.11.10, these marking shortcuts are no longer vocalized by the add-on. NVDA immediately announces the change in content of the line concerned.
 
@@ -170,12 +183,22 @@ From the message list or quick filter bar: announces the total or filtered numbe
 From another tab or window: announces the status bar.
 * When the message list receives focus,A hissing sound is heard when fast filtering is active.
 
-### SmartReply: reply to mailing lists with control+R
-To respond to certain mailing lists, it is necessary to press Control+Shift+L. To avoid replying to the wrong recipient, press Control+R to reply to the list and Control+r twice to reply privately to the sender of the message.
+### SmartReply version 2 : reply to mailing lists with control+R
 
-Note: groups.io is not affected by this feature.
+To reply to messages from certain mailing lists, such as those hosted by Google Groups, it is necessary to press Control+Shift+L or Control+Shift+R, whereas the usual shortcut is Control+R.
 
-<!-- Don't remove nor translate the following tag --><a name="cols">
+SmartReply solves this inconvenience by allowing you to press Control+R in all cases. Additionally, it announces the recipient's name as soon as the "Write" window opens.
+
+By default, SmartReply is assigned to the shortcuts Control+T and Control+Shift+T. You can replace these keys with Control+R and Control+Shift+R via the Input gestures configuration dialog in NVDA.
+
+It works as follows:
+
+* Control+T replies to the sender of a normal message and to the group for a mailing list message, even if the list is configured so that Control+R replies to the message author
+* Control+Shift+R replies to All for a normal message or to the author of a mailing list message.
+
+Note that lists hosted by groups.io, such as those related to NVDA, are not recognized as mailing lists by Thunderbird.
+
+v<!-- Don't remove nor translate the following tag --><a name="cols">
 
 <!-- begin 2023.10.31 -->
 
@@ -259,11 +282,16 @@ The following shortcuts are available from the replacement word editing area:
 * Shift+enter: press the "Replace all" button.
 * Control+Enter: Press the "Ignore" button.
 * Shift+control+Enter: press the "Ignore all" button.
-* Alt+Enter: adds the word declared as misspelled to the dictionary.
+* Alt+down arrow: Bring the focus to the list of suggested words (2024.12.10);
+* Alt+up arrow from the list of suggested words: Bring the focus to the input field of the replacement word (2024.12.10);
+* Enter from the list of suggested words: replaces the mispelled word  by the word selected in the list (2024.12.10);
+* Shift+Enter: replaces all the occurrences of the mispelled word  by the word selected in the list (2024.12.10);
+* Alt+enter from the edit field: adds the word declared as mispelled to the dictionary ;
+* Control+Space: Click directly on the Close or send button. This is convenient to quickly close this dialogue, especially when there are mispelled words (2025.02.10);
 
 ## Address book, easier management (v.2024.02.07)
 
-The extension improves address book announcements and provides you with keyboard commands that allow you to organize address books and mailing lists via virtual drag and drop.
+The add-on improves address book announcements and provides you with keyboard commands that allow you to organize address books and mailing lists via virtual drag and drop.
 
 ### Improved ads
 
@@ -351,7 +379,7 @@ Set Start with Inbox options:
 
 [2]: https://github.com/RPTools-org/thunderbirdPlusG5/
 
-[3]: https://www.rptools.org/?p=9514
+[3]: https://www.rptools.org/ntbp/
 
 [4]: https://www.rptools.org/NVDA-Thunderbird/index.html
 

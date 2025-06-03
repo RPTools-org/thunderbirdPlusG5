@@ -51,7 +51,7 @@ TTIDefGestures = {
 	"kb:a" : "sayShortcut",
 	"kb:f" : "showFilterBar",
 	# "kb:delete" : "deleteMsg",
-	"kb:home" : "gotoMsg",
+	# "kb:home" : "gotoFirstMsg",
 	"kb:end" : "gotoMsg",
 	"kb:n" : "gotoMsg",
 	# "kb:shift+delete" : "deleteMsg",
@@ -383,24 +383,45 @@ class MessageListItem(IAccessible):
 	def script_deleteMsg(self,gesture):
 		if controlTypes.State.COLLAPSED in self.states :
 			return gesture.send()
-		CallAfter(focusNewRow2, self.next, self.previous)
+		speech.setSpeechMode(speech.speech.SpeechMode.off)  # onDemand)
+		isSmartFT = 		utils.isSmartFolderTree()
+		if not isSmartFT :
+			newRow = "blank"
+			sayLater = False
+			if self.next : 
+				oNew = self.next
+				newRow = ""
+				if sharedVars.TTClean  :
+					newRow = oNew.name  + getPositionString(oNew, add=-1)
+				else :
+					newRow =  getPositionString(oNew, add=-1)
+					sayLater = True
+			elif self.previous : 
+				oNew = self.previous
+				# newRow = ""
+				# if sharedVars.TTClean  :
+				newRow = oNew.name  + getPositionString(oNew, add=0)
+			else : 
+				newRow = ""
+			CallAfter(sayNewRow, newRow, sayLater)
+		else : # smart folder tree
+			if sharedVars.TBMajor < 138 : 
+				CallAfter(saySmartNewRow128, self.next, self.previous)
+			else :
+				CallAfter(saySmartNewRow138, self.next, self.previous)
 		gesture.send()
-		return
-		# speech.cancelSpeech()
-		# sharedVars.rowAfterDelete = nextRow(self)
-		# if sharedVars.moveFocusAfterDel :
-			# message(_("Please wait"))
-			# self.isUnifiedRow(sharedVars.rowAfterDelete)
-		# else :
-			# self.unifiedNextRow = False
-
-		# gesture.send()
-		# callLater(50, self.focusNewRow)
-
+		
 	def script_gotoMsg(self, gesture) :
 		sharedVars.nPressed = True
 		gesture.send()
-		
+
+	def script_gotoFirstMsg(self, gesture) :
+		gesture.send()
+		CallLater(50, KeyboardInputGesture.fromName("upArrow").send)
+
+		sharedVars.nPressed = True
+		gesture.send()
+
 	def script_sayShortcut (self,gesture):
 		global gSaying
 		rc = getLastScriptRepeatCount() 
@@ -696,12 +717,89 @@ def nextRow(oRow) :
 			# return o.previous
 	# return None
 
-def focusNewRow2(nextRow, prevRow) :
+# def focusNewRow2(nextRow, prevRow, posInfo) :
+	# delay1 = sharedVars.deleteDelays[0] /1000 
+	# delay2 = sharedVars.deleteDelays[1] /1000 
+	# prevTTClean = sharedVars.TTClean
+	# speech.setSpeechMode(speech.speech.SpeechMode.off)  # onDemand)
+	# name = ""
+	# index = posInfo['indexInGroup']
+	# if nextRow : 
+		# try : total = nextRow.positionInfo['similarItemsInGroup']
+		# except : total = posInfo['similarItemsInGroup']
+		# # total  = "Total= " + utils.getMessageStatus115()
+		# name = str(nextRow.name) + " " + str(index) + _(" of ") + str(total)
+		# # name = "NextRow=" + str(nextRow.name) +  str(posInfo)
+		# sleep(delay1)
+		# KeyboardInputGesture.fromName("downArrow").send()
+		# sleep(delay2)
+		# KeyboardInputGesture.fromName("upArrow").send()
+	# elif  prevRow : 
+		# if not sharedVars.TTClean :
+			# try : total = prevRow.positionInfo['similarItemsInGroup']
+			# except : total = posInfo['similarItemsInGroup']
+			# # total = "Total= " + utils.getMessageStatus115()
+			# name = str(prevRow.name) + " " + str(index - 1) + _(" of ") + str(total)
+			# # name = str(prevRow.name) + str(posInfo)
+		# sleep(delay1)
+		# KeyboardInputGesture.fromName("upArrow").send()
+		# sleep(delay2)
+		# KeyboardInputGesture.fromName("downArrow").send()
+	# else :
+		# name = "No new row"
+	# sharedVars.TTClean = prevTTClean
+	# CallLater(50, sayNewRow, name) 
+	
+def sayNewRow(msg, later) :
+	speech.setSpeechMode(speech.SpeechMode.talk)
+	if msg :
+		if later : CallLater(200, message, msg)
+		else : message(msg)
+		
+# def saySmartNewRow128(nextRow, prevRow) :
+	# delay1 = sharedVars.deleteDelays[0] /1000 
+	# delay2 = sharedVars.deleteDelays[1] /1000 
+	# sleep(delay1)
+	# name = ""
+	# if not prevRow and nextRow :
+		# # sharedVars.log(nextRow, "no preVrow but NextRow")
+		# if nextRow.role == controlTypes.Role.UNKNOWN :
+			# KeyboardInputGesture.fromName("downArrow").send()
+			# sleep(delay2)
+			# speech.setSpeechMode(speech.SpeechMode.talk)
+
+			# KeyboardInputGesture.fromName("upArrow").send()
+	# if not nextRow and prevRow :
+		# # sharedVars.log(nextRow, "no preVrow but NextRow")
+		# name = prevRow.name
+		# if prevRow.role == controlTypes.Role.UNKNOWN :
+			# KeyboardInputGesture.fromName("upArrow").send()
+			# sleep(delay2)
+			# speech.setSpeechMode(speech.SpeechMode.talk)
+			# KeyboardInputGesture.fromName("downArrow").send()
+	# elif nextRow :
+		# sharedVars.log(nextRow, "NextRow")
+		# if nextRow.role == controlTypes.Role.UNKNOWN :
+			# KeyboardInputGesture.fromName("upArrow").send()
+			# sleep(delay2)
+			# speech.setSpeechMode(speech.SpeechMode.talk)
+			# KeyboardInputGesture.fromName("downArrow").send()
+		# name = nextRow.name
+	# elif prevRow :
+		# # sharedVars.log(prevRow, "NextRow")
+		# if prevRow.role == controlTypes.Role.UNKNOWN :
+			# KeyboardInputGesture.fromName("upArrow").send()
+			# sleep(delay2)
+			# speech.setSpeechMode(speech.SpeechMode.talk)
+			# KeyboardInputGesture.fromName("downArrow").send()
+		# name = prevRow.name
+	# # sayNewRow(name, later=False)
+	# speech.setSpeechMode(speech.SpeechMode.talk)d
+
+def saySmartNewRow128(nextRow, prevRow) :
 	delay1 = sharedVars.deleteDelays[0] /1000 
 	delay2 = sharedVars.deleteDelays[1] /1000 
 	
-	sm = utis.getSpeechMode()
-	utis.setSpeechMode_off()
 	name = ""
 	if nextRow : 
 		name = nextRow.name
@@ -715,7 +813,37 @@ def focusNewRow2(nextRow, prevRow) :
 		KeyboardInputGesture.fromName("upArrow").send()
 		sleep(delay2)
 		KeyboardInputGesture.fromName("downArrow").send()
-	utis.setSpeechMode(sm)
+	speech.setSpeechMode(speech.SpeechMode.talk)
 	message(name)
 
 
+def saySmartNewRow138(nextRow, prevRow) :
+	delay1 = sharedVars.deleteDelays[0] /1000 
+	delay2 = sharedVars.deleteDelays[1] /1000 
+	sleep(delay1)
+	if not prevRow and nextRow :
+		# sharedVars.log(nextRow, "no preVrow but NextRow")
+		if nextRow.role == controlTypes.Role.UNKNOWN :
+			KeyboardInputGesture.fromName("downArrow").send()
+			sleep(delay2)
+			KeyboardInputGesture.fromName("upArrow").send()
+	elif nextRow :
+		# sharedVars.log(nextRow, "NextRow")
+		if nextRow.role == controlTypes.Role.UNKNOWN :
+			KeyboardInputGesture.fromName("upArrow").send()
+			sleep(delay2)
+			KeyboardInputGesture.fromName("downArrow").send()
+	elif prevRow :
+		# sharedVars.log(prevRow, "NextRow")
+		if prevRow.role == controlTypes.Role.UNKNOWN :
+			KeyboardInputGesture.fromName("upArrow").send()
+			sleep(delay2)
+			KeyboardInputGesture.fromName("downArrow").send()
+	speech.setSpeechMode(speech.SpeechMode.talk)
+
+
+def getPositionString(oRow, add) :
+	index = oRow.positionInfo['indexInGroup'] + add
+	try : total = oRow.positionInfo['similarItemsInGroup']
+	except : total = "" 
+	return " " + str(index) + _(" of ") + str(total)

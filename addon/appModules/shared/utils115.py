@@ -260,6 +260,14 @@ def getFolderTreeFromFG(focus=False, pp=None) :
 	globalVars.TBFolderTree = o
 	return o
 
+def isSmartFolderTree() :
+	o = getFolderTreeFromFG()
+	o = o.firstChild.firstChild.firstChild
+	# sharedVars.log(o, "First treeview item ? ")
+	if hasID(o, "smart-") :
+		return True
+	return False
+ 
 
 class RecurseTree() :
 	def	 __init__(self, role, IDObj="") :
@@ -392,7 +400,7 @@ def getThreadTreeFromFG(focus=False, nextGesture="", getThreadPane=False, pp=Non
 	global prevSpeechMode
 	if getThreadPane and globalVars.TBThreadPane : 
 		return globalVars.TBThreadPane
-	if globalVars.TBThreadTree :
+	if not getThreadPane and globalVars.TBThreadTree :
 		# 2025-05-22 : focus and  nextGesture   are never used
 		if focus : globalVars.TBThreadTree.setFocus()
 		return globalVars.TBThreadTree

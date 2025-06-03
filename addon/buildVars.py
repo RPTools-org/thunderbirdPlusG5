@@ -1,4 +1,5 @@
 
+
 # -*- coding: UTF-8 -*-
 # for ThunderbirdPlusG5
 # Build customizations
@@ -21,12 +22,12 @@ addon_info = {
 	# Add-on summary, usually the user visible name of the addon.
 	# Translators: Summary for this add-on
 	# to be shown on installation and add-on information found in Add-ons Manager.
-	"addon_summary": "Thunderbird+G5 (TB 115 - 128ESR - 138+)",
+	"addon_summary": "Thunderbird+G5 (TB 115 - 128ESR - 139)",
 	# Add-on description
 	# Translators: Long description to be shown for this add-on on add-on information from add-ons manager
 	"addon_description": _("This add-on significantly increases the efficiency and comfort of using Thunderbird 115 with NVDA.\nFor more information, visit :\nhttps://www.rptools.org/NVDA-Thunderbird/get.php?pg=manual&v=g5&lang=en"),
 	# version
-	"addon_version": "2505.25.00",
+	"addon_version": "2506.03.00",
 	# Author(s)
 	"addon_author": u"Pierre-Louis Renaud",
 	# URL for the add-on documentation support

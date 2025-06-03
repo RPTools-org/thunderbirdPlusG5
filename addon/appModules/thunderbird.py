@@ -499,6 +499,8 @@ class AppModule(thunderbird.AppModule):
 			# ms = time () - t
 			# ms = int(ms *1000)
 			# l += ", duration : " + str(ms) 
+			if not l :
+				return "Card, " + str(oRow.name)
 			return l  # + ", Original : " + oRow.name
 		finally :
 			sharedVars.objLooping = False
