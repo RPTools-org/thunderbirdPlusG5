@@ -110,7 +110,7 @@ class MessageListItem(IAccessible):
 		self.bindGestures(TTIDefGestures)
 		if not sharedVars.TTnoTags :
 			self.bindGestures(TTITagGestures)
-		if sharedVars.TTClean or sharedVars.moveFocusAfterDel :
+		if sharedVars.TTClean or sharedVars.delContextMenu :
 			self.bindGesture("kb:delete", "deleteMsg")
 			
 	def script_sayLine(self, gesture):
@@ -365,7 +365,7 @@ class MessageListItem(IAccessible):
 				self.unifiedNextRow = True
 				break
 	# def focusNewRow(self) :
-		# if self.unifiedNextRow : # if  sharedVars.moveFocusAfterDel :
+		# if self.unifiedNextRow : # if  sharedVars.delContextMenu :
 			# KeyboardInputGesture.fromName("control+space").send()
 			# speech.setSpeechMode(speech.SpeechMode.talk)
 			# sharedVars.rowAfterDelete = None
@@ -384,32 +384,8 @@ class MessageListItem(IAccessible):
 		if controlTypes.State.COLLAPSED in self.states :
 			return gesture.send()
 		speech.setSpeechMode(speech.speech.SpeechMode.off)  # onDemand)
-		isSmartFT = 		utils.isSmartFolderTree()
-		if not isSmartFT :
-			newRow = "blank"
-			sayLater = False
-			if self.next : 
-				oNew = self.next
-				newRow = ""
-				if sharedVars.TTClean  :
-					newRow = oNew.name  + getPositionString(oNew, add=-1)
-				else :
-					newRow =  getPositionString(oNew, add=-1)
-					sayLater = True
-			elif self.previous : 
-				oNew = self.previous
-				# newRow = ""
-				# if sharedVars.TTClean  :
-				newRow = oNew.name  + getPositionString(oNew, add=0)
-			else : 
-				newRow = ""
-			CallAfter(sayNewRow, newRow, sayLater)
-		else : # smart folder tree
-			if sharedVars.TBMajor < 138 : 
-				CallAfter(saySmartNewRow128, self.next, self.previous)
-			else :
-				CallAfter(saySmartNewRow138, self.next, self.previous)
-		gesture.send()
+		sharedVars.delPressed = True
+		KeyboardInputGesture.fromName("applications").send()
 		
 	def script_gotoMsg(self, gesture) :
 		sharedVars.nPressed = True

@@ -66,7 +66,7 @@ class  Settings() :
 		self.option_messengerWindow ={
 		"TTClean" : _("custom vocalization of rows."),
 		# Translators : A smart  folder is a folder that unifies folders of the same type through all  mail accounts
-		"moveFocusAfterDel" : _("After deleting a message in a smart folder, force the selection of the next message."),
+		"delContextMenu" : _("Message deletion: emulate the context menu."),
 		"TTnoFolderName" : _("Do not say the window and folder names when entering the list."),		"responseMentionGroup" : _("Combine multiple 'RE' mentions into one"),
 		"responseMentionRemove" : _("Delete the 'Re' mentions in the subject column"),
 		"responseMentionDelColon" : _("Delete the colons  in the 'Re:' mentions"),
@@ -171,7 +171,7 @@ class  Settings() :
 			sharedVars.TTnoFolderName = pSection.as_bool ("TTnoFolderName")
 			sharedVars.listGroupName = pSection.as_bool("listGroupName")
 			sharedVars.junkStatusCol = pSection.as_bool("junkStatusCol")
-			sharedVars.moveFocusAfterDel  = pSection.as_bool("moveFocusAfterDel")
+			sharedVars.delContextMenu  = pSection.as_bool("delContextMenu")
 			sharedVars.unread = _("Unread")
 			#  merge 3 mutually exclusive boolean  variables into one numeric variable 
 			if pSection.as_bool("responseMentionGroup") : self.responseMode = 1

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: thunderbirdPlusG5\n"
 "Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
-"POT-Creation-Date: 2025-05-06 16:08+0200\n"
-"PO-Revision-Date: 2025-05-07 21:07+0300\n"
+"POT-Creation-Date: 2025-06-16 16:10+0200\n"
+"PO-Revision-Date: 2025-06-16 16:11+0200\n"
 "Last-Translator: Pierre-Louis R. <plr.listes@rptools.org>\n"
 "Language-Team: \n"
 "Language: uk_UA\n"
@@ -56,63 +56,63 @@ msgid "Unified folders"
 msgstr "Об'єднані теки"
 
 #: appModules/messengerWindow/folderTreeItem.py:119
-#: appModules/messengerWindow/messageListItem.py:266
-#: appModules/messengerWindow/messageListItem.py:271
+#: appModules/messengerWindow/messageListItem.py:270
+#: appModules/messengerWindow/messageListItem.py:275
 msgid "Tags"
 msgstr "Мітки"
 
-#: appModules/messengerWindow/folderTreeItem.py:190
+#: appModules/messengerWindow/folderTreeItem.py:191
 msgid "No unread Inbox folder  found"
 msgstr "Не знайдено жодної непрочитаної теки «Вхідні»"
 
-#: appModules/messengerWindow/folderTreeItem.py:193
+#: appModules/messengerWindow/folderTreeItem.py:194
 msgid "Unread inbox Folders, menu"
 msgstr "Непрочитані вхідні Теки, меню"
 
-#: appModules/messengerWindow/folderTreeItem.py:195
+#: appModules/messengerWindow/folderTreeItem.py:196
 msgid "All inbox Folders, menu"
 msgstr "Усі вхідні теки, меню"
 
-#: appModules/messengerWindow/folderTreeItem.py:246
-#: appModules/thunderbird.py:395
+#: appModules/messengerWindow/folderTreeItem.py:247
+#: appModules/thunderbird.py:412
 msgid "Collapsed"
 msgstr "Згорнуто"
 
-#: appModules/messengerWindow/folderTreeItem.py:250
-#: appModules/messengerWindow/folderTreeItem.py:316
+#: appModules/messengerWindow/folderTreeItem.py:251
+#: appModules/messengerWindow/folderTreeItem.py:317
 msgid "Inbox"
 msgstr "Вхідні"
 
-#: appModules/messengerWindow/folderTreeItem.py:253
+#: appModules/messengerWindow/folderTreeItem.py:254
 msgid "Account"
 msgstr "Обліковий запис"
 
-#: appModules/messengerWindow/folderTreeItem.py:253
 #: appModules/messengerWindow/folderTreeItem.py:254
+#: appModules/messengerWindow/folderTreeItem.py:255
 msgid "Unified"
 msgstr "Об'єднані"
 
-#: appModules/messengerWindow/folderTreeItem.py:296
+#: appModules/messengerWindow/folderTreeItem.py:297
 msgid "Choose an account with unread"
 msgstr "Вибрати обліковий запис із непрочитаними"
 
-#: appModules/messengerWindow/folderTreeItem.py:299
+#: appModules/messengerWindow/folderTreeItem.py:300
 msgid "Choose an account"
 msgstr "Виберіть обліковий запис"
 
-#: appModules/messengerWindow/folderTreeItem.py:345
+#: appModules/messengerWindow/folderTreeItem.py:346
 msgid "Accounts, menu"
 msgstr "Облікові записи, меню"
 
-#: appModules/messengerWindow/folderTreeItem.py:347
+#: appModules/messengerWindow/folderTreeItem.py:348
 msgid "Accounts with unread, menu"
 msgstr "Облікові записи з непрочитаними, меню"
 
-#: appModules/messengerWindow/folderTreeItem.py:350
+#: appModules/messengerWindow/folderTreeItem.py:351
 msgid "Menu, Unread folders of"
 msgstr "Меню, Непрочитані теки у"
 
-#: appModules/messengerWindow/folderTreeItem.py:352
+#: appModules/messengerWindow/folderTreeItem.py:353
 msgid "Menu, folders of "
 msgstr "Меню, теки у "
 
@@ -191,11 +191,11 @@ msgstr ""
 "\"Заголовки\", а потім натисніть ентер на елементі \"Усі\". Потім знову "
 "відкрийте контекстне меню."
 
-#: appModules/messengerWindow/messageListItem.py:115
+#: appModules/messengerWindow/messageListItem.py:119
 msgid "Line details"
 msgstr "Деталі рядка"
 
-#: appModules/messengerWindow/messageListItem.py:119
+#: appModules/messengerWindow/messageListItem.py:123
 msgid ""
 "Message list : One press announces the current line, two presses displays "
 "the line text in a window."
@@ -203,54 +203,54 @@ msgstr ""
 "Список повідомлень : Одне натискання оголошує поточний рядок, двічі- "
 "виводить текст рядка у вікні."
 
-#: appModules/messengerWindow/messageListItem.py:173
+#: appModules/messengerWindow/messageListItem.py:177
 msgid "No column "
 msgstr "Без колонки "
 
-#: appModules/messengerWindow/messageListItem.py:184
+#: appModules/messengerWindow/messageListItem.py:188
 msgid "No"
 msgstr "Немає"
 
-#: appModules/messengerWindow/messageListItem.py:191
+#: appModules/messengerWindow/messageListItem.py:195
 #, python-brace-format
 msgid "{columnText} copied to clipboard"
 msgstr "{columnText} скопійовано в буфер обміну"
 
-#: appModules/messengerWindow/messageListItem.py:266
-#: appModules/messengerWindow/messageListItem.py:273
+#: appModules/messengerWindow/messageListItem.py:270
+#: appModules/messengerWindow/messageListItem.py:277
 msgid "No tag."
 msgstr "Без мітки."
 
-#: appModules/messengerWindow/messageListItem.py:270
+#: appModules/messengerWindow/messageListItem.py:274
 msgid "No tag on a collapsed discussion"
 msgstr "Немає мітки на згорнутій розмові"
 
-#: appModules/messengerWindow/messageListItem.py:278
+#: appModules/messengerWindow/messageListItem.py:282
 msgid "No More tag."
 msgstr "Більше немає мітки."
 
-#: appModules/messengerWindow/messageListItem.py:279
-#: appModules/messengerWindow/messageListItem.py:299
+#: appModules/messengerWindow/messageListItem.py:283
+#: appModules/messengerWindow/messageListItem.py:303
 msgid "added"
 msgstr "додано"
 
-#: appModules/messengerWindow/messageListItem.py:280
+#: appModules/messengerWindow/messageListItem.py:284
 msgid " removed"
 msgstr " видалено"
 
-#: appModules/messengerWindow/messageListItem.py:297
+#: appModules/messengerWindow/messageListItem.py:301
 msgid "tag"
 msgstr "мітка"
 
-#: appModules/messengerWindow/messageListItem.py:298
+#: appModules/messengerWindow/messageListItem.py:302
 msgid "No more tag."
 msgstr "Більше немає мітки."
 
-#: appModules/messengerWindow/messageListItem.py:300
+#: appModules/messengerWindow/messageListItem.py:304
 msgid "removed"
 msgstr "видалено"
 
-#: appModules/messengerWindow/messageListItem.py:306
+#: appModules/messengerWindow/messageListItem.py:310
 msgid ""
 "Shift + 1 to 8: announces the additions or removals of tags, Shift+0 "
 "announces the tags of the message"
@@ -258,103 +258,101 @@ msgstr ""
 "Shift + 1 до 8: повідомляє про додавання або видалення міток, Shift+0 "
 "повідомляє про мітки повідомлення"
 
-#: appModules/messengerWindow/messageListItem.py:311
+#: appModules/messengerWindow/messageListItem.py:315
 msgid "No tag to remove."
 msgstr "Немає мітки для видалення."
 
-#: appModules/messengerWindow/messageListItem.py:318
+#: appModules/messengerWindow/messageListItem.py:322
 msgid "Press this command twice quickly to delete the"
 msgstr "Двічі швидко натисніть цю команду, щоб видалити"
 
-#: appModules/messengerWindow/messageListItem.py:324
+#: appModules/messengerWindow/messageListItem.py:328
 msgid "All tags have been removed from this message."
 msgstr "З цього повідомлення видалено всі мітки."
 
-#: appModules/messengerWindow/messageListItem.py:326
+#: appModules/messengerWindow/messageListItem.py:330
 msgid "Removes all tags from the selected message."
 msgstr "Видаляє всі мітки з вибраного повідомлення."
 
-#: appModules/messengerWindow/messageListItem.py:347
+#: appModules/messengerWindow/messageListItem.py:351
 msgid "Filtered reading of the message preview pane without leaving the list."
 msgstr ""
 "Спрощене читання панелі попереднього перегляду повідомлень без покидання "
 "списку."
 
-#: appModules/messengerWindow/messageListItem.py:373
-msgid "No message selected, press Escape or Shift+Tab"
-msgstr "Не вибрано жодного повідомлення, натисніть Escape або Shift + Tab"
-
-#: appModules/messengerWindow/messageListItem.py:387
-#: appModules/shared/quoteNav.py:186
-msgid "Please wait"
-msgstr "Будь ласка, зачекайте"
-
-#: appModules/messengerWindow/messageListItem.py:404
+#: appModules/messengerWindow/messageListItem.py:410
 msgid "Deleted"
 msgstr "Видалено"
 
-#: appModules/messengerWindow/messageListItem.py:404
+#: appModules/messengerWindow/messageListItem.py:410
 msgid "Archived"
 msgstr "Заархівовано"
 
-#: appModules/messengerWindow/messageListItem.py:405
+#: appModules/messengerWindow/messageListItem.py:411
 msgid "Current row"
 msgstr "Поточний рядок"
 
-#: appModules/messengerWindow/messageListItem.py:418
+#: appModules/messengerWindow/messageListItem.py:424
 msgid "Press this command twice to mark all messages as read in the folder:"
 msgstr ""
 "Натисніть цю команду двічі, щоб позначити всі повідомлення в теці "
 "прочитаними:"
 
-#: appModules/messengerWindow/messageListItem.py:421
+#: appModules/messengerWindow/messageListItem.py:427
 #, python-brace-format
 msgid "the {name} folder no longer contains unread messages."
 msgstr "тека {name} більше не містить непрочитаних повідомлень."
 
-#: appModules/messengerWindow/messageListItem.py:423
+#: appModules/messengerWindow/messageListItem.py:429
 msgid "not junk"
 msgstr "не спам"
 
-#: appModules/messengerWindow/messageListItem.py:423
+#: appModules/messengerWindow/messageListItem.py:429
 msgid "junk"
 msgstr "спам"
 
-#: appModules/messengerWindow/messageListItem.py:426
+#: appModules/messengerWindow/messageListItem.py:432
 msgid "{} applied. "
 msgstr "{} застосовано. "
 
-#: appModules/messengerWindow/messageListItem.py:428
+#: appModules/messengerWindow/messageListItem.py:434
 msgid "{} applied to: "
 msgstr "{} застосовано до: "
 
-#: appModules/messengerWindow/messageListItem.py:436
+#: appModules/messengerWindow/messageListItem.py:442
 msgid "Shows the quick filter bar from the message list."
 msgstr "Показує панель швидкого фільтрування зі списку повідомлень."
 
-#: appModules/messengerWindow/messageListItem.py:464
+#: appModules/messengerWindow/messageListItem.py:470
 msgid "The reading status has been changed."
 msgstr "Статус читання змінено."
 
-#: appModules/messengerWindow/messageListItem.py:466
+#: appModules/messengerWindow/messageListItem.py:472
 #: appModules/shared/menuSettings.py:175
 msgid "Unread"
 msgstr "Непрочитано"
 
-#: appModules/messengerWindow/messageListItem.py:468
+#: appModules/messengerWindow/messageListItem.py:474
 msgid "Reverses the read and unread status of the selected message"
 msgstr ""
 "Змінює статус вибраного повідомлення з прочитаного або непрочитаного на "
 "протилежний"
 
-#: appModules/messengerWindow/messageListItem.py:602
+#: appModules/messengerWindow/messageListItem.py:608
 msgid "unread"
 msgstr "непрочитане"
 
-#: appModules/messengerWindow/messageListItem.py:605
-#: appModules/thunderbird.py:425
+#: appModules/messengerWindow/messageListItem.py:611
+#: appModules/thunderbird.py:442
 msgid "Read"
 msgstr "Прочитане"
+
+#: appModules/messengerWindow/messageListItem.py:825
+#: appModules/messengerWindow/tabAddressBook.py:472
+#: appModules/messengerWindow/tabAddressBook.py:473
+#: appModules/messengerWindow/tabAddressBook.py:477
+msgid " of "
+msgstr " з "
 
 #: appModules/messengerWindow/tabAddressBook.py:93
 #: appModules/messengerWindow/tabAddressBook.py:482
@@ -397,12 +395,6 @@ msgstr "Напрямки з "
 #: appModules/messengerWindow/tabAddressBook.py:754
 msgid "list in "
 msgstr "список в "
-
-#: appModules/messengerWindow/tabAddressBook.py:472
-#: appModules/messengerWindow/tabAddressBook.py:473
-#: appModules/messengerWindow/tabAddressBook.py:477
-msgid " of "
-msgstr " з "
 
 #: appModules/messengerWindow/tabs.py:22
 #, python-brace-format
@@ -576,11 +568,10 @@ msgid "custom vocalization of rows."
 msgstr "персоналізоване озвучення рядків."
 
 #: appModules/shared/menuSettings.py:69
-msgid ""
-"After deleting a message in a smart folder, force the selection of the next "
-"message."
-msgstr ""
-"Після видалення повідомлення в об'єднаній теці примусово вибирати наступне."
+#, fuzzy
+#| msgid "Press Alt + down arrow to open the context menu."
+msgid "Message deletion: emulate the context menu."
+msgstr "Натисніть Alt + стрілка вниз, щоб відкрити контекстне меню."
 
 #: appModules/shared/menuSettings.py:70
 msgid "Do not say the window and folder names when entering the list."
@@ -810,6 +801,10 @@ msgstr "Увімкнення режиму відображення повідо�
 msgid "Disabling message display mode, ready."
 msgstr "Вимкнення режиму відображення повідомлень, готово."
 
+#: appModules/shared/quoteNav.py:186
+msgid "Please wait"
+msgstr "Будь ласка, зачекайте"
+
 #: appModules/shared/quoteNav.py:249
 #, python-brace-format
 msgid "{0} messages in chronological order, "
@@ -906,54 +901,64 @@ msgstr "Скопійовано"
 msgid "Error, the information cannot be copied to the clipboard"
 msgstr "Помилка, інформацію неможливо скопіювати в буфер обміну"
 
-#: appModules/shared/utils115.py:508
+#: appModules/shared/utils115.py:539
 msgid "Filtered : "
 msgstr "Відфільтровано: "
 
-#: appModules/shared/utils115.py:527
+#: appModules/shared/utils115.py:558
 msgid "Filter : "
 msgstr "Фільтр: "
 
-#: appModules/shared/utils115.py:626
+#: appModules/shared/utils115.py:658 appModules/shared/utils115.py:1189
 msgid "The preview pane is not displayed. Press F8 and try again please"
 msgstr "Панель повідомлень приховано. Натисніть F8 і спробуйте щераз"
 
-#: appModules/shared/utils115.py:846 appModules/thunderbird.py:812
+#: appModules/shared/utils115.py:878 appModules/thunderbird.py:831
 msgid "Press right arrow and retry, please."
 msgstr "Натисніть стрілку вправо та повторіть спробу."
 
-#: appModules/shared/utils115.py:858 appModules/thunderbird.py:953
+#: appModules/shared/utils115.py:890 appModules/thunderbird.py:972
 msgid "The headers pane is not displayed. Please press F8 then try again"
 msgstr "Панель повідомлень приховано. Натисніть F8 і повторіть спробу"
 
-#: appModules/shared/utils115.py:866
+#: appModules/shared/utils115.py:898
 msgid "The headers are not available"
 msgstr "Заголовки недоступні"
 
-#: appModules/shared/utils115.py:958
+#: appModules/shared/utils115.py:990
 msgid "void,From,Subject: ,Date,To,CC,BCC,Reply to"
 msgstr "порожньо,Від,Тема: ,Дата,Кому,Копія,Прихована копія,Відповісти"
 
-#: appModules/shared/utils115.py:959
+#: appModules/shared/utils115.py:991
 #, python-brace-format
 msgid "The {0} header is missing from this message."
 msgstr "У цьому повідомленні відсутній заголовок {0}."
 
-#: appModules/shared/utils115.py:970
+#: appModules/shared/utils115.py:1002
 msgid "Copy to clipboard"
 msgstr "Копіювати в буфер обміну"
 
-#: appModules/shared/utils115.py:1002
+#: appModules/shared/utils115.py:1034
 msgid "No attachment."
 msgstr "Без вкладень."
 
-#: appModules/shared/utils115.py:1034
+#: appModules/shared/utils115.py:1066
 msgid "Two presses to reach the list."
 msgstr "Два натискання, щоб відкрити список."
 
-#: appModules/shared/utils115.py:1052
-msgid "To the group, "
-msgstr "До групи, "
+#: appModules/shared/utils115.py:1236
+msgid "Jean-Paul Dany via groups.io <"
+msgstr ""
+
+#: appModules/shared/utils115.py:1241
+#, fuzzy
+#| msgid "To: "
+msgid "To"
+msgstr "Кому: "
+
+#: appModules/shared/utils115.py:1260
+msgid "Reply"
+msgstr ""
 
 #: appModules/shared/utis.py:521
 msgid "The status bar is not displayed."
@@ -967,47 +972,47 @@ msgstr "Без вкладення."
 msgid "File not found"
 msgstr "Файл не знайдено"
 
-#: appModules/thunderbird.py:377
+#: appModules/thunderbird.py:394
 msgid "Sort by "
 msgstr "Сортувати за "
 
-#: appModules/thunderbird.py:430
+#: appModules/thunderbird.py:447
 msgid "Starred"
 msgstr "Із зірочкою"
 
-#: appModules/thunderbird.py:461
+#: appModules/thunderbird.py:478
 msgid "attachment"
 msgstr "вкладення"
 
-#: appModules/thunderbird.py:465
+#: appModules/thunderbird.py:482
 msgid "Spam"
 msgstr "Спам"
 
-#: appModules/thunderbird.py:564
+#: appModules/thunderbird.py:583
 msgid "draft"
 msgstr "чернетка"
 
-#: appModules/thunderbird.py:567
+#: appModules/thunderbird.py:586
 msgid "bird thinks this message is Junk"
 msgstr "bird вважає, що це повідомлення є Спамом"
 
-#: appModules/thunderbird.py:571
+#: appModules/thunderbird.py:590
 msgid "remote content"
 msgstr "віддалений вміст"
 
-#: appModules/thunderbird.py:574
+#: appModules/thunderbird.py:593
 msgid "notified when you"
 msgstr "запитує сповіщення після прочитання"
 
-#: appModules/thunderbird.py:713
+#: appModules/thunderbird.py:732
 msgid "Blank"
 msgstr "Порожньо"
 
-#: appModules/thunderbird.py:717
+#: appModules/thunderbird.py:736
 msgid "Status line without data"
 msgstr "Рядок стану без даних"
 
-#: appModules/thunderbird.py:719
+#: appModules/thunderbird.py:738
 msgid ""
 "Announces abbreviated status line and message filtering information if "
 "applicable"
@@ -1015,15 +1020,19 @@ msgstr ""
 "Оголошує скорочений рядок стану та інформацію про фільтрування повідомлень, "
 "якщо це можливо"
 
-#: appModules/thunderbird.py:753
-msgid "Smart reply to reply to a recipient or mailing list"
-msgstr "Швидка відповідь для відповіді одержувачу або списку розсилки"
+#: appModules/thunderbird.py:766
+msgid "Smart reply : replies to the sender or to the  group"
+msgstr ""
 
-#: appModules/thunderbird.py:768
+#: appModules/thunderbird.py:771
+msgid "Smart reply : with Shift,  replies to all or to the sender in a group"
+msgstr ""
+
+#: appModules/thunderbird.py:787
 msgid "Sends Control+F4 to the current window."
 msgstr "Надсилає Control+F4 поточному вікну."
 
-#: appModules/thunderbird.py:795
+#: appModules/thunderbird.py:814
 msgid ""
 "In the main window, 1 press: Alt+1 to 8: reads the message header, Alt+9 "
 "announces the number of attachments, 2 presses: displays the header in an "
@@ -1038,7 +1047,7 @@ msgstr ""
 "У вікні редагування, просте натискання: alt+1 до 4 - читає заголовки, "
 "подвійне: потрапляє на заголовок."
 
-#: appModules/thunderbird.py:863
+#: appModules/thunderbird.py:882
 msgid ""
 "Filtered reading of the document in the preview pane, reading tab, reading "
 "or Write window, from the list of messages or the document."
@@ -1047,18 +1056,18 @@ msgstr ""
 "читання, вікні перегляду або редагування, зі списку повідомлень або самого "
 "документа."
 
-#: appModules/thunderbird.py:869
+#: appModules/thunderbird.py:888
 msgid "Enables or disables  the translation mode of a message."
 msgstr "Вмикає або вимикає режим перекладу повідомлення."
 
-#: appModules/thunderbird.py:875
+#: appModules/thunderbird.py:894
 msgid ""
 "Enables or disables the display of the cleaned or translated   message in a "
 "window."
 msgstr ""
 "Вмикає або вимикає показ спрощеного чи перекладеного повідомлення у вікні."
 
-#: appModules/thunderbird.py:882
+#: appModules/thunderbird.py:901
 msgid ""
 "Folders : displays the accounts menu then  the folders menu for the chosen "
 "account."
@@ -1066,15 +1075,15 @@ msgstr ""
 "Теки : відкриває меню облікових записів, а потім меню тек для вибраного "
 "облікового запису."
 
-#: appModules/thunderbird.py:888
+#: appModules/thunderbird.py:907
 msgid "Folders : displays the menu of all inbox folders"
 msgstr "Теки: відкриває меню всіх вхідних тек"
 
-#: appModules/thunderbird.py:894
+#: appModules/thunderbird.py:913
 msgid "Folders : displays the menu of unread inbox folders"
 msgstr "Теки: відкриває меню всіх непрочитаних вхідних тек"
 
-#: appModules/thunderbird.py:902
+#: appModules/thunderbird.py:921
 msgid ""
 "Folders : displays the accounts menu then the unread folders menu for the "
 "chosen account."
@@ -1082,7 +1091,7 @@ msgstr ""
 "Теки: спочатку відкриває меню облікових записів, потім — меню непрочитаних "
 "тек вибраного облікового запису."
 
-#: appModules/thunderbird.py:915
+#: appModules/thunderbird.py:934
 msgid ""
 "Focus : 1 press select the current folder in the folder tree, 2 presesses "
 "display a menu  allowings to choose an mail account to reach in the folder "
@@ -1092,7 +1101,7 @@ msgstr ""
 "натискання відкриває меню поштових облікових записів для переходу в дерево "
 "тек"
 
-#: appModules/thunderbird.py:936
+#: appModules/thunderbird.py:955
 msgid ""
 "Focus : selects a message in the message list from anywhere in the main "
 "window."
@@ -1100,30 +1109,30 @@ msgstr ""
 "Фокус : вибирає повідомлення у списку повідомлень з будь-якого місця в "
 "головному вікні."
 
-#: appModules/thunderbird.py:970
+#: appModules/thunderbird.py:989
 msgid "Attachments : announces or displays the attachment pane."
 msgstr "Вкладення : оголошує або показує панель вкладень."
 
-#: appModules/thunderbird.py:978
+#: appModules/thunderbird.py:997
 msgid "Press alt+upArrow before navigating through quotes in a message."
 msgstr ""
 "Натисніть alt+стрілка вгору Перед переміщенням по цитатах в повідомленні."
 
-#: appModules/thunderbird.py:987
+#: appModules/thunderbird.py:1006
 msgid "Navigates through quotes in a message"
 msgstr "Переміщується між цитатами в повідомленні"
 
-#: appModules/thunderbird.py:1003
+#: appModules/thunderbird.py:1022
 msgid ""
 "Shows the context menu of actions available in the various Thunderbird "
 "windows."
 msgstr "Відкриває контекстне меню дій, доступних у різних вікнах Thunderbird."
 
-#: appModules/thunderbird.py:1023
+#: appModules/thunderbird.py:1042
 msgid "Shows the Options context menu of Thunderbird+"
 msgstr "Відкриває контекстне меню параметрів Thunderbird+"
 
-#: appModules/thunderbird.py:1031
+#: appModules/thunderbird.py:1050
 msgid ""
 "Shows the dialog for editing the delay before reading the message of the "
 "separate reading window."
@@ -1131,7 +1140,7 @@ msgstr ""
 "Відкриває діалог редагування затримки перед початком читання повідомлення в "
 "окремому вікні перегляду."
 
-#: appModules/thunderbird.py:1039
+#: appModules/thunderbird.py:1058
 msgid ""
 "Shows the dialog for editing the two delays used for focusing after deleting "
 "a message."
@@ -1139,35 +1148,35 @@ msgstr ""
 "Відкриває діалог для редагування двох затримок, що використовуються для "
 "фокусування після видалення повідомлення."
 
-#: appModules/thunderbird.py:1049
+#: appModules/thunderbird.py:1068
 msgid "Present: Headers and message pane."
 msgstr "Показано: панель повідомлень."
 
-#: appModules/thunderbird.py:1051
+#: appModules/thunderbird.py:1070
 msgid "Missing : headers and message pane."
 msgstr "Приховано : панель повідомлень."
 
-#: appModules/thunderbird.py:1052
+#: appModules/thunderbird.py:1071
 msgid "Turn on or off the preview messages panel"
 msgstr "Показує або приховує панель повідомлень"
 
-#: appModules/thunderbird.py:1057
+#: appModules/thunderbird.py:1076
 msgid "Shows the add-on help in a web page"
 msgstr "Відкриває довідку додатка у браузері"
 
-#: appModules/thunderbird.py:1236
+#: appModules/thunderbird.py:1256
 msgid "Re "
 msgstr "Re "
 
-#: appModules/thunderbird.py:1342
+#: appModules/thunderbird.py:1362
 msgid "No messages displayed"
 msgstr "Немає повідомлень"
 
-#: appModules/thunderbird.py:1343
+#: appModules/thunderbird.py:1363
 msgid "Filter removed"
 msgstr "Фільтр видалено"
 
-#: buildVars.py:27
+#: buildVars.py:29
 msgid ""
 "This add-on significantly increases the efficiency and comfort of using "
 "Thunderbird 115 with NVDA.\n"
@@ -1179,31 +1188,31 @@ msgstr ""
 "Для отримання додаткової інформації відвідайте :\n"
 "https://www.rptools.org/NVDA-Thunderbird/get.php?pg=manual&v=g5&lang=uk"
 
-#: globalPlugins/ThunderbirdGlob.py:119
+#: globalPlugins/ThunderbirdGlob.py:126
 msgid "Thunderbird.exe not found in C:\\Program files"
 msgstr "Thunderbird.exe не знайдено в C:\\Program files"
 
-#: globalPlugins/ThunderbirdGlob.py:124
+#: globalPlugins/ThunderbirdGlob.py:131
 msgid "Starts Thunderbird"
 msgstr "Запускає Thunderbird"
 
-#: globalPlugins/ThunderbirdGlob.py:131
+#: globalPlugins/ThunderbirdGlob.py:138
 msgid "Install version {}"
 msgstr "Установити версію {}"
 
-#: globalPlugins/ThunderbirdGlob.py:146
+#: globalPlugins/ThunderbirdGlob.py:153
 msgid "Update : shows an update menu"
 msgstr "Оновлення: відкриває меню оновлення"
 
-#: globalPlugins/ThunderbirdGlob.py:249
+#: globalPlugins/ThunderbirdGlob.py:260
 msgid "Enable automatic update"
 msgstr "Увімкнути автоматичне оновлення"
 
-#: globalPlugins/ThunderbirdGlob.py:250
+#: globalPlugins/ThunderbirdGlob.py:261
 msgid "Disable automatic update"
 msgstr "Вимкнути автоматичне оновлення"
 
-#: globalPlugins/ThunderbirdGlob.py:258
+#: globalPlugins/ThunderbirdGlob.py:269
 msgid ""
 "Automatic update has been enabled. You can restart NVDA to check for an "
 "update."
@@ -1211,11 +1220,11 @@ msgstr ""
 "Автоматичне оновлення увімкнено. Ви можете перезапустити NVDA, щоб "
 "перевірити наявність оновлень."
 
-#: globalPlugins/ThunderbirdGlob.py:268
+#: globalPlugins/ThunderbirdGlob.py:279
 msgid "Error saving update settings file."
 msgstr "Помилка збереження файлу налаштувань оновлення."
 
-#: globalPlugins/ThunderbirdGlob.py:269
+#: globalPlugins/ThunderbirdGlob.py:280
 msgid "Automatic update has been disabled."
 msgstr "Автоматичне оновлення вимкнено."
 
@@ -1223,115 +1232,106 @@ msgstr "Автоматичне оновлення вимкнено."
 msgid "Error saving of :\n"
 msgstr "Помилка збереження :\n"
 
-#: globalPlugins/shared/updateLite.py:41
-msgid "&What's new"
-msgstr "&Що нового"
+#~ msgid "No message selected, press Escape or Shift+Tab"
+#~ msgstr "Не вибрано жодного повідомлення, натисніть Escape або Shift + Tab"
 
-#: globalPlugins/shared/updateLite.py:43
-msgid "&Yes"
-msgstr "&Так"
+#~ msgid ""
+#~ "After deleting a message in a smart folder, force the selection of the "
+#~ "next message."
+#~ msgstr ""
+#~ "Після видалення повідомлення в об'єднаній теці примусово вибирати "
+#~ "наступне."
 
-#: globalPlugins/shared/updateLite.py:44
-msgid "&Later"
-msgstr "&Пізніше"
+#~ msgid "To the group, "
+#~ msgstr "До групи, "
 
-#: globalPlugins/shared/updateLite.py:45
-msgid "&Disable"
-msgstr "&Вимкнути"
+#~ msgid "Smart reply to reply to a recipient or mailing list"
+#~ msgstr "Швидка відповідь для відповіді одержувачу або списку розсилки"
 
-#: globalPlugins/shared/updateLite.py:123
-msgid "is up to date."
-msgstr "є актуальним."
+#~ msgid "&What's new"
+#~ msgstr "&Що нового"
 
-#: globalPlugins/shared/updateLite.py:126
+#~ msgid "&Yes"
+#~ msgstr "&Так"
+
+#~ msgid "&Later"
+#~ msgstr "&Пізніше"
+
+#~ msgid "&Disable"
+#~ msgstr "&Вимкнути"
+
+#~ msgid "is up to date."
+#~ msgstr "є актуальним."
+
 #, python-brace-format
-msgid "Do you want to update version {0} to version {1}?"
-msgstr "Ви бажаєте оновити версію {0} до версії {1}?"
+#~ msgid "Do you want to update version {0} to version {1}?"
+#~ msgstr "Ви бажаєте оновити версію {0} до версії {1}?"
 
-#: globalPlugins/shared/updateLite.py:127
-msgid "ThunderbirdPlusG5 add-on update"
-msgstr "Оновлення додатка ThunderbirdPlusG5"
+#~ msgid "ThunderbirdPlusG5 add-on update"
+#~ msgstr "Оновлення додатка ThunderbirdPlusG5"
 
-#: globalPlugins/shared/updateLite.py:136
-#: globalPlugins/shared/updateLite.py:238
-msgid "Addon update"
-msgstr "Оновлення додатка"
+#~ msgid "Addon update"
+#~ msgstr "Оновлення додатка"
 
-#: globalPlugins/shared/updateLite.py:147
-msgid "Version check error"
-msgstr "Помилка перевірки версії"
+#~ msgid "Version check error"
+#~ msgstr "Помилка перевірки версії"
 
-#: globalPlugins/shared/updateLite.py:150
-msgid "Error reading Info file"
-msgstr "Помилка читання інформації файлу"
+#~ msgid "Error reading Info file"
+#~ msgstr "Помилка читання інформації файлу"
 
-#: globalPlugins/shared/updateLite.py:168
-#: globalPlugins/shared/updateLite.py:170
-msgid "Error retrieving file information"
-msgstr "Помилка отримання інформації про файл"
+#~ msgid "Error retrieving file information"
+#~ msgstr "Помилка отримання інформації про файл"
 
-#: globalPlugins/shared/updateLite.py:187
-msgid "Error downloading of :\n"
-msgstr "Помилка при завантаженні :\n"
+#~ msgid "Error downloading of :\n"
+#~ msgstr "Помилка при завантаженні :\n"
 
-#: globalPlugins/shared/updateLite.py:189
-msgid "Empty file error"
-msgstr "Помилка порожнього файлу"
+#~ msgid "Empty file error"
+#~ msgstr "Помилка порожнього файлу"
 
-#: globalPlugins/shared/updateLite.py:201
-msgid ", cannot delete : "
-msgstr ", неможливо видалити: "
+#~ msgid ", cannot delete : "
+#~ msgstr ", неможливо видалити: "
 
-#: globalPlugins/shared/updateLite.py:207
-#: globalPlugins/shared/updateLite.py:270
-msgid "Saving error of :\n"
-msgstr "Помилка збереження :\n"
+#~ msgid "Saving error of :\n"
+#~ msgstr "Помилка збереження :\n"
 
-#: globalPlugins/shared/updateLite.py:210
-msgid "Error saving addon to temporary file."
-msgstr "Помилка збереження додатка в тимчасовий файл."
+#~ msgid "Error saving addon to temporary file."
+#~ msgstr "Помилка збереження додатка в тимчасовий файл."
 
-#: globalPlugins/shared/updateLite.py:256
-msgid ""
-"The update will be offered again in 3 days. In the meantime, you can press "
-"AltGr+Shift+grave to perform an update search."
-msgstr ""
-"Оновлення буде запропоновано знову через 3 дні. Тим часом ви можете "
-"натиснути shift+ctrl+алт+`, щоб виконати пошук оновлень."
+#~ msgid ""
+#~ "The update will be offered again in 3 days. In the meantime, you can "
+#~ "press AltGr+Shift+grave to perform an update search."
+#~ msgstr ""
+#~ "Оновлення буде запропоновано знову через 3 дні. Тим часом ви можете "
+#~ "натиснути shift+ctrl+алт+`, щоб виконати пошук оновлень."
 
-#: globalPlugins/shared/updateLite.py:261
-msgid ""
-"Automatic update has been disabled. press AltGr+Shift+grave for a manual "
-"update."
-msgstr ""
-"Автоматичне оновлення вимкнено. Натисніть shift+ctrl+алт+` для ручного "
-"оновлення."
+#~ msgid ""
+#~ "Automatic update has been disabled. press AltGr+Shift+grave for a manual "
+#~ "update."
+#~ msgstr ""
+#~ "Автоматичне оновлення вимкнено. Натисніть shift+ctrl+алт+` для ручного "
+#~ "оновлення."
 
-#: globalPlugins/shared/updateLite.py:302
-msgid "Undetermined version"
-msgstr "Невизначена версія"
+#~ msgid "Undetermined version"
+#~ msgstr "Невизначена версія"
 
-#: installTasks.py:33
-msgid ""
-"Mozilla Apps Enhancements has been detected on your NVDA installation. In "
-"order for thunderbirdPlus to work without conflicts, the thunderbird module "
-"of Mozilla Apps Enhancements must be disabled. Would you like to do so now "
-"and install ThunderbirdPlus ? \n"
-"If you answer No, the installation will fail."
-msgstr ""
-"У вашій конфігурації NVDA було виявлено Mozilla Apps Enhancements. Для того "
-"щоб ThunderbirdPlus працював без конфліктів, модуль Thunderbird в Mozilla "
-"Apps Enhancements має бути вимкнено. Бажаєте зробити це зараз і встановити "
-"ThunderbirdPlus? \n"
-"Якщо ви відповісте «Ні», встановлення завершиться невдало."
+#~ msgid ""
+#~ "Mozilla Apps Enhancements has been detected on your NVDA installation. In "
+#~ "order for thunderbirdPlus to work without conflicts, the thunderbird "
+#~ "module of Mozilla Apps Enhancements must be disabled. Would you like to "
+#~ "do so now and install ThunderbirdPlus ? \n"
+#~ "If you answer No, the installation will fail."
+#~ msgstr ""
+#~ "У вашій конфігурації NVDA було виявлено Mozilla Apps Enhancements. Для "
+#~ "того щоб ThunderbirdPlus працював без конфліктів, модуль Thunderbird в "
+#~ "Mozilla Apps Enhancements має бути вимкнено. Бажаєте зробити це зараз і "
+#~ "встановити ThunderbirdPlus? \n"
+#~ "Якщо ви відповісте «Ні», встановлення завершиться невдало."
 
-#: installTasks.py:35
-msgid "Running Mozilla Apps Enhancements detected"
-msgstr "Виявлено активний додаток Mozilla Apps Enhancements"
+#~ msgid "Running Mozilla Apps Enhancements detected"
+#~ msgstr "Виявлено активний додаток Mozilla Apps Enhancements"
 
-#: installTasks.py:42
-msgid "Installation cancelled"
-msgstr "Встановлення скасовано"
+#~ msgid "Installation cancelled"
+#~ msgstr "Встановлення скасовано"
 
 #~ msgid ""
 #~ "If custom vocalization, announce the current line after line deletion   "
@@ -1775,9 +1775,6 @@ msgstr "Встановлення скасовано"
 
 #~ msgid "One attachment."
 #~ msgstr "Одне вкладення."
-
-#~ msgid "To: "
-#~ msgstr "Кому: "
 
 #~ msgid "No header"
 #~ msgstr "Без заголовка"

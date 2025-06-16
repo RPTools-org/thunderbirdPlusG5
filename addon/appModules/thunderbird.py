@@ -221,17 +221,18 @@ class AppModule(thunderbird.AppModule):
 				else : clsList.insert(0, messengerWindow.tabAddressBook.AddressBook)
 
 	def event_foreground(self, obj,nextHandler):
+		role = obj.role
 		# sharedVars.log(obj, "Foreground")
-		if obj.role == controlTypes.Role.FRAME and  sharedVars.replyTo :
+		if role == controlTypes.Role.FRAME and  sharedVars.replyTo :
 			# obj.name = sharedVars.replyTo + str(obj.name)
 			ui.message(sharedVars.replyTo + " " + str(obj.name)) 
 			sharedVars.replyTo = ""
 			return # nextHandler()
 	
-		if obj.role == controlTypes.Role.DIALOG :
+		if role == controlTypes.Role.DIALOG :
 			if "|dlg" not  in sharedVars.curFrame : sharedVars.curFrame += "|dlg"
 			# sharedVars.log(obj, "Dialog, curframe = " +  sharedVars.curFrame) 
-		elif  obj.role == controlTypes.Role.FRAME :
+		elif role == controlTypes.Role.FRAME :
 			sharedVars.curFrame = sharedVars.curFrame.replace("|dlg", "")
 			# sharedVars.log(obj, "FRAME, curframe = " +  sharedVars.curFrame) 
 		nextHandler()
@@ -287,13 +288,18 @@ class AppModule(thunderbird.AppModule):
 		if  sharedVars.curFrame == "msgcomposeWindow" :
 			return nextHandler()
 		role = obj.role
+		if sharedVars.delPressed and role == controlTypes.Role.POPUPMENU and  utils.hasID(obj, "mailContext") :
+			sharedVars.delPressed = False
+			wx.CallAfter(activateMenuItem, obj, "navContext-delete")
+			return nextHandler()
+
 		if sharedVars.nPressed : 
 			sharedVars.nPressed = False
 			if role == controlTypes.Role.TABLE :
 				callLater(100, self.focusMessageItem, "gainFocus", time(), obj)
 			return nextHandler()
 		# if sharedVars.rowAfterDelete :
-			# if  sharedVars.moveFocusAfterDel :
+			# if  sharedVars.delContextMenu :
 				# sharedVars.rowAfterDelete = None
 				# callLater(50, KeyboardInputGesture.fromName("f6").send)
 				# return nextHandler()
@@ -329,16 +335,9 @@ class AppModule(thunderbird.AppModule):
 	def event_focusEntered (self,obj,nextHandler):
 		role, ID  = obj.role, str(utils.getIA2Attr(obj))
 		# sharedVars.log(obj, "current ")
-		# sharedVars.log(obj, "FocusEntered")
+		sharedVars.log(obj, "FocusEntered")
 		if  sharedVars.curFrame == "msgcomposeWindow" and ID == "msgIdentity" :
 			return #  No nextHandler()
-		# if sharedVars.menuClosing  and role != controlTypes.Role.TREEVIEWITEM:
-			# sharedVars.log(obj, "menuClosing ") 
-			# if hasattr(obj, "name") :
-				# obj.name = ""
-			# # menuClosing is set to False  in event_gainFocus
-			# return
-
 		#   silencify folderTree and threadTree
 		if sharedVars.curTab == "main"  and role in  (controlTypes.Role.LIST, controlTypes.Role.TABLE, controlTypes.Role.TREEVIEW) :
 			if sharedVars.TTnoFolderName :
@@ -1362,3 +1361,16 @@ def sayFilterRemoved() :
 			beep(120, 40)
 			infos = _("No messages displayed") + ", " + infos
 	ui.message(_("Filter removed") + infos)
+
+def activateMenuItem(o, ID) :
+	# o is role.popupmenu
+	try : # finally
+		o = o.firstChild 
+		while o :
+			if o.role == controlTypes.Role.MENUITEM and utils.hasID(o, ID) :
+				o.doAction()
+				return
+			o = o.next
+	finally :
+		speech.setSpeechMode(speech.speech.SpeechMode.talk)
+		

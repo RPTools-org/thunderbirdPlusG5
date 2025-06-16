@@ -153,6 +153,7 @@ def showInboxMenu(oNode, unreadOnly) :
 		else :
 			o = oAccount.getChild(1).firstChild
 			name += ", " + o.name
+
 		if o.role == controlTypes.Role.TREEVIEWITEM : 
 			if not unreadOnly or (unreadOnly and  gRegUnread.search(name)) :
 				sharedVars.logte(name)

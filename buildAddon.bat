@@ -1,6 +1,7 @@
 @echo off
 title Build Thhunderbird+G5 add-on
-
+d:
+cd \dev-1tb+G5\thunderbirdPlusG5
 
 rem if exist .\addon\buildVars.py (
 rem 	copy .\addon\buildVars.py .

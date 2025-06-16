@@ -2,7 +2,7 @@
 debug = False
 replyTo = ""
 nPressed = False
-# rowAfterDelete = None
+delPressed = False
 TBMajor = 0
 objLooping = menuClosing =  False
 speechOff = False
