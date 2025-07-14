@@ -4,10 +4,10 @@
 import sys
 import speech 
 from winsound import MessageBeep 
-try:
-	from UIAUtils import createUIAMultiPropertyCondition
-except ImportError:
-	from UIAHandler.utils import createUIAMultiPropertyCondition
+# try:
+	# from UIAUtils import createUIAMultiPropertyCondition
+# except ImportError:
+	# from UIAHandler.utils import createUIAMultiPropertyCondition
 from oleacc import STATE_SYSTEM_UNAVAILABLE,STATE_SYSTEM_PRESSED
 from tones import beep
 import addonHandler,  os, sys
@@ -15,6 +15,7 @@ _curAddon=addonHandler.getCodeAddon()
 sharedPath=os.path.join(_curAddon.path,"AppModules", "shared")
 sys.path.append(sharedPath)
 import  utis, sharedVars
+import utils115 as utils
 from utis import getIA2Attribute, showNVDAMenu , TBMajor,  getElementWalker
 del sys.path[-1]
 addonHandler.initTranslation()
@@ -193,3 +194,24 @@ def getComposeHeader(o, key, repeats=0) :
 	oCompose.update()
 	oCompose.readField(key, repeats)
 
+def announceFildTo(fg) :
+	# IA2ID = composeContentBox in , Role.SECTION
+	if fg : o = utils.getChildByRoleIDName(fg, controlTypes.Role.SECTION, ID="composeContentBox", name="", idx=12)
+	# IA2ID = MsgHeadersToolbar in , Role.TOOLBAR
+	if o : o = utils.getChildByRoleIDName(o, controlTypes.Role.TOOLBAR, ID="MsgHeadersToolbar", name="", idx=0)
+	# Translators: Jean-François C <jfcolas2a@gmail.com>, 1 sur 2 : appuyez sur Entrée pour modifier, ou Supprimer pour retirer.
+	try : o = o.firstChild
+	except : return
+	names = ""
+	while o :
+		if o.role == controlTypes.Role.PANE :
+			nm = o.name
+			if ">" in nm :
+				pos = nm.rfind(">")
+				nm = nm[0:pos+1]
+			else :
+				pos = nm.find(" ")
+				nm = nm[0:pos+1]
+			names += nm + ", "
+		o = o.next
+	message(_("To") + " " + names)

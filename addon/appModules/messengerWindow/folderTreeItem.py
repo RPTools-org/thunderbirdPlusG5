@@ -362,6 +362,15 @@ def  fMenuInboxes(unread) :
 	m = InboxesMenu(oFirstAccount=o, unreadOnly=unread)
 	# sharedVars.log(o, "folderTree  first item")
 
+def fMenuAllFolders(unRead=False) :
+	o = utils.getFolderTreeFromFG()
+	if not o : return beep(100, 30)
+	# get the   first item
+	try : o = o.firstChild.firstChild.firstChild
+	except : return beep(100, 30)
+	m = FolderMenu(o.parent, unread=unRead, recurs=True, allFolders=1)
+	callLater(10, m.showMenu,title="All Folders, menu")
+
 def fMenuAccounts(type=1) :
 	o = utils.getFolderTreeFromFG()
 	if not o : return beep(100, 30)

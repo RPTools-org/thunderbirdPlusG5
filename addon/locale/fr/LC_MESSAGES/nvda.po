@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Thunderbird+G5\n"
-"POT-Creation-Date: 2025-06-16 15:35+0200\n"
+"POT-Creation-Date: 2025-06-18 05:37+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Pierre-Louis R. <plr.listes@rptools.org>\n"
 "Language-Team: Pierre-Louis Renaud\n"
@@ -927,11 +927,11 @@ msgstr "Filtre : "
 msgid "The preview pane is not displayed. Press F8 and try again please"
 msgstr "Le volet d'aperçu n'est pas affiché. Pressez F8 et recommencez SVP"
 
-#: appModules/shared/utils115.py:878 appModules/thunderbird.py:831
+#: appModules/shared/utils115.py:878 appModules/thunderbird.py:839
 msgid "Press right arrow and retry, please."
 msgstr "Veuillez presser flèche droite puis réessayez."
 
-#: appModules/shared/utils115.py:890 appModules/thunderbird.py:972
+#: appModules/shared/utils115.py:890 appModules/thunderbird.py:980
 msgid "The headers pane is not displayed. Please press F8 then try again"
 msgstr ""
 "Le volet des entêtes n'est pas affiché. Veuillez presser F8 puis réessayer"
@@ -1042,11 +1042,22 @@ msgid "Smart reply : with Shift,  replies to all or to the sender in a group"
 msgstr ""
 "SmartReply : avec majuscule, répond à tout ou à l'expéditeur dans un groupe"
 
-#: appModules/thunderbird.py:787
+#: appModules/thunderbird.py:778
+msgid "Tabs: Displays the context menu of the selected tab in the main window."
+msgstr ""
+"Onglets : Affiche le menu contextuel de l'onglet sélectionné dans la fenêtre "
+"principale."
+
+#: appModules/thunderbird.py:784
+msgid "Tabs: Displays the open tabs menu in the main window."
+msgstr ""
+"Onglets : affiche le menu des onglets ouverts dans la fenêtre principale. "
+
+#: appModules/thunderbird.py:795
 msgid "Sends Control+F4 to the current window."
 msgstr "Envoie Control+F4 à la fenêtre courante."
 
-#: appModules/thunderbird.py:814
+#: appModules/thunderbird.py:822
 msgid ""
 "In the main window, 1 press: Alt+1 to 8: reads the message header, Alt+9 "
 "announces the number of attachments, 2 presses: displays the header in an "
@@ -1060,7 +1071,7 @@ msgstr ""
 "appuis : atteint l'entête dans la zone des entêtes. Dans la fenêtre de "
 "rédaction, Alt1 à 4, lit les entêtes,  2 appuis atteint l'entête."
 
-#: appModules/thunderbird.py:882
+#: appModules/thunderbird.py:890
 msgid ""
 "Filtered reading of the document in the preview pane, reading tab, reading "
 "or Write window, from the list of messages or the document."
@@ -1069,18 +1080,18 @@ msgstr ""
 "fenêtre de lecture ou de rédaction, depuis la liste de messages ou le "
 "document."
 
-#: appModules/thunderbird.py:888
+#: appModules/thunderbird.py:896
 msgid "Enables or disables  the translation mode of a message."
 msgstr "Active ou désactive le mode de traduction d'un message."
 
-#: appModules/thunderbird.py:894
+#: appModules/thunderbird.py:902
 msgid ""
 "Enables or disables the display of the cleaned or translated   message in a "
 "window."
 msgstr ""
 "Active ou désactive l'affichage du message épuré ou traduit dans une fenêtre."
 
-#: appModules/thunderbird.py:901
+#: appModules/thunderbird.py:909
 msgid ""
 "Folders : displays the accounts menu then  the folders menu for the chosen "
 "account."
@@ -1088,15 +1099,15 @@ msgstr ""
 "Dossiers : affiche le menu des comptes puis celui des dossiers du compte "
 "choisi"
 
-#: appModules/thunderbird.py:907
+#: appModules/thunderbird.py:915
 msgid "Folders : displays the menu of all inbox folders"
 msgstr "Dossiers: affiche le menu de tous les dossiers de Courrier entrant"
 
-#: appModules/thunderbird.py:913
+#: appModules/thunderbird.py:921
 msgid "Folders : displays the menu of unread inbox folders"
 msgstr "Dossiers: affiche le menu des dossiers de Courrier entrant non lus"
 
-#: appModules/thunderbird.py:921
+#: appModules/thunderbird.py:929
 msgid ""
 "Folders : displays the accounts menu then the unread folders menu for the "
 "chosen account."
@@ -1104,7 +1115,7 @@ msgstr ""
 "Dossiers : affiche le menu des comptes puis celui des dossiers non lus du "
 "compte choisi"
 
-#: appModules/thunderbird.py:934
+#: appModules/thunderbird.py:942
 msgid ""
 "Focus : 1 press select the current folder in the folder tree, 2 presesses "
 "display a menu  allowings to choose an mail account to reach in the folder "
@@ -1114,7 +1125,7 @@ msgstr ""
 "dossiers, 2 appuis affiche un menu permettant de choisir le compte de "
 "messagerie à atteindre dans l'arborescence des dossiers. "
 
-#: appModules/thunderbird.py:955
+#: appModules/thunderbird.py:963
 msgid ""
 "Focus : selects a message in the message list from anywhere in the main "
 "window."
@@ -1122,19 +1133,19 @@ msgstr ""
 "Focus : sélectionne un message dans la liste des messages depuis n'importe "
 "où dans la fenêtre principale."
 
-#: appModules/thunderbird.py:989
+#: appModules/thunderbird.py:997
 msgid "Attachments : announces or displays the attachment pane."
 msgstr "Pièces jointes : annonce ou affiche ce panneau."
 
-#: appModules/thunderbird.py:997
+#: appModules/thunderbird.py:1005
 msgid "Press alt+upArrow before navigating through quotes in a message."
 msgstr "Pressez alt+flèche haut avant de naviguer dans les citations"
 
-#: appModules/thunderbird.py:1006
+#: appModules/thunderbird.py:1014
 msgid "Navigates through quotes in a message"
 msgstr "Navigue dans les citations d'un message"
 
-#: appModules/thunderbird.py:1022
+#: appModules/thunderbird.py:1030
 msgid ""
 "Shows the context menu of actions available in the various Thunderbird "
 "windows."
@@ -1142,11 +1153,11 @@ msgstr ""
 "Affiche le menu contextuel des actions  disponibles dans les différentes "
 "fenêtres de Thunderbird."
 
-#: appModules/thunderbird.py:1042
+#: appModules/thunderbird.py:1050
 msgid "Shows the Options context menu of Thunderbird+"
 msgstr "Affiche le menu contextuel des options de Thunderbird+"
 
-#: appModules/thunderbird.py:1050
+#: appModules/thunderbird.py:1058
 msgid ""
 "Shows the dialog for editing the delay before reading the message of the "
 "separate reading window."
@@ -1154,7 +1165,7 @@ msgstr ""
 "Affiche le dialogue d'édition du délai avant lecture du message de la "
 "fenêtre séparée de lecture."
 
-#: appModules/thunderbird.py:1058
+#: appModules/thunderbird.py:1066
 msgid ""
 "Shows the dialog for editing the two delays used for focusing after deleting "
 "a message."
@@ -1162,31 +1173,31 @@ msgstr ""
 "Affiche le dialogue d'édition des deux délais utilisés pour  la "
 "focalisation  après la suppression d'un message."
 
-#: appModules/thunderbird.py:1068
+#: appModules/thunderbird.py:1076
 msgid "Present: Headers and message pane."
 msgstr "Présent : volet des entêtes et du message."
 
-#: appModules/thunderbird.py:1070
+#: appModules/thunderbird.py:1078
 msgid "Missing : headers and message pane."
 msgstr "Absent : volet des entêtes et du message."
 
-#: appModules/thunderbird.py:1071
+#: appModules/thunderbird.py:1079
 msgid "Turn on or off the preview messages panel"
 msgstr "Affiche ou masque le volet des entêtes et d'aperçu du message."
 
-#: appModules/thunderbird.py:1076
+#: appModules/thunderbird.py:1084
 msgid "Shows the add-on help in a web page"
 msgstr "Affiche l'aide de l'extension dans une page web"
 
-#: appModules/thunderbird.py:1256
+#: appModules/thunderbird.py:1265
 msgid "Re "
 msgstr "Ré "
 
-#: appModules/thunderbird.py:1362
+#: appModules/thunderbird.py:1371
 msgid "No messages displayed"
 msgstr "Aucun message affiché"
 
-#: appModules/thunderbird.py:1363
+#: appModules/thunderbird.py:1372
 msgid "Filter removed"
 msgstr "Filtre supprimé"
 

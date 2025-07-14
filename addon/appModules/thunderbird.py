@@ -224,9 +224,9 @@ class AppModule(thunderbird.AppModule):
 		role = obj.role
 		# sharedVars.log(obj, "Foreground")
 		if role == controlTypes.Role.FRAME and  sharedVars.replyTo :
-			# obj.name = sharedVars.replyTo + str(obj.name)
-			ui.message(sharedVars.replyTo + " " + str(obj.name)) 
-			sharedVars.replyTo = ""
+			sharedVars.replyTo = False
+			speech.setSpeechMode(speech.SpeechMode.talk)			
+			msgComposeWindow.msgComposeWindow.announceFildTo(obj)
 			return # nextHandler()
 	
 		if role == controlTypes.Role.DIALOG :
@@ -762,12 +762,12 @@ class AppModule(thunderbird.AppModule):
 			return gesture.send()
 
 	def script_smartReplyToSender(self, gesture) :
-		wx.CallLater(25, utils.smartReplyV2,False, 0)
+		wx.CallLater(25, utils.smartReplyV3,False, 0)
 	script_smartReplyToSender.__doc__ = _("Smart reply : replies to the sender or to the  group")
 	script_smartReplyToSender.category = sharedVars.scriptCategory
 
 	def script_smartReplyToAll(self, gesture) :
-		wx.CallLater(25, utils.smartReplyV2, True, 0)
+		wx.CallLater(25, utils.smartReplyV3, True, 0)
 	script_smartReplyToAll.__doc__ = _("Smart reply : with Shift,  replies to all or to the sender in a group")
 	script_smartReplyToAll.category = sharedVars.scriptCategory
 
@@ -775,6 +775,14 @@ class AppModule(thunderbird.AppModule):
 	def  script_sharedAltEqual(self, gesture) : # native context menu of active tab
 		if sharedVars.curFrame != "messengerWindow" : return
 		messengerWindow.tabs.tabContextMenu(self, sharedVars.oCurFrame)
+	script_sharedAltEqual.__doc__ = _("Tabs: Displays the context menu of the selected tab in the main window.")
+	script_sharedAltEqual.category = sharedVars.scriptCategory
+
+	def  script_sharedCtrlF8(self, gesture) : # show tabs menu
+		if sharedVars.curFrame != "messengerWindow" : return gesture.send()
+		messengerWindow.tabs.showTabMenu(self, api.getFocusObject())
+	script_sharedCtrlF8.__doc__ = _("Tabs: Displays the open tabs menu in the main window.")
+	script_sharedCtrlF8.category = sharedVars.scriptCategory
 
 	def script_sendCtrlF4(self, gesture) :
 		if "shift"  in gesture.modifierNames :  return gesture.send()
@@ -906,6 +914,19 @@ class AppModule(thunderbird.AppModule):
 		wx.CallLater(50, messengerWindow.folderTreeItem.fMenuInboxes, False)
 	script_sharedAltX.__doc__ = _("Folders : displays the menu of all inbox folders")
 	script_sharedAltX.category = sharedVars.scriptCategory
+
+	def script_sharedAltB(self, gesture) :
+		if sharedVars.curTab !=  "main" : return gesture.send()
+		wx.CallLater(50, messengerWindow.folderTreeItem.fMenuAllFolders, unRead=False)
+	script_sharedAltB.__doc__ = _("Folders :, displays the menu of all folders")
+	script_sharedAltB.category = sharedVars.scriptCategory
+
+	def script_sharedAltW(self, gesture) :
+		if sharedVars.curTab !=  "main" : return gesture.send()
+		wx.CallLater(50, messengerWindow.folderTreeItem.fMenuAllFolders, unRead=True)
+	script_sharedAltW.__doc__ = _("Folders :, displays the menu of all unread folders")
+	script_sharedAltW.category = sharedVars.scriptCategory
+
 
 	def script_sharedAltV(self, gesture) :
 		if sharedVars.curTab !=  "main" : return gesture.send()
@@ -1132,6 +1153,7 @@ class AppModule(thunderbird.AppModule):
 		"kb:alt+control+c": "sharedAltCtrlC",
 		"kb:alt+x": "sharedAltX",
 		"kb:alt+v": "sharedAltV",
+		"kb:alt+b": "sharedAltB",
 		"kb:alt+home": "sharedAltHome",
 		"kb:alt+control+home": "sharedAltHome",
 		"kb:alt+pagedown":"sharedAltPageDown",
@@ -1166,6 +1188,7 @@ class AppModule(thunderbird.AppModule):
 		"kb:control+0": "sharedCtrlN",
 		utis.gestureFromScanCode(13, "kb:control+") : "sharedCtrlN", # 13 : first hey at the left of backspace
 		utis.gestureFromScanCode(13, "kb:alt+") : "sharedAltEqual",
+		"kb:control+f8": "sharedCtrlF8", # show tabs menu
 		# "kb:alt+pageup": "smartReplyToSender", # smart reply
 		"kb:control+t": "smartReplyToSender",
 		"kb:control+shift+t": "smartReplyToAll", 
