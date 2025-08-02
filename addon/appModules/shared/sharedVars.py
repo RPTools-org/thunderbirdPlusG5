@@ -1,5 +1,6 @@
 #-*- coding:utf-8 -*
 debug = False
+TBWnd = 0
 replyTo = ""
 nPressed = False
 delPressed = False

@@ -90,6 +90,7 @@ class FolderTreeItem (IAccessible):
 
 # functions version 5
 def fMenuFolders(o, unread=False) :
+	sharedVars.TBWnd = winUser.getForegroundWindow()
 	ID = str(utils.getIA2Attr(o)).split("-")[0]
 	# sharedVars.logte("fMenuFolders ID : " + ID)
 	if ID not in "all,smart,unread,tags" :
@@ -204,8 +205,10 @@ class InboxesMenu() :
 
 	def onIbMenu(self, evt):
 		o = self.ibFolders[evt.Id]
-		self.ibFolders  = [] # freess memory after usage
+		# self.ibFolders  = [] # freess memory after usage
 		utis.setSpeech(False)
+		if sharedVars.TBWnd :
+			winUser.setForegroundWindow(sharedVars.TBWnd)
 		sharedVars.menuClosing = True 
 		o.scrollIntoView()
 		o.doAction()
@@ -319,6 +322,8 @@ class FolderMenu() :
 			if self.type == 0 : # regular menu item, request to focus folderTree
 				# beep(100, 30)
 				utis.setSpeech(False)
+				if sharedVars.TBWnd :
+					winUser.setForegroundWindow(sharedVars.TBWnd)
 				sharedVars.menuClosing = True 
 				o.scrollIntoView()
 				o.doAction()
@@ -326,8 +331,9 @@ class FolderMenu() :
 				# if controlTypes.State.COLLAPSED  in o.states : CallAfter(KeyboardInputGesture.fromName("rightArrow").send)
 			elif self.type == 1 : # request to display folders of the choosen  account 
 				# beep(250, 40)
-				o.scrollIntoView()
-				o.doAction()
+				#  22025-07-30 : We no longer preselect the account to be able to press Escape in the account menu of the account without changing the focus.
+				# o.scrollIntoView()
+				# o.doAction()
 				CallAfter(fMenuFolderFromAccount, o , False)
 			elif self.type == 2 : # request to display unread folders of the choosen  account 
 				# beep(440, 40)
@@ -363,6 +369,7 @@ def  fMenuInboxes(unread) :
 	# sharedVars.log(o, "folderTree  first item")
 
 def fMenuAllFolders(unRead=False) :
+	sharedVars.TBWnd = winUser.getForegroundWindow()
 	o = utils.getFolderTreeFromFG()
 	if not o : return beep(100, 30)
 	# get the   first item
@@ -372,6 +379,7 @@ def fMenuAllFolders(unRead=False) :
 	callLater(10, m.showMenu,title="All Folders, menu")
 
 def fMenuAccounts(type=1) :
+	sharedVars.TBWnd = winUser.getForegroundWindow()
 	o = utils.getFolderTreeFromFG()
 	if not o : return beep(100, 30)
 	# get the first item
@@ -396,6 +404,7 @@ def fMenuAccounts(type=1) :
 	callLater(10, m.showMenu, title=titl)
 
 def fMenuFolderFromAccount(accountNode, unrd=False) :
+	# 2025-07-30 : sharedVars.TBWnd was stored  before displaying the account menu
 	speech.cancelSpeech()
 	# __init__(self, startNode, unread=False, recurs=True, type=0, allFolders=0) 
 	m = FolderMenu(startNode=accountNode, unread=unrd,recurs=True, type=0)

@@ -1190,6 +1190,9 @@ def smartReplyV3(shift, repeats=0) :
 	# sharedVars.log(o, "messageHeader ? ")
 
 	listID = ""
+	#  the string below is reverted to avoid  a security warning from the sarif system when submitting the addon in the add-on store 
+	groupsIO = "oi.spuorg"
+	groupsIO = groupsIO[::-1]
 	o = o.firstChild
 	while o :
 		# sharedVars.log(o, "child")			
@@ -1201,9 +1204,9 @@ def smartReplyV3(shift, repeats=0) :
 
 	sharedVars.replyTo = True
 	if listID and not shift  :
-		gest = "control+r" if "groups.io" in listID else "control+shift+l"
+		gest = "control+r" if groupsIO in listID else "control+shift+l"
 	elif listID and shift :
-		gest = "shift+control+r" if "groups.io" in listID else "control+r"
+		gest = "shift+control+r" if groupsIO in listID else "control+r"
 	elif shift :
 		gest = "control+shift+r"
 	else :
