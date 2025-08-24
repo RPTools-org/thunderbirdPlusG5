@@ -6,9 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: thunderbirdPlusG5\n"
-"Report-Msgid-Bugs-To: 'nvda-translations@groups.io'\n"
-"POT-Creation-Date: 2025-06-16 16:10+0200\n"
-"PO-Revision-Date: 2025-06-16 16:11+0200\n"
+"Report-Msgid-Bugs-To: nvda-translations@groups.io\n"
+"POT-Creation-Date: 2025-08-23 16:22+0000\n"
+"PO-Revision-Date: 2025-08-24 09:02+0300\n"
 "Last-Translator: Pierre-Louis R. <plr.listes@rptools.org>\n"
 "Language-Team: \n"
 "Language: uk_UA\n"
@@ -17,1002 +17,112 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.7\n"
 "X-Poedit-Basepath: ../../..\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: appModules/messengerWindow/folderTreeItem.py:25
-msgid "Drafts|Deleted"
-msgstr "Чернетки|Вилучено"
-
-#: appModules/messengerWindow/folderTreeItem.py:60
-msgid "selects the first unread message in the list from the folder tree."
-msgstr "вибирає перше непрочитане повідомлення у списку прямо з дерева тек."
-
-#: appModules/messengerWindow/folderTreeItem.py:65
+#. Add-on description
+#. Translators: Long description to be shown for this add-on on add-on information from add-ons manager
+#: addon/buildVars.py:26 buildVars.py:26
 msgid ""
-"Folders : displays a menu allowing you to reach a subfolder of your choice."
+"This add-on significantly increases the efficiency and comfort of using "
+"Thunderbird 115 with NVDA.\n"
+"For more information, visit :\n"
+"https://www.rptools.org/NVDA-Thunderbird/get.php?pg=manual&v=g5&lang=en"
 msgstr ""
-"Теки : відкриває меню, яке дає змогу перейти до підтеки за вашим вибором."
+"Цей додатокзначно підвищує ефективність і комфорт використання Thunderbird "
+"115 з NVDA.\n"
+"Для отримання додаткової інформації відвідайте :\n"
+"https://www.rptools.org/NVDA-Thunderbird/get.php?pg=manual&v=g5&lang=uk"
 
-#: appModules/messengerWindow/folderTreeItem.py:70
+#. Translators: message asking the user wether Mozilla whould be disabled or not
+#: addon/installTasks.py:33
 msgid ""
-"Folders : displays a menu allowing you to reach an unread folder of the "
-"current account."
+"Mozilla Apps Enhancements has been detected on your NVDA installation. In "
+"order for thunderbirdPlus to work without conflicts, the thunderbird module "
+"of Mozilla Apps Enhancements must be disabled. Would you like to do so now "
+"and install ThunderbirdPlus ? \n"
+"If you answer No, the installation will fail."
 msgstr ""
-"Теки : відкриває меню, з якого можна перейти до непрочитаної теки поточного "
-"облікового запису."
-
-#: appModules/messengerWindow/folderTreeItem.py:78
-msgid "Folders : display a menu  of all accounts and folders."
-msgstr "Теки : відкриває меню всіх облікових записів і тек."
-
-#: appModules/messengerWindow/folderTreeItem.py:87
-msgid "Folders : display a menu of all unread accounts and folders."
-msgstr "Теки: відкриває меню всіх непрочитаних облікових записів і тек."
-
-#: appModules/messengerWindow/folderTreeItem.py:113
-msgid "Unified folders"
-msgstr "Об'єднані теки"
-
-#: appModules/messengerWindow/folderTreeItem.py:119
-#: appModules/messengerWindow/messageListItem.py:270
-#: appModules/messengerWindow/messageListItem.py:275
-msgid "Tags"
-msgstr "Мітки"
-
-#: appModules/messengerWindow/folderTreeItem.py:191
-msgid "No unread Inbox folder  found"
-msgstr "Не знайдено жодної непрочитаної теки «Вхідні»"
-
-#: appModules/messengerWindow/folderTreeItem.py:194
-msgid "Unread inbox Folders, menu"
-msgstr "Непрочитані вхідні Теки, меню"
-
-#: appModules/messengerWindow/folderTreeItem.py:196
-msgid "All inbox Folders, menu"
-msgstr "Усі вхідні теки, меню"
-
-#: appModules/messengerWindow/folderTreeItem.py:247
-#: appModules/thunderbird.py:412
-msgid "Collapsed"
-msgstr "Згорнуто"
-
-#: appModules/messengerWindow/folderTreeItem.py:251
-#: appModules/messengerWindow/folderTreeItem.py:317
-msgid "Inbox"
-msgstr "Вхідні"
-
-#: appModules/messengerWindow/folderTreeItem.py:254
-msgid "Account"
-msgstr "Обліковий запис"
-
-#: appModules/messengerWindow/folderTreeItem.py:254
-#: appModules/messengerWindow/folderTreeItem.py:255
-msgid "Unified"
-msgstr "Об'єднані"
-
-#: appModules/messengerWindow/folderTreeItem.py:297
-msgid "Choose an account with unread"
-msgstr "Вибрати обліковий запис із непрочитаними"
-
-#: appModules/messengerWindow/folderTreeItem.py:300
-msgid "Choose an account"
-msgstr "Виберіть обліковий запис"
-
-#: appModules/messengerWindow/folderTreeItem.py:346
-msgid "Accounts, menu"
-msgstr "Облікові записи, меню"
-
-#: appModules/messengerWindow/folderTreeItem.py:348
-msgid "Accounts with unread, menu"
-msgstr "Облікові записи з непрочитаними, меню"
-
-#: appModules/messengerWindow/folderTreeItem.py:351
-msgid "Menu, Unread folders of"
-msgstr "Меню, Непрочитані теки у"
-
-#: appModules/messengerWindow/folderTreeItem.py:353
-msgid "Menu, folders of "
-msgstr "Меню, теки у "
-
-#: appModules/messengerWindow/menuMain.py:42
-msgid "Help\tCtrlF1"
-msgstr "Довідка\tCtrlF1"
-
-#: appModules/messengerWindow/menuMain.py:44
-msgid "Change log"
-msgstr "Журнал змін"
-
-#: appModules/messengerWindow/menuMain.py:45
-msgid "Notification page"
-msgstr "Сторінка сповіщень"
-
-#: appModules/messengerWindow/menuMain.py:46
-msgid "Donate"
-msgstr "Пожертвувати"
-
-#: appModules/messengerWindow/menuMain.py:49
-msgid "Write to support (after reading the manual and the change history)"
-msgstr ""
-"Написати в службу підтримки (після прочитання інструкції та історії змін)"
-
-#: appModules/messengerWindow/menuMain.py:50
-msgid "Join the thunderbird-dv mailing list (French)"
-msgstr "Приєднатися до розсилки thunderbird-dv (французькою мовою)"
-
-#: appModules/messengerWindow/menuMain.py:97
-msgid "Please select  the message list and try again."
-msgstr "Будь ласка, виберіть список повідомлень і спробуйте ще раз."
-
-#: appModules/messengerWindow/menuMain.py:116
-msgid "No attachment to save"
-msgstr "Немає вкладень для збереження"
-
-#: appModules/messengerWindow/menuMain.py:121
-msgid "Open attachments toolbar"
-msgstr "Відкрити панель вкладень"
-
-#: appModules/messengerWindow/menuMain.py:138
-#: appModules/messengerWindow/menuMain.py:156
-msgid "Open"
-msgstr "Відкрити"
-
-#: appModules/messengerWindow/menuMain.py:139
-msgid "More options \tControl+alt+p"
-msgstr "Додаткові параметри \tControl+alt+p"
-
-#: appModules/messengerWindow/menuMain.py:140
-msgid "attachment \""
-msgstr "вкладення \""
-
-#: appModules/messengerWindow/menuMain.py:143
-msgid "attached"
-msgstr "прикріплений"
-
-#: appModules/messengerWindow/menuMain.py:148
-msgid "All ... \tControl+Alt+p. "
-msgstr "Все ... \tControl+Alt+p. "
-
-#: appModules/messengerWindow/menuMain.py:149
-msgid "move to list alt+p"
-msgstr "перейти до списку alt+p"
-
-#: appModules/messengerWindow/menuMain.py:157
-msgid "More options"
-msgstr "Додаткові параметри"
-
-#: appModules/messengerWindow/menuMain.py:257
-msgid ""
-"To get all headers, please open the View Menu, go down to 'Headers' and then "
-"press Enter on 'All'  in the submenu. Then display the grave menu again."
-msgstr ""
-"Щоб отримати всі заголовки, відкрийте меню \"Вигляд\" перейдіть до підменю "
-"\"Заголовки\", а потім натисніть ентер на елементі \"Усі\". Потім знову "
-"відкрийте контекстне меню."
-
-#: appModules/messengerWindow/messageListItem.py:119
-msgid "Line details"
-msgstr "Деталі рядка"
-
-#: appModules/messengerWindow/messageListItem.py:123
-msgid ""
-"Message list : One press announces the current line, two presses displays "
-"the line text in a window."
-msgstr ""
-"Список повідомлень : Одне натискання оголошує поточний рядок, двічі- "
-"виводить текст рядка у вікні."
-
-#: appModules/messengerWindow/messageListItem.py:177
-msgid "No column "
-msgstr "Без колонки "
-
-#: appModules/messengerWindow/messageListItem.py:188
-msgid "No"
-msgstr "Немає"
-
-#: appModules/messengerWindow/messageListItem.py:195
-#, python-brace-format
-msgid "{columnText} copied to clipboard"
-msgstr "{columnText} скопійовано в буфер обміну"
-
-#: appModules/messengerWindow/messageListItem.py:270
-#: appModules/messengerWindow/messageListItem.py:277
-msgid "No tag."
-msgstr "Без мітки."
-
-#: appModules/messengerWindow/messageListItem.py:274
-msgid "No tag on a collapsed discussion"
-msgstr "Немає мітки на згорнутій розмові"
-
-#: appModules/messengerWindow/messageListItem.py:282
-msgid "No More tag."
-msgstr "Більше немає мітки."
-
-#: appModules/messengerWindow/messageListItem.py:283
-#: appModules/messengerWindow/messageListItem.py:303
-msgid "added"
-msgstr "додано"
-
-#: appModules/messengerWindow/messageListItem.py:284
-msgid " removed"
-msgstr " видалено"
-
-#: appModules/messengerWindow/messageListItem.py:301
-msgid "tag"
-msgstr "мітка"
-
-#: appModules/messengerWindow/messageListItem.py:302
-msgid "No more tag."
-msgstr "Більше немає мітки."
-
-#: appModules/messengerWindow/messageListItem.py:304
-msgid "removed"
-msgstr "видалено"
-
-#: appModules/messengerWindow/messageListItem.py:310
-msgid ""
-"Shift + 1 to 8: announces the additions or removals of tags, Shift+0 "
-"announces the tags of the message"
-msgstr ""
-"Shift + 1 до 8: повідомляє про додавання або видалення міток, Shift+0 "
-"повідомляє про мітки повідомлення"
-
-#: appModules/messengerWindow/messageListItem.py:315
-msgid "No tag to remove."
-msgstr "Немає мітки для видалення."
-
-#: appModules/messengerWindow/messageListItem.py:322
-msgid "Press this command twice quickly to delete the"
-msgstr "Двічі швидко натисніть цю команду, щоб видалити"
-
-#: appModules/messengerWindow/messageListItem.py:328
-msgid "All tags have been removed from this message."
-msgstr "З цього повідомлення видалено всі мітки."
-
-#: appModules/messengerWindow/messageListItem.py:330
-msgid "Removes all tags from the selected message."
-msgstr "Видаляє всі мітки з вибраного повідомлення."
-
-#: appModules/messengerWindow/messageListItem.py:351
-msgid "Filtered reading of the message preview pane without leaving the list."
-msgstr ""
-"Спрощене читання панелі попереднього перегляду повідомлень без покидання "
-"списку."
-
-#: appModules/messengerWindow/messageListItem.py:410
-msgid "Deleted"
-msgstr "Видалено"
-
-#: appModules/messengerWindow/messageListItem.py:410
-msgid "Archived"
-msgstr "Заархівовано"
-
-#: appModules/messengerWindow/messageListItem.py:411
-msgid "Current row"
-msgstr "Поточний рядок"
-
-#: appModules/messengerWindow/messageListItem.py:424
-msgid "Press this command twice to mark all messages as read in the folder:"
-msgstr ""
-"Натисніть цю команду двічі, щоб позначити всі повідомлення в теці "
-"прочитаними:"
-
-#: appModules/messengerWindow/messageListItem.py:427
-#, python-brace-format
-msgid "the {name} folder no longer contains unread messages."
-msgstr "тека {name} більше не містить непрочитаних повідомлень."
-
-#: appModules/messengerWindow/messageListItem.py:429
-msgid "not junk"
-msgstr "не спам"
-
-#: appModules/messengerWindow/messageListItem.py:429
-msgid "junk"
-msgstr "спам"
-
-#: appModules/messengerWindow/messageListItem.py:432
-msgid "{} applied. "
-msgstr "{} застосовано. "
-
-#: appModules/messengerWindow/messageListItem.py:434
-msgid "{} applied to: "
-msgstr "{} застосовано до: "
-
-#: appModules/messengerWindow/messageListItem.py:442
-msgid "Shows the quick filter bar from the message list."
-msgstr "Показує панель швидкого фільтрування зі списку повідомлень."
-
-#: appModules/messengerWindow/messageListItem.py:470
-msgid "The reading status has been changed."
-msgstr "Статус читання змінено."
-
-#: appModules/messengerWindow/messageListItem.py:472
-#: appModules/shared/menuSettings.py:175
-msgid "Unread"
-msgstr "Непрочитано"
-
-#: appModules/messengerWindow/messageListItem.py:474
-msgid "Reverses the read and unread status of the selected message"
-msgstr ""
-"Змінює статус вибраного повідомлення з прочитаного або непрочитаного на "
-"протилежний"
-
-#: appModules/messengerWindow/messageListItem.py:608
-msgid "unread"
-msgstr "непрочитане"
-
-#: appModules/messengerWindow/messageListItem.py:611
-#: appModules/thunderbird.py:442
-msgid "Read"
-msgstr "Прочитане"
-
-#: appModules/messengerWindow/messageListItem.py:825
-#: appModules/messengerWindow/tabAddressBook.py:472
-#: appModules/messengerWindow/tabAddressBook.py:473
-#: appModules/messengerWindow/tabAddressBook.py:477
-msgid " of "
-msgstr " з "
-
-#: appModules/messengerWindow/tabAddressBook.py:93
-#: appModules/messengerWindow/tabAddressBook.py:482
-msgid "Address book"
-msgstr "Адресна книга"
-
-#: appModules/messengerWindow/tabAddressBook.py:98
-#: appModules/messengerWindow/tabAddressBook.py:486
-msgid "blank"
-msgstr "порожній"
-
-#: appModules/messengerWindow/tabAddressBook.py:101
-#: appModules/messengerWindow/tabAddressBook.py:489
-msgid "Press Alt + down arrow to open the context menu."
-msgstr "Натисніть Alt + стрілка вниз, щоб відкрити контекстне меню."
-
-#: appModules/messengerWindow/tabAddressBook.py:176
-#: appModules/messengerWindow/tabAddressBook.py:515
-msgid "Go to &address books and mailing lists tree"
-msgstr "Перейдіть до &адресних книг і дерева списків розсилки"
-
-#: appModules/messengerWindow/tabAddressBook.py:183
-#: appModules/messengerWindow/tabAddressBook.py:523
-msgid "Go to &contact table"
-msgstr "Перейти до &таблиці контактів"
-
-#: appModules/messengerWindow/tabAddressBook.py:206
-#: appModules/messengerWindow/tabAddressBook.py:546
-msgid "Press Alt + down arrow to open the popup menu"
-msgstr "Натисніть Alt + стрілка вниз, щоб відкрити виринаюче меню"
-
-#: appModules/messengerWindow/tabAddressBook.py:290
-#: appModules/messengerWindow/tabAddressBook.py:622
-msgid "Destinations from "
-msgstr "Напрямки з "
-
-#: appModules/messengerWindow/tabAddressBook.py:322
-#: appModules/messengerWindow/tabAddressBook.py:422
-#: appModules/messengerWindow/tabAddressBook.py:654
-#: appModules/messengerWindow/tabAddressBook.py:754
-msgid "list in "
-msgstr "список в "
-
-#: appModules/messengerWindow/tabs.py:22
-#, python-brace-format
-msgid "Tab {0} of {1} {2}"
-msgstr "Вкладка {0} з {1} {2}"
-
-#: appModules/messengerWindow/tabs.py:45
-msgid "Loading"
-msgstr "Завантаження"
-
-#: appModules/messengerWindow/tabs.py:45
-msgid "Home -"
-msgstr "Домівка"
-
-#: appModules/messengerWindow/tabs.py:55
-msgid "Address Bo"
-msgstr "Адресна книга"
-
-#: appModules/messengerWindow/tabs.py:58
-msgid "Saved Files"
-msgstr "Збережені файли"
-
-#: appModules/messengerWindow/tabs.py:62
-msgid "Account Settings"
-msgstr "Налаштування облікового запису"
-
-#: appModules/messengerWindow/tabs.py:65
-msgid "Settings"
-msgstr "Налаштування"
-
-#: appModules/messengerWindow/tabs.py:68
-msgid "Add-ons Manager"
-msgstr "Додатки"
-
-#: appModules/messengerWindow/tabs.py:71
-msgid "Account Setup"
-msgstr "Налаштування облікового запису"
-
-#: appModules/messengerWindow/tabs.py:74
-msgid "Add-ons for Thunderbird"
-msgstr "Додатки для Thunderbird"
-
-#: appModules/messengerWindow/tabs.py:270
-msgid "There is only one tab open."
-msgstr "Відкрито лише одну вкладку."
-
-#: appModules/messengerWindow/tabs.py:301
-#, python-brace-format
-msgid "Active tab {0} of {1} : {2}, "
-msgstr "Активна вкладка {0} з {1}: {2}, "
-
-#: appModules/msgComposeWindow/menuCompose.py:50
-msgid "lower than"
-msgstr "нижче"
-
-#: appModules/msgComposeWindow/menuCompose.py:50
-msgid "semicolon"
-msgstr "крапка з комою"
-
-#: appModules/msgComposeWindow/menuCompose.py:50
-msgid "colon"
-msgstr "двокрапка"
-
-#: appModules/msgComposeWindow/menuCompose.py:50
-msgid "equal"
-msgstr "дорівнює"
-
-#: appModules/msgComposeWindow/menuCompose.py:52
-msgid "Disabled"
-msgstr "Вимкнено"
-
-#: appModules/msgComposeWindow/menuCompose.py:52
-msgid "Enabled"
-msgstr "Увімкнено"
-
-#: appModules/msgComposeWindow/menuCompose.py:63
-msgid "TB Mail Toolbar"
-msgstr "Панель інструментів TB Mail"
-
-#: appModules/msgComposeWindow/menuCompose.py:64
-msgid "Text formatting"
-msgstr "Форматування тексту"
-
-#: appModules/msgComposeWindow/menuCompose.py:95
-#, python-format
-msgid "%s unavailable"
-msgstr "%s недоступно"
-
-#: appModules/msgComposeWindow/menuCompose.py:101
-msgid " Activated, Déactivated"
-msgstr " Увімкнено, Вимкнено"
-
-#: appModules/msgComposeWindow/menuCompose.py:122
-msgid "Paragraph,&font"
-msgstr "Абзац,&шрифт"
-
-#: appModules/msgComposeWindow/msgComposeWindow.py:58
-msgid "void, From, To, Attachement, CC, BCC, Subject, Reply to"
-msgstr ""
-"порожньо, Від, Кому, вкладення, Копія, Прихована копія, Тема, Відповісти"
-
-#: appModules/msgComposeWindow/msgComposeWindow.py:98
-msgid "No header."
-msgstr "Без заголовка."
-
-#: appModules/msgComposeWindow/msgComposeWindow.py:110
-#, python-brace-format
-msgid "The field {0} is missing, type this command twice quickly to show it."
-msgstr "Поле {0} відсутнє, натисніть двічі швидко, щоб показати його."
-
-#: appModules/msgComposeWindow/msgComposeWindow.py:113
-msgid ""
-"You will find this field by pressing the button: Other addressing fields to "
-"show"
-msgstr ""
-"Ви знайдете це поле, натиснувши кнопку: Інші поля адресування для показу"
-
-#: appModules/msgComposeWindow/msgComposeWindow.py:134
-msgid ""
-"The attachments area is missing. Press Control+Shift+A to add attachements."
-msgstr ""
-"Область вкладень відсутня. Натисніть Control+Shift+A, щоб додати вкладення."
-
-#: appModules/msgComposeWindow/spellCheckDlg.py:148
-msgid "i"
-msgstr "р"
-
-#: appModules/msgComposeWindow/spellCheckDlg.py:149
-msgid "l"
-msgstr "о"
-
-#: appModules/msgComposeWindow/spellCheckDlg.py:150
-msgid "d"
-msgstr "д"
-
-#: appModules/msgComposeWindow/spellCheckDlg.py:151
-msgid "a"
-msgstr "с"
-
-#: appModules/msgComposeWindow/spellCheckDlg.py:152
-msgid "r"
-msgstr "з"
-
-#: appModules/msgComposeWindow/spellCheckDlg.py:198
-msgid ", copied to clipboard"
-msgstr ", скопійовано в буфер обміну"
-
-#: appModules/msgComposeWindow/spellCheckDlg.py:199
-msgid "Announce or spell the misspelled word and the suggested word."
-msgstr ""
-"Озвучити або продиктувати по буквах слово з помилкою та запропоноване слово."
-
-#: appModules/shared/checkListMenu.py:23
-msgid "List of choices"
-msgstr "Варіанти для вибору"
-
-#: appModules/shared/checkListMenu.py:74
-msgid "The options below cannot be checked at the same time :\n"
-msgstr "Параметри нижче не можуть бути позначені одночасно : \n"
-
-#: appModules/shared/checkListMenu.py:77
-msgid "Press escape to return to the option list"
-msgstr "Натисніть Escape, щоб повернутися до списку параметрів"
-
-#: appModules/shared/checkListMenu.py:78
-msgid "Error in two  options - Thunderbird+G5"
-msgstr "Помилка у двох параметрах — Thunderbird+G5"
-
-#: appModules/shared/menuSettings.py:67
-msgid "custom vocalization of rows."
-msgstr "персоналізоване озвучення рядків."
-
-#: appModules/shared/menuSettings.py:69
-#, fuzzy
-#| msgid "Press Alt + down arrow to open the context menu."
-msgid "Message deletion: emulate the context menu."
-msgstr "Натисніть Alt + стрілка вниз, щоб відкрити контекстне меню."
-
-#: appModules/shared/menuSettings.py:70
-msgid "Do not say the window and folder names when entering the list."
-msgstr "Не вимовляти імен вікон і папок під час входу в список."
-
-#: appModules/shared/menuSettings.py:70
-msgid "Combine multiple 'RE' mentions into one"
-msgstr "Об’єднувати кілька позначок «RE» в одну"
-
-#: appModules/shared/menuSettings.py:71
-msgid "Delete the 'Re' mentions in the subject column"
-msgstr "Видаляти позначки «Re» у стовпці теми"
-
-#: appModules/shared/menuSettings.py:72
-msgid "Delete the colons  in the 'Re:' mentions"
-msgstr "Видаляти двокрапки у позначках «Re:»"
-
-#: appModules/shared/menuSettings.py:73
-msgid "Delete digits and dots from the name of the correspondents"
-msgstr "Видаляти цифри та крапки з імен кореспондентів"
-
-#: appModules/shared/menuSettings.py:74
-msgid "Hide mailing list names"
-msgstr "Приховати назви списків розсилки"
-
-#: appModules/shared/menuSettings.py:75
-msgid "Announce 'junk' if displayed in the 'junk Status' column"
-msgstr "Промовляти \"спам\", якщо у стовпці статусу вказане як \"Небажане\""
-
-#: appModules/shared/menuSettings.py:79
-msgid "Folder tree: escape does not bring focus to the message list"
-msgstr "Дерево тек: escape не переводить фокус на список повідомлень"
-
-#: appModules/shared/menuSettings.py:80
-msgid "message list: escape does not bring focus to the folder tree"
-msgstr "список повідомлень: escape не переводить фокус на дерево тек"
-
-#: appModules/shared/menuSettings.py:81
-msgid ""
-"Access the first unread message when first activating the first tab, "
-"otherwise the last message."
-msgstr ""
-"Якщо перша вкладка активується вперше — перейти до першого непрочитаного "
-"повідомлення, інакше — до останнього повідомлення."
-
-#: appModules/shared/menuSettings.py:82
-msgid "Ignore acknowledgment requests"
-msgstr "Ігнорувати запити підтвердження прочитання"
-
-#: appModules/shared/menuSettings.py:83
-msgid ""
-"Partially purify the message when reading it with Space or F4, otherwise "
-"purify it completely."
-msgstr ""
-"Частково очищувати повідомлення при його читанні за допомогою пробілу або "
-"F4, інакше очищувати його повністю."
-
-#: appModules/shared/menuSettings.py:84
-msgid "Always display the  cleaned messages when reading them with Space or F4"
-msgstr ""
-"Завжди показувати спрощені повідомлення при їх читанні за допомогою пробілу "
-"або F4"
-
-#: appModules/shared/menuSettings.py:85
-msgid ""
-"Always display the translation of messages when reading them with Space or F4"
-msgstr ""
-"Завжди показувати переклад повідомлень при їх читанні за допомогою пробілу "
-"або F4"
-
-#: appModules/shared/menuSettings.py:89
-msgid "Spell Check: Spell the misspelled word and the suggested word."
-msgstr ""
-"Перевірка орфографії: вимовляти по буквах слово з помилкою та пропоноване "
-"слово."
-
-#: appModules/shared/menuSettings.py:90
-msgid "Spell Check: Cancel speech before announcing and spelling these words"
-msgstr ""
-"Перевірка орфографії: перервати мовлення перед оголошенням та вимовою цих "
-"слів"
-
-#: appModules/shared/menuSettings.py:92
-msgid "The Esc key closes the message being written"
-msgstr "Клавіша Esc закриває повідомлення, що пишеться"
-
-#: appModules/shared/menuSettings.py:93
-msgid ""
-"Single press on Shift+the key above the tab key to show the option menus, "
-"double press to write the corresponding printable character."
-msgstr ""
-"Натисніть один раз Shift+клавішу над клавішею табуляції, щоб відкрити меню "
-"параметрів, двічі натисніть, щоб ввести відповідний друкований символ."
-
-#: appModules/shared/menuSettings.py:98
-msgid "Message list : deactivate  tag management   to improve responsiveness."
-msgstr ""
-"Список повідомлень : вимкнути керування мітками для покращення швидкодії."
-
-#: appModules/shared/menuSettings.py:99
-msgid "Message list : do not play sound when list is filtered and gets focus."
-msgstr ""
-"Список повідомлень: не відтворювати звук, коли список відфільтровано і він "
-"отримує фокус."
-
-#: appModules/shared/menuSettings.py:100
-msgid ""
-"Separate reading window: do not read the cleaned version of the message when "
-"the window is opened."
-msgstr ""
-"Вікно окремого перегляду: не читати спрощену версію повідомлення, коли вікно "
-"відкрито."
-
-#: appModules/shared/menuSettings.py:101
-msgid "Address book : disable additional features of Thunderbird+G5."
-msgstr "Адресна книга: вимкнути додаткові функції Thunderbird+G5."
-
-#: appModules/shared/menuSettings.py:192
-msgid "Words separated by semicolons :"
-msgstr "Слова, розділені крапкою з комою:"
-
-#: appModules/shared/menuSettings.py:192
-msgid "Edit words to hide in the subject of messages"
-msgstr "Редагування слів для приховування в темі повідомлень"
-
-#: appModules/shared/menuSettings.py:195
-msgid "Delay before document focusing, 20 to 2000 ms::"
-msgstr "Затримка перед фокусуванням документа, від 20 до 2000 мс::"
-
-#: appModules/shared/menuSettings.py:195
-msgid "Special tabs"
-msgstr "Спеціальні вкладки"
-
-#: appModules/shared/menuSettings.py:199
-msgid "Delay 1 space Delay 2 in ms:"
-msgstr "Затримка1 пробіл Затримка2 в мс:"
-
-#: appModules/shared/menuSettings.py:199
-msgid "Focusing delays after deleting a message"
-msgstr "Затримки фокусування після видалення повідомлення"
-
-#: appModules/shared/menuSettings.py:220
-msgid "Backup file does not exist."
-msgstr "Файл резервної копії відсутній."
-
-#: appModules/shared/menuSettings.py:231
-msgid "The configuration has been reset to its default values"
-msgstr "Конфігурацію було скинуто до початкових значень"
-
-#: appModules/shared/menuSettings.py:274
-msgid "MessageList"
-msgstr "Список повідомлень"
-
-#: appModules/shared/menuSettings.py:275
-msgid "Edit words to hide in message subject"
-msgstr "Редагування слів для приховування в темі повідомлень"
-
-#: appModules/shared/menuSettings.py:276
-msgid "Other Options"
-msgstr "Інші параметри"
-
-#: appModules/shared/menuSettings.py:277
-msgid "Main window options"
-msgstr "Параметри головного вікна"
-
-#: appModules/shared/menuSettings.py:288 appModules/shared/menuSettings.py:358
-msgid "Write window options"
-msgstr "Параметри вікна редагування"
-
-#: appModules/shared/menuSettings.py:311 appModules/shared/menuSettings.py:380
-msgid "Deactivations"
-msgstr "Вимкнення функцій"
-
-#: appModules/shared/menuSettings.py:313
-msgid "&Focus and Startup Options"
-msgstr "&Параметри фокусування та запуску"
-
-#: appModules/shared/menuSettings.py:314
-msgid "Open sound folder..."
-msgstr "Відкрити теку звуків."
-
-#: appModules/shared/menuSettings.py:315
-msgid "Backup current configuration file"
-msgstr "Зберегти поточну конфігурацію"
-
-#: appModules/shared/menuSettings.py:316
-msgid "Restore backed up configuration file"
-msgstr "Відновити конфігурацію з резервної копії"
-
-#: appModules/shared/menuSettings.py:317
-msgid "Reset configuration"
-msgstr "Скинути конфігурацію"
-
-#: appModules/shared/menuSettings.py:335
-msgid "Message list options"
-msgstr "Параметри списку повідомлень"
-
-#: appModules/shared/menuSettings.py:345
-msgid "Other  options"
-msgstr "Інші параметри"
-
-#: appModules/shared/menuSettings.py:387
-msgid "Focus and Startup Options"
-msgstr "Параметри фокусування та запуску"
-
-#: appModules/shared/quoteNav.py:42
-msgid "On|Le%date_sender%wrote|écrit"
-msgstr "On|Увімкнено%date_sender%wrote|написав"
-
-#: appModules/shared/quoteNav.py:76
-msgid "Enabling message translation mode, ready."
-msgstr "Увімкнення режиму перекладу повідомлень, готово."
-
-#: appModules/shared/quoteNav.py:77
-msgid "Disabling message translation mode, ready."
-msgstr "Вимкнення режиму перекладу повідомлень, готово."
-
-#: appModules/shared/quoteNav.py:90
-msgid "The Instant Translate add-on is not active or not installed."
-msgstr "Додаток «Instant Translate » не активний або не встановлено."
-
-#: appModules/shared/quoteNav.py:96
-msgid "Enabling message display mode, ready."
-msgstr "Увімкнення режиму відображення повідомлень, готово."
-
-#: appModules/shared/quoteNav.py:97
-msgid "Disabling message display mode, ready."
-msgstr "Вимкнення режиму відображення повідомлень, готово."
-
-#: appModules/shared/quoteNav.py:186
-msgid "Please wait"
-msgstr "Будь ласка, зачекайте"
-
-#: appModules/shared/quoteNav.py:249
-#, python-brace-format
-msgid "{0} messages in chronological order, "
-msgstr "{0} повідомлень у хронологічному порядку, "
-
-#: appModules/shared/quoteNav.py:255
-#, python-brace-format
-msgid "{0} messages, {1} lines, "
-msgstr "{0} повідомлень, {1} рядків, "
-
-#: appModules/shared/quoteNav.py:284
-msgid "Translation"
-msgstr "Переклад"
-
-#: appModules/shared/quoteNav.py:306
-msgid "Preview copied: "
-msgstr "Попередній перегляд скопійовано: "
-
-#: appModules/shared/quoteNav.py:348
-msgid "Original Message|E-mail d'origine|Message d'origine"
-msgstr "Original Message|Оригінальне повідомлення"
-
-#: appModules/shared/quoteNav.py:374
-msgid "You are receiving this message because you are subscribed to the group"
-msgstr "Ви отримали це повідомлення, тому що ви підписані на групу"
-
-#: appModules/shared/quoteNav.py:403
-#, python-format
-msgid " link %s "
-msgstr " посилання %s "
-
-#: appModules/shared/quoteNav.py:479
-msgid "From|De|Expéditeur"
-msgstr "From|Від"
-
-#: appModules/shared/quoteNav.py:504
-msgid "wrote"
-msgstr "написав"
-
-#: appModules/shared/startupDlg.py:22
-msgid "Default (do nothing)"
-msgstr "Типово (нічого не робити)"
-
-#: appModules/shared/startupDlg.py:23
-msgid "Last message in message list"
-msgstr "Останнє повідомлення в списку повідомлень"
-
-#: appModules/shared/startupDlg.py:24
-msgid "First message"
-msgstr "Перше повідомлення"
-
-#: appModules/shared/startupDlg.py:25
-msgid "First unread message"
-msgstr "Перше непрочитане повідомлення"
-
-#: appModules/shared/startupDlg.py:26
-msgid "Folder tree"
-msgstr "Дерево тек"
-
-#: appModules/shared/startupDlg.py:29
-msgid "Use this mode when starting Thunderbird"
-msgstr "Використовуйте цей режим під час запуску Thunderbird"
-
-#: appModules/shared/startupDlg.py:30
-msgid ""
-"The folder tree is preselected by the StartWithInbox add-on for Thunderbird"
-msgstr "Дерево тек попередньо обране додатком StartWithinbox для Thunderbird"
-
-#: appModules/shared/startupDlg.py:94
-msgid ""
-"With the {} key in the main window or Space in the folder tree, bring the "
-"&focus to:"
-msgstr ""
-"За допомогою клавіші {} у головному вікні або пробілу в дереві тек "
-"перенесіть фокус на:"
-
-#: appModules/shared/textDialog.py:39
-msgid "Informations"
-msgstr "Інформація"
-
-#: appModules/shared/textDialog.py:72
-msgid "Co&py to Clipboard"
-msgstr "&Копіювати в буфер обміну"
-
-#: appModules/shared/textDialog.py:77
-msgid "Close"
-msgstr "Закрити"
-
-#: appModules/shared/textDialog.py:98 appModules/shared/utis.py:620
-msgid "Copied"
-msgstr "Скопійовано"
-
-#: appModules/shared/textDialog.py:105
-msgid "Error, the information cannot be copied to the clipboard"
-msgstr "Помилка, інформацію неможливо скопіювати в буфер обміну"
-
-#: appModules/shared/utils115.py:539
-msgid "Filtered : "
-msgstr "Відфільтровано: "
-
-#: appModules/shared/utils115.py:558
-msgid "Filter : "
-msgstr "Фільтр: "
-
-#: appModules/shared/utils115.py:658 appModules/shared/utils115.py:1189
-msgid "The preview pane is not displayed. Press F8 and try again please"
-msgstr "Панель повідомлень приховано. Натисніть F8 і спробуйте щераз"
-
-#: appModules/shared/utils115.py:878 appModules/thunderbird.py:831
-msgid "Press right arrow and retry, please."
-msgstr "Натисніть стрілку вправо та повторіть спробу."
-
-#: appModules/shared/utils115.py:890 appModules/thunderbird.py:972
-msgid "The headers pane is not displayed. Please press F8 then try again"
-msgstr "Панель повідомлень приховано. Натисніть F8 і повторіть спробу"
-
-#: appModules/shared/utils115.py:898
-msgid "The headers are not available"
-msgstr "Заголовки недоступні"
-
-#: appModules/shared/utils115.py:990
-msgid "void,From,Subject: ,Date,To,CC,BCC,Reply to"
-msgstr "порожньо,Від,Тема: ,Дата,Кому,Копія,Прихована копія,Відповісти"
-
-#: appModules/shared/utils115.py:991
-#, python-brace-format
-msgid "The {0} header is missing from this message."
-msgstr "У цьому повідомленні відсутній заголовок {0}."
-
-#: appModules/shared/utils115.py:1002
-msgid "Copy to clipboard"
-msgstr "Копіювати в буфер обміну"
-
-#: appModules/shared/utils115.py:1034
-msgid "No attachment."
-msgstr "Без вкладень."
-
-#: appModules/shared/utils115.py:1066
-msgid "Two presses to reach the list."
-msgstr "Два натискання, щоб відкрити список."
-
-#: appModules/shared/utils115.py:1236
-msgid "Jean-Paul Dany via groups.io <"
-msgstr ""
-
-#: appModules/shared/utils115.py:1241
-#, fuzzy
-#| msgid "To: "
-msgid "To"
-msgstr "Кому: "
-
-#: appModules/shared/utils115.py:1260
-msgid "Reply"
-msgstr ""
-
-#: appModules/shared/utis.py:521
-msgid "The status bar is not displayed."
-msgstr "Відображення рядка стану вимкнено."
-
-#: appModules/shared/utis.py:644
-msgid "No Attachement."
-msgstr "Без вкладення."
-
-#: appModules/shared/utis.py:708
-msgid "File not found"
-msgstr "Файл не знайдено"
-
-#: appModules/thunderbird.py:394
+"У вашій конфігурації NVDA було виявлено Mozilla Apps Enhancements. Для того "
+"щоб ThunderbirdPlus працював без конфліктів, модуль Thunderbird в Mozilla "
+"Apps Enhancements має бути вимкнено. Бажаєте зробити це зараз і встановити "
+"ThunderbirdPlus? \n"
+"Якщо ви відповісте «Ні», встановлення завершиться невдало."
+
+#. Translators: question title
+#: addon/installTasks.py:35
+msgid "Running Mozilla Apps Enhancements detected"
+msgstr "Виявлено активний додаток Mozilla Apps Enhancements"
+
+#: addon/installTasks.py:42
+msgid "Installation cancelled"
+msgstr "Встановлення скасовано"
+
+#: addon/appModules/thunderbird.py:394
 msgid "Sort by "
 msgstr "Сортувати за "
 
-#: appModules/thunderbird.py:447
+#. sharedVars.logte("Option junkStatusCol:" + str(junkStatusCol))
+#. playSound_unread = False #options.as_bool ("playsound_unread")
+#. sharedVars.logte("Original rowName:" + sharedVars.curTTRow)
+#. l is the line we are going to build
+#: addon/appModules/thunderbird.py:412
+#: addon/appModules/messengerWindow/folderTreeItem.py:250
+msgid "Collapsed"
+msgstr "Згорнуто"
+
+#: addon/appModules/thunderbird.py:442
+#: addon/appModules/messengerWindow/messageListItem.py:611
+msgid "Read"
+msgstr "Прочитане"
+
+#: addon/appModules/thunderbird.py:447
 msgid "Starred"
 msgstr "Із зірочкою"
 
-#: appModules/thunderbird.py:478
+#: addon/appModules/thunderbird.py:478
 msgid "attachment"
 msgstr "вкладення"
 
-#: appModules/thunderbird.py:482
+#: addon/appModules/thunderbird.py:482
 msgid "Spam"
 msgstr "Спам"
 
-#: appModules/thunderbird.py:583
+#. beep(600, 30)
+#. nextHandler()
+#. log += "Button Id=" + ID + ", " + str(IA2Class) + " " + str(child.name) + "\n"
+#. log += "end alert\n"
+#. sharedVars.logte(log)
+#. Translators: alert : this is a draft
+#: addon/appModules/thunderbird.py:583
 msgid "draft"
 msgstr "чернетка"
 
-#: appModules/thunderbird.py:586
+#. Translators: alert : Thunderbird thinks this message is fraudulent
+#: addon/appModules/thunderbird.py:586
 msgid "bird thinks this message is Junk"
 msgstr "bird вважає, що це повідомлення є Спамом"
 
-#: appModules/thunderbird.py:590
+#. Translators: alert : remote content
+#: addon/appModules/thunderbird.py:590
 msgid "remote content"
 msgstr "віддалений вміст"
 
-#: appModules/thunderbird.py:593
+#. Translators: 2022-12-12 alert X @gmail.com has asked to be notified when you read this message.
+#: addon/appModules/thunderbird.py:593
 msgid "notified when you"
 msgstr "запитує сповіщення після прочитання"
 
-#: appModules/thunderbird.py:732
+#: addon/appModules/thunderbird.py:732
 msgid "Blank"
 msgstr "Порожньо"
 
-#: appModules/thunderbird.py:736
+#: addon/appModules/thunderbird.py:736
 msgid "Status line without data"
 msgstr "Рядок стану без даних"
 
-#: appModules/thunderbird.py:738
+#: addon/appModules/thunderbird.py:738
 msgid ""
 "Announces abbreviated status line and message filtering information if "
 "applicable"
@@ -1020,19 +130,29 @@ msgstr ""
 "Оголошує скорочений рядок стану та інформацію про фільтрування повідомлень, "
 "якщо це можливо"
 
-#: appModules/thunderbird.py:766
+#: addon/appModules/thunderbird.py:766
 msgid "Smart reply : replies to the sender or to the  group"
-msgstr ""
+msgstr "Розумна відповідь : відповіді відправнику або групі"
 
-#: appModules/thunderbird.py:771
+#: addon/appModules/thunderbird.py:771
 msgid "Smart reply : with Shift,  replies to all or to the sender in a group"
-msgstr ""
+msgstr "Розумна відповідь:  відповідає всім або відправнику в групі"
 
-#: appModules/thunderbird.py:787
+#: addon/appModules/thunderbird.py:778
+msgid "Tabs: Displays the context menu of the selected tab in the main window."
+msgstr ""
+"Вкладки: Відображає контекстне меню вибраної вкладки в головному "
+"вікні.Відкриває контекстне меню дій, доступних у різних вікнах Thunderbird."
+
+#: addon/appModules/thunderbird.py:784
+msgid "Tabs: Displays the open tabs menu in the main window."
+msgstr "Вкладки: Відображає меню відкритих вкладок у головному вікні."
+
+#: addon/appModules/thunderbird.py:795
 msgid "Sends Control+F4 to the current window."
 msgstr "Надсилає Control+F4 поточному вікну."
 
-#: appModules/thunderbird.py:814
+#: addon/appModules/thunderbird.py:822
 msgid ""
 "In the main window, 1 press: Alt+1 to 8: reads the message header, Alt+9 "
 "announces the number of attachments, 2 presses: displays the header in an "
@@ -1047,7 +167,13 @@ msgstr ""
 "У вікні редагування, просте натискання: alt+1 до 4 - читає заголовки, "
 "подвійне: потрапляє на заголовок."
 
-#: appModules/thunderbird.py:882
+#. sending right arrow after  a alt+downArrow does not work
+#. does not work because Alt was pressed before :KeyboardInputGesture.fromName ("righTArrow").send()
+#: addon/appModules/thunderbird.py:839 addon/appModules/shared/utils115.py:883
+msgid "Press right arrow and retry, please."
+msgstr "Натисніть стрілку вправо та повторіть спробу."
+
+#: addon/appModules/thunderbird.py:890
 msgid ""
 "Filtered reading of the document in the preview pane, reading tab, reading "
 "or Write window, from the list of messages or the document."
@@ -1056,18 +182,18 @@ msgstr ""
 "читання, вікні перегляду або редагування, зі списку повідомлень або самого "
 "документа."
 
-#: appModules/thunderbird.py:888
+#: addon/appModules/thunderbird.py:896
 msgid "Enables or disables  the translation mode of a message."
 msgstr "Вмикає або вимикає режим перекладу повідомлення."
 
-#: appModules/thunderbird.py:894
+#: addon/appModules/thunderbird.py:902
 msgid ""
 "Enables or disables the display of the cleaned or translated   message in a "
 "window."
 msgstr ""
 "Вмикає або вимикає показ спрощеного чи перекладеного повідомлення у вікні."
 
-#: appModules/thunderbird.py:901
+#: addon/appModules/thunderbird.py:909
 msgid ""
 "Folders : displays the accounts menu then  the folders menu for the chosen "
 "account."
@@ -1075,15 +201,23 @@ msgstr ""
 "Теки : відкриває меню облікових записів, а потім меню тек для вибраного "
 "облікового запису."
 
-#: appModules/thunderbird.py:907
+#: addon/appModules/thunderbird.py:915
 msgid "Folders : displays the menu of all inbox folders"
 msgstr "Теки: відкриває меню всіх вхідних тек"
 
-#: appModules/thunderbird.py:913
+#: addon/appModules/thunderbird.py:921
+msgid "Folders :, displays the menu of all folders"
+msgstr "Теки: відкриває меню всіх вхідних тек"
+
+#: addon/appModules/thunderbird.py:927
+msgid "Folders :, displays the menu of all unread folders"
+msgstr "Теки: відкриває меню всіх вхідних тек"
+
+#: addon/appModules/thunderbird.py:934
 msgid "Folders : displays the menu of unread inbox folders"
 msgstr "Теки: відкриває меню всіх непрочитаних вхідних тек"
 
-#: appModules/thunderbird.py:921
+#: addon/appModules/thunderbird.py:942
 msgid ""
 "Folders : displays the accounts menu then the unread folders menu for the "
 "chosen account."
@@ -1091,7 +225,7 @@ msgstr ""
 "Теки: спочатку відкриває меню облікових записів, потім — меню непрочитаних "
 "тек вибраного облікового запису."
 
-#: appModules/thunderbird.py:934
+#: addon/appModules/thunderbird.py:955
 msgid ""
 "Focus : 1 press select the current folder in the folder tree, 2 presesses "
 "display a menu  allowings to choose an mail account to reach in the folder "
@@ -1101,7 +235,7 @@ msgstr ""
 "натискання відкриває меню поштових облікових записів для переходу в дерево "
 "тек"
 
-#: appModules/thunderbird.py:955
+#: addon/appModules/thunderbird.py:976
 msgid ""
 "Focus : selects a message in the message list from anywhere in the main "
 "window."
@@ -1109,30 +243,34 @@ msgstr ""
 "Фокус : вибирає повідомлення у списку повідомлень з будь-якого місця в "
 "головному вікні."
 
-#: appModules/thunderbird.py:989
+#: addon/appModules/thunderbird.py:993 addon/appModules/shared/utils115.py:895
+msgid "The headers pane is not displayed. Please press F8 then try again"
+msgstr "Панель повідомлень приховано. Натисніть F8 і повторіть спробу"
+
+#: addon/appModules/thunderbird.py:1010
 msgid "Attachments : announces or displays the attachment pane."
 msgstr "Вкладення : оголошує або показує панель вкладень."
 
-#: appModules/thunderbird.py:997
+#: addon/appModules/thunderbird.py:1018
 msgid "Press alt+upArrow before navigating through quotes in a message."
 msgstr ""
 "Натисніть alt+стрілка вгору Перед переміщенням по цитатах в повідомленні."
 
-#: appModules/thunderbird.py:1006
+#: addon/appModules/thunderbird.py:1027
 msgid "Navigates through quotes in a message"
 msgstr "Переміщується між цитатами в повідомленні"
 
-#: appModules/thunderbird.py:1022
+#: addon/appModules/thunderbird.py:1043
 msgid ""
 "Shows the context menu of actions available in the various Thunderbird "
 "windows."
 msgstr "Відкриває контекстне меню дій, доступних у різних вікнах Thunderbird."
 
-#: appModules/thunderbird.py:1042
+#: addon/appModules/thunderbird.py:1063
 msgid "Shows the Options context menu of Thunderbird+"
 msgstr "Відкриває контекстне меню параметрів Thunderbird+"
 
-#: appModules/thunderbird.py:1050
+#: addon/appModules/thunderbird.py:1071
 msgid ""
 "Shows the dialog for editing the delay before reading the message of the "
 "separate reading window."
@@ -1140,7 +278,7 @@ msgstr ""
 "Відкриває діалог редагування затримки перед початком читання повідомлення в "
 "окремому вікні перегляду."
 
-#: appModules/thunderbird.py:1058
+#: addon/appModules/thunderbird.py:1079
 msgid ""
 "Shows the dialog for editing the two delays used for focusing after deleting "
 "a message."
@@ -1148,71 +286,1058 @@ msgstr ""
 "Відкриває діалог для редагування двох затримок, що використовуються для "
 "фокусування після видалення повідомлення."
 
-#: appModules/thunderbird.py:1068
+#: addon/appModules/thunderbird.py:1089
 msgid "Present: Headers and message pane."
 msgstr "Показано: панель повідомлень."
 
-#: appModules/thunderbird.py:1070
+#: addon/appModules/thunderbird.py:1091
 msgid "Missing : headers and message pane."
 msgstr "Приховано : панель повідомлень."
 
-#: appModules/thunderbird.py:1071
+#: addon/appModules/thunderbird.py:1092
 msgid "Turn on or off the preview messages panel"
 msgstr "Показує або приховує панель повідомлень"
 
-#: appModules/thunderbird.py:1076
+#: addon/appModules/thunderbird.py:1097
 msgid "Shows the add-on help in a web page"
 msgstr "Відкриває довідку додатка у браузері"
 
-#: appModules/thunderbird.py:1256
+#. "responseMentionGroup"
+#: addon/appModules/thunderbird.py:1279
 msgid "Re "
 msgstr "Re "
 
-#: appModules/thunderbird.py:1362
+#: addon/appModules/thunderbird.py:1385
 msgid "No messages displayed"
 msgstr "Немає повідомлень"
 
-#: appModules/thunderbird.py:1363
+#: addon/appModules/thunderbird.py:1386
 msgid "Filter removed"
 msgstr "Фільтр видалено"
 
-#: buildVars.py:29
-msgid ""
-"This add-on significantly increases the efficiency and comfort of using "
-"Thunderbird 115 with NVDA.\n"
-"For more information, visit :\n"
-"https://www.rptools.org/NVDA-Thunderbird/get.php?pg=manual&v=g5&lang=en"
-msgstr ""
-"Цей додатокзначно підвищує ефективність і комфорт використання Thunderbird "
-"115 з NVDA.\n"
-"Для отримання додаткової інформації відвідайте :\n"
-"https://www.rptools.org/NVDA-Thunderbird/get.php?pg=manual&v=g5&lang=uk"
+#: addon/appModules/messengerWindow/folderTreeItem.py:25
+msgid "Drafts|Deleted"
+msgstr "Чернетки|Вилучено"
 
-#: globalPlugins/ThunderbirdGlob.py:126
+#: addon/appModules/messengerWindow/folderTreeItem.py:60
+msgid "selects the first unread message in the list from the folder tree."
+msgstr "вибирає перше непрочитане повідомлення у списку прямо з дерева тек."
+
+#: addon/appModules/messengerWindow/folderTreeItem.py:65
+msgid ""
+"Folders : displays a menu allowing you to reach a subfolder of your choice."
+msgstr ""
+"Теки : відкриває меню, яке дає змогу перейти до підтеки за вашим вибором."
+
+#: addon/appModules/messengerWindow/folderTreeItem.py:70
+msgid ""
+"Folders : displays a menu allowing you to reach an unread folder of the "
+"current account."
+msgstr ""
+"Теки : відкриває меню, з якого можна перейти до непрочитаної теки поточного "
+"облікового запису."
+
+#: addon/appModules/messengerWindow/folderTreeItem.py:78
+msgid "Folders : display a menu  of all accounts and folders."
+msgstr "Теки : відкриває меню всіх облікових записів і тек."
+
+#. o = fGetAccountNode(self)
+#. if not o : return
+#. m = FolderMenu(o.parent, unread=True, recurs=True, allFolders=1)
+#. callLater(10, m.showMenu,title="All Folders, menu")
+#: addon/appModules/messengerWindow/folderTreeItem.py:87
+msgid "Folders : display a menu of all unread accounts and folders."
+msgstr "Теки: відкриває меню всіх непрочитаних облікових записів і тек."
+
+#: addon/appModules/messengerWindow/folderTreeItem.py:114
+msgid "Unified folders"
+msgstr "Об'єднані теки"
+
+#: addon/appModules/messengerWindow/folderTreeItem.py:120
+#: addon/appModules/messengerWindow/messageListItem.py:270
+#: addon/appModules/messengerWindow/messageListItem.py:275
+msgid "Tags"
+msgstr "Мітки"
+
+#: addon/appModules/messengerWindow/folderTreeItem.py:192
+msgid "No unread Inbox folder  found"
+msgstr "Не знайдено жодної непрочитаної теки «Вхідні»"
+
+#: addon/appModules/messengerWindow/folderTreeItem.py:195
+msgid "Unread inbox Folders, menu"
+msgstr "Непрочитані вхідні Теки, меню"
+
+#: addon/appModules/messengerWindow/folderTreeItem.py:197
+msgid "All inbox Folders, menu"
+msgstr "Усі вхідні теки, меню"
+
+#. 2025-02-07
+#: addon/appModules/messengerWindow/folderTreeItem.py:254
+#: addon/appModules/messengerWindow/folderTreeItem.py:320
+msgid "Inbox"
+msgstr "Вхідні"
+
+#: addon/appModules/messengerWindow/folderTreeItem.py:257
+msgid "Account"
+msgstr "Обліковий запис"
+
+#: addon/appModules/messengerWindow/folderTreeItem.py:257
+#: addon/appModules/messengerWindow/folderTreeItem.py:258
+msgid "Unified"
+msgstr "Об'єднані"
+
+#: addon/appModules/messengerWindow/folderTreeItem.py:300
+msgid "Choose an account with unread"
+msgstr "Вибрати обліковий запис із непрочитаними"
+
+#: addon/appModules/messengerWindow/folderTreeItem.py:303
+msgid "Choose an account"
+msgstr "Виберіть обліковий запис"
+
+#: addon/appModules/messengerWindow/folderTreeItem.py:352
+msgid "Accounts, menu"
+msgstr "Облікові записи, меню"
+
+#: addon/appModules/messengerWindow/folderTreeItem.py:354
+msgid "Accounts with unread, menu"
+msgstr "Облікові записи з непрочитаними, меню"
+
+#: addon/appModules/messengerWindow/folderTreeItem.py:357
+msgid "Menu, Unread folders of"
+msgstr "Меню, Непрочитані теки у"
+
+#: addon/appModules/messengerWindow/folderTreeItem.py:359
+msgid "Menu, folders of "
+msgstr "Меню, теки у "
+
+#. 2023-09-13 : no longer necessary : 4 Choose columns
+#. mainMenu.Append (4, _("Choose and arrange the columns of the message list"))
+#: addon/appModules/messengerWindow/menuMain.py:42
+msgid "Help\tCtrlF1"
+msgstr "Довідка\tCtrlF1"
+
+#: addon/appModules/messengerWindow/menuMain.py:44
+msgid "Change log"
+msgstr "Журнал змін"
+
+#: addon/appModules/messengerWindow/menuMain.py:45
+msgid "Notification page"
+msgstr "Сторінка сповіщень"
+
+#: addon/appModules/messengerWindow/menuMain.py:46
+msgid "Donate"
+msgstr "Пожертвувати"
+
+#. mainMenu.Append (11, _("Chichi's page"))
+#: addon/appModules/messengerWindow/menuMain.py:49
+msgid "Write to support (after reading the manual and the change history)"
+msgstr ""
+"Написати в службу підтримки (після прочитання інструкції та історії змін)"
+
+#: addon/appModules/messengerWindow/menuMain.py:50
+msgid "Join the thunderbird-dv mailing list (French)"
+msgstr "Приєднатися до розсилки thunderbird-dv (французькою мовою)"
+
+#: addon/appModules/messengerWindow/menuMain.py:97
+msgid "Please select  the message list and try again."
+msgstr "Будь ласка, виберіть список повідомлень і спробуйте ще раз."
+
+#: addon/appModules/messengerWindow/menuMain.py:116
+msgid "No attachment to save"
+msgstr "Немає вкладень для збереження"
+
+#: addon/appModules/messengerWindow/menuMain.py:121
+msgid "Open attachments toolbar"
+msgstr "Відкрити панель вкладень"
+
+#: addon/appModules/messengerWindow/menuMain.py:138
+#: addon/appModules/messengerWindow/menuMain.py:156
+msgid "Open"
+msgstr "Відкрити"
+
+#: addon/appModules/messengerWindow/menuMain.py:139
+msgid "More options \tControl+alt+p"
+msgstr "Додаткові параметри \tControl+alt+p"
+
+#: addon/appModules/messengerWindow/menuMain.py:140
+msgid "attachment \""
+msgstr "вкладення \""
+
+#: addon/appModules/messengerWindow/menuMain.py:143
+msgid "attached"
+msgstr "прикріплений"
+
+#. ajout
+#. ajout
+#. ajout
+#. name =o.previous.name
+#. name = name+" "+o.name
+#: addon/appModules/messengerWindow/menuMain.py:148
+msgid "All ... \tControl+Alt+p. "
+msgstr "Все ... \tControl+Alt+p. "
+
+#: addon/appModules/messengerWindow/menuMain.py:149
+msgid "move to list alt+p"
+msgstr "перейти до списку alt+p"
+
+#: addon/appModules/messengerWindow/menuMain.py:157
+msgid "More options"
+msgstr "Додаткові параметри"
+
+#: addon/appModules/messengerWindow/menuMain.py:257
+msgid ""
+"To get all headers, please open the View Menu, go down to 'Headers' and then "
+"press Enter on 'All'  in the submenu. Then display the grave menu again."
+msgstr ""
+"Щоб отримати всі заголовки, відкрийте меню \"Вигляд\" перейдіть до підменю "
+"\"Заголовки\", а потім натисніть ентер на елементі \"Усі\". Потім знову "
+"відкрийте контекстне меню."
+
+#: addon/appModules/messengerWindow/messageListItem.py:119
+msgid "Line details"
+msgstr "Деталі рядка"
+
+#: addon/appModules/messengerWindow/messageListItem.py:123
+msgid ""
+"Message list : One press announces the current line, two presses displays "
+"the line text in a window."
+msgstr ""
+"Список повідомлень : Одне натискання оголошує поточний рядок, двічі- "
+"виводить текст рядка у вікні."
+
+#: addon/appModules/messengerWindow/messageListItem.py:177
+msgid "No column "
+msgstr "Без колонки "
+
+#: addon/appModules/messengerWindow/messageListItem.py:188
+msgid "No"
+msgstr "Немає"
+
+#: addon/appModules/messengerWindow/messageListItem.py:195
+#, python-brace-format
+msgid "{columnText} copied to clipboard"
+msgstr "{columnText} скопійовано в буфер обміну"
+
+#. Translators: Tags feature
+#: addon/appModules/messengerWindow/messageListItem.py:270
+#: addon/appModules/messengerWindow/messageListItem.py:277
+msgid "No tag."
+msgstr "Без мітки."
+
+#: addon/appModules/messengerWindow/messageListItem.py:274
+msgid "No tag on a collapsed discussion"
+msgstr "Немає мітки на згорнутій розмові"
+
+#. translators
+#: addon/appModules/messengerWindow/messageListItem.py:282
+msgid "No More tag."
+msgstr "Більше немає мітки."
+
+#: addon/appModules/messengerWindow/messageListItem.py:283
+#: addon/appModules/messengerWindow/messageListItem.py:303
+msgid "added"
+msgstr "додано"
+
+#: addon/appModules/messengerWindow/messageListItem.py:284
+msgid " removed"
+msgstr " видалено"
+
+#. translator
+#: addon/appModules/messengerWindow/messageListItem.py:301
+msgid "tag"
+msgstr "мітка"
+
+#: addon/appModules/messengerWindow/messageListItem.py:302
+msgid "No more tag."
+msgstr "Більше немає мітки."
+
+#: addon/appModules/messengerWindow/messageListItem.py:304
+msgid "removed"
+msgstr "видалено"
+
+#: addon/appModules/messengerWindow/messageListItem.py:310
+msgid ""
+"Shift + 1 to 8: announces the additions or removals of tags, Shift+0 "
+"announces the tags of the message"
+msgstr ""
+"Shift + 1 до 8: повідомляє про додавання або видалення міток, Shift+0 "
+"повідомляє про мітки повідомлення"
+
+#. translator
+#: addon/appModules/messengerWindow/messageListItem.py:315
+msgid "No tag to remove."
+msgstr "Немає мітки для видалення."
+
+#. translator
+#: addon/appModules/messengerWindow/messageListItem.py:322
+msgid "Press this command twice quickly to delete the"
+msgstr "Двічі швидко натисніть цю команду, щоб видалити"
+
+#. translator
+#: addon/appModules/messengerWindow/messageListItem.py:328
+msgid "All tags have been removed from this message."
+msgstr "З цього повідомлення видалено всі мітки."
+
+#: addon/appModules/messengerWindow/messageListItem.py:330
+msgid "Removes all tags from the selected message."
+msgstr "Видаляє всі мітки з вибраного повідомлення."
+
+#: addon/appModules/messengerWindow/messageListItem.py:351
+msgid "Filtered reading of the message preview pane without leaving the list."
+msgstr ""
+"Спрощене читання панелі попереднього перегляду повідомлень без покидання "
+"списку."
+
+#: addon/appModules/messengerWindow/messageListItem.py:410
+msgid "Deleted"
+msgstr "Видалено"
+
+#: addon/appModules/messengerWindow/messageListItem.py:410
+msgid "Archived"
+msgstr "Заархівовано"
+
+#: addon/appModules/messengerWindow/messageListItem.py:411
+msgid "Current row"
+msgstr "Поточний рядок"
+
+#: addon/appModules/messengerWindow/messageListItem.py:424
+msgid "Press this command twice to mark all messages as read in the folder:"
+msgstr ""
+"Натисніть цю команду двічі, щоб позначити всі повідомлення в теці "
+"прочитаними:"
+
+#: addon/appModules/messengerWindow/messageListItem.py:427
+#, python-brace-format
+msgid "the {name} folder no longer contains unread messages."
+msgstr "тека {name} більше не містить непрочитаних повідомлень."
+
+#. junk mail
+#: addon/appModules/messengerWindow/messageListItem.py:429
+msgid "not junk"
+msgstr "не спам"
+
+#: addon/appModules/messengerWindow/messageListItem.py:429
+msgid "junk"
+msgstr "спам"
+
+#: addon/appModules/messengerWindow/messageListItem.py:432
+msgid "{} applied. "
+msgstr "{} застосовано. "
+
+#: addon/appModules/messengerWindow/messageListItem.py:434
+msgid "{} applied to: "
+msgstr "{} застосовано до: "
+
+#: addon/appModules/messengerWindow/messageListItem.py:442
+msgid "Shows the quick filter bar from the message list."
+msgstr "Показує панель швидкого фільтрування зі списку повідомлень."
+
+#: addon/appModules/messengerWindow/messageListItem.py:470
+msgid "The reading status has been changed."
+msgstr "Статус читання змінено."
+
+#: addon/appModules/messengerWindow/messageListItem.py:472
+#: addon/appModules/shared/menuSettings.py:175
+msgid "Unread"
+msgstr "Непрочитано"
+
+#: addon/appModules/messengerWindow/messageListItem.py:474
+msgid "Reverses the read and unread status of the selected message"
+msgstr ""
+"Змінює статус вибраного повідомлення з прочитаного або непрочитаного на "
+"протилежний"
+
+#: addon/appModules/messengerWindow/messageListItem.py:608
+msgid "unread"
+msgstr "непрочитане"
+
+#: addon/appModules/messengerWindow/messageListItem.py:825
+#: addon/appModules/messengerWindow/tabAddressBook.py:472
+#: addon/appModules/messengerWindow/tabAddressBook.py:473
+#: addon/appModules/messengerWindow/tabAddressBook.py:477
+msgid " of "
+msgstr " з "
+
+#: addon/appModules/messengerWindow/tabAddressBook.py:93
+#: addon/appModules/messengerWindow/tabAddressBook.py:482
+msgid "Address book"
+msgstr "Адресна книга"
+
+#: addon/appModules/messengerWindow/tabAddressBook.py:98
+#: addon/appModules/messengerWindow/tabAddressBook.py:486
+msgid "blank"
+msgstr "порожній"
+
+#: addon/appModules/messengerWindow/tabAddressBook.py:101
+#: addon/appModules/messengerWindow/tabAddressBook.py:489
+msgid "Press Alt + down arrow to open the context menu."
+msgstr "Натисніть Alt + стрілка вниз, щоб відкрити контекстне меню."
+
+#. treeview of books
+#: addon/appModules/messengerWindow/tabAddressBook.py:176
+#: addon/appModules/messengerWindow/tabAddressBook.py:515
+msgid "Go to &address books and mailing lists tree"
+msgstr "Перейдіть до &адресних книг і дерева списків розсилки"
+
+#: addon/appModules/messengerWindow/tabAddressBook.py:183
+#: addon/appModules/messengerWindow/tabAddressBook.py:523
+msgid "Go to &contact table"
+msgstr "Перейти до &таблиці контактів"
+
+#: addon/appModules/messengerWindow/tabAddressBook.py:206
+#: addon/appModules/messengerWindow/tabAddressBook.py:546
+msgid "Press Alt + down arrow to open the popup menu"
+msgstr "Натисніть Alt + стрілка вниз, щоб відкрити виринаюче меню"
+
+#: addon/appModules/messengerWindow/tabAddressBook.py:290
+#: addon/appModules/messengerWindow/tabAddressBook.py:622
+msgid "Destinations from "
+msgstr "Напрямки з "
+
+#. if self.dbg : return True, _("list in ") + obj.name
+#: addon/appModules/messengerWindow/tabAddressBook.py:322
+#: addon/appModules/messengerWindow/tabAddressBook.py:422
+#: addon/appModules/messengerWindow/tabAddressBook.py:654
+#: addon/appModules/messengerWindow/tabAddressBook.py:754
+msgid "list in "
+msgstr "список в "
+
+#. translator "Onglet" stands for "tab"
+#: addon/appModules/messengerWindow/tabs.py:22
+#, python-brace-format
+msgid "Tab {0} of {1} {2}"
+msgstr "Вкладка {0} з {1} {2}"
+
+#. Translator : in getTabType(), the strings come  from the main window title bar when a tab is active. You have to copy   them from the title bar of  Thunderbird in your language.
+#. Translator : "Chargement en" vient de "Chargement en cours", "Accueil"  vient aussi du nom de l'onglet
+#: addon/appModules/messengerWindow/tabs.py:45
+msgid "Loading"
+msgstr "Завантаження"
+
+#: addon/appModules/messengerWindow/tabs.py:45
+msgid "Home -"
+msgstr "Домівка"
+
+#. Translator :  title bar when Address book tab is active. Must be the same as in the user interface of TB
+#: addon/appModules/messengerWindow/tabs.py:55
+msgid "Address Bo"
+msgstr "Адресна книга"
+
+#. Translators: title bar when Saved tab is active. must be the same as in  the user interface
+#: addon/appModules/messengerWindow/tabs.py:58
+msgid "Saved Files"
+msgstr "Збережені файли"
+
+#. 2022-12-96 : paramètres des comptes monté devant paramètres pour corriger erreur
+#. Translators: title bar when Account Settings tab is active.must be the same as in  the user interface
+#: addon/appModules/messengerWindow/tabs.py:62
+msgid "Account Settings"
+msgstr "Налаштування облікового запису"
+
+#. Translators: title bar when Settings tab is active.must be the same as in  the user interface
+#: addon/appModules/messengerWindow/tabs.py:65
+msgid "Settings"
+msgstr "Налаштування"
+
+#. Translators: titlebar when addons manager tab is active.must be the same as in  the user interface
+#: addon/appModules/messengerWindow/tabs.py:68
+msgid "Add-ons Manager"
+msgstr "Додатки"
+
+#. Translators: Title bar when  New account creation tab is active. must be the same as in  the user interface
+#: addon/appModules/messengerWindow/tabs.py:71
+msgid "Account Setup"
+msgstr "Налаштування облікового запису"
+
+#. Translators: title bar when addons search results tab is active.
+#: addon/appModules/messengerWindow/tabs.py:74
+msgid "Add-ons for Thunderbird"
+msgstr "Додатки для Thunderbird"
+
+#: addon/appModules/messengerWindow/tabs.py:270
+msgid "There is only one tab open."
+msgstr "Відкрито лише одну вкладку."
+
+#: addon/appModules/messengerWindow/tabs.py:301
+#, python-brace-format
+msgid "Active tab {0} of {1} : {2}, "
+msgstr "Активна вкладка {0} з {1}: {2}, "
+
+#: addon/appModules/msgComposeWindow/menuCompose.py:50
+msgid "lower than"
+msgstr "нижче"
+
+#: addon/appModules/msgComposeWindow/menuCompose.py:50
+msgid "semicolon"
+msgstr "крапка з комою"
+
+#: addon/appModules/msgComposeWindow/menuCompose.py:50
+msgid "colon"
+msgstr "двокрапка"
+
+#: addon/appModules/msgComposeWindow/menuCompose.py:50
+msgid "equal"
+msgstr "дорівнює"
+
+#: addon/appModules/msgComposeWindow/menuCompose.py:52
+msgid "Disabled"
+msgstr "Вимкнено"
+
+#: addon/appModules/msgComposeWindow/menuCompose.py:52
+msgid "Enabled"
+msgstr "Увімкнено"
+
+#: addon/appModules/msgComposeWindow/menuCompose.py:63
+msgid "TB Mail Toolbar"
+msgstr "Панель інструментів TB Mail"
+
+#: addon/appModules/msgComposeWindow/menuCompose.py:64
+msgid "Text formatting"
+msgstr "Форматування тексту"
+
+#: addon/appModules/msgComposeWindow/menuCompose.py:95
+#, python-format
+msgid "%s unavailable"
+msgstr "%s недоступно"
+
+#: addon/appModules/msgComposeWindow/menuCompose.py:101
+msgid " Activated, Déactivated"
+msgstr " Увімкнено, Вимкнено"
+
+#: addon/appModules/msgComposeWindow/menuCompose.py:122
+msgid "Paragraph,&font"
+msgstr "Абзац,&шрифт"
+
+#. translators: compose field labels : "none, From, To, Attachement, CC, BCC, Subject, Reply to"
+#: addon/appModules/msgComposeWindow/msgComposeWindow.py:59
+msgid "void, From, To, Attachement, CC, BCC, Subject, Reply to"
+msgstr ""
+"порожньо, Від, Кому, вкладення, Копія, Прихована копія, Тема, Відповісти"
+
+#. caution : 3 tabs
+#: addon/appModules/msgComposeWindow/msgComposeWindow.py:99
+msgid "No header."
+msgstr "Без заголовка."
+
+#: addon/appModules/msgComposeWindow/msgComposeWindow.py:111
+#, python-brace-format
+msgid "The field {0} is missing, type this command twice quickly to show it."
+msgstr "Поле {0} відсутнє, натисніть двічі швидко, щоб показати його."
+
+#: addon/appModules/msgComposeWindow/msgComposeWindow.py:114
+msgid ""
+"You will find this field by pressing the button: Other addressing fields to "
+"show"
+msgstr ""
+"Ви знайдете це поле, натиснувши кнопку: Інші поля адресування для показу"
+
+#. translator
+#: addon/appModules/msgComposeWindow/msgComposeWindow.py:135
+msgid ""
+"The attachments area is missing. Press Control+Shift+A to add attachements."
+msgstr ""
+"Область вкладень відсутня. Натисніть Control+Shift+A, щоб додати вкладення."
+
+#: addon/appModules/msgComposeWindow/msgComposeWindow.py:217
+msgid "To"
+msgstr "Кому"
+
+#. mk letters : language dependant
+#: addon/appModules/msgComposeWindow/spellCheckDlg.py:148
+msgid "i"
+msgstr "р"
+
+#: addon/appModules/msgComposeWindow/spellCheckDlg.py:149
+msgid "l"
+msgstr "о"
+
+#: addon/appModules/msgComposeWindow/spellCheckDlg.py:150
+msgid "d"
+msgstr "д"
+
+#: addon/appModules/msgComposeWindow/spellCheckDlg.py:151
+msgid "a"
+msgstr "с"
+
+#: addon/appModules/msgComposeWindow/spellCheckDlg.py:152
+msgid "r"
+msgstr "з"
+
+#: addon/appModules/msgComposeWindow/spellCheckDlg.py:198
+msgid ", copied to clipboard"
+msgstr ", скопійовано в буфер обміну"
+
+#: addon/appModules/msgComposeWindow/spellCheckDlg.py:199
+msgid "Announce or spell the misspelled word and the suggested word."
+msgstr ""
+"Озвучити або продиктувати по буквах слово з помилкою та запропоноване слово."
+
+#: addon/appModules/shared/checkListMenu.py:23
+msgid "List of choices"
+msgstr "Варіанти для вибору"
+
+#: addon/appModules/shared/checkListMenu.py:74
+msgid "The options below cannot be checked at the same time :\n"
+msgstr "Параметри нижче не можуть бути позначені одночасно : \n"
+
+#: addon/appModules/shared/checkListMenu.py:77
+msgid "Press escape to return to the option list"
+msgstr "Натисніть Escape, щоб повернутися до списку параметрів"
+
+#: addon/appModules/shared/checkListMenu.py:78
+msgid "Error in two  options - Thunderbird+G5"
+msgstr "Помилка у двох параметрах — Thunderbird+G5"
+
+#: addon/appModules/shared/menuSettings.py:67
+msgid "custom vocalization of rows."
+msgstr "персоналізоване озвучення рядків."
+
+#. Translators : A smart  folder is a folder that unifies folders of the same type through all  mail accounts
+#: addon/appModules/shared/menuSettings.py:69
+msgid "Message deletion: emulate the context menu."
+msgstr "Видалення повідомлення: імітуйте контекстне меню."
+
+#: addon/appModules/shared/menuSettings.py:70
+msgid "Do not say the window and folder names when entering the list."
+msgstr "Не вимовляти імен вікон і папок під час входу в список."
+
+#: addon/appModules/shared/menuSettings.py:70
+msgid "Combine multiple 'RE' mentions into one"
+msgstr "Об’єднувати кілька позначок «RE» в одну"
+
+#: addon/appModules/shared/menuSettings.py:71
+msgid "Delete the 'Re' mentions in the subject column"
+msgstr "Видаляти позначки «Re» у стовпці теми"
+
+#: addon/appModules/shared/menuSettings.py:72
+msgid "Delete the colons  in the 'Re:' mentions"
+msgstr "Видаляти двокрапки у позначках «Re:»"
+
+#: addon/appModules/shared/menuSettings.py:73
+msgid "Delete digits and dots from the name of the correspondents"
+msgstr "Видаляти цифри та крапки з імен кореспондентів"
+
+#: addon/appModules/shared/menuSettings.py:74
+msgid "Hide mailing list names"
+msgstr "Приховати назви списків розсилки"
+
+#: addon/appModules/shared/menuSettings.py:75
+msgid "Announce 'junk' if displayed in the 'junk Status' column"
+msgstr "Промовляти \"спам\", якщо у стовпці статусу вказане як \"Небажане\""
+
+#: addon/appModules/shared/menuSettings.py:79
+msgid "Folder tree: escape does not bring focus to the message list"
+msgstr "Дерево тек: escape не переводить фокус на список повідомлень"
+
+#: addon/appModules/shared/menuSettings.py:80
+msgid "message list: escape does not bring focus to the folder tree"
+msgstr "список повідомлень: escape не переводить фокус на дерево тек"
+
+#: addon/appModules/shared/menuSettings.py:81
+msgid ""
+"Access the first unread message when first activating the first tab, "
+"otherwise the last message."
+msgstr ""
+"Якщо перша вкладка активується вперше — перейти до першого непрочитаного "
+"повідомлення, інакше — до останнього повідомлення."
+
+#: addon/appModules/shared/menuSettings.py:82
+msgid "Ignore acknowledgment requests"
+msgstr "Ігнорувати запити підтвердження прочитання"
+
+#: addon/appModules/shared/menuSettings.py:83
+msgid ""
+"Partially purify the message when reading it with Space or F4, otherwise "
+"purify it completely."
+msgstr ""
+"Частково очищувати повідомлення при його читанні за допомогою пробілу або "
+"F4, інакше очищувати його повністю."
+
+#: addon/appModules/shared/menuSettings.py:84
+msgid "Always display the  cleaned messages when reading them with Space or F4"
+msgstr ""
+"Завжди показувати спрощені повідомлення при їх читанні за допомогою пробілу "
+"або F4"
+
+#: addon/appModules/shared/menuSettings.py:85
+msgid ""
+"Always display the translation of messages when reading them with Space or F4"
+msgstr ""
+"Завжди показувати переклад повідомлень при їх читанні за допомогою пробілу "
+"або F4"
+
+#: addon/appModules/shared/menuSettings.py:89
+msgid "Spell Check: Spell the misspelled word and the suggested word."
+msgstr ""
+"Перевірка орфографії: вимовляти по буквах слово з помилкою та пропоноване "
+"слово."
+
+#: addon/appModules/shared/menuSettings.py:90
+msgid "Spell Check: Cancel speech before announcing and spelling these words"
+msgstr ""
+"Перевірка орфографії: перервати мовлення перед оголошенням та вимовою цих "
+"слів"
+
+#. "virtualSpellChk" : _("Enable improved Spell Check while typing."),
+#: addon/appModules/shared/menuSettings.py:92
+msgid "The Esc key closes the message being written"
+msgstr "Клавіша Esc закриває повідомлення, що пишеться"
+
+#: addon/appModules/shared/menuSettings.py:93
+msgid ""
+"Single press on Shift+the key above the tab key to show the option menus, "
+"double press to write the corresponding printable character."
+msgstr ""
+"Натисніть один раз Shift+клавішу над клавішею табуляції, щоб відкрити меню "
+"параметрів, двічі натисніть, щоб ввести відповідний друкований символ."
+
+#: addon/appModules/shared/menuSettings.py:98
+msgid "Message list : deactivate  tag management   to improve responsiveness."
+msgstr ""
+"Список повідомлень : вимкнути керування мітками для покращення швидкодії."
+
+#: addon/appModules/shared/menuSettings.py:99
+msgid "Message list : do not play sound when list is filtered and gets focus."
+msgstr ""
+"Список повідомлень: не відтворювати звук, коли список відфільтровано і він "
+"отримує фокус."
+
+#: addon/appModules/shared/menuSettings.py:100
+msgid ""
+"Separate reading window: do not read the cleaned version of the message when "
+"the window is opened."
+msgstr ""
+"Вікно окремого перегляду: не читати спрощену версію повідомлення, коли вікно "
+"відкрито."
+
+#: addon/appModules/shared/menuSettings.py:101
+msgid "Address book : disable additional features of Thunderbird+G5."
+msgstr "Адресна книга: вимкнути додаткові функції Thunderbird+G5."
+
+#: addon/appModules/shared/menuSettings.py:192
+msgid "Words separated by semicolons :"
+msgstr "Слова, розділені крапкою з комою:"
+
+#: addon/appModules/shared/menuSettings.py:192
+msgid "Edit words to hide in the subject of messages"
+msgstr "Редагування слів для приховування в темі повідомлень"
+
+#: addon/appModules/shared/menuSettings.py:195
+msgid "Delay before document focusing, 20 to 2000 ms::"
+msgstr "Затримка перед фокусуванням документа, від 20 до 2000 мс::"
+
+#: addon/appModules/shared/menuSettings.py:195
+msgid "Special tabs"
+msgstr "Спеціальні вкладки"
+
+#: addon/appModules/shared/menuSettings.py:199
+msgid "Delay 1 space Delay 2 in ms:"
+msgstr "Затримка1 пробіл Затримка2 в мс:"
+
+#: addon/appModules/shared/menuSettings.py:199
+msgid "Focusing delays after deleting a message"
+msgstr "Затримки фокусування після видалення повідомлення"
+
+#: addon/appModules/shared/menuSettings.py:220
+msgid "Backup file does not exist."
+msgstr "Файл резервної копії відсутній."
+
+#: addon/appModules/shared/menuSettings.py:231
+msgid "The configuration has been reset to its default values"
+msgstr "Конфігурацію було скинуто до початкових значень"
+
+#. Fin du bloc multilignes mis en commentaire par Abdel.
+#. Ajouté par Abdel.
+#. Ajouté par Abdel.
+#. Ajouté par Abdel.
+#. Ajouté par Abdel.
+#. Ajouté par Abdel.
+#. Ajouté par Abdel.
+#. Ajouté par Abdel.
+#: addon/appModules/shared/menuSettings.py:274
+msgid "MessageList"
+msgstr "Список повідомлень"
+
+#. Ajouté par Abdel.
+#: addon/appModules/shared/menuSettings.py:275
+msgid "Edit words to hide in message subject"
+msgstr "Редагування слів для приховування в темі повідомлень"
+
+#. Ajouté par Abdel.
+#: addon/appModules/shared/menuSettings.py:276
+msgid "Other Options"
+msgstr "Інші параметри"
+
+#. Added by PL 1995 to 1996 are already taken
+#: addon/appModules/shared/menuSettings.py:277
+msgid "Main window options"
+msgstr "Параметри головного вікна"
+
+#. Fin du bloc multilignes mis en commentaire par Abdel.
+#: addon/appModules/shared/menuSettings.py:288
+#: addon/appModules/shared/menuSettings.py:358
+msgid "Write window options"
+msgstr "Параметри вікна редагування"
+
+#. Fin du bloc multilignes mis en commentaire par Abdel.
+#: addon/appModules/shared/menuSettings.py:311
+#: addon/appModules/shared/menuSettings.py:380
+msgid "Deactivations"
+msgstr "Вимкнення функцій"
+
+#: addon/appModules/shared/menuSettings.py:313
+msgid "&Focus and Startup Options"
+msgstr "&Параметри фокусування та запуску"
+
+#: addon/appModules/shared/menuSettings.py:314
+msgid "Open sound folder..."
+msgstr "Відкрити теку звуків."
+
+#: addon/appModules/shared/menuSettings.py:315
+msgid "Backup current configuration file"
+msgstr "Зберегти поточну конфігурацію"
+
+#: addon/appModules/shared/menuSettings.py:316
+msgid "Restore backed up configuration file"
+msgstr "Відновити конфігурацію з резервної копії"
+
+#: addon/appModules/shared/menuSettings.py:317
+msgid "Reset configuration"
+msgstr "Скинути конфігурацію"
+
+#: addon/appModules/shared/menuSettings.py:335
+msgid "Message list options"
+msgstr "Параметри списку повідомлень"
+
+#: addon/appModules/shared/menuSettings.py:345
+msgid "Other  options"
+msgstr "Інші параметри"
+
+#: addon/appModules/shared/menuSettings.py:387
+msgid "Focus and Startup Options"
+msgstr "Параметри фокусування та запуску"
+
+#. Translators : do not translate nor remove %date_sender%. Replace french words, word 2 and word 5, by your translations.
+#. The  char Alt+0030 is a temporary replacement of \n
+#: addon/appModules/shared/quoteNav.py:42
+msgid "On|Le%date_sender%wrote|écrit"
+msgstr "On|Увімкнено%date_sender%wrote|написав"
+
+#: addon/appModules/shared/quoteNav.py:76
+msgid "Enabling message translation mode, ready."
+msgstr "Увімкнення режиму перекладу повідомлень, готово."
+
+#: addon/appModules/shared/quoteNav.py:77
+msgid "Disabling message translation mode, ready."
+msgstr "Вимкнення режиму перекладу повідомлень, готово."
+
+#: addon/appModules/shared/quoteNav.py:90
+msgid "The Instant Translate add-on is not active or not installed."
+msgstr "Додаток «Instant Translate » не активний або не встановлено."
+
+#. Translators : brace symbols will be replaced by the words enabling or disabling
+#: addon/appModules/shared/quoteNav.py:96
+msgid "Enabling message display mode, ready."
+msgstr "Увімкнення режиму відображення повідомлень, готово."
+
+#: addon/appModules/shared/quoteNav.py:97
+msgid "Disabling message display mode, ready."
+msgstr "Вимкнення режиму відображення повідомлень, готово."
+
+#. message("Please wait " + " " + kind)
+#: addon/appModules/shared/quoteNav.py:186
+msgid "Please wait"
+msgstr "Будь ласка, зачекайте"
+
+#: addon/appModules/shared/quoteNav.py:249
+#, python-brace-format
+msgid "{0} messages in chronological order, "
+msgstr "{0} повідомлень у хронологічному порядку, "
+
+#: addon/appModules/shared/quoteNav.py:255
+#, python-brace-format
+msgid "{0} messages, {1} lines, "
+msgstr "{0} повідомлень, {1} рядків, "
+
+#: addon/appModules/shared/quoteNav.py:284
+msgid "Translation"
+msgstr "Переклад"
+
+#: addon/appModules/shared/quoteNav.py:306
+msgid "Preview copied: "
+msgstr "Попередній перегляд скопійовано: "
+
+#. Originale message
+#: addon/appModules/shared/quoteNav.py:348
+msgid "Original Message|E-mail d'origine|Message d'origine"
+msgstr "Original Message|Оригінальне повідомлення"
+
+#. group footers : one group in a message, we  use return after a footer  deletion
+#. Removes   de google groupe  footer
+#: addon/appModules/shared/quoteNav.py:374
+msgid "You are receiving this message because you are subscribed to the group"
+msgstr "Ви отримали це повідомлення, тому що ви підписані на групу"
+
+#. mailto and clickable links replacements
+#: addon/appModules/shared/quoteNav.py:403
+#, python-format
+msgid " link %s "
+msgstr " посилання %s "
+
+#: addon/appModules/shared/quoteNav.py:479
+msgid "From|De|Expéditeur"
+msgstr "From|Від"
+
+#. # sharedVars.logte("to replace:" + e)
+#. e may contain , a pseudo \n
+#. t = "\n---" + getSenderName(e) + " " + _("wrote") + " : "
+#: addon/appModules/shared/quoteNav.py:504
+msgid "wrote"
+msgstr "написав"
+
+#: addon/appModules/shared/startupDlg.py:22
+msgid "Default (do nothing)"
+msgstr "Типово (нічого не робити)"
+
+#: addon/appModules/shared/startupDlg.py:23
+msgid "Last message in message list"
+msgstr "Останнє повідомлення в списку повідомлень"
+
+#: addon/appModules/shared/startupDlg.py:24
+msgid "First message"
+msgstr "Перше повідомлення"
+
+#: addon/appModules/shared/startupDlg.py:25
+msgid "First unread message"
+msgstr "Перше непрочитане повідомлення"
+
+#: addon/appModules/shared/startupDlg.py:26
+msgid "Folder tree"
+msgstr "Дерево тек"
+
+#. check box
+#: addon/appModules/shared/startupDlg.py:29
+msgid "Use this mode when starting Thunderbird"
+msgstr "Використовуйте цей режим під час запуску Thunderbird"
+
+#: addon/appModules/shared/startupDlg.py:30
+msgid ""
+"The folder tree is preselected by the StartWithInbox add-on for Thunderbird"
+msgstr "Дерево тек попередньо обране додатком StartWithinbox для Thunderbird"
+
+#: addon/appModules/shared/startupDlg.py:94
+msgid ""
+"With the {} key in the main window or Space in the folder tree, bring the "
+"&focus to:"
+msgstr ""
+"За допомогою клавіші {} у головному вікні або пробілу в дереві тек "
+"перенесіть фокус на:"
+
+#. Translators: this is the default title of Information dialog.
+#: addon/appModules/shared/textDialog.py:39
+msgid "Informations"
+msgstr "Інформація"
+
+#: addon/appModules/shared/textDialog.py:72
+msgid "Co&py to Clipboard"
+msgstr "&Копіювати в буфер обміну"
+
+#. original : label=NVDAString("&Close"))
+#: addon/appModules/shared/textDialog.py:77
+msgid "Close"
+msgstr "Закрити"
+
+#. Translators: message to the user when the information has been copied
+#. to clipboard.
+#: addon/appModules/shared/textDialog.py:98 addon/appModules/shared/utis.py:620
+msgid "Copied"
+msgstr "Скопійовано"
+
+#. Translators: message to the user when the information
+#. cannot be copied to clipboard.
+#: addon/appModules/shared/textDialog.py:105
+msgid "Error, the information cannot be copied to the clipboard"
+msgstr "Помилка, інформацію неможливо скопіювати в буфер обміну"
+
+#: addon/appModules/shared/utils115.py:539
+msgid "Filtered : "
+msgstr "Відфільтровано: "
+
+#: addon/appModules/shared/utils115.py:558
+msgid "Filter : "
+msgstr "Фільтр: "
+
+#: addon/appModules/shared/utils115.py:663
+#: addon/appModules/shared/utils115.py:1174
+msgid "The preview pane is not displayed. Press F8 and try again please"
+msgstr "Панель повідомлень приховано. Натисніть F8 і спробуйте щераз"
+
+#: addon/appModules/shared/utils115.py:903
+msgid "The headers are not available"
+msgstr "Заголовки недоступні"
+
+#: addon/appModules/shared/utils115.py:995
+msgid "void,From,Subject: ,Date,To,CC,BCC,Reply to"
+msgstr "порожньо,Від,Тема: ,Дата,Кому,Копія,Прихована копія,Відповісти"
+
+#: addon/appModules/shared/utils115.py:996
+#, python-brace-format
+msgid "The {0} header is missing from this message."
+msgstr "У цьому повідомленні відсутній заголовок {0}."
+
+#: addon/appModules/shared/utils115.py:1007
+msgid "Copy to clipboard"
+msgstr "Копіювати в буфер обміну"
+
+#: addon/appModules/shared/utils115.py:1039
+msgid "No attachment."
+msgstr "Без вкладень."
+
+#: addon/appModules/shared/utils115.py:1071
+msgid "Two presses to reach the list."
+msgstr "Два натискання, щоб відкрити список."
+
+#: addon/appModules/shared/utis.py:521
+msgid "The status bar is not displayed."
+msgstr "Відображення рядка стану вимкнено."
+
+#: addon/appModules/shared/utis.py:644
+msgid "No Attachement."
+msgstr "Без вкладення."
+
+#: addon/appModules/shared/utis.py:708
+msgid "File not found"
+msgstr "Файл не знайдено"
+
+#. messageBox("Thunderbird.exe non trouvé dans C:\Program files", "Lanceur de Thunderbird", wx.CLOSE|wx.ICON_WARNING)
+#: addon/globalPlugins/ThunderbirdGlob.py:126
 msgid "Thunderbird.exe not found in C:\\Program files"
 msgstr "Thunderbird.exe не знайдено в C:\\Program files"
 
-#: globalPlugins/ThunderbirdGlob.py:131
+#: addon/globalPlugins/ThunderbirdGlob.py:131
 msgid "Starts Thunderbird"
 msgstr "Запускає Thunderbird"
 
-#: globalPlugins/ThunderbirdGlob.py:138
+#. self.updateMenu.Append(0, _("Check for an update"))
+#. self.updateMenu.Append(1, getUpdateLabel())
+#: addon/globalPlugins/ThunderbirdGlob.py:138
 msgid "Install version {}"
 msgstr "Установити версію {}"
 
-#: globalPlugins/ThunderbirdGlob.py:153
+#: addon/globalPlugins/ThunderbirdGlob.py:153
 msgid "Update : shows an update menu"
 msgstr "Оновлення: відкриває меню оновлення"
 
-#: globalPlugins/ThunderbirdGlob.py:260
+#. mise à jour désactivée # maj désactivée
+#: addon/globalPlugins/ThunderbirdGlob.py:260
 msgid "Enable automatic update"
 msgstr "Увімкнути автоматичне оновлення"
 
-#: globalPlugins/ThunderbirdGlob.py:261
+#: addon/globalPlugins/ThunderbirdGlob.py:261
 msgid "Disable automatic update"
 msgstr "Вимкнути автоматичне оновлення"
 
-#: globalPlugins/ThunderbirdGlob.py:269
+#: addon/globalPlugins/ThunderbirdGlob.py:269
 msgid ""
 "Automatic update has been enabled. You can restart NVDA to check for an "
 "update."
@@ -1220,15 +1345,15 @@ msgstr ""
 "Автоматичне оновлення увімкнено. Ви можете перезапустити NVDA, щоб "
 "перевірити наявність оновлень."
 
-#: globalPlugins/ThunderbirdGlob.py:279
+#: addon/globalPlugins/ThunderbirdGlob.py:279
 msgid "Error saving update settings file."
 msgstr "Помилка збереження файлу налаштувань оновлення."
 
-#: globalPlugins/ThunderbirdGlob.py:280
+#: addon/globalPlugins/ThunderbirdGlob.py:280
 msgid "Automatic update has been disabled."
 msgstr "Автоматичне оновлення вимкнено."
 
-#: globalPlugins/shared/notif.py:123
+#: addon/globalPlugins/shared/notif.py:123
 msgid "Error saving of :\n"
 msgstr "Помилка збереження :\n"
 
@@ -1313,25 +1438,6 @@ msgstr "Помилка збереження :\n"
 
 #~ msgid "Undetermined version"
 #~ msgstr "Невизначена версія"
-
-#~ msgid ""
-#~ "Mozilla Apps Enhancements has been detected on your NVDA installation. In "
-#~ "order for thunderbirdPlus to work without conflicts, the thunderbird "
-#~ "module of Mozilla Apps Enhancements must be disabled. Would you like to "
-#~ "do so now and install ThunderbirdPlus ? \n"
-#~ "If you answer No, the installation will fail."
-#~ msgstr ""
-#~ "У вашій конфігурації NVDA було виявлено Mozilla Apps Enhancements. Для "
-#~ "того щоб ThunderbirdPlus працював без конфліктів, модуль Thunderbird в "
-#~ "Mozilla Apps Enhancements має бути вимкнено. Бажаєте зробити це зараз і "
-#~ "встановити ThunderbirdPlus? \n"
-#~ "Якщо ви відповісте «Ні», встановлення завершиться невдало."
-
-#~ msgid "Running Mozilla Apps Enhancements detected"
-#~ msgstr "Виявлено активний додаток Mozilla Apps Enhancements"
-
-#~ msgid "Installation cancelled"
-#~ msgstr "Встановлення скасовано"
 
 #~ msgid ""
 #~ "If custom vocalization, announce the current line after line deletion   "
