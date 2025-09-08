@@ -19,9 +19,10 @@ sharedPath=os.path.join(_curAddon.path,"AppModules", "shared")
 sys.path.append(sharedPath)
 import  utis, sharedVars, utils115 as utils
 del sys.path[-1]
+from re import  compile,IGNORECASE
+
 addonHandler.initTranslation()
 
-from re import  compile,IGNORECASE
 gRegExcludeFolders =compile (_("Drafts|Deleted") + "|\-, \d")
 gRegUnread = compile (", \d+")
 # level 2 Yahoo IMAP@-, 121 messages non lus réduit 5 sur 11
@@ -89,7 +90,10 @@ class FolderTreeItem (IAccessible):
 
 
 # functions version 5
+import globalVars
 def fMenuFolders(o, unread=False) :
+	sharedVars.log(globalVars.TBPropertyPage, "fMenuFolders, globalVars.TBPropertyPage")
+	sharedVars.log(globalVars.TBFolderTree, "fMenuFolders, globalVars.TBFolderTree")
 	sharedVars.TBWnd = winUser.getForegroundWindow()
 	ID = str(utils.getIA2Attr(o)).split("-")[0]
 	# sharedVars.logte("fMenuFolders ID : " + ID)
@@ -358,8 +362,10 @@ class FolderMenu() :
 		else :			
 			msg = _("Menu, folders of ") + accountName
 		message(msg)
-
 def  fMenuInboxes(unread) :
+	if not globalVars.TBFolderTree : 
+		message(_("First select the folder tree then try again."))
+		return
 	o = utils.getFolderTreeFromFG()
 	if not o : return beep(100, 30)
 	# get the   first item
@@ -379,7 +385,10 @@ def fMenuAllFolders(unRead=False) :
 	callLater(10, m.showMenu,title="All Folders, menu")
 
 def fMenuAccounts(type=1) :
-	sharedVars.TBWnd = winUser.getForegroundWindow()
+	if not globalVars.TBFolderTree : 
+		message(_("First select the folder tree then try again."))
+		return
+		# o = utils.getFolderTreeFromTT()
 	o = utils.getFolderTreeFromFG()
 	if not o : return beep(100, 30)
 	# get the first item
@@ -409,3 +418,36 @@ def fMenuFolderFromAccount(accountNode, unrd=False) :
 	# __init__(self, startNode, unread=False, recurs=True, type=0, allFolders=0) 
 	m = FolderMenu(startNode=accountNode, unread=unrd,recurs=True, type=0)
 	callLater(10, m.showMenu, title=accountNode.name)
+
+def focusFirstInbox(oFolderTree) :
+	oFolderTree.setFocus()
+	KeyboardInputGesture.fromName("home")
+	return
+	sharedVars.log(oFolderTree,  "getFirstInbox, oFolderTree")
+	# level 6,       1 of 1, Role.TREEVIEW, IA2ID : folderTree 
+	# level 7,        0 of 0, Role.TREEVIEWITEM Tag: li, 
+	# level 8,         0 of 0, Role.GROUPING Tag: ul, 
+	# level 9,          0 of 10, name : RPTools, Role.TREEVIEWITEM, IA2ID : all-bWFpbGJveDovL3Bsci5saXN0ZXMlNDBycHRvb2xzLm9yZ0Bwb3AzLnJwdG9vbHMub3Jn Tag: li
+	for g in range(0, 3) : # 3 passes
+		o = o.firstChild
+		sharedVars.log(o, "folderTree descendant g=" + str(g))
+		if not o : break
+	if not o : 
+		if focus : oFolderTree.setFocus()
+		return oFolderTree
+	ID = str(utils.getIA2Attr(o)).split("-")[0]
+	if "smart"  in ID :
+		return  o
+	# o = o.getChild(1)
+	i = 0
+	for c in o.recursiveDescendants :
+		sharedVars.log(c, "child " + str(i))
+		if c.role == controlTypes.Role.TREEVIEWITEM : 
+			break
+		i += 1
+	if focus and c :
+		sharedVars.log(c, "SetFocus to")
+		c.scrollIntoView()
+		c.setFocus()
+		sleep(.1)
+	return c

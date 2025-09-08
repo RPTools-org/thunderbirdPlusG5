@@ -1,4 +1,3 @@
-
 #-*- coding:utf-8 -*
 # Thunderbird+ 4.x, context menu for main Window
 

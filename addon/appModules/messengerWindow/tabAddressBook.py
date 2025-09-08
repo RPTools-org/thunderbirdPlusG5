@@ -19,6 +19,7 @@ sharedPath=os.path.join(_curAddon.path,"AppModules", "shared")
 sys.path.append(sharedPath)
 import  utis, sharedVars, utils115 as utils
 del sys.path[-1]
+
 addonHandler.initTranslation()
 
 oDragDropper128 = oContactLine128 = None

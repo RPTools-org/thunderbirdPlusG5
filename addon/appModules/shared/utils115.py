@@ -1,6 +1,5 @@
 #-*- coding:utf-8 -*
-import addonHandler
-addonHandler.initTranslation()
+import addonHandler		
 import controlTypes, api
 from speech import  speakMessage, speakSpelling, cancelSpeech, setSpeechMode, SpeechMode
 
@@ -15,6 +14,8 @@ import utis
 # from utis import utis.findParentByID # , utis.inputBox, utis.wordsMatchWord, utis.getSpeechMode
 from keyboardHandler import KeyboardInputGesture
 import re
+
+addonHandler.initTranslation()
 
 gRegFTI = re.compile("all-|unread-|smart-|favorite-|recent-|tags-")
 gRegTags = re.compile(r'<.*?>')
@@ -47,6 +48,62 @@ def getIA2Attr(obj,attribute_value=False,attribute_name ="id"):
 	if not r :return False
 	r =obj.IA2Attributes[attribute_name]
 	return r if not attribute_value  else r ==attribute_value
+
+def setCurFrameTabFromFO(obj) :
+	sharedVars.curFrame = "" ; sharedVars.curTab = ""
+	fg = api.getForegroundObject()
+	# messengerWindow :
+	o = getChildByRoleIDName(fg, controlTypes.Role.GROUPING, ID="tabpanelcontainer", name="", idx=34)
+	if o :
+		sharedVars.curFrame = "messengerWindow"
+	if not sharedVars.curFrame  :
+		# separate reading window
+		o = getChildByRoleIDName(fg, controlTypes.Role.INTERNALFRAME, ID="messageBrowser", name="", idx=4)
+		if o : 			
+			sharedVars.curFrame = "messengerWindow" ; sharedVars.curTab = "message" 
+			return
+	if not sharedVars.curFrame :
+		# msgCompose window
+		o = getChildByRoleIDName(fg, controlTypes.Role.POPUPMENU, ID="msgComposeContext", name="", idx=0)
+		if o : 
+			sharedVars.curFrame = "msgcomposeWindow" ; sharedVars.curTab = "comp"
+			return
+	if not sharedVars.curFrame :
+		sharedVars.curFrame = "not found" ; sharedVars.curTab = "Not Found"
+		return
+
+
+	# try : # except
+	role = obj.role
+	ID = str(getIA2Attr(obj))
+	if role in (controlTypes.Role.TREEVIEWITEM, controlTypes.Role.LISTITEM) :
+		if ID.startswith("threadTree") :
+			sharedVars.curTab = "main" 
+			return
+		if controlTypes.Role.TREEVIEWITEM and  isFolderTreeItem(obj, ID) :
+			sharedVars.curTab = "main" 
+			return
+	if role == controlTypes.Role.DOCUMENT  and controlTypes.State.READONLY in obj.states :
+		o = obj.parent
+		while o :
+			ID = str(getIA2Attr(o))
+			if o.role ==  controlTypes.Role.GROUPING and ID.startswith("paneLayout") :
+				sharedVars.curTab = "main" 
+			o = o.parent
+		if sharedVars.curTab : return			
+	#  search document 
+	oDoc = None
+	o = obj.parent
+	while o :
+		role = o.role
+		if role == controlTypes.Role.DOCUMENT :
+			oDoc = o
+			break
+		elif  role == controlTypes.Role.GROUPING or not hasattr(o, "parent") :
+			break
+		o = o.parent
+	if not oDoc : sharedVars.curTab = "main"
+	else : sharedVars.curTab = str(getIA2Attr(oDoc.parent))
 
 def getTVItemLevel(obj) :
 	if obj.role != controlTypes.Role.TREEVIEWITEM : return 0
@@ -102,8 +159,7 @@ def findChildByRole(obj, role) :
 			obj = obj.next
 		return None
 	finally :
-		if sharedVars.debug :
-			sharedVars.log(obj, "findChildByRole expected " + str(role.displayString))
+		if sharedVars.debug : sharedVars.log(obj, "findChildByRole expected " + str(role.displayString))
 
 def findChildByRoleID(obj,role, ID, startIdx=0) : # attention : controlTypes roles
 	if obj  is None : return None
@@ -208,58 +264,263 @@ class FindDescendantTimer() :
 			if o.childCount :
 				self.timer = CallLater(self.interval, self.getSearchedObject, o)
 			o = o.next
-			
-def getPropertyPage(oFrame=None) :
-	if globalVars.TBPropertyPage :
-		return globalVars.TBPropertyPage
-	# 24.06.02 : level 2,   2 of 2, role.PROPERTYPAGE, IA2ID : mail3PaneTab1 Tag: vbox, States : , childCount  : 1 Path : r-FRAME, | i31, r-GROUPING, , IA2ID : tabpanelcontainer | i2, r-PROPERTYPAGE, , IA2ID : mail3PaneTab1 , IA2Attr : id : mail3PaneTab1,
-	if oFrame : o = oFrame
-	else :o = api.getForegroundObject()
-	if not checkObj(o, "getPropertyPage frame") : return None 
-	# Role-FRAME| i32, Role-GROUPING, , IA2ID : tabpanelcontainer 
-	o = findChildByRoleID(o,controlTypes.Role.GROUPING, "tabpanelcontainer", 30)
-	if not checkObj(o, "getPropertyPage, grouping") : return None 
-	# propPage in tab1, offscreen :  level 2,   2 of 4, Role.PROPERTYPAGE, IA2ID : mail3PaneTab1 Tag: vbox, States : , OFFSCREEN, childCount  : 1 Path : Role-FRAME| i32, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 , 
-	# propPage in tab 3 :level 2,   4 of 4, Role.PROPERTYPAGE, IA2ID : mail3PaneTab3 Tag: vbox, States : , childCount  : 1 Path : Role-FRAME| i32, Role-GROUPING, , IA2ID : tabpanelcontainer | i4, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab3 , IA2Attr : tag : vbox, class : deck-selected, id : mail3PaneTab3, display : flex, , Actions : click ancestor,  ;
-	o = o.firstChild
-	if not checkObj(o, "PropertyPage firstChild") : return None 
+
+def getMainGrouping(oFrame=None, force=False) :
+	if not force and globalVars.TBGrouping :
+		return globalVars.TBGrouping
+	# search grouping
+	if not oFrame :
+		oFrame = api.getForegroundObject()
+	o = findChildByRoleID(oFrame, controlTypes.Role.GROUPING, "tabpanelcontainer", 34)
+	if o :
+		globalVars.TBGrouping = o
+	return o
+
+def getPropertyPage(oFrame=None, debug=False, searchID="mail3PaneTab" ) :
+	try : # finally
+		if debug : sharedVars.logte("Entering getPropertyPage")
+		if searchID == "mail3PaneTab" and globalVars.TBPropertyPage :
+			# the following line is necessary because the finally cmause
+			o = globalVars.TBPropertyPage
+			if debug : sharedVars.log(globalVars.TBPropertyPage, "getPropertyPage, globalVars.TBPropertyPage")
+			return o
+		if oFrame : o = oFrame
+		else :o = api.getForegroundObject()
+		# firstGrouping 
+		o = getMainGrouping(oFrame)
+		if not o : 
+			sharedVars.error(o, "getPropertyPage, firstGrouping is None")
+			return None
+		o = o.firstChild
+		while o :
+			if o.role == controlTypes.Role.PROPERTYPAGE : # and  controlTypes.State.OFFSCREEN  not in o.states :
+				# ID =  str(getIA2Attr(o))
+				if hasID(o, searchID) : # partial ID
+					# checkObj(o, "getPropPage , befor return o")
+					if searchID == "mail3PaneTab" :
+						globalVars.TBPropertyPage = o
+					if debug : sharedVars.log(o, "getPropertyPage, o=")
+					return o
+			o = o.next
+		checkObj(o, "getPropPage before return None")
+		return None
+	finally :
+		if debug : sharedVars.log(o, "getPropertyPage result")
+
+def getActivePropertyPage(oFrame=None, ppExcluded=None, debug=False ) :
+	try : # finally
+		if debug : sharedVars.logte("getActivePropertyPage")
+		if oFrame : o = oFrame
+		else :o = api.getForegroundObject()
+		# firstGrouping 
+		o = getMainGrouping(oFrame)
+		if not o : 
+			sharedVars.error(o, "getActivePropertyPage, firstGrouping is None")
+			return None
+		o = o.firstChild
+		while o :
+			if o.role == controlTypes.Role.PROPERTYPAGE : 
+				# if debug : sharedVars.log(o, "getActivePropertyPage, o=")
+				if ppExcluded and o == ppExcluded :
+					o = o.next
+					continue
+				if   controlTypes.State.OFFSCREEN  not in o.states :
+					return o
+			o = o.next
+		checkObj(o, "getActivePropPage before return None")
+		return None
+	finally :
+		if debug : sharedVars.log(o, "getActivePropertyPage result")
+
+def setFontextFromFirstID(oParent) :
+	for o in oParent.recursiveDescendants :
+		ID = getIA2Attr(oParent)
+		if ID :
+				sharedVars.curFrame = sharedVars.curTab = str(ID)
+				break
+
+def getThreadPaneFromFG() :
+	if globalVars.TBThreadPane :
+		return globalVars.TBThreadPane
+	oFrame = api.getForegroundObject()
+	if oFrame : o = getChildByRoleIDName(oFrame, controlTypes.Role.GROUPING, ID="tabpanelcontainer", name="", idx=35)
+	# IA2ID = mail3PaneTab1 in , Role.PROPERTYPAGE
+	if o : o = getChildByRoleIDName(o, controlTypes.Role.PROPERTYPAGE, ID="mail3PaneTab1", name="", idx=2)
+	# IA2ID = mail3PaneTabBrowser1 in , Role.INTERNALFRAME
+	if o : o = getChildByRoleIDName(o, controlTypes.Role.INTERNALFRAME, ID="mail3PaneTabBrowser1", name="", idx=0)
+	# IA2ID = paneLayout in , Role.GROUPING
+	if o : o = getChildByRoleIDName(o, controlTypes.Role.GROUPING, ID="paneLayout", name="", idx=0)
+	# IA2ID = threadPane in , Role.SECTION
+	if o : o = getChildByRoleIDName(o, controlTypes.Role.SECTION, ID="threadPane", name="", idx=2)
+	if o : globalVars.TBThreadPane = o
+	return o
+
+def getThreadTreeFromFG_olld(focus=False, nextGesture="", getThreadPane=False, oPP=None, debug=False) :
+	if debug : sharedVars.logte("Entering getThreadTreeFromFG")
+	if oPropPage :
+		globalVars.TBPropertyPage = oPropPage
+	if not force and globalVars.TBThreadTree :  
+			if debug : sharedVars.log(globalVars.TBThreadTree, "getThreadTreeFromFG, globalVars.TBThreadTree")
+			return globalVars.TBThreadTree
+	if debug : sharedVars.logte("getThreadTree, search")
+	try : # finally 
+# IA2ID = mail3PaneTabBrowser1 in , Role.INTERNALFRAME
+		o = getChildByRoleIDName(oPropPage, controlTypes.Role.INTERNALFRAME, ID="mail3PaneTabBrowser1", name="", idx=0)
+		# IA2ID = paneLayout in , Role.GROUPING
+		if o : o = getChildByRoleIDName(o, controlTypes.Role.GROUPING, ID="paneLayout", name="", idx=0)
+		# IA2ID = threadPane in , Role.SECTION
+		if o : o = getChildByRoleIDName(o, controlTypes.Role.SECTION, ID="threadPane", name="", idx=2)
+		if o : globalVars.TBThreadPane = o
+		# IA2ID = threadTree in , Role.TEXTFRAME
+		if o : o = getChildByRoleIDName(o, controlTypes.Role.TEXTFRAME, ID="threadTree", name="", idx=2)
+		if o : globalVars.TBThreadTree = o
+		return o
+	finally :
+			if debug : sharedVars.log(o, "getThreadTreeFromFG result")
+
+def getThreadTreeFromFG(focus=False, nextGesture="", getThreadPane=False, oPP=None, debug=False) :
+	if debug : sharedVars.logte("Entering getThreadTreeFromFG")
+	global prevSpeechMode
+	if getThreadPane and globalVars.TBThreadPane : 
+		return globalVars.TBThreadPane
+	if not getThreadPane and globalVars.TBThreadTree :
+		# 2025-05-22 : focus and  nextGesture   are never used
+		if focus : globalVars.TBThreadTree.setFocus()
+		return globalVars.TBThreadTree
+	# search ThreadTree
+	# Role-FRAME| i32, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 
+	if oPP : 
+		o = oPP
+	else :
+		o = getPropertyPage()
+	if not checkObj(o, "property page") : return None
+	# | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  
+	try : o = o.firstChild.firstChild
+	except :
+		checkObj(o, "second grouping")
+		return None
+	
+	# ancien  | i2or i4 , Role-SECTION, , IA2ID : threadPane 
+	# 2024 06 : role.SECTION, IA2ID : threadPane Tag: div, States : , childCount  : 4 Path : r-FRAME, | i31, r-GROUPING, , IA2ID : tabpanelcontainer | i2, r-PROPERTYPAGE, , IA2ID : mail3PaneTab1 | i0, r-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, r-GROUPING,  | i2, r-SECTION, , IA2ID : threadPane
+	prevO = o
+	o = findChildByRoleID(o, controlTypes.Role.SECTION, "threadPane")
+	if not checkObj(o, "section threadPane", prevO) : return None
+	if getThreadPane and o : 
+		globalVars.TBThreadPane = o
+		return o
+	# | i2, Role-TEXTFRAME, , IA2ID : threadTree , 
+	o = findChildByRoleID(o, controlTypes.Role.TEXTFRAME, "threadTree")
+	if not checkObj(o, "threadTree") : return None
+	globalVars.TBThreadTree = o
+	return o
+	# | i0, Role-TABLE,  | i2, Role-TREEVIEW
+	o = o.firstChild.firstChild
+	if not checkObj(o, "role treeview") : return None
 	while o :
-		if o.role == controlTypes.Role.PROPERTYPAGE and  controlTypes.State.OFFSCREEN  not in o.states :
-			# ID =  str(getIA2Attr(o))
-			# if "mail3PaneTab" in ID :
-			if hasID(o, "mail3PaneTab") : # partial ID
-				checkObj(o, "getPropPage , befor return o")
-				globalVars.TBPropertyPage = o
-				return o
+		# if not checkObj(o) : return None
+		if o.role in (controlTypes.Role.LIST, controlTypes.Role.TREEVIEW) :
+			break
 		o = o.next
-	checkObj(o, "getPropPage before return None")
+	if  o and focus : o.setFocus()
+	if nextGesture :
+		prevSpeechMode = utis.getSpeechMode()
+		setSpeechMode(SpeechMode.off)
+		CallLater(50, silentSendKey, nextGesture)
+	globalVars.TBThreadTree = o
+	return  o
+	
+def getThreadTreeListOrTable(oThreadTree) : 
+	if not oThreadTree :
+		return None
+	oFirstTable = getChildByRoleIDName(oThreadTree, controlTypes.Role.TABLE, ID="", name="", idx=0)
+	if not oFirstTable :
+		return None
+	o = getChildByRoleIDName(oFirstTable, controlTypes.Role.TABLE, ID="", name="", idx=0)
+	if o : return o # tree view 
+	# list view
+	o = getChildByRoleIDName(oFirstTable, controlTypes.Role.LIST, ID="", name="", idx=0)
+	if o : return o
+	return None
+	
+# def getFolderTreeFromTT() :
+	# o = api.getFocusObject().parent
+	# while o :
+		# if o.role == controlTypes.Role.PROPERTYPAGE and hasID(o, "mail3PaneTab") :			
+			# break
+		# o = o.next
+	# if not o : 
+		# return None
+	# globalVars.TBPropertyPage = o
+	# o = getFolderTreeFromFG(focus=False, force=Trrue, oPropPage=o)
+	# return o
+# def getFolderTreeFromFG(focus=False, force=False, oPropPage=None) :
+	# if oPropPage : globalVars.TBPropertyPage = oPropPage
+	# if not force and  globalVars.TBFolderTree :
+		# if focus : 
+			# globalVars.TBFolderTree.setFocus()
+		# return globalVars.TBFolderTree
+	# # else search folderTree from propertypage
+	# o = globalVars.TBPropertyPage
+	# sharedVars.log(o, "utils.getFolderTree, propertyPage ?")
+	# # IA2ID = mail3PaneTabBrowser1 in , Role.INTERNALFRAME
+	# if o : o = getChildByRoleIDName(o, controlTypes.Role.INTERNALFRAME, ID="mail3PaneTabBrowser", name="", idx=0)
+	# # IA2ID = paneLayout in , Role.GROUPING
+	# if o : o = getChildByRoleIDName(o, controlTypes.Role.GROUPING, ID="paneLayout", name="", idx=0)
+	# # IA2ID = folderPane in , Role.SECTION
+	# if o : o = getChildByRoleIDName(o, controlTypes.Role.SECTION, ID="folderPane", name="", idx=0)
+	# # IA2ID = folderTree in , Role.TREEVIEW
+	# if o : o = getChildByRoleIDName(o, controlTypes.Role.TREEVIEW, ID="folderTree", name="", idx=1)
+	# if o : globalVars.TBFolderTree = o
+	# sharedVars.log(globalVars.TBFolderTree, "utils.gETFolderTree globalVars.TBFolderTree")
+	# return globalVars.TBFolderTree
+
+def getFolderTreeFromPP(oPP, debug=False) :
+	if debug : sharedVars.logte("entering getFolderTreeFromPP")
+	globalVars.TBFolderTree = None
+	if not oPP :
+		if debug : sharedVars.logte("propertyPage is none in getFolderTreeFromPP")
+		return None
+	o = oPP
+	for g in range(0, 4) : # 0 to 3 = 4 passes
+		o = o.firstChild
+		if not o : break
+		# if debug : sharedVars.log(o, "descendant gen=" + str(g))
+	# end for
+	if debug : sharedVars.log(o, "getFolderTreeFromPP")
+	if o :
+		globalVars.TBFolderTree = o
+		return o
+	sharedVars.error(None, "getFolderTreeFromPP result") 
 	return None
 
-def getFolderTreeFromFG(focus=False, pp=None) :
+
+def getFolderTreeFromFG(focus=False, oPP=None) :
 	if globalVars.TBFolderTree :
 		if focus : globalVars.TBFolderTree.setFocus()
 		return globalVars.TBFolderTree
 	# utis.beepRepeat(440, 10, 3) 
-	if pp : o = pp
+	if oPP : o = oPP
 	else : o = getPropertyPage()
 	if not checkObj(o, "getFT property page") : return None
 	# with toolbar Path : Role-FRAME| i32, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1| i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  | i0, Role-SECTION, , IA2ID : folderPane | i1, Role-TREEVIEW, , IA2ID : folderTree 
 	# without toolbar Path : Role-FRAME| i32, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 
 	# wo : | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1  === | i0, Role-GROUPING,  | i0, Role-SECTION, , IA2ID : folderPane __ | i0, Role-TREEVIEW, , IA2ID : folderTree | i0, Role-TREEVIEWITEM,  ,
 	# with : | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1  === | i0, Role-GROUPING,  ::: | i0, Role-SECTION, , IA2ID : folderPane __ | i1, Role-TREEVIEW, , IA2ID : folderTree
-	try :
-		# o = o.firstChild.firstChild.firstChild   .getChild(1)
-		o = o.firstChild.firstChild.firstChild
-		# sharedVars.log(o, "Retour de getFolderTree")
-	except :
-		checkObj(o, "getFT folderPane"	)
+	for i in range(0, 3) : # 0 to 2 = 3 passes   
+		o = o.firstChild
+		if not o :
+			# sharedVars.logte("firstChild None, pass=" + str(i))
+			break
+		# sharedVars.log(o, "firstChild pass=" + str(i)) 
+	# end for
+	if not o :
 		return None
+	checkObj(o, "getFT folderPane"	)
 	o =   findChildByRoleID(o, controlTypes.Role.TREEVIEW, "folderTree") 
 	if not checkObj(o, "getFT folderTree") : return None
 	if  o and focus : o.setFocus()
 	globalVars.TBFolderTree = o
 	return o
-
 def isSmartFolderTree() :
 	o = getFolderTreeFromFG()
 	o = o.firstChild.firstChild.firstChild
@@ -396,54 +657,7 @@ class GetFocusObjTimer() :
 		else  :
 			self.timer.Start() 
 
-def getThreadTreeFromFG(focus=False, nextGesture="", getThreadPane=False, pp=None ) :
-	global prevSpeechMode
-	if getThreadPane and globalVars.TBThreadPane : 
-		return globalVars.TBThreadPane
-	if not getThreadPane and globalVars.TBThreadTree :
-		# 2025-05-22 : focus and  nextGesture   are never used
-		if focus : globalVars.TBThreadTree.setFocus()
-		return globalVars.TBThreadTree
-	# Role-FRAME| i32, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 
-	if pp : 
-		o = pp
-	else :
-		o = getPropertyPage()
-	if not checkObj(o, "property page") : return None
-	# | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  
-	try : o = o.firstChild.firstChild
-	except :
-		checkObj(o, "second grouping")
-		return None
 	
-	# ancien  | i2or i4 , Role-SECTION, , IA2ID : threadPane 
-	# 2024 06 : role.SECTION, IA2ID : threadPane Tag: div, States : , childCount  : 4 Path : r-FRAME, | i31, r-GROUPING, , IA2ID : tabpanelcontainer | i2, r-PROPERTYPAGE, , IA2ID : mail3PaneTab1 | i0, r-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, r-GROUPING,  | i2, r-SECTION, , IA2ID : threadPane
-	prevO = o
-	o = findChildByRoleID(o, controlTypes.Role.SECTION, "threadPane")
-	if not checkObj(o, "section threadPane", prevO) : return None
-	if getThreadPane and o : 
-		globalVars.TBThreadPane = o
-		return o
-	# | i2, Role-TEXTFRAME, , IA2ID : threadTree , 
-	o = findChildByRoleID(o, controlTypes.Role.TEXTFRAME, "threadTree")
-	if not checkObj(o, "threadTree") : return None
-	
-	# | i0, Role-TABLE,  | i2, Role-TREEVIEW
-	o = o.firstChild.firstChild
-	if not checkObj(o, "role treeview") : return None
-	while o :
-		# if not checkObj(o) : return None
-		if o.role in (controlTypes.Role.LIST, controlTypes.Role.TREEVIEW) :
-			break
-		o = o.next
-	if  o and focus : o.setFocus()
-	if nextGesture :
-		prevSpeechMode = utis.getSpeechMode()
-		setSpeechMode(SpeechMode.off)
-		CallLater(50, silentSendKey, nextGesture)
-	globalVars.TBThreadTree = o
-	return  o
-		
 
 # def sayQFBInfos(o=None) :
 	# try : # finally
@@ -499,7 +713,7 @@ def getMessageStatus115(infoIdx=-1)  :
 		# level 9,          2 of 3, name : 11 messages sélectionnés, Role.STATICTEXT, left:359, States :  Path : Role-FRAME| i31, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  | i2, Role-SECTION, , IA2ID : threadPane | i0, Role-SECTION, , IA2ID : threadPaneHeaderBar | i0, Role-SECTION,  | i1, Role-SECTION, , IA2ID : threadPaneFolderCountContainer | i2, Role-STATICTEXT,  
 		# level 9,          3 of 3, Role.STATICTEXT, left:493, States :  Path : Role-FRAME| i31, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  | i2, Role-SECTION, , IA2ID : threadPane | i0, Role-SECTION, , IA2ID : threadPaneHeaderBar | i0, Role-SECTION,  | i1, Role-SECTION, , IA2ID : threadPaneFolderCountContainer | i3, Role-STATICTEXT,  
 		# get threadPane
-		threadPane = getThreadTreeFromFG(focus=False, nextGesture="", getThreadPane=True)
+		threadPane = globalVars.TBThreadPane
 		# get | i0, Role-SECTION, , IA2ID : threadPaneHeaderBar | i0, Role-SECTION,  
 		o = threadPane.firstChild.firstChild
 		# get | i1, Role-SECTION, , IA2ID : threadPaneFolderCountContainer 
@@ -525,7 +739,7 @@ def getMessageStatus115(infoIdx=-1)  :
 
 def getFilterInfos128(threadPane, infos=False) :
 	if not threadPane :
-		threadPane = getThreadTreeFromFG(focus=False, nextGesture="", getThreadPane=True)
+		threadPane = globalVars.TBThreadPane
 		if not threadPane : beep(100, 30)
 		else : beep(440, 30)
 	# children of threadPane : | i1, 86, , IA2ID : quick-filter-bar | i0, 86, , IA2ID : quickFilterBarContainer | i7, 91, , IA2ID : qfb-results-label
@@ -571,17 +785,17 @@ def getMessageStatus128(infoIdx=-1)  :
 		# level 9,          1 of 3, Role.STATICTEXT, left:347, States :  Path : Role-FRAME| i31, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  | i2, Role-SECTION, , IA2ID : threadPane | i0, Role-SECTION, , IA2ID : threadPaneHeaderBar | i0, Role-SECTION,  | i1, Role-SECTION, , IA2ID : threadPaneFolderCountContainer | i1, Role-STATICTEXT,  
 		# level 9,          2 of 3, name : 11 messages sélectionnés, Role.STATICTEXT, left:359, States :  Path : Role-FRAME| i31, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  | i2, Role-SECTION, , IA2ID : threadPane | i0, Role-SECTION, , IA2ID : threadPaneHeaderBar | i0, Role-SECTION,  | i1, Role-SECTION, , IA2ID : threadPaneFolderCountContainer | i2, Role-STATICTEXT,  
 		# level 9,          3 of 3, Role.STATICTEXT, left:493, States :  Path : Role-FRAME| i31, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING,  | i2, Role-SECTION, , IA2ID : threadPane | i0, Role-SECTION, , IA2ID : threadPaneHeaderBar | i0, Role-SECTION,  | i1, Role-SECTION, , IA2ID : threadPaneFolderCountContainer | i3, Role-STATICTEXT,  
-		# Below, two attempts because Globalvars.tbthreadPane may no longer be valid
 		for i in range(0, 2) :
-			# get threadPane
-			threadPane = getThreadTreeFromFG(focus=False, nextGesture="", getThreadPane=True)
-			if threadPane : o = getChildByRoleIDName(threadPane, controlTypes.Role.SECTION, ID="threadPaneHeaderBar", name="", idx=0)
+			threadPane = getThreadPaneFromFG()	# get threadPane
+			if threadPane : 
+				o = getChildByRoleIDName(threadPane, controlTypes.Role.SECTION, ID="threadPaneHeaderBar", name="", idx=0)
+			else : o = None
 			if o : o = getChildByRoleIDName(o, controlTypes.Role.SECTION, ID="", name="", idx=0)
 			# IA2ID = threadPaneFolderCountContainer in , Role.SECTION
 			if o : o = getChildByRoleIDName(o, controlTypes.Role.SECTION, ID="threadPaneFolderCountContainer", name="", idx=1)
 			# sharedVars.log(o, "threadPaneFolderCountContainer") 
-			if not o :
-				globalVars.TBThreadPane = None # this reference must be searched again
+			# if not o :
+				# globalVars.TBThreadPane = None # this reference must be searched again
 			else :
 				break
 			# end for
@@ -592,7 +806,10 @@ def getMessageStatus128(infoIdx=-1)  :
 		# all fields
 		# filtered message count
 		t, filterInfos = getFilterInfos128(threadPane, infos=True)
-		o = o.firstChild
+		try : o = o.firstChild
+		except : 
+			message(_("message list header is hiddend."))
+			return ""
 		while o :
 			# sharedVars.log(o, "Nombre ")
 			if o.name :
@@ -681,7 +898,7 @@ def getPreviewDoc() :
 	
 def whichMessagePane(obj, landMark) :
 	if not obj :
-		beep(100, 40)
+		beep(110, 40)
 		return  "error objFocusNone", None
 	# preview, path :  Role-FRAME| i35, Role-GROUPING, , IA2ID : tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID : mail3PaneTab1 | i0, Role-INTERNALFRAME, , IA2ID : mail3PaneTabBrowser1 | i0, Role-GROUPING, , IA2ID : paneLayout | i4, Role-TEXTFRAME, , IA2ID : messagePane | i0, Role-INTERNALFRAME, , IA2ID : messageBrowser | i0, Role-GROUPING,  | i14, Role-LANDMARK, , IA2ID : messageHeader | i0, Role-SECTION, , IA2ID : headerSenderToolbarContainer | i0, Role-TOOLBAR, , IA2ID : header-view-toolbox | i0, Role-BUTTON, , IA2ID : hdrReplyButton  
 	# separ window,  Path : Role-FRAME| i4, Role-INTERNALFRAME, , IA2ID : messageBrowser | i0, Role-GROUPING,  | i14, Role-LANDMARK, , IA2ID : messageHeader | i0, Role-SECTION, , IA2ID : headerSenderToolbarContainer | i0, Role-TOOLBAR, , IA2ID : header-view-toolbox | i0, Role-BUTTON, , IA2ID : hdrReplyButton 
@@ -959,7 +1176,10 @@ def getHeader(o, key, repeats=0, say=True) :
 			return None
 		oHeader = RecurseHeaders("expandedsubjectBox", "expandedsubjectLabel", "dummy")
 		oHeader.run(o)
-		oHeader.outName =str(oHeader.outObj.name) # .replace(oHeader.outLabel + ": ", "")
+		temp  = str(oHeader.outObj.name)
+		pos =  temp.find(":")
+		if pos > -1 : oHeader.outName = temp[pos+1:].strip()
+		else : oHeader.outName = temp
 		ran =  True
 		# level 1, idx 2 of 2 : Role.SECTION, ID : headerSubjectSecurityContainer, childCount : 1
 		# level 2, idx 0 of 2 : Role.SECTION, ID : expandedsubjectRow, childCount : 2
@@ -1074,6 +1294,9 @@ def getAttachment(oFocus=None, repeats=0) :
 		else : CallAfter(clickObject, oList, False) # right click
 
 def getChildByRoleIDName(oParent, role, ID, name, idx=0) : # attention : controlTypes roles
+	if sharedVars.debug : 
+		sharedVars.logte("* Start of getChildByRoleIDName search for role : {}, ID : {}, idx : {}, {}".format(role.name, ID, idx, name))
+		sharedVars.log(oParent, "Begin getChildByRoleIDName oParent")
 	if not oParent    : 
 		return None
 	# ID can be the n first chars of the searched 
@@ -1081,21 +1304,21 @@ def getChildByRoleIDName(oParent, role, ID, name, idx=0) : # attention : control
 		if idx > 0 : o = oParent.getChild(idx)
 		else : o = oParent.firstChild
 	except :
-		# sharedVars.log(o, "Exception in getChildByRoleIDName")
+		if sharedVars.debug : sharedVars.log(o, "getChildByRoleIDName Exception in getChildByRoleIDName")
 		o = oParent.firstChild
 		pass
 	result = None
 	while o:
-		# sharedVars.log(o, "Loop begin")
+		if sharedVars.debug : sharedVars.log(o, "Loop begin")
 		if o.role == role :
-			# sharedVars.log(o, "Role matched")
+			if sharedVars.debug : sharedVars.log(o, "Role matched")
 			if ID == "" and name == ""  : 
 				# sharedVars.log(o, "returned o Empty ID and name matched")
 				return o
 			if ID :
 				objID = str(getIA2Attr(o))
 				if objID.startswith(ID) : 
-					# sharedVars.log(o, "returned o  ID matched")
+					if sharedVars.debug : sharedVars.log(o, "returned o  ID matched")
 					return o
 			elif name and hasattr(o, "name") and o.name.startswith(name) :
 				# sharedVars.log(o, "Name matched")
@@ -1106,7 +1329,8 @@ def getChildByRoleIDName(oParent, role, ID, name, idx=0) : # attention : control
 		o = o.next
 		idx += 1
 		# end while
-		# sharedVars.logte("Not found in getChildByRoleIDName : role={}, ID={}, name={}".format(role.name, ID, name))
+	if not o :
+		if sharedVars.debug : sharedVars.logte("Not found in getChildByRoleIDName : role={}, ID={}, name={}".format(role.name, ID, name))
 	return None
 
 def getReplyToolbarFromMsgWindow() :
@@ -1193,7 +1417,8 @@ def smartReplyV3(shift, repeats=0) :
 	#  the string below is reverted to avoid  a security warning from the sarif system when submitting the addon in the add-on store 
 	groupsIO = "oi.spuorg"
 	groupsIO = groupsIO[::-1]
-	o = o.firstChild
+	try : 	o = o.firstChild
+	except : o = None
 	while o :
 		# sharedVars.log(o, "child")			
 		ID = str(getIA2Attr(o))
@@ -1269,7 +1494,7 @@ def smartReplyV3(shift, repeats=0) :
 		# if o : o = getChildByRoleIDName(o, controlTypes.Role.SECTION, ID="expandedfromBox", name="", idx=1)
 		# if o : o = getChildByRoleIDName(o, controlTypes.Role.LIST, ID="", name="", idx=0)
 		# # IA2ID = fromRecipient0 in , Role.LISTITEM
-		# if o : o = getChildByRoleIDName(o, controlTypes.Role.LISTITEM, ID="fromRecipient0", name=_("Jean-Paul Dany via groups.io <"), idx=0)
+		# if o : o = getChildByRoleIDName(o, controlTypes.Role.LISTITEM, ID="fromRecipient0", name="", idx=0)
 		# # IA2ID = fromRecipient0Display in , Role.TEXTFRAME
 		# if o : o = getChildByRoleIDName(o, controlTypes.Role.TEXTFRAME, ID="fromRecipient0Display", name="", idx=0)
 		# if o : o = getChildByRoleIDName(o, controlTypes.Role.STATICTEXT, ID="", name="", idx=0)

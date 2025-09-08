@@ -18,7 +18,6 @@ import  utis, sharedVars
 import utils115 as utils
 from utis import getIA2Attribute, showNVDAMenu , TBMajor,  getElementWalker
 del sys.path[-1]
-addonHandler.initTranslation()
 from time import sleep
 from oleacc import STATE_SYSTEM_PRESSED, ROLE_SYSTEM_PUSHBUTTON
 from keyboardHandler import KeyboardInputGesture, passNextKeyThrough
@@ -44,6 +43,9 @@ from winUser import *
 import UIAHandler
 import globalVars
 import api
+
+addonHandler.initTranslation()
+
 #pas de vocalisation de control+b,u,i 
 #objEntetes = ["", _("De"), _("Sujet"), _(""), _("Pour"), _("Copie à"), _("Copie cachée à")] #,"Réponse à"
 # dbg = sharedVars.log

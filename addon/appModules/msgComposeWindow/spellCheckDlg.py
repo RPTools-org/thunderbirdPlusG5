@@ -5,7 +5,7 @@ from scriptHandler import getLastScriptRepeatCount
 import speech 
 from speech import speakMessage, speakSpelling
 from tones  import beep
-# from time import sleep
+from time import sleep
 from NVDAObjects.IAccessible import IAccessible
 import controlTypes
 # controlTypes module compatibility with old versions of NVDA
@@ -36,12 +36,11 @@ class SpellCheckDlg (IAccessible):
 	def initOverlayClass (self):
 		role =self.role
 		id =(self.IA2Attributes["id"] if hasattr (self,"IA2Attributes") and "id" in self.IA2Attributes else None)
-		if role == controlTypes.Role.EDITABLETEXT :
-			#beep(150, 30)
+		if  role == controlTypes.Role.EDITABLETEXT :
 			# if _("None") in self.parent.getChild (1).name :
 				# message(_("No misspelled words were found"))
 			#self.name = ""
-
+			sleep(0.05)
 			self.bindGestures ({"kb:nvda+tab":"reportFocus","kb:ALT+UPARROW":"reportFocus","kb:alt+downArrow":"focusSuggested", "kb:enter":"enterFromEdit", "kb:shift+enter":"enterFromEdit", "kb:control+enter":"enterFromEdit", "kb:control+shift+enter":"enterFromEdit", "kb:alt+enter":"enterFromEdit", "kb:alt+i":"altLetter", "kb:alt+n":"altLetter", "kb:alt+r":"altLetter", "kb:alt+t":"altLetter", "kb:alt+a":"altLetter", "kb:control+space":"spaceFromEdit"})
 		elif role == controlTypes.Role.LISTITEM :
 			if utis.getIA2Attribute(self.parent, "SuggestedList", "id") :

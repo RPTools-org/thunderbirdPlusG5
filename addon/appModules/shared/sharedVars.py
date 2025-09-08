@@ -1,8 +1,13 @@
 #-*- coding:utf-8 -*
 debug = False
+# logEvents = True
+starting = True
+mainTabInit = False
+curFrame = "unknown"
+curTab = "unknown"
 TBWnd = 0
 replyTo = ""
-nPressed = False
+# nPressed = False
 delPressed = False
 TBMajor = 0
 objLooping = menuClosing =  False
@@ -11,8 +16,8 @@ gTimer = None
 lastKey = ""
 oCurFrame = None
 groupingIdx = 0 # computed index of child object of role grouping in the foregroundObject children  
-curFrame = curWinTitle = ""
-curTab = "init2"
+totalColIdx = 0
+curWinTitle = ""
 curTTRow = ""  # current thread tree row
 oQuoteNav = None
 oEditing = None
@@ -28,6 +33,7 @@ delayFocusDoc = 20
 deleteDelays = [50, 50]  
 debugLog = "" 
 
+from tones import beep
 import quoteNav
 def initQuoteNav() :
 	global oQuoteNav
@@ -49,12 +55,26 @@ def setLooping(value) :
 	if not debug : return
 	lastFunction = inspect.stack()[1][3]
 	debugLog = debugLog + "setLooping fonction :{0}, valeur : {1}".format(lastFunction, str(value)) + "\n"
-
-def logte(msg) :
+def logInit(msg="") : 
 	global debugLog
-	debugLog += msg + "\n" 
+	if msg :
+		debugLog = msg + "\n"
+	else :
+			debugLog = ""
+def logte(msg, init=False) :
+	global debugLog
+	if init :
+		debugLog = msg + "\n"
+	else :
+		debugLog += msg + "\n" 
 def getObjAttrs(o) :
 	states = " Busy, " if controlTypes.State.BUSY in o.states else " "
+	states += " OffSCREEN, " if controlTypes.State.OFFSCREEN in o.states else " In screen "
+	states += " INVISIBLE, " if controlTypes.State.INVISIBLE in o.states else " "
+	if controlTypes.State.FOCUSED in  o.states :
+		states += " Focused"
+	else :
+			states += " Focusable" if controlTypes.State.FOCUSABLE in o.states else ""
 	states +=  (" focused, " if hasattr(o, "hasFocus") and o.hasFocus else " ")
 	states += (", selected" if controlTypes.State.SELECTED in o.states else "")
 	if o.role == controlTypes.Role.TREEVIEWITEM :
@@ -69,14 +89,14 @@ def getObjAttrs(o) :
 	if hasattr(o, "IA2Attributes") :
 		ID = str(o.IA2Attributes.get("id"))
 	else : ID = ""
-	t =  states + " : {}, ID : {}, class : {}, childCount : {}{}".format(o.role.name, ID, str(o.windowClassName), o.childCount, nm + val)
+	t =  " {}, ID : {}, States : {}, childCount : {}{},  class : {},".format(o.role.name, ID, states, o.childCount, str(o.windowClassName), nm + val)
 	return t
 
 
 def log(o, msg="Objet", withStep=False):
 	global debugLog
 	if withStep :
-		step = "step " + str(globalVars.TBStep) + " "
+		step = ", Stack : "
 		curFunc = inspect.stack()[1][3] 
 		prevFunc = inspect.stack()[2][3]
 		lastFunction = " fonk {0}, {1} : ".format(curFunc, prevFunc)
@@ -98,3 +118,15 @@ def debugMess(o, msg="Objet") :
 	ID = str(o.IA2Attributes.get("id"))
 	t =  foc + sel + " : role : {0}, ID : {1}, childCount : {2}name : {3}".format(o.role.name, ID, o.childCount, nm[:15])
 	message(lastFunc + msg + t )
+
+def error(obj, msg, sound=False) : 
+	if sound : beep(100, 30)
+	log(obj, msg, withStep=True) 
+	
+def test(obj, msg) :
+	msg = "test, " + msg 
+
+	if not obj :
+		logte(msg)
+	else :	
+		log(obj, msg, withStep=True)

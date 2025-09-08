@@ -17,8 +17,6 @@ sys.path.append(sharedPath)
 import  utis, sharedVars
 from utis import getIA2Attribute, showNVDAMenu , TBMajor,  getElementWalker
 del sys.path[-1]
-addonHandler.initTranslation()
-
 from time import sleep
 from oleacc import STATE_SYSTEM_PRESSED, ROLE_SYSTEM_PUSHBUTTON
 from keyboardHandler import KeyboardInputGesture, passNextKeyThrough
@@ -44,6 +42,8 @@ from winUser import *
 import UIAHandler
 import globalVars
 import api
+
+addonHandler.initTranslation()
 
 
 class ComposeMenu() :

@@ -5,9 +5,10 @@ import wx
 from tones import beep
 
 import addonHandler
-addonHandler.initTranslation()
 
 import utis
+
+addonHandler.initTranslation()
 
 class StartupDialog(wx.Dialog):
 
@@ -16,62 +17,61 @@ class StartupDialog(wx.Dialog):
 		# (self)
 		self.options = options
 		panel = wx.Panel(self)
-		
-		self.focusLbl  = wx.StaticText(panel, label=getFirstLabel())
-		
-		self.defaultRadio = wx.RadioButton(panel, label=_("Default (do nothing)"), style=wx.RB_GROUP)
-		self.lastMsgRadio = wx.RadioButton(panel, label=_("Last message in message list"))
-		self.firstMsgRadio = wx.RadioButton(panel, label=_("First message"))
-		self.firstUnreadMsgRadio = wx.RadioButton(panel, label=_("First unread message"))
-		self.folderTreeRadio = wx.RadioButton(panel, label=_("Folder tree"))
-		
-		# check box
-		self.focusOnStartupChk = wx.CheckBox(panel, wx.ID_ANY, _("Use this mode when starting Thunderbird"))
-		self.startWithInboxChk = wx.CheckBox(panel, wx.ID_ANY, _("The folder tree is preselected by the StartWithInbox add-on for Thunderbird"))
-		
+
+		startupActions = [
+			_("Do not change focus"),
+			_("Apply options below"),
+			_("Show All inboxes menu"),
+			_("Show all unread inboxes menu"),
+_("Show All unread folders menu"),
+			_("Show all folders menu"),		]
+		self.onStartupLbl  = wx.StaticText(panel, label=_("On Thunderbird startup"))
+		self.onStartupChoice = wx.Choice(panel, choices=startupActions)
+		vSizer1 = wx.BoxSizer(wx.VERTICAL)
+		vSizer1.Add(self.onStartupLbl, 0, wx.EXPAND | wx.ALL, 5)
+		vSizer1.Add(self.onStartupChoice, 0, wx.EXPAND | wx.ALL, 5)
+		# focus modes
+		focusModes = [		
+			_("Default (do nothing)"),
+			_("Last message in message list"),
+			_("First message"),
+			_("First unread message"),
+			_("Folder tree"),
+		]
+		self.focusModesLbl  = wx.StaticText(panel, label=getFirstLabel())
+		self.focusModesChoice = wx.Choice(panel, choices=focusModes)
+		vSizer2 = wx.BoxSizer(wx.VERTICAL)
+		vSizer2.Add(self.focusModesLbl, 0, wx.EXPAND | wx.ALL, 5)
+		vSizer2.Add(self.focusModesChoice, 0, wx.EXPAND | wx.ALL, 5)
+
 		# ok_button = wx.Button(panel, label=_("OK"))
 		okButton = wx.Button(panel, id=wx.ID_OK, label="OK")
 		okButton.Bind(wx.EVT_BUTTON, self.onOK)
 
 		# Escape Key
 		self.Bind(wx.EVT_CHAR_HOOK, self.onKey)
+		# preselect actio in the list
+		action =  int(self.options.options["messengerWindow"]["onStartupAction"])
+		self.onStartupChoice.SetSelection(action)
 
-		# Check the appropriate radio button
 		mode = int(self.options.options["messengerWindow"]["focusMode"])
-		if mode == 0 :self.defaultRadio.SetValue(True)
-		elif mode == 1 :self.lastMsgRadio.SetValue(True)
-		elif mode == 2 :self.firstMsgRadio.SetValue(True)
-		elif mode == 3 :self.firstUnreadMsgRadio.SetValue(True)
-		elif mode == 4 :self.folderTreeRadio.SetValue(True)
-
-		# checkboxes
-		self.focusOnStartupChk.SetValue(self.options.options["messengerWindow"]["focusOnStartup"])
-		self.startWithInboxChk.SetValue(self.options.options["messengerWindow"]["focusStartWithInbox"])
-
+		self.focusModesChoice.SetSelection(mode)
+		# Main Sizer
 		self.sizer = wx.BoxSizer(wx.VERTICAL)
-		self.sizer.Add(self.focusLbl, 0, wx.EXPAND | wx.ALL, 5)
-		self.sizer.Add(self.defaultRadio, 0, wx.ALL, 5)
-		self.sizer.Add(self.lastMsgRadio, 0, wx.ALL, 5)
-		self.sizer.Add(self.firstMsgRadio, 0, wx.ALL, 5)
-		self.sizer.Add(self.firstUnreadMsgRadio, 0, wx.ALL, 5)
-		self.sizer.Add(self.folderTreeRadio, 0, wx.ALL, 5)
-		self.sizer.Add(self.focusOnStartupChk, 0, wx.ALL, 5)
-		self.sizer.Add(self.startWithInboxChk, 0, wx.ALL, 5)
+		# onStartup choice
+		self.sizer.Add(vSizer1, 0, wx.EXPAND | wx.ALL, 10)
+		self.sizer.Add(vSizer2, 0, wx.EXPAND | wx.ALL, 10)
 		self.sizer.Add(okButton, 0, wx.ALL | wx.CENTER, 5)
 
 		panel.SetSizer(self.sizer)
 		panel.SetSizer(self.sizer)
 		self.sizer.Fit(self)
+
+		self.onStartupChoice.SetFocus()
 		
 	def onOK(self, event):
-		if self.defaultRadio.GetValue() : mode = "0"
-		elif self.lastMsgRadio.GetValue() : mode = "1"
-		elif self.firstMsgRadio.GetValue() : mode = "2"
-		elif self.firstUnreadMsgRadio.GetValue() : mode = "3"
-		elif self.folderTreeRadio.GetValue() : mode = "4"
-		self.options.options["messengerWindow"]["focusMode"] = int(mode)
-		self.options.options["messengerWindow"]["focusOnStartup"] = self.focusOnStartupChk.GetValue()
-		self.options.options["messengerWindow"]["focusStartWithInbox"] = self.startWithInboxChk.GetValue()
+		self.options.options["messengerWindow"]["onStartupAction"] = self.onStartupChoice.GetSelection()
+		self.options.options["messengerWindow"]["focusMode"] = self.focusModesChoice.GetSelection()
 		self.options.options.write()
 		# self.Close()
 		return self.Destroy()
@@ -91,6 +91,6 @@ class StartupDialog(wx.Dialog):
 def getFirstLabel() :
 	key = utis.gestureFromScanCode(41, "") 
 	key = '"' + key + '"'
-	lbl = _("With the {} key in the main window or Space in the folder tree, bring the &focus to:") 
+	lbl = _("On startup or   With the {} key in the main window, bring the &focus to:") 
 	return lbl.format(key)
 	

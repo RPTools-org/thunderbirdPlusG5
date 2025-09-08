@@ -22,9 +22,9 @@ sys.path.append(sharedPath)
 import  utis, utils115 as utils, sharedVars
 # from . import foldersMessages
 del sys.path[-1]
-addonHandler.initTranslation()
 
 from time import time, sleep
+addonHandler.initTranslation()
 
 # postMessage =windll.user32.PostMessageA
 # optimization : the dict below is initialized on add-on initialization
@@ -52,8 +52,8 @@ TTIDefGestures = {
 	"kb:f" : "showFilterBar",
 	# "kb:delete" : "deleteMsg",
 	# "kb:home" : "gotoFirstMsg",
-	"kb:end" : "gotoMsg",
-	"kb:n" : "gotoMsg",
+	# "kb:end" : "gotoMsg",
+	# "kb:n" : "gotoMsg",
 	# "kb:shift+delete" : "deleteMsg",
 	# "kb:shift+c" : "sayShortcut",
 	# "kb:j" : "toggleJunk",
@@ -387,9 +387,9 @@ class MessageListItem(IAccessible):
 		sharedVars.delPressed = True
 		KeyboardInputGesture.fromName("applications").send()
 		
-	def script_gotoMsg(self, gesture) :
-		sharedVars.nPressed = True
-		gesture.send()
+	# def script_gotoMsg(self, gesture) :
+		# sharedVars.nPressed = True
+		# gesture.send()
 
 	def script_gotoFirstMsg(self, gesture) :
 		gesture.send()
@@ -491,58 +491,72 @@ class MessageListItem(IAccessible):
 	# script_toggleJunk.category=sharedVars.scriptCategory
 
 	def script_goGroupedFirst(self, gesture) :
-		if  sharedVars.totalColIdx == -1 : return # no Total column
-		n = getThreadMsgCount(self)
-		if n == 1 : return
-		if  n > 1 : 
-			if controlTypes.State.COLLAPSED in self.states :
-				KeyboardInputGesture.fromName("rightArrow").send()
-			CallAfter(message, self.name)
-			return
+		colIndex = getTotalCol(self)
+		if  colIndex == -1 :
+			return gesture.send()
+		n =getThreadMsgCount(self, colIndex)
+		if n == 1 : return gesture.send()
+		# if  n > 1 and  controlTypes.State.COLLAPSED in self.states :
+			# self.doAction() # expand
+			# sleep(0.3)
 		o = self
-		while o  :
-			o = o.previous
-			if getThreadMsgCount(o) > 1 :
-				o.setFocus()
-				o.doAction()
-				break
-		return
-
-	def script_goGroupedLast(self, gesture) :
-		if  sharedVars.totalColIdx == -1 : return # no Total column
-		n = getThreadMsgCount(self)
-		if n == 1 : return
-		if  n > 1 and controlTypes.State.COLLAPSED in self.states :
-			utils.setMLIState(self)
-			if self.timer : self.timer.Stop() ; self.timer = None ; self.timerCount = 0
-		self.timer = callLater(50, self.selectLastMsg, self)
-			
-	def selectLastMsg(self, obj) :
-		if controlTypes.State.COLLAPSED in obj.states :
-			if self.timerCount > 10 : self.timer = None ; self.timerCount = 0 ; return
-			self.timerCount += 1
-			self.timer = callLater(100, self.selectLastMsg, obj)
-			return
-
-
-		o = obj
-		o = o.next
 		oFound = None
 		while o  :
-			if getThreadMsgCount(o) == 0 :
-				oFound  = o
-			else : break
-			o = o.next
+			if getThreadMsgCount(o, colIndex) > 1 :
+				oFound = o
+				break
+			o = o.previous
+		# end while
 		if oFound :
-			self.timer = None ; self.timerCount = 0
-			oFound .setFocus()
+			oFound.setFocus()
 			oFound.doAction()
 
-def getThreadMsgCount(o) :
+	def script_goGroupedLast(self, gesture) :
+		colIndex = getTotalCol(self)
+		if  colIndex == -1 :
+			return gesture.send()
+		n =getThreadMsgCount(self, colIndex)
+		sharedVars.logInit("* go first grouped ")
+		sharedVars.logte("returned by getThreadMsgCount ={}".format(n))
+		if n == 1 : return gesture.send()
+		if  n > 1 and controlTypes.State.COLLAPSED in self.states :
+			KeyboardInputGesture.fromName("rightArrow").send()
+		callLater(50, self.selectLastMsgInGroup, colIndex)
+			
+	def selectLastMsgInGroup(self, colIdx) :
+		if controlTypes.State.COLLAPSED in self.states :
+			return callLater(100, self.selectLastMsgInGroup, colIdx) 
+		try : o = self.next
+		except : return  beep(100, 40)
+		oFound = None
+		while o  :
+			if getThreadMsgCount(o, colIdx) > 0 :
+				oFound = o.previous
+				break
+			oFound = o
+			o = o.next
+		# end while
+		if not oFound :
+			return
+			# sharedVars.log(oFound, "oFound=")
+		oFound .setFocus()
+		oFound.doAction()
+
+def getThreadMsgCount(o, totalColIdx) :
 	try :
-		return int(o.getChild(sharedVars.totalColIdx).firstChild.name)
-	except : 
+		return int(o.getChild(totalColIdx).firstChild.name)
+	except :
 		return 0
+	return 0
+	# sharedVars.log(o, "getThreadMsgCount, totalColIdx: " + str(totalColIdx))
+	o =o.getChild(totalColIdx)
+	# sharedVars.log(o, "getThreadMsgCount, row name : " + str(o.name))
+	if o.childCount  == 0 :
+		return 0
+	# o = o.firstChild
+	# nm = o.name
+	# sharedVars.logte("value to return : {}".format(nm))
+	return int(o.firstChild.name.strip())
 
 # function helpers
 
@@ -823,3 +837,29 @@ def getPositionString(oRow, add) :
 	try : total = oRow.positionInfo['similarItemsInGroup']
 	except : total = "" 
 	return " " + str(index) + _(" of ") + str(total)
+
+def getTotalCol(oCurRow) :
+	if oCurRow.role != controlTypes.Role.TREEVIEWITEM :
+		return -1
+	if not globalVars.TBThreadTree :
+		return -1
+	oRows = None
+	o = globalVars.TBThreadTree .firstChild
+	while o :
+		# sharedVars.log(o, "getTotalCol first child=")
+		if o.role == controlTypes.Role.TABLEROW :
+			oRows = o
+			break
+		o = o.firstChild
+	if not oRows : return -1
+	o = oRows.firstChild
+	i = 0
+	while o :
+		# sharedVars.log(o, "getTotalCol tableRow child=")
+		if utils.hasID(o, "totalCol") : 
+			return i
+		o = o.next
+		i += 1
+
+	return -1
+	

@@ -1,3 +1,4 @@
+
 # -*- coding: UTF-8 -*-
 # for ThunderbirdPlusG5
 # Build customizations
@@ -20,12 +21,12 @@ addon_info = {
 	# Add-on summary, usually the user visible name of the addon.
 	# Translators: Summary for this add-on
 	# to be shown on installation and add-on information found in Add-ons Manager.
-	"addon_summary": "Thunderbird+G5 (TB 115 - 128ESR - 141+)",
+	"addon_summary": "Thunderbird+G5 (TB >= 140)",
 	# Add-on description
 	# Translators: Long description to be shown for this add-on on add-on information from add-ons manager
-	"addon_description": _("This add-on significantly increases the efficiency and comfort of using Thunderbird 115 with NVDA.\nFor more information, visit :\nhttps://www.rptools.org/NVDA-Thunderbird/get.php?pg=manual&v=g5&lang=en"),
+	"addon_description": _("This add-on significantly increases the efficiency and comfort of using Thunderbird with NVDA.\nFor more information, visit :\nhttps://www.rptools.org/NVDA-Thunderbird/get.php?pg=manual&v=g5&lang=en") + _("\nFor old releases, visit:") + " \nhttps://www.rptools.org/ntbp/",
 	# version
-	"addon_version": "2508.02.00",
+	"addon_version": "2509.05.00",
 	# Author(s)
 	"addon_author": u"Pierre-Louis Renaud",
 	# URL for the add-on documentation support
@@ -35,7 +36,7 @@ addon_info = {
 	# Documentation file name
 	"addon_docFileName": "readme.html",
 	# Minimum NVDA version supported (e.g. "2018.3.0", minor version is optional)
-	"addon_minimumNVDAVersion": "2021.1.0",
+	"addon_minimumNVDAVersion": "2024.1.0",
 	# Last NVDA version supported/tested (e.g. "2018.4.0", ideally more recent than minimum version)
 	"addon_lastTestedNVDAVersion": "2025.1.0",
 	# Add-on update channel (default is None, denoting stable releases,

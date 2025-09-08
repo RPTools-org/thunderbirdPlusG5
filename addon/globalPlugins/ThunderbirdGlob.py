@@ -3,10 +3,10 @@
 # Thunderbird+G5
 
 import controlTypes
-import globalPluginHandler, addonHandler
+import globalPluginHandler
+import addonHandler
 from scriptHandler import getLastScriptRepeatCount
 
-addonHandler.initTranslation()
 ADDON_NAME = addonHandler.getCodeAddon().manifest["name"]
 ADDON_SUMMARY = addonHandler.getCodeAddon().manifest["summary"]
 ADDON_VERSION = addonHandler.getCodeAddon().manifest["version"]
@@ -16,12 +16,14 @@ import speech
 import wx
 # from .shared import notif
 from .shared import winUtils
+from .shared import utilGlob  as ut
 from time import time, sleep
 import winUser
 from winUser import getKeyNameText, setCursorPos 
 from tones import beep
 import globalVars
 import os, sys
+addonHandler.initTranslation()
 
 def gestureFromScanCode(sc, prefix) :
 	# sc stands for the scanCode  of the key
@@ -47,7 +49,6 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def __init__(self, *args, **kwargs):
 		super (GlobalPlugin, self).__init__(*args, **kwargs)
-		globalVars.TBPropertyPage = None
 		hTaskBar = ctypes.windll.user32.FindWindowExA(None, None, b"Shell_TrayWnd", None)
 		if not hTaskBar or  globalVars.appArgs.launcher : 
 			return
@@ -81,16 +82,22 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 
 	def event_foreground(self, obj, nextHandler) :
-		if obj.role not in (controlTypes.Role.PANE, controlTypes.Role.FRAME, controlTypes.Role.WINDOW) :
+		if obj.role != controlTypes.Role.FRAME : # not in (controlTypes.Role.PANE, controlTypes.Role.FRAME, controlTypes.Role.WINDOW) :
 			return nextHandler()
-		if globalVars.TBPropertyPage  and not winUtils.findWindowByPartialTitle(" - Mozilla Thunderbird") :
+		if not hasattr(globalVars, "TBPropertyPage") :
+			globalVars.TBPropertyPage = None
+		if not hasattr(globalVars, "TBGrouping") :
+			globalVars.TBGrouping = None
+
+		if globalVars.TBPropertyPage  and not winUtils.findWindowByPartialTitle(" - Mozilla Thunderbird") : # Thunderbird was closed
 			# wx.CallLater(1000, ui.message, "Reset of globalVars, Eventt foreground role={}, class={}, name={}".format(obj.role.name, obj.windowClassName, "" if not obj.name else obj.name))
+			globalVars.TBGrouping = None
 			globalVars.TBPropertyPage = None
 			globalVars.TBFolderTree = None
 			globalVars.TBThreadTree = None
 			globalVars.TBThreadPane = None
 		nextHandler()
-		
+	
 
 	# def notifyAppmodule(self):
 		# obj=api.getForegroundObject()
@@ -131,31 +138,31 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	script_startTB.__doc__ = _("Starts Thunderbird")
 	script_startTB.category= ADDON_SUMMARY
 
-	def  script_searchUpdate(self, gesture) :
-		self.updateMenu = wx.Menu()
-		# self.updateMenu.Append(0, _("Check for an update"))
-		# self.updateMenu.Append(1, getUpdateLabel())
-		lbl =  _("Install version {}")
-		lbl = lbl.format(updateLite.getLatestVersion())
-		self.updateMenu.Append(2, lbl)
-		self.updateMenu.Bind (wx.EVT_MENU,self.onMenu)
-		wx.CallLater(20, ui.message, ADDON_NAME +" " + ADDON_VERSION)
-		showNVDAMenu  (self.updateMenu)
+	# def  script_searchUpdate(self, gesture) :
+		# self.updateMenu = wx.Menu()
+		# # self.updateMenu.Append(0, _("Check for an update"))
+		# # self.updateMenu.Append(1, getUpdateLabel())
+		# lbl =  _("Install version {}")
+		# lbl = lbl.format(updateLite.getLatestVersion())
+		# self.updateMenu.Append(2, lbl)
+		# self.updateMenu.Bind (wx.EVT_MENU,self.onMenu)
+		# wx.CallLater(20, ui.message, ADDON_NAME +" " + ADDON_VERSION)
+		# showNVDAMenu  (self.updateMenu)
 
-	def onMenu(self, evt):
-		if evt.Id == 0 :
-			# wx.CallLater(20, updateLite.checkUpdate, False)
-			updateLite.checkUpdate(False)
-		elif evt.Id == 1 :
-			toggleUpdateState()
-		elif evt.Id == 2 :
-			wx.CallLater(20, updateLite.forceUpdate)
-	script_searchUpdate.__doc__ = _("Update : shows an update menu")
-	script_searchUpdate.category=ADDON_SUMMARY
+	# def onMenu(self, evt):
+		# if evt.Id == 0 :
+			# # wx.CallLater(20, updateLite.checkUpdate, False)
+			# updateLite.checkUpdate(False)
+		# elif evt.Id == 1 :
+			# toggleUpdateState()
+		# elif evt.Id == 2 :
+			# wx.CallLater(20, updateLite.forceUpdate)
+	# script_searchUpdate.__doc__ = _("Update : shows an update menu")
+	# script_searchUpdate.category=ADDON_SUMMARY
 
 	__gestures={
 		gestureFromScanCode(41, "kb:control+alt+"): "startTB",
-		gestureFromScanCode(41, "kb:control+alt+shift+"): "searchUpdate",
+		# gestureFromScanCode(41, "kb:control+alt+shift+"): "searchUpdate",
 	}
 	
 def startProgramMaximized(exePath):

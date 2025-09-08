@@ -1,6 +1,5 @@
 #-*- coding:utf-8 -*
 import addonHandler
-addonHandler.initTranslation()
 
 import api, config, sys, glob, shutil
 import gui, wx # Ajouté par Abdel.
@@ -15,6 +14,8 @@ from wx import Menu, EVT_MENU, EVT_MENU_CLOSE, CallAfter, CallLater
 from ui import  message
 from speech import cancelSpeech
 from tones import beep
+
+addonHandler.initTranslation()
 
 
 class  Settings() :
@@ -120,15 +121,18 @@ class  Settings() :
 		temp = section["deleteDelays"]
 		temp = temp.split(" ")
 		sharedVars.deleteDelays = [int(temp[0]), int(temp[1])]
-
+		# startup management
+		if "onStartupAction" not in section  :
+			self.options["messengerWindow"].update({"onStartupAction":"1"}) # 0=do nothing, 1=apply focusMode, 2=display inbox menu
+		else :
+			section["onStartupAction"]= section.as_int("onStartupAction")
 		if "focusMode" not in section  :
-			self.options["messengerWindow"].update({"focusMode":"1"})
-			self.options["messengerWindow"].update({"focusOnStartup":"False"})
+			self.options["messengerWindow"].update({"focusMode":"1"}) # lastmessage in message list
 			# self.options.write()
 			self.options["messengerWindow"]["focusMode"] = "1"
-			self.options["messengerWindow"]["focusOnStartup"] = False
+			self.options["messengerWindow"]["onStartupAction"] = 0
 		else : # options are in section, we change their type
-			section["focusOnStartup"]= section.as_bool("focusOnStartup")
+			# obsolete section["focusOnStartup"]= section.as_bool("focusOnStartup")
 			section["focusStartWithInbox"]= section.as_bool("focusStartWithInbox")
 			section["focusMode"]= section.as_int("focusMode")
 			

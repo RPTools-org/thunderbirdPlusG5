@@ -25,7 +25,6 @@ from wx import CallAfter, Menu, MessageBox
 from core import callLater
 from winUser import setCursorPos, getKeyNameText 
 import addonHandler,  os, sys
-addonHandler.initTranslation()
 
 import api
 from api import copyToClip
@@ -36,7 +35,9 @@ GetFirstChildElement  = clientObject.RawViewWalker.GetFirstChildElement
 GetNextSiblingElement =clientObject.RawViewWalker.GetNextSiblingElement
 import sharedVars
 import globalVars
+addonHandler.initTranslation()
 
+prevSpeechMode = None
 
 def _unicode(s) : return str(s)
 def isChichi() :
@@ -118,15 +119,25 @@ def setSpeechMode_off():
 	except AttributeError:
 		speech.speechMode = speech.speechMode_off
 
-def setSpeech(enable) :
-	global  prevSpeechMode
-	if enable and prevSpeechMode :
-		setSpeechMode(prevSpeechMode)
-		prevSpeechMode = None
-	elif not enable :
-		prevSpeechMode = getSpeechMode()
-		setSpeechMode_off()
+# def setSpeech(enable) :
+	# global  prevSpeechMode
+	# if enable and prevSpeechMode :
+		# setSpeechMode(prevSpeechMode)
+		# prevSpeechMode = None
+	# elif enable and not prevSpeechMode :
+		# speech.setSpeechMode(speech.SpeechMode.talk)
+	# elif not enable :
+		# prevSpeechMode = getSpeechMode()
+# speech.setSpeechMode(speech.SpeechMode.off)
 
+def setSpeech(enable) :
+	if enable :
+		speech.setSpeechMode(speech.SpeechMode.talk)
+		sharedVars.objLooping = False # in case it was forgotten
+	else :
+		speech.setSpeechMode(speech.SpeechMode.off)
+		
+	
 def enableSpeechAndSay(msg, focusName=False) :
 	if focusName :
 		o = api.getFocusObject()
@@ -262,7 +273,7 @@ def hasTabPanel(frame=None) :
 			else : o = None
 		return False
 	finally :
-		sharedVars.objLoping = False
+		sharedVars.objLooping = False
 
 def getObjFirstGrouping (self): 
 	#if not api.getForegroundObject():return getObjFirstGrouping2 (self) # modif PL
@@ -715,9 +726,15 @@ def toSupport(tbVersion) :
 	a +=  "?subject=Support%20" + addonVersion() + "%20Thunderbird%20" + tbVersion
 	os.startfile (a)
 import winUser
-def getWinTitle() :
+def getWinTitle(appName=True) :
 	hwFG = winUser.getForegroundWindow()
 	title = winUser.getWindowText(hwFG)
+	if not appName :
+		# 1 TBDV - RPTools @ - Mozilla Thunderbird
+		pos = title.rfind(" - ")
+		if pos > -1 :
+			title = title[:pos-1]
+
 	return title
 
 def cleanedWinTitle(appMod) :

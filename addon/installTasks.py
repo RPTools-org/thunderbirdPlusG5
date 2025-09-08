@@ -2,6 +2,7 @@
 # This file is covered by the GNU General Public License.
 # ThunderbirdPlusG5
 import os
+import psutil
 import gui
 import wx
 import addonHandler
@@ -13,13 +14,14 @@ import winVersion, versionInfo
 
 # This  code comes from TeleNVDA and is adapted
 def onInstall():
+	closeThunderbird()	
 	installPath = os.path.dirname(__file__)
 	for addon in addonHandler.getAvailableAddons():
 		if addon.name == "thunderbirdPlus" and not addon.isDisabled:
 			addon.enable(False)
 		if addon.name == "Mozilla" and not addon.isDisabled:
 			setMozilla(addon)
-			
+
 	addonName, addonNewVersion = getNewAddonInfo(installPath)
 	addonOldVersion = getOldVersion(addonName, installPath)
 	if addonOldVersion != addonNewVersion : 
@@ -150,3 +152,37 @@ def getShortWinVer(sep=" ") :
 	v = v[0:p-1]
 	return v.replace(" ", sep)
 
+def getPidByName(process_name):
+	# Search for the PID of an application from its executable name.
+	# Args:
+		# process_name (str): The name of the application executable (for example, "notepad.exe").
+	# Returns:List: A PID list corresponding to the application.
+	# Return an empty list if no application is found.
+	pids = []
+	for proc in psutil.process_iter(['pid', 'name']):
+		try:
+			if proc.info['name'].lower() == process_name.lower():
+				pids.append(proc.info['pid'])
+		except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+			pass
+	return pids
+
+def closeThunderbird() :
+	print("TB+G5 : closeThunderbird")
+	processName = "thunderbird.exe"
+	pID = getPidByName(processName) 
+	if not pID :
+		return
+	while pID :
+		print("TB+G5 : closeThunderbirdisplay message box")
+		result = gui.messageBox(
+			# Translators: message that informs the user that Thunderbird muste be closed first. 
+			_("Please first close all Thunderbird's windows then press the yes button to continue the installation of Thunderbird+G5."),
+			# Translators: question title
+			_("Running Thunderbird  detected"),
+			wx.YES_NO|wx.ICON_QUESTION, gui.mainFrame)
+		if result == wx.YES :
+			pID = getPidByName(processName)
+			if not pID : return
+		elif  result == wx.NO :
+			raise RuntimeError(_("Installation cancelled"))

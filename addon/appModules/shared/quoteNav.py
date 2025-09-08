@@ -1,6 +1,5 @@
 #-*- coding:utf-8 -*
 import addonHandler
-addonHandler.initTranslation()
 
 import re, speech, winUser
 from ui import message # , browseableMessage
@@ -18,6 +17,8 @@ import sharedVars
 import utis
 import utils115 as utils
 import textDialog
+addonHandler.initTranslation()
+
 # Attention : 2 non printable chars used here :  Alt+0031 is used as a separator of quotes / messages.  Alt+0030 as a temporary replacement of \n
 CNL = chr(30) # char new line
 # CNQ = chr(31) # char new quote, hard coded as 
