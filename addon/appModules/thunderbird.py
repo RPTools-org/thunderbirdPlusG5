@@ -346,10 +346,10 @@ class AppModule(thunderbird.AppModule):
 				sharedVars.curFrame = "messengerWindow" ; sharedVars.curTab = "main"
 				return
 		# spellCheck dialog
-		if sharedVars.curFrame == "spellcheckDlg" :
-			if ID.startswith("ReplaceWordInput") or (role == controlTypes.Role.LISTITEM and utils.hasID(obj.parent, "SuggestedList")) :
-				clsList.insert (0,msgComposeWindow.spellCheckDlg.SpellCheckDlg); return
-		# special tabs documents 
+		if ID.startswith("ReplaceWordInput") or (role == controlTypes.Role.LISTITEM and utils.hasID(obj.parent, "SuggestedList")) :
+			clsList.insert (0,msgComposeWindow.spellCheckDlg.SpellCheckDlg); return
+			return
+	# special tabs documents 
 		if sharedVars.TBMajor < 115 : sharedVars.TBMajor = utis.TBMajor()
 
 		if sharedVars.curTab == "sp:addressbook" :
@@ -1058,7 +1058,7 @@ class AppModule(thunderbird.AppModule):
 			elif  ID.startswith("ReplaceWordInput") : 
 				# spellCheckDialog
 				if mainKey == "upArrow" :
-					return o.script_reportFocus(gesture)
+					return fo.script_reportFocus(gesture)
 				elif mainKey == "downArrow" :
 					return o.script_focusSuggested(gesture)
 			elif  utils.hasID(o.parent, "SuggestedList") :
