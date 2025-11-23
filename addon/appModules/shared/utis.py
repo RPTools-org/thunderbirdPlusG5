@@ -19,7 +19,7 @@ import globalVars
 from time import sleep, mktime, time
 from winsound import PlaySound,SND_MEMORY, SND_PURGE, MessageBeep,MB_ICONASTERISK
 import threading
-objSoundFiles = {}
+objSoundFiles = {} # is filled by menuSettings.py
 import speech
 from wx import CallAfter, Menu, MessageBox
 from core import callLater
@@ -65,12 +65,13 @@ def noSpeechMessage(msg) :
 	speech.cancelSpeech()
 	message(msg)
 
-def playSound (soundFile): 
+def playSound(soundFile) : 
 	try :
-		threading.Thread (None, PlaySound, None, (objSoundFiles[(soundFile if soundFile.endswith (".wav") else soundFile+".wav")],SND_MEMORY|SND_PURGE)).start ()
+		threading.Thread (None, PlaySound, None, (objSoundFiles[(soundFile if soundFile.endswith (".wav") else soundFile+".wav")],SND_MEMORY|SND_PURGE)).start()
 	except : 
 		# deactivated for those who don't like sound -> beep(440, 80)
 		pass #son non trouvé
+
 
 def TBMajor() :   
 	try :

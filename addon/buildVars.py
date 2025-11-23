@@ -26,7 +26,7 @@ addon_info = {
 	# Translators: Long description to be shown for this add-on on add-on information from add-ons manager
 	"addon_description": _("This add-on significantly increases the efficiency and comfort of using Thunderbird with NVDA.\nFor more information, visit :\nhttps://www.rptools.org/NVDA-Thunderbird/get.php?pg=manual&v=g5&lang=en") + _("\nFor old releases, visit:") + " \nhttps://www.rptools.org/ntbp/",
 	# version
-	"addon_version": "2509.16.00",
+	"addon_version": "2511.23.00",
 	# Author(s)
 	"addon_author": u"Pierre-Louis Renaud",
 	# URL for the add-on documentation support

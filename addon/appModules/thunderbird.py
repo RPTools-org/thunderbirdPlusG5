@@ -214,7 +214,7 @@ class AppModule(thunderbird.AppModule):
 
 	# ====
 	def waitForTree(self, oFrame) :
-		dbg = False 
+		dbg = False
 		if sharedVars.loopCount == 10 : 
 			sharedVars.loopCount = 0
 			sharedVars.error(None, "waitForTree timeout", sound=dbg)
@@ -234,10 +234,11 @@ class AppModule(thunderbird.AppModule):
 			if dbg : sharedVars.log(frame, "waitForTree oFrame")
 			pp = folderTree = threadTree = None
 			oGrouping = utils.getMainGrouping(frame, True)
-			if not oGrouping : sharedVars.log(frame, "waitForTree oGrouping not found in	")
-			if oGrouping : pp = utils.getPropertyPage(frame, debug=dbg)
+			if oGrouping : 
+				pp = utils.getPropertyPage(frame, debug=dbg)
 			if pp : 
 				folderTree = utils.getFolderTreeFromPP(oPP=pp, debug=dbg)
+				if dbg : sharedVars.log(folderTree, "waitForTree after getFolderTreeFromPP")  
 				threadTree = utils.getThreadTreeFromFG(focus=False, nextGesture="", getThreadPane=False, oPP=pp, debug=dbg)
 			else : # pp is None
 				dbg = True

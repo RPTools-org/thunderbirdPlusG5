@@ -240,7 +240,7 @@ def findControl(obj, role, ID="", getNextLink=False, removeURL=False)  :
 def setFocusTo(frame, propertyPage, curTab) :
 	# frame and propertyPage are objects, curTab is a string
 	if curTab == "main" :
-		fo = api.getFocusObject()
+		fo = getFocusObject()
 		if fo.role != controlTypes.Role.FRAME :
 			return
 		obj = findControl(propertyPage, controlTypes.Role.TREEVIEW, ID="folderTree")

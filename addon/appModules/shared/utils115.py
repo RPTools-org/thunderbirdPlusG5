@@ -481,13 +481,16 @@ def getFolderTreeFromPP(oPP, debug=False) :
 		if debug : sharedVars.logte("propertyPage is none in getFolderTreeFromPP")
 		return None
 	o = oPP
-	for g in range(0, 4) : # 0 to 3 = 4 passes
+	for g in range(0, 3) :
 		o = o.firstChild
-		if not o : break
+		if not o : return None
 		# if debug : sharedVars.log(o, "descendant gen=" + str(g))
 	# end for
 	if debug : sharedVars.log(o, "getFolderTreeFromPP")
-	if o :
+	#  tb 145
+	idx = 0 if utis.TBMajor() < 145 else 1
+	o = o.getChild(idx)
+	if o and o.role == controlTypes.Role.TREEVIEW : # 2025-11-22
 		globalVars.TBFolderTree = o
 		return o
 	sharedVars.error(None, "getFolderTreeFromPP result") 

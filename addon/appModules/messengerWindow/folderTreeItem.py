@@ -29,13 +29,23 @@ gRegUnread = compile (", \d+")
 
 lastSearch = ""
 
+def shortName(ftiName) :
+	p = ftiName.rfind("/")
+	if p > -1 :
+		return ftiName[p+1:]
+	return ftiName
+		
 
 class FolderTreeItem (IAccessible):
 	oLastNav = None
 	spacePressed = False
 
 	def initOverlayClass (self):
-		# if not sharedVars.FTnoSpace : 
+		nm = self.name
+		p = nm.rfind("/")
+		if p > -1 :
+			self.name = nm[p+1:]
+		# # if not sharedVars.FTnoSpace : 
 		self.bindGestures({"kb:space":"ftiNextUnread", "kb:control+enter":"menuUnread", "kb:enter":"menuFolders", "kb:shift+enter":"menuAllFolders", "kb:shift+control+enter":"menuAllUnread"})
 		self.bindGesture ("kb:nvda+upArrow", "sayFolderName") 
 		self.bindGesture ("kb(laptop):nvda+l", "sayFolderName") 
@@ -242,7 +252,7 @@ class FolderMenu() :
 			hasChildren = (int(o.childCount) > 0)
 			nm = coll = ""
 			if o.role == controlTypes.Role.TREEVIEWITEM :
-				nm = str(o.name)
+				nm = shortName(o.name)
 				lvl = o.positionInfo['level']
 				if self.all == 1 :  
 					if lvl == 2 : 

@@ -158,8 +158,8 @@ class  Settings() :
 		utis.objSoundFiles = {}
 		for path in soundFilePath:
 			utis.objSoundFiles[basename(path)]= open (path,"rb").read ()
-		#utis.playSound("ding")
-		# sharedVars.log(None, str(utis.objSoundFiles))
+		# utis.playSound("ding")
+		# print("soundFiles= " + str(utis.objSoundFiles))
 		# set sharedVars for optimization
 		sharedVars.virtualSpellChk = False # self.getOption ("msgcomposeWindow", "virtualSpellChk")
 		if   not os.path.exists(self.iniFile) :
