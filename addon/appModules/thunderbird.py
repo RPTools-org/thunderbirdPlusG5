@@ -77,24 +77,6 @@ def applyFocusModeFromThreadTree(focusMode) :
 	KeyboardInputGesture.fromName(gest).send()
 	callLater(100, sayTreeItem)
 
-# def applyFocusModeFromFolderTree(focusMode) :
-	# if focusMode == 4 : # folderTree 
-		# callLater(50, sayTreeItem)
-		# return #  nothing to do
-	# # set focus to threadTree
-	# KeyboardInputGesture.fromName("f6").send()
-	# if focusMode == 1 : # last message
-		# gest = "end"
-	# elif focusMode == 2 : # first  message
-		# gest = "home"			
-	# elif focusMode == 3 : # first  unread message
-		# gest = "n"
-	# else :
-		# return
-	# # callLater(50, KeyboardInputGesture.fromName(gest).send)	
-	# KeyboardInputGesture.fromName(gest).send()
-	# callLater(50, sayTreeItem)
-
 def applyFocusMode() :
 	# from script_Grave
 	try : # finally
@@ -155,6 +137,14 @@ class ListTreeView(IAccessible) :
 		if sharedVars.curTab != "main" : return gesture.send() 
 		KeyboardInputGesture.fromName ("shift+control+k").send() 
 
+class QuickFilterBar(IAccessible) :
+	def initOverlayClass (self):
+		self.bindGesture ("kb:downArrow", "goMessageList")
+	def script_goMessageList(self, gesture) :
+		if sharedVars.curTab != "main" : return gesture.send() 
+		KeyboardInputGesture.fromName ("f6").send() 
+
+
 class TabAddons(IAccessible) :
 	def initOverlayClass (self):
 		self.bindGesture ("kb:enter", "validateEdit")
@@ -188,11 +178,7 @@ class AppModule(thunderbird.AppModule):
 		# self.columnID= []
 		sharedVars.initSettingsMenu(self) # then use  sharedVars.oSettings.*
 		# initQuotenav  will be run at first use of quote Navigator >sharedVars.initQuoteNav() # then use  sharedVars.oQuoteNav.*		self.regExp_date =compile ("^(\d\d/\d\d/\d{4} \d\d:\d\d|\d\d:\d\d)$")
-		self.regExp_nameListGroup, self.regExp_AnnotationResponse, self.regExp_mailAddress  =compile ("\[.*\]|\{.*\}"), compile("re[ ]*:[ ]", IGNORECASE), compile ("\S+?@\S+?\.\S+")
-		# self.regExp_listGroupName = compile ("\[(.*)\]") # |\{?*\}") # first occurrence of the list group name
-		self.regExp_removeMultiBlank =compile (" {2,}")
-		self.regExp_removeSymDigits =compile ("\d+|&|_|@.+|=|\.| via .*")
-		self.regExp_removeSymbols =compile (r"&|_|@.+|=|\. | via .*")
+		# all  self.regExp moved to sharedVars
 		k =  utis.gestureFromScanCode(41)
 		self.bindGesture("kb:control+" + k, "showContextMenu") # 41 is the scancode of the key above Tab
 		self.bindGesture("kb:shift+" + k,  "showOptionMenu") 
@@ -201,7 +187,6 @@ class AppModule(thunderbird.AppModule):
 		globalVars.TBFolderTree = None
 		globalVars.TBThreadTree = None
 		globalVars.TBThreadPane = None
-		globalVars.TBThreadTree = None
 		globalVars.TBFolderTree = None
 		sharedVars.curFrame = "unknown"
 		sharedVars.curTab = "unknown"
@@ -346,6 +331,9 @@ class AppModule(thunderbird.AppModule):
 				clsList.insert(0, messengerWindow.folderTreeItem.FolderTreeItem)
 				sharedVars.curFrame = "messengerWindow" ; sharedVars.curTab = "main"
 				return
+		# quick filter bar
+		if role ==  controlTypes.Role.TOGGLEBUTTON and ID.startswith("qfb-") :
+			clsList.insert (0, QuickFilterBar); return
 		# spellCheck dialog
 		if ID.startswith("ReplaceWordInput") or (role == controlTypes.Role.LISTITEM and utils.hasID(obj.parent, "SuggestedList")) :
 			clsList.insert (0,msgComposeWindow.spellCheckDlg.SpellCheckDlg); return
@@ -445,38 +433,6 @@ class AppModule(thunderbird.AppModule):
 			# sharedVars.log(obj, "FRAME, curframe = " +  sharedVars.curFrame) 
 		nextHandler()
 
-	def event_NVDAObject_init(self, obj):
-		# if self.disabMode == 2 : return
-		if sharedVars.curTab != "main" : return
-		if obj.role in (controlTypes.Role.LISTITEM, controlTypes.Role.TREEVIEWITEM) and  utils.hasID(obj, "threadTree-row") :
-			# if controlTypes.State.SELECTED not in obj.states : 
-				# obj.doAction()
-				# beep(100, 60)
-				# ui.message(obj.name)
-			if not sharedVars.TTClean : 
-				sharedVars.curTTRow = obj.name
-				return
-
-			# sharedVars.logte("objectInit TTI:" + sharedVars.curTTRow)
-			try :  # 2023 11 05 necessary when quick deletions
-				sharedVars.curTTRow = str(obj.name) 
-				obj.name = self.buildColumnNames(obj)
-				if not sharedVars.curTTRow : sharedVars.curTTRow = obj.name
-			except : 
-				#beep(100, 15)
-				sharedVars.curTTRow = "Error rebuilding row"
-
-	# def customizeRow(self, obj) :
-		# sharedVars.curTTRow = str(obj.name)
-		# if not sharedVars.TTClean  :
-			# sharedVars.curTTRowCleaned = sharedVars.curTTRow 
-			# return
-		# try :  # 2023 11 05 necessary when quick deletions
-			# sharedVars.curTTRowCleaned = self.buildColumnNames(obj)
-		# except : 
-			# beep(100, 15)
-			# sharedVars.curTTRowCleaned = sharedVars.curTTRow
-
 
 	def event_gainFocus (self,obj,nextHandler):
 		if self.logEvents : sharedVars.log(obj, "Event gainFocus start: ")
@@ -575,133 +531,134 @@ class AppModule(thunderbird.AppModule):
 			
 	
 	# G5 : buildColumnID() : used in messageListItem.
-	def buildColumnID(self, oTT):
-		try :
-			# oTT must be the threadTree
-			oTT = utis.findParentByID(oTT, controlTypes.Role.TEXTFRAME, "threadTree")
-			sharedVars.objLooping = True
-				# flat list mode : path Role-TEXTFRAME, , IA2ID : threadTree | i0, Role-TABLE,  | i0, Role-TEXTFRAME,  | i0, Role-TABLEROW,  , 
-			o =  oTT.firstChild.firstChild.firstChild.firstChild  # first headers of threadTree
-			self.columnID =[]
-			while o and o.role == controlTypes.Role.TABLECOLUMNHEADER :
-				if int(o.location[2]) > 0 : # width
-					# append couple (location, IA2ID)
-					ID = utils.getIA2Attr(o)
-					if ID and str(ID) not in "flaggedCol,junkStatusCol,	threadCol,unreadButtonColHeader" :
-					# left must be int for correct sorting
-						left = int(o.location[0])
-						name = str(o.name).replace(_("Sort by "), "")
-						self.columnID.append((left, ID, name))
-				o = o.next
-			self.columnID.sort()
-			# self.columnID =[e[1] for e in self.columnID]
-			# debug test
-			# for e in self.columnID  :
-				# sharedVars.logte("header left:{}, ID:{}, name:{}".format( str(e[0]), e[1], e[2]))
-		finally :
-			# self.lenColID = len(self.columnID)
-			sharedVars.objLooping = False
+	# def buildColumnID(self, oTT):
+		# try :
+			# # oTT must be the threadTree
+			# oTT = utis.findParentByID(oTT, controlTypes.Role.TEXTFRAME, "threadTree")
+			# sharedVars.objLooping = True
+				# # flat list mode : path Role-TEXTFRAME, , IA2ID : threadTree | i0, Role-TABLE,  | i0, Role-TEXTFRAME,  | i0, Role-TABLEROW,  , 
+			# o =  oTT.firstChild.firstChild.firstChild.firstChild  # first headers of threadTree
+			# self.columnID =[]
+			# while o and o.role == controlTypes.Role.TABLECOLUMNHEADER :
+				# if int(o.location[2]) > 0 : # width
+					# # append couple (location, IA2ID)
+					# ID = utils.getIA2Attr(o)
+					# if ID and str(ID) not in "flaggedCol,junkStatusCol,	threadCol,unreadButtonColHeader" :
+					# # left must be int for correct sorting
+						# left = int(o.location[0])
+						# name = str(o.name).replace(_("Sort by "), "")
+						# self.columnID.append((left, ID, name))
+				# o = o.next
+			# self.columnID.sort()
+			# # self.columnID =[e[1] for e in self.columnID]
+			# # debug test
+			# # for e in self.columnID  :
+				# # sharedVars.logte("header left:{}, ID:{}, name:{}".format( str(e[0]), e[1], e[2]))
+		# finally :
+			# # self.lenColID = len(self.columnID)
+			# sharedVars.objLooping = False
 
-	def buildColumnNames(self, oRow) :
-		colSepar = ", " 
-		# sharedVars.logte("Option junkStatusCol:" + str(junkStatusCol))
-		# playSound_unread = False #options.as_bool ("playsound_unread")
-		# sharedVars.logte("Original rowName:" + sharedVars.curTTRow)
-		# l is the line we are going to build
-		if controlTypes.State.COLLAPSED in oRow.states : l = _("Collapsed") + ", "
-		else : l = ""
+	# def buildColumnNames(self, oRow) :
+		# colSepar = ", " 
+		# # sharedVars.logte("Option junkStatusCol:" + str(junkStatusCol))
+		# # playSound_unread = False #options.as_bool ("playsound_unread")
+		# # sharedVars.logte("Original rowName:" + sharedVars.curTTRow)
+		# # l is the line we are going to build
+		# if controlTypes.State.COLLAPSED in oRow.states : l = _("Collapsed") + ", "
+		# else : l = ""
 
-		# sharedVars.debugLog +="* Columns properties\n"
-		try : # finally
-			sharedVars.objLooping = True
-			oCell = oRow.firstChild
-			while oCell :
-				s = ""
-				longID = str(utils.getIA2Attr(oCell, False, "class"))
-				ID = longID.split(" ")
-				ID = str(ID[len(ID)-1])
-				ID = ID.split("-")[0]
-				# begin test
-				# nm = ", name:" +  str(oCell.name)
-				# testChild =", no children" 
-				# if oCell.firstChild :
-					# testChild = ", firstChild role:" + str(oCell.firstChild.role)
-					# if oCell.firstChild.name : testChild += ", cname:" +  oCell.firstChild.name
-				# sharedVars.logte(str(oCell.location.left) + ", short ID:" + ID + ", longID:" + longID + nm + testChild)
-				# end of test 
-				# if "unread" in longID == "statuscol" :
-					# s = oCell.FirstChild
-					# s = "col non lu, "
-				if ID == "statuscol" :
-					o = oCell.firstChild
-					if not o :
-						s =  sharedVars.unread if sharedVars.unread not in l else "" # 2023.11.15 
-					else :
-						s = o.name
-						if s == _("Read") : s = ""
-				elif "unreadbuttoncolheader" in longID :
-					if sharedVars.unread  + ", " in oRow.name : s = sharedVars.unread
-					else : s = ""
-				elif "flaggedcol" in longID :
-					if _("Starred") + ", " in oRow.name : s = _("Starred")
-				elif ID == "subjectcol" :
-					o = oCell.firstChild.firstChild.firstChild
-					s= ""
-					while  o :
-						if o.role == controlTypes.Role.STATICTEXT :
-							s = o.name
-							break
-						o = o.next
-					s=removeResponseMention (self, s,1).strip (" -_*#").replace(" - "," ")
-					if sharedVars.oSettings.regex_removeInSubject is not None : 
-						s =sharedVars.oSettings.regex_removeInSubject.sub ("", s)
+		# # sharedVars.debugLog +="* Columns properties\n"
+		# try : # finally
+			# sharedVars.objLooping = True
+			# oCell = oRow.firstChild
+			# while oCell :
+				# s = ""
+				# longID = str(utils.getIA2Attr(oCell, False, "class"))
+				# sharedVars.logte("Col longID : " + longID)
+				# ID = longID.split(" ")
+				# ID = str(ID[len(ID)-1])
+				# ID = ID.split("-")[0]
+				# # begin test
+				# # nm = ", name:" +  str(oCell.name)
+				# # testChild =", no children" 
+				# # if oCell.firstChild :
+					# # testChild = ", firstChild role:" + str(oCell.firstChild.role)
+					# # if oCell.firstChild.name : testChild += ", cname:" +  oCell.firstChild.name
+				# # sharedVars.logte(str(oCell.location.left) + ", short ID:" + ID + ", longID:" + longID + nm + testChild)
+				# # end of test 
+				# # if "unread" in longID == "statuscol" :
+					# # s = oCell.FirstChild
+					# # s = "col non lu, "
+				# if ID == "statuscol" :
+					# o = oCell.firstChild
+					# if not o :
+						# s =  sharedVars.unread if sharedVars.unread not in l else "" # 2023.11.15 
+					# else :
+						# s = o.name
+						# if s == _("Read") : s = ""
+				# elif "unreadbuttoncolheader" in longID :
+					# if sharedVars.unread  + ", " in oRow.name : s = sharedVars.unread
+					# else : s = ""
+				# elif "flaggedcol" in longID :
+					# if _("Starred") + ", " in oRow.name : s = _("Starred")
+				# elif ID == "subjectcol" :
+					# o = oCell.firstChild.firstChild.firstChild
+					# s= ""
+					# while  o :
+						# if o.role == controlTypes.Role.STATICTEXT :
+							# s = o.name
+							# break
+						# o = o.next
+					# s=removeResponseMention (self, s,1).strip (" -_*#").replace(" - "," ")
+					# if sharedVars.oSettings.regex_removeInSubject is not None : 
+						# s =sharedVars.oSettings.regex_removeInSubject.sub ("", s)
 
-					# listgroup name repeats
-					grp = utis.strBetween(s, "[", "]")
-					# api.copyToClip("groupe " + grp)
-					if grp :
-						s= self.regExp_nameListGroup.sub (" ",s)
-						if  not sharedVars.listGroupName :
-							s = "[" + grp + "] " +  s 
-					# sharedVars.curSubject = s
-				elif ID in ("correspondentcol","sendercol","recipientcol") :  # clean
-					if  oCell.firstChild :
-						s= oCell.firstChild.name
-						if sharedVars.namesCleaned : # corresp name 
-							s = self.regExp_removeSymDigits.sub (" ", s)
-						else : 
-							s = self.regExp_removeSymbols.sub (" ", s)
-						s = utis.truncateAfter(s, "<")
-				elif "attachmentcol" in longID :
-					if oCell.firstChild :
-						s = _("attachment") 
-				elif ID =="junkstatuscol" :
-					# Translators : junk mail column in the list of messages : You dshould write here exactly what  Thunderbird says in your language.
-					if sharedVars.junkStatusCol :
-						s =  _("Spam")
-						if   s not in sharedVars.curTTRow :
-							s =""
+					# # listgroup name repeats
+					# grp = utis.strBetween(s, "[", "]")
+					# # api.copyToClip("groupe " + grp)
+					# if grp :
+						# s= self.regExp_nameListGroup.sub (" ",s)
+						# if  not sharedVars.listGroupName :
+							# s = "[" + grp + "] " +  s 
+					# # sharedVars.curSubject = s
+				# elif ID in ("correspondentcol","sendercol","recipientcol") :  # clean
+					# if  oCell.firstChild :
+						# s= oCell.firstChild.name
+						# if sharedVars.namesCleaned : # corresp name 
+							# s = self.regExp_removeSymDigits.sub (" ", s)
+						# else : 
+							# s = self.regExp_removeSymbols.sub (" ", s)
+						# s = utis.truncateAfter(s, "<")
+				# elif "attachmentcol" in longID :
+					# if oCell.firstChild :
+						# s = _("attachment") 
+				# elif ID =="junkstatuscol" :
+					# # Translators : junk mail column in the list of messages : You dshould write here exactly what  Thunderbird says in your language.
+					# if sharedVars.junkStatusCol :
+						# s =  _("Spam")
+						# if   s not in sharedVars.curTTRow :
+							# s =""
 
-				else : #  elif ID in ("datecol, ","receivedcol, "tagscol", "sizecol", "accountcol", "totalcol", "locationcol", "idcol") :
-					try : s = oCell.firstChild.name
-					except : pass
-				if s : l += s + colSepar
-				oCell = oCell.next
+				# else : #  elif ID in ("datecol, ","receivedcol, "tagscol", "sizecol", "accountcol", "totalcol", "locationcol", "idcol") :
+					# try : s = oCell.firstChild.name
+					# except : pass
+				# if s : l += s + colSepar
+				# oCell = oCell.next
 				
-			# positon info
-			# posInfo = oRow.positionInfo
-			# # example : PosInfo={'level': 1, 'similarItemsInGroup': 973, 'indexInGroup': 971}posInfo = oRow.positionInfo 
-			# # Remarhs :  the level info  and oRow.childcount are both erroneous.
-			# l += " " + str(posInfo['indexInGroup']) + _(" of ") + str(posInfo['similarItemsInGroup'])
-			# # for testing, duration
-			# ms = time () - t
-			# ms = int(ms *1000)
-			# l += ", duration : " + str(ms) 
-			if not l :
-				return "Card, " + str(oRow.name)
-			return l  # + ", Original : " + oRow.name
-		finally :
-			sharedVars.objLooping = False
+			# # positon info
+			# # posInfo = oRow.positionInfo
+			# # # example : PosInfo={'level': 1, 'similarItemsInGroup': 973, 'indexInGroup': 971}posInfo = oRow.positionInfo 
+			# # # Remarhs :  the level info  and oRow.childcount are both erroneous.
+			# # l += " " + str(posInfo['indexInGroup']) + _(" of ") + str(posInfo['similarItemsInGroup'])
+			# # # for testing, duration
+			# # ms = time () - t
+			# # ms = int(ms *1000)
+			# # l += ", duration : " + str(ms) 
+			# if not l :
+				# return "Card, " + str(oRow.name)
+			# return l  # + ", Original : " + oRow.name
+		# finally :
+			# sharedVars.objLooping = False
 			
 	def event_stateChange(self,obj,nextHandler) :
 		if self.logEvents : sharedVars.log(obj, "Event stateChange start: ")
@@ -1501,17 +1458,6 @@ def findButtonByName(o, nm) :
 		o = o.next
 	return None
 
-
-def removeResponseMention (appMod,s,mode):
-	mode = sharedVars.oSettings.responseMode
-	if not mode : return s
-	s = s.replace(" ", " ") # 2023-04-23 unbrekable space
-	s , n= appMod.regExp_AnnotationResponse.subn(" ",s)
-	if  mode == 1 : # "responseMentionGroup"
-		s=(str (n) if n>1 else "")+(_("Re ") if n else "")+s
-	elif   mode == 3 : # "messengerWindow", "responseMentionDelColon" 
-		s="Re"*n+" "+s
-	return s 
 
 def hasFilter(o, ID=None) :
 	if utis.TBMajor() > 127 : 

@@ -106,17 +106,115 @@ class MessageListItem(IAccessible):
 	timer = None
 	timerCount = 0
 	def initOverlayClass (self):
+		if  controlTypes.State.SELECTED not in self.states : return
+		if  sharedVars.TTClean : 
+			self.name = self.customizeRow()
 		# cause issue if controlTypes.State.SELECTED not in self.states : self.doAction()
 		self.bindGestures(TTIDefGestures)
 		if not sharedVars.TTnoTags :
 			self.bindGestures(TTITagGestures)
-		if sharedVars.TTClean or sharedVars.delContextMenu :
+		if sharedVars.TTClean and not sharedVars.delContextMenu:
 			self.bindGesture("kb:delete", "deleteMsg")
-			
+		elif sharedVars.TTClean and sharedVars.delContextMenu :
+			self.bindGesture("kb:delete", "deleteWithMenu")
+
+	
+	def customizeRow(self) :
+		dbg = True
+		if dbg : sharedVars.logte("Customize row begin")
+		oRow = self
+		colSepar = ", " 
+		if dbg : sharedVars.logte("Original rowName:" + oRow.name)
+		# l is the line we are going to build
+		if controlTypes.State.COLLAPSED in oRow.states : l = _("Collapsed") + ", "
+		else : l = ""
+
+		try : # finally
+			sharedVars.objLooping = True
+			oCell = oRow.firstChild
+			while oCell :
+				s = "" ; t = ""
+				longID = str(utils.getIA2Attr(oCell, False, "class"))
+				p = longID.find("-column")
+				ID = longID[:p]
+				p = ID.find(" ")
+				if p == -1 : p = 0
+				ID = ID[p:].strip()
+				# if dbg : sharedVars.logte("Cell Name : " + str(oCell.name))
+				for c in oCell.recursiveDescendants : 
+					if  hasattr(c, "name")  and c.name :
+						t = str(c.name).strip()
+				if dbg : sharedVars.logte("ColID {} : {}".format(ID, t))
+				if ID == "statuscol" :
+					if not t :
+						s = _("Unread")
+					elif t == _("Read") :
+						s = ""
+					else :
+						s= t
+				elif ID == "flaggedcol" : 
+					if _("Starred") + ", " in oRow.name : s = _("Starred")
+				elif ID == "subjectcol" :
+					s=self.removeResponseMention (t,1).strip (" -_*#").replace(" - "," ")
+					if  sharedVars.listGroupName :
+						s= sharedVars.regExp_nameListGroup.sub (" ",s)
+					# # # sharedVars.curSubject = s
+				elif ID in ("correspondentcol","sendercol","recipientcol") :  # clean
+					if not sharedVars.namesCleaned : # corresp name : 
+						s = t
+					else :
+						s = sharedVars.regExp_mailAddr.sub("", t)
+						s = sharedVars.regExp_removeSymDigits.sub(" ", s)
+				elif ID == "attachmentcol" :
+					if t :
+						s = _("attachment") 
+				elif ID =="junkstatuscol" :
+					if not t or _(" not marked as") in t :
+						s = ""
+					else :
+						s = "Spam"
+				elif ID == "threadcol" : # This is a threaded message
+					s = ""
+				elif ID == "unreadbuttoncolheader" : 
+					# TB 145
+					if _("unread") in t :
+						s = _("unread")
+				else : 
+					s = t
+				if s : l += s + colSepar
+				oCell = oCell.next
+				
+				# end of loop
+			# positon info
+			# posInfo = oRow.positionInfo
+			# # example : PosInfo={'level': 1, 'similarItemsInGroup': 973, 'indexInGroup': 971}posInfo = oRow.positionInfo 
+			# # Remarhs :  the level info  and oRow.childcount are both erroneous.
+			# l += " " + str(posInfo['indexInGroup']) + _(" of ") + str(posInfo['similarItemsInGroup'])
+			# # for testing, duration
+			# ms = time () - t
+			# ms = int(ms *1000)
+			# l += ", duration : " + str(ms) 
+			if not l :
+				return "Card, " + str(oRow.name)
+			return l  # + ", Original : " + oRow.name
+		finally :
+			sharedVars.objLooping = False
+		
+	def removeResponseMention (self,s,mode):
+		mode = sharedVars.oSettings.responseMode
+		if not mode : return s
+		s = s.replace(" ", " ") # 2023-04-23 unbrekable space
+		s , n= sharedVars.regExp_AnnotationResponse.subn(" ",s)
+		if  mode == 1 : # "responseMentionGroup"
+			s=(str (n) if n>1 else "")+(_("Re ") if n else "")+s
+		elif   mode == 3 : # "messengerWindow", "responseMentionDelColon" 
+			s="Re"*n+" "+s
+		return s 
+
 	def script_sayLine(self, gesture):
 		rc =  int(getLastScriptRepeatCount ())
 		if rc > 0 :
-			browseableMessage (message=sharedVars.curTTRow.replace(", ", "\n"), title = _("Line details") + " - ThunderbirdPlus", isHtml = False)
+			browseableMessage (message= self.name.replace(", ", "\n"), title = _("Line details") + " - ThunderbirdPlus", isHtml = False)
 		else : # 1 press
 			message(self.name)
 	
@@ -144,7 +242,6 @@ class MessageListItem(IAccessible):
 		# idx = int(gesture.mainKeyName)
 		# idx = 9 if idx == 0   else idx-1
 
-		# self.appModule.buildColumnID(self)
 
 		# if idx >= len (self.appModule.columnID) : return beep(100, 10)
 		# left = self.appModule.columnID[idx][0]
@@ -333,7 +430,7 @@ class MessageListItem(IAccessible):
 
 	# read preview panel for spaceBar
 	def script_readPreview(self, gesture) :
-		if not sharedVars.oQuoteNav : sharedVars.initQuoteNav() # then use  sharedVars.oQuoteNav.*		self.regExp_date =compile ("^(\d\d/\d\d/\d{4} \d\d:\d\d|\d\d:\d\d)$")
+		if not sharedVars.oQuoteNav : sharedVars.initQuoteNav() # then use  sharedVars.oQuoteNav.*		sharedVars.regExp_date =compile ("^(\d\d/\d\d/\d{4} \d\d:\d\d|\d\d:\d\d)$")
 		utils.setMLIState(self)
 		o = None
 		if   utils.hasID(self, "threadTree-row") :
@@ -352,7 +449,7 @@ class MessageListItem(IAccessible):
 	script_readPreview.category=sharedVars.scriptCategory
 
 	def script_openMessage(self, gesture) :
-		if not sharedVars.oQuoteNav : sharedVars.initQuoteNav() # then use  sharedVars.oQuoteNav.*		self.regExp_date =compile ("^(\d\d/\d\d/\d{4} \d\d:\d\d|\d\d:\d\d)$")
+		if not sharedVars.oQuoteNav : sharedVars.initQuoteNav()
 		utils.setMLIState(self)
 		sharedVars.msgOpened = True
 		return gesture.send()
@@ -383,6 +480,23 @@ class MessageListItem(IAccessible):
 	def script_deleteMsg(self,gesture):
 		if controlTypes.State.COLLAPSED in self.states :
 			return gesture.send()
+		# 2512.01
+		if not self.next  and self.previous :
+			rowName =  self.previous.name
+		elif  self.next : 				
+			rowName = str(self.next.name)
+		else :
+			rowName = _("blank")
+		parent = self.parent
+		message(rowName)
+		gesture.send()
+		if parent.childCount == 0 :
+			speech.cancelSpeech()
+		# end 2512.01
+		
+	def script_deleteWithMenu(self,gesture):
+		if controlTypes.State.COLLAPSED in self.states :
+			return gesture.send()
 		speech.setSpeechMode(speech.speech.SpeechMode.off)  # onDemand)
 		sharedVars.delPressed = True
 		KeyboardInputGesture.fromName("applications").send()
@@ -393,7 +507,8 @@ class MessageListItem(IAccessible):
 
 	def script_gotoFirstMsg(self, gesture) :
 		gesture.send()
-		CallLater(50, KeyboardInputGesture.fromName("upArrow").send)
+		CallLater(50, 
+		KeyboardInputGesture.fromName("upArrow").send)
 
 		sharedVars.nPressed = True
 		gesture.send()
@@ -464,13 +579,10 @@ class MessageListItem(IAccessible):
 	# script_toggleUnread.category=sharedVars.scriptCategory
 	def script_toggleUnread(self, gesture) :
 		gesture.send()
+		if not sharedVars.TTClean :
+			return
 		sleep(.2)
-		value = utils.getColValue(self, "statuscol")
-		if not value :
-			value = _("The reading status has been changed.")
-		elif value.endswith(" : ") : 
-			value += _("Unread")
-		message(value)
+		message(self.customizeRow())
 	script_toggleUnread.__doc__ = _("Reverses the read and unread status of the selected message")
 	script_toggleUnread.category=sharedVars.scriptCategory
 
