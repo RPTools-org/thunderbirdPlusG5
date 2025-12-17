@@ -14,12 +14,13 @@ import wx
 from wx import CallAfter, CallLater
 from gui import messageBox
 from core import callLater
-from ui import  browseableMessage, message
+from ui import  browseableMessage
 import addonHandler,  os, sys
 _curAddon=addonHandler.getCodeAddon()
 sharedPath=os.path.join(_curAddon.path,"AppModules", "shared")
 sys.path.append(sharedPath)
 import  utis, utils115 as utils, sharedVars
+from utils115 import message
 # from . import foldersMessages
 del sys.path[-1]
 
@@ -115,14 +116,17 @@ class MessageListItem(IAccessible):
 			self.bindGestures(TTITagGestures)
 		if sharedVars.TTClean and not sharedVars.delContextMenu:
 			self.bindGesture("kb:delete", "deleteMsg")
+			self.bindGesture("kb:numpaddelete", "deleteMsg")
 		elif sharedVars.TTClean and sharedVars.delContextMenu :
 			self.bindGesture("kb:delete", "deleteWithMenu")
+			self.bindGesture("kb:numpadDelete", "deleteWithMenu")
 
 	
-	def customizeRow(self) :
-		dbg = True
+	def customizeRow(self, oRow=None) :
+		dbg = False
 		if dbg : sharedVars.logte("Customize row begin")
-		oRow = self
+		if not oRow :
+			oRow = self
 		colSepar = ", " 
 		if dbg : sharedVars.logte("Original rowName:" + oRow.name)
 		# l is the line we are going to build
@@ -480,20 +484,30 @@ class MessageListItem(IAccessible):
 	def script_deleteMsg(self,gesture):
 		if controlTypes.State.COLLAPSED in self.states :
 			return gesture.send()
-		# 2512.01
-		if not self.next  and self.previous :
-			rowName =  self.previous.name
-		elif  self.next : 				
-			rowName = str(self.next.name)
+		# version 2512.10
+		# below, the module utils is  in shared\utils115.py
+		oPrevious = self.previous
+		if oPrevious and controlTypes.State.SELECTED in oPrevious.states :
+			return self.script_deleteWithMenu(gesture)
+		oNext = self.next
+		if oNext and controlTypes.State.SELECTED in oNext.states :
+			return self.script_deleteWithMenu(gesture)
+		if not oNext  and oPrevious :
+			rowName =  self.customizeRow(oPrevious)
+		elif  oNext : 				
+			rowName = self.customizeRow(oNext)
 		else :
 			rowName = _("blank")
 		parent = self.parent
-		message(rowName)
-		gesture.send()
+		self.name = ""
+		gesture.send() # sends delete to thunderbird
+		utils.brailleClear()
+		message(rowName, speech=False, braillePersists=True)
+		CallAfter(speech.speakMessage, rowName)
 		if parent.childCount == 0 :
 			speech.cancelSpeech()
-		# end 2512.01
-		
+		# end 2512.10		
+
 	def script_deleteWithMenu(self,gesture):
 		if controlTypes.State.COLLAPSED in self.states :
 			return gesture.send()

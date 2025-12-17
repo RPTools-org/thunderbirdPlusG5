@@ -17,7 +17,6 @@ if not hasattr(controlTypes, "Role"):
 	setattr(controlTypes, "role", type("role", (), {"_roleLabels": controlTypes.roleLabels}))
 # End of compatibility fixes
 from keyboardHandler import KeyboardInputGesture
-from ui import message
 from api import copyToClip, getForegroundObject,   processPendingEvents
 from wx import CallAfter, CallLater
 import addonHandler,  os, sys
@@ -25,7 +24,7 @@ _curAddon=addonHandler.getCodeAddon()
 sharedPath=os.path.join(_curAddon.path,"AppModules", "shared")
 sys.path.append(sharedPath)
 import  utis, sharedVars 
-from utils115 import findChildByRoleID
+from utils115 import message, findChildByRoleID
 del sys.path[-1]
 addonHandler.initTranslation()
 

@@ -10,8 +10,8 @@ import re
 import os, sys
 import globalPluginHandler
 import  sharedVars, utis
+from utils115 import  message
 from wx import Menu, EVT_MENU, EVT_MENU_CLOSE, CallAfter, CallLater 
-from ui import  message
 from speech import cancelSpeech
 from tones import beep
 
@@ -94,8 +94,9 @@ class  Settings() :
 		"onePress" : _("Single press on Shift+the key above the tab key to show the option menus, double press to write the corresponding printable character.")
 	}
 
-
+	#  2025-12-11  : deactivations is now General
 		self.option_deactiv = {
+			"braillePersists" : _("Display Braille messages persistently."),
 			"TTnoTags" : _("Message list : deactivate  tag management   to improve responsiveness."),
 			"TTnoFilterSnd" : _("Message list : do not play sound when list is filtered and gets focus."),
 			"SWRnoRead" : _("Separate reading window: do not read the cleaned version of the message when the window is opened."),
@@ -187,6 +188,7 @@ class  Settings() :
 			# elif  section == "msgComposeWindow" : 
 				# pass
 		elif  section == "deactiv" : 
+			sharedVars.braillePersists  = pSection.as_bool ("braillePersists")
 			sharedVars.TTnoTags = pSection.as_bool ("TTnoTags")
 			sharedVars.noAddressBook = pSection.as_bool ("noAddressBook")
 		# CallLater(1000, message, "setSharedVars section : " + section) 
@@ -310,9 +312,9 @@ class  Settings() :
 			Le bloc multilignes ci-dessous a été mis en commentaire par Abdel.
 			menu, options, keys = Menu (), self.options, list(self.option_deactiv.keys())
 			for e in range (len (keys)): menu.AppendCheckItem (300+e, self.option_deactiv[keys[e]]).Check (options["deactiv"].as_bool (keys[e]))	
-			mainMenu.AppendSubMenu (menu, _("Deactivations"))
+			mainMenu.AppendSubMenu (menu, _("General"))
 			""" # Fin du bloc multilignes mis en commentaire par Abdel.
-			mainMenu.Append (1996, _("Deactivations")) # Ajouté par Abdel.
+			mainMenu.Append (1996, _("General")) # Ajouté par Abdel.
 			mainMenu.Bind (EVT_MENU,self.onOptMenu)
 			mainMenu.Append(895, _("&Focus and Startup Options"))
 			mainMenu.Append(899, _("Open sound folder..."))
@@ -381,7 +383,7 @@ class  Settings() :
 			wx.CallAfter(
 				(gui.mainFrame.popupSettingsDialog if hasattr(gui.mainFrame, "popupSettingsDialog")
 				 else gui.mainFrame._popupSettingsDialog),
-				CheckListMenu, title=_("Deactivations"), frame="deactiv", options=self, 
+				CheckListMenu, title=_("General"), frame="deactiv", options=self, 
 				fakeRadioGroups=None,
 				postFunction=self.setSharedVars)
 		elif eID == 895 : # Focus and startup options

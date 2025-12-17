@@ -14,8 +14,9 @@ import addonHandler,  os, sys
 _curAddon=addonHandler.getCodeAddon()
 sharedPath=os.path.join(_curAddon.path,"AppModules", "shared")
 sys.path.append(sharedPath)
-import  utis, sharedVars
-from utis import getIA2Attribute, showNVDAMenu , TBMajor,  getElementWalker
+import  utis, sharedVars, utils115 as utils
+from utis import getIA2Attribute, showNVDAMenu , TBMajor # ,  getElementWalker
+from utils115 import message
 del sys.path[-1]
 from time import sleep
 from oleacc import STATE_SYSTEM_PRESSED, ROLE_SYSTEM_PUSHBUTTON
@@ -32,7 +33,6 @@ if not hasattr(controlTypes, "Role"):
 from gui import mainFrame
 from wx import CallAfter, CallLater,Menu,MenuItem,ITEM_CHECK,EVT_MENU
 from NVDAObjects.IAccessible import IAccessible
-from ui import message
 from UIAHandler import handler,TreeScope_Children,  TreeScope_Descendants, UIA_ControlTypePropertyId, UIA_TableControlTypeId, UIA_EditControlTypeId, UIA_ListControlTypeId  ,UIA_ListItemControlTypeId ,UIA_ButtonControlTypeId, UIA_LegacyIAccessibleStatePropertyId,UIA_ToolBarControlTypeId, UIA_ComboBoxControlTypeId ,UIA_LegacyIAccessibleStatePropertyId , UIA_SeparatorControlTypeId , IUIAutomationLegacyIAccessiblePattern, UIA_LegacyIAccessibleValuePropertyId ,UIA_LegacyIAccessibleNamePropertyId,IUIAutomationInvokePattern
 clientObject =handler.clientObject
 GetFirstChildElement, GetNextSiblingElement, GetParentElement, GetLastChildElement    = clientObject.RawViewWalker.GetFirstChildElement, clientObject.RawViewWalker.GetNextSiblingElement, clientObject.RawViewWalker.GetParentElement, clientObject.RawViewWalker.GetLastChildElement

@@ -24,6 +24,7 @@ _curAddon=addonHandler.getCodeAddon()
 sharedPath=os.path.join(_curAddon.path,"AppModules", "shared")
 sys.path.append(sharedPath)
 import utis, sharedVars, utils115 as utils # , sendInput
+from utils115 import message
 import  langUtils
 import textDialog
 # dbg = sharedVars.log
@@ -55,7 +56,7 @@ def sayTreeItem(fo=None) :
 			roleName = fo.role.displayString
 		utis.setSpeech(True)
 		done = True
-		ui.message("{}, {}, {}".format(utis.getWinTitle(appName=False), roleName, fo.name))
+		message("{}, {}, {}".format(utis.getWinTitle(appName=False), roleName, fo.name))
 	finally :
 		sharedVars.mainTabInit = True
 		sharedVars.starting = False
@@ -211,7 +212,7 @@ class AppModule(thunderbird.AppModule):
 				# tab has changed
 				utis.setSpeech(True)
 				speech.cancelSpeech()
-				ui.message(oFrame.name)
+				message(oFrame.name)
 				utis.setSpeech(False)
 			if dbg : sharedVars.logte("tb startup, first tab selected curTab=" + sharedVars.curTab)
 		elif sharedVars.loopCount > 1 and sharedVars.curTab == "main" : 
@@ -271,12 +272,12 @@ class AppModule(thunderbird.AppModule):
 		utis.setSpeech(True)
 
 	def tbStartup(self) :
-		dbg = True
+		dbg = False
 		oFocused = api.getFocusObject()
 		if self.logEvents : sharedVars.log(oFocused, "tbStartup oFocused, curTab=" + sharedVars.curTab) 
 		# # if oFocused.role !=  controlTypes.Role.FRAME :
 			# return
-		# ui.message(controlTypes.State.BUSY.displayString)
+		# message(controlTypes.State.BUSY.displayString)
 		# if sharedVars.curFrame != "unknown" and sharedVars.curTab != "unknown" :
 			# return
 
@@ -500,10 +501,14 @@ class AppModule(thunderbird.AppModule):
 		if role == controlTypes.Role.TEXTFRAME and ID == "threadTree" :
 			globalVars.TBThreadTree = obj
 		#   silencify threadTree list or table
-		if sharedVars.TTnoFolderName and sharedVars.curTab == "main"  and role in  (controlTypes.Role.LIST, controlTypes.Role.TABLE, controlTypes.Role.TREEVIEW) :
-			if    hasattr(obj, "name") : obj.name = ""
-		# if sharedVars.TBMajor > 135  and role in  (controlTypes.Role.LIST, controlTypes.Role.TABLE) : # message list
-			# callLater(100, self.focusMessageItem, "focusEnterred", time())
+		if sharedVars.curTab == "main"  and role in  (controlTypes.Role.LIST, controlTypes.Role.TABLE, controlTypes.Role.TREEVIEW) :
+			speech.cancelSpeech()
+			if sharedVars.TTnoFolderName  and hasattr(obj, "name") : 
+				obj.name = ""
+		if not sharedVars.oSettings.getOption("deactiv", "TTnoFilterSnd") and ID == "threadTree" : 
+			if hasFilter(obj, ID) : 
+				# beep(440, 10)
+				utis.playSound("filter")
 		nextHandler()
 
 	def focusMessageItem(self, context, startTime, oFocus=None) :
@@ -526,7 +531,7 @@ class AppModule(thunderbird.AppModule):
 			o = api.getFocusObject()
 			KeyboardInputGesture.fromName("control+space").send()
 			speech.setSpeechMode(speech.SpeechMode.talk)
-			ui.message(o.name)
+			message(o.name)
 			# config.conf["keyboard"]["speakTypedCharacters"] = prevSpeak
 			
 	
@@ -803,7 +808,7 @@ class AppModule(thunderbird.AppModule):
 			if not sharedVars.oSettings.getOption("mainWindow", "ftNoEscape") :
 				return KeyboardInputGesture.fromName ("f6").send()  
 			else :
-				ui.message(o.name + ", " + str(messengerWindow.folderTreeItem.fGetAccountNode(o).name))
+				message(o.name + ", " + str(messengerWindow.folderTreeItem.fGetAccountNode(o).name))
 		if role == controlTypes.Role.FRAME :
 			return KeyboardInputGesture.fromName ("shift+f6").send()
 		ID = str(utils.getIA2Attr(o))
@@ -812,12 +817,12 @@ class AppModule(thunderbird.AppModule):
 				gesture.send()
 				if hasFilter(o, ID) :
 					gesture.send()
-				callLater(50, sayFilterRemoved)
+				wx.CallAfter(sayFilterRemoved, o)
 			else :
 				if not sharedVars.oSettings.getOption("mainWindow", "ttNoEscape") :
 					return KeyboardInputGesture.fromName ("shift+f6").send() # utils.getFolderTreeFromFG(True)
 				else :
-					ui.message(o.name)
+					message(o.name)
 		if sharedVars.curTab == "message" :
 			if sharedVars.debug :
 				beep(600, 40)
@@ -867,7 +872,7 @@ class AppModule(thunderbird.AppModule):
 			if sharedVars.oSettings.getOption("compose", "closeMessageWithEscape") :
 				return KeyboardInputGesture.fromName ("control+w").send () 
 		# elif role == controlTypes.Role.EDITABLETEXT and utils.hasID(o.parent, "quickFilterBarContainer") :
-			# if o.value is not None : ui.message(_("Keyword removed."))
+			# if o.value is not None : message(_("Keyword removed."))
 			# return gesture.send()
 		elif role == controlTypes.Role.EDITABLETEXT and utils.hasID(o.parent, "MsgHeadersToolbar") : # write window
 			if sharedVars.oSettings.getOption("compose", "closeMessageWithEscape") :
@@ -902,11 +907,11 @@ class AppModule(thunderbird.AppModule):
 		if sharedVars.curTab == "main" :
 			msg = utils.getMessageStatus()
 			if not msg  : msg = _("Blank")
-			ui.message(msg)
+			message(msg)
 			return
 		msg = utis.getStatusBarText()
 		if not msg : msg = _("Status line without data")
-		return ui.message(msg)
+		return message(msg)
 	script_sharedAltEnd.__doc__ = _("Announces abbreviated status line and message filtering information if applicable")
 	script_sharedAltEnd.category = sharedVars.scriptCategory
 
@@ -996,7 +1001,7 @@ class AppModule(thunderbird.AppModule):
 			if ID.startswith("threadTree-row") :
 				if controlTypes.State.COLLAPSED in o.states : 
 					# sending right arrow after  a alt+downArrow does not work
-					return ui.message(_("Press right arrow and retry, please."))
+					return message(_("Press right arrow and retry, please."))
 				utils.setMLIState(o) # select or expand
 				for i in range(0, 20) :
 					o2, retryNeeded = utils.getPreviewDoc()
@@ -1135,7 +1140,7 @@ class AppModule(thunderbird.AppModule):
 		# determine curFrame and curTab
 		utils.setCurFrameTabFromFO(fo)
 		# msg = "curTab : {}, curFrame : {}".format(sharedVars.curTab, sharedVars.curFrame)
-		# ui.message(msg)
+		# message(msg)
 		# return
 		if sharedVars.curFrame != "messengerWindow"  or getLastScriptRepeatCount() > 0 : return gesture.send()
 		if sharedVars.curTab == "main" and utils.hasID(fo, "threadTree-"):
@@ -1169,7 +1174,7 @@ class AppModule(thunderbird.AppModule):
 			return
 		elif ID.startswith("threadTree") or parID == "messagepane"  or fo.role == controlTypes.Role.LINK :
 			if  ID.startswith("threadTree") and not utils.getMessagePane() :
-				return ui.message(_("The headers pane is not displayed. Please press F8 then try again"))
+				return message(_("The headers pane is not displayed. Please press F8 then try again"))
 			if ID.startswith("threadTree") and controlTypes.State.COLLAPSED in fo.states :
 				# beep(432, 2)
 				self.counter += 1
@@ -1194,7 +1199,7 @@ class AppModule(thunderbird.AppModule):
 		#beep(440, 5)
 		mainKey = gesture.mainKeyName
 		if not sharedVars.oQuoteNav :
-			return ui.message(_("Press alt+upArrow before navigating through quotes in a message."))
+			return message(_("Press alt+upArrow before navigating through quotes in a message."))
 		if mainKey == "upArrow" :
 			sharedVars.oQuoteNav.skip(-1)
 		elif mainKey == "downArrow" :
@@ -1265,9 +1270,9 @@ class AppModule(thunderbird.AppModule):
 		if sharedVars.debug : sharedVars.debugLog = "Search for previewPane\n"
 		o =  utils.getMessagePane()
 		if o :
-			ui.message(_("Present: Headers and message pane."))
+			message(_("Present: Headers and message pane."))
 		else :
-			ui.message(_("Missing : headers and message pane."))
+			message(_("Missing : headers and message pane."))
 	script_previewPane.__doc__ = _("Turn on or off the preview messages panel")
 	script_previewPane.category = sharedVars.scriptCategory
 
@@ -1282,7 +1287,7 @@ class AppModule(thunderbird.AppModule):
 	def script_listObjects(self, gesture) :
 		prevMode = sharedVars.debug
 		sharedVars.debug = True
-		ui.message("Listing objects, please wait...")
+		message("Listing objects, please wait...")
 		sharedVars.debugLog = "Object list in Thunderbird\n"
 		fo = api.getFocusObject()
 		utils.listAscendants(-12, fo)
@@ -1295,17 +1300,17 @@ class AppModule(thunderbird.AppModule):
 	def script_initDebug(self, gesture) :
 		if self.logEvents :
 			self.logEvents = False
-			ui.message("logEvents mode is disabled")
+			message("logEvents mode is disabled")
 		else :
 			self.logEvents = True
-			ui.message("logEvents mode is enabled")
+			message("logEvents mode is enabled")
 			sharedVars.debugLog = "logEvents = True\n"
 		# if sharedVars.debug :
 			# sharedVars.debug = False
-			# ui.message("Debug mode is disabled")
+			# message("Debug mode is disabled")
 		# else :
 			# sharedVars.debug = True
-			# ui.message("Debug mode is enabled")
+			# message("Debug mode is enabled")
 		# sharedVars.debugLog = "New log\n"
 		# # disabModes : 0 nothing, 1 choose overlay, 2 : object init, 3 gainFocus 
 		# self.disabMode +=1
@@ -1316,7 +1321,7 @@ class AppModule(thunderbird.AppModule):
 		# elif self.disabMode == 3 : mode = u"Désactivation de  gain focus."
 		# else : mode = "disabMode = " + str(self.disabMode)
 
-		# ui.message(mode)
+		# message(mode)
 
 	__gestures = {
 		# utis.gestureFromScanCode(41, "kb:") :"showContextMenu", # 41 is the scancode of the key above Tab
@@ -1489,7 +1494,8 @@ def hasFilter(o, ID=None) :
 	
 	return False
 
-def sayFilterRemoved() :
+def sayFilterRemoved(oCurRow) :
+	speech.cancelSpeech()
 	infos  =  utils.getMessageStatus128()
 	fo = api.getFocusObject()
 	role = fo.role
@@ -1498,7 +1504,10 @@ def sayFilterRemoved() :
 		if cc == 0 :
 			beep(120, 40)
 			infos = _("No messages displayed") + ", " + infos
-	ui.message(_("Filter removed") + infos)
+	name = ""
+	if oCurRow :
+		name = " " + oCurRow.name
+	message(_("Filter removed") + infos+ name)
 
 def activateMenuItem(o, ID) :
 	# called after press on delete key in the message list

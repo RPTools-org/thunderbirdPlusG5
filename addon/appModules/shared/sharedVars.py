@@ -42,6 +42,7 @@ deleteDelays = [50, 50]
 debugLog = "" 
 
 from tones import beep
+from utils115 import message
 import quoteNav
 def initQuoteNav() :
 	global oQuoteNav
@@ -51,7 +52,6 @@ oSettings = None # options menu
 import menuSettings
 import controlTypes
 import globalVars
-from ui import message
 
 def initSettingsMenu(appMod) :
 	global oSettings

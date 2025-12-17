@@ -4,7 +4,6 @@ import controlTypes, api
 from speech import  speakMessage, speakSpelling, cancelSpeech, setSpeechMode, SpeechMode
 
 import braille
-from ui import message
 from time import time, sleep
 from tones import beep
 from wx  import  CallLater, CallAfter
@@ -21,15 +20,95 @@ gRegFTI = re.compile("all-|unread-|smart-|favorite-|recent-|tags-")
 gRegTags = re.compile(r'<.*?>')
 
 prevSpeechMode = ""
-def brailleMessage(text, speak=False) : 
-	if speak : 
-		speakMessage("Braille : ")
-	braille.handler.message(text)
 
+def brailleClear() :
+		if braille.handler :
+			braille.handler._clearAll()
+# def brailleShowTex
+# t(text_to_display: str):
+	# """
+	# Affiche le texte spécifié sur l'afficheur Braille.
+	# """
+	# # 1. Créer un objet BrailleText à partir de la chaîne de caractères
+	# braille_text = braille.BrailleText(
+		# text=text_to_display,
+		# # Vous pouvez spécifier des attributs de texte si nécessaire (ex: sélection)
+	# )
+
+	# # 2. Créer un cadre (frame) contenant le texte.
+	# # Un cadre permet à NVDA de gérer le panning (défilement) si le texte est trop long.
+	# braille_frame = braille.BrailleTextFrame(
+		# [braille_text],
+		# # Les paramètres suivants définissent ce que NVDA doit annoncer en plus:
+		# cursor=None,        # Ne pas afficher de curseur spécifique
+		# requestedCursorShape=braille.CURSORSHAPE_BLOCK, # Forme du curseur (non pertinent ici)
+		# controlType=controlTypes.CONTROLTYPE_STATUSBAR, # Type de contrôle (aide à la gestion du braille)
+	# )
+
+	# # 3. Afficher le cadre sur l'afficheur Braille.
+	# # C'est cette méthode qui envoie le contenu à l'afficheur.
+	# braille.display(braille_frame)
+	
+	# # OPTIONNEL: Annoncer le texte vocalement pour les utilisateurs n'utilisant pas le braille
+
+def brailleMessagePersistent(msg):
+	# function by André from AccessSolutions France
+	region = braille.TextRegion(msg)
+	region.obj = None
+	region.update()
+	braille.handler.mainBuffer.clear()
+	braille.handler.mainBuffer.regions.append(region)
+	braille.handler.mainBuffer.update()
+	braille.handler.update()
+
+
+def message(text, speech=True, braillePersists=False):
+	"""say a message and Display a persistant message to the user 
+	@postcondition: The message is displayed.
+	"""
+	if text is None :
+		return
+	if speech :
+		speakMessage(text)
+	if braillePersists or       sharedVars.braillePersists  :
+		brailleMessagePersistent(text)
+	else :
+		braille.handler.message(text)
+
+def braillePersistent_old(text) : 
+	# function derived from braille.py
+	brHandler =   braille.handler
+	if brHandler.buffer is brHandler.messageBuffer:
+		brHandler.buffer.clear()
+	else:
+		brHandler.buffer = brHandler.messageBuffer
+	region = braille.TextRegion(text)
+	region.update()
+	brHandler.buffer.regions.append(region)
+	brHandler.buffer.update()
+	brHandler.update()
+
+# def brailleMessage(text, speak=False) : 
+	# if speak : 
+		# speakMessage("Braille : ")
+	# braille.handler.message(text)
+
+
+# def clearBrailleDisplay():
+	# # Crée une source Braille vide.
+	# # The braille.BrailleCellText constructor accepts an empty string.
+	# # error : BrailleCellText is not an attribute of Braille.
+	# empty_source = braille.BrailleCellText("", name="Empty Source")
+
+	# # Asks the Braille manager to update the display
+	# # with the empty source
+	# braille.handler.update(empty_source)
+	
 def messageLater(msg) :
 	# function called with a wx.CallLater
 	cancelSpeech()
 	message(msg)
+	
 def hasID(obj, IA2ID) :
 	# IA2ID can be the n first chars of the ID
 	r= hasattr (obj,"IA2Attributes") and "id" in obj.IA2Attributes.keys()

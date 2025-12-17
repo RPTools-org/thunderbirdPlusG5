@@ -8,8 +8,8 @@ _curAddon=addonHandler.getCodeAddon()
 sharedPath=os.path.join(_curAddon.path,"AppModules", "shared")
 sys.path.append(sharedPath)
 import  utis, utils115 as utils, sharedVars
+from utils115 import message
 del sys.path[-1]
-from ui import message
 from wx import Menu, EVT_MENU, ITEM_CHECK, MenuItem,CallAfter
 from core import callLater
 from keyboardHandler import KeyboardInputGesture

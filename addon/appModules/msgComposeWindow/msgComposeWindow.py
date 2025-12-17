@@ -16,6 +16,7 @@ sharedPath=os.path.join(_curAddon.path,"AppModules", "shared")
 sys.path.append(sharedPath)
 import  utis, sharedVars
 import utils115 as utils
+from utils115 import message
 from utis import getIA2Attribute, showNVDAMenu , TBMajor,  getElementWalker
 del sys.path[-1]
 from time import sleep
@@ -33,7 +34,6 @@ if not hasattr(controlTypes, "Role"):
 from gui import mainFrame
 from wx import CallAfter, CallLater # ,Menu,MenuItem,ITEM_CHECK,EVT_MENU
 from NVDAObjects.IAccessible import IAccessible
-from ui import message
 from UIAHandler import handler,TreeScope_Children,  TreeScope_Descendants, UIA_ControlTypePropertyId, UIA_TableControlTypeId, UIA_EditControlTypeId, UIA_ListControlTypeId  ,UIA_ListItemControlTypeId ,UIA_ButtonControlTypeId, UIA_LegacyIAccessibleStatePropertyId,UIA_ToolBarControlTypeId, UIA_ComboBoxControlTypeId ,UIA_LegacyIAccessibleStatePropertyId , UIA_SeparatorControlTypeId , IUIAutomationLegacyIAccessiblePattern, UIA_LegacyIAccessibleValuePropertyId ,UIA_LegacyIAccessibleNamePropertyId,IUIAutomationInvokePattern
 clientObject =handler.clientObject
 GetFirstChildElement, GetNextSiblingElement, GetParentElement, GetLastChildElement    = clientObject.RawViewWalker.GetFirstChildElement, clientObject.RawViewWalker.GetNextSiblingElement, clientObject.RawViewWalker.GetParentElement, clientObject.RawViewWalker.GetLastChildElement
@@ -162,7 +162,7 @@ def focusDoc() :
 	utis.sendKey("shift+tab", 2)
 	d = getComposeDoc()
 	if d and d.role == controlTypes.Role.DOCUMENT : 
-		message("Corps du message.")
+		# message("Corps du message.")
 		CallLater(100, api.setFocusObject, d) # d.setFocus() does not work
 			
 # Niveau 2,   0 sur 0, name : Corps du message, role.DOCUMENT=52 Tag: body, états : , FOCUSED, FOCUSABLE, EDITABLE, childCount  : 5 Chemin : role FRAME=34| i23, role-INTERNALFRAME=115, , IA2ID : content-frame | i0, role-DOCUMENT=52,  , IA2Attr : explicit-name : true, display : block, tag : body, line-number : 1,  ;

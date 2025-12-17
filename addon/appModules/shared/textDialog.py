@@ -12,6 +12,7 @@ import time
 from gui import guiHelper, mainFrame
 # from ..utils.NVDAStrings import NVDAString
 # not needed here : from ..utils import isOpened, makeAddonWindowTitle
+from utils115 import message 
 addonHandler.initTranslation()
 
 
@@ -96,14 +97,14 @@ class InformationDialog(wx.Dialog):
 			# Translators: message to the user when the information has been copied
 			# to clipboard.
 			text = _("Copied")
-			ui.message(text)
+			message(text)
 			time.sleep(0.8)
 			self.Close()
 		else:
 			# Translators: message to the user when the information
 			# cannot be copied to clipboard.
 			text = _("Error, the information cannot be copied to the clipboard")
-			ui.message(text)
+			message(text)
 	@classmethod
 	def newInstance(cls) :
 		# if  InformationDialog._instance  is None : return

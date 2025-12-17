@@ -2,7 +2,6 @@
 import addonHandler
 
 import re, speech, winUser
-from ui import message # , browseableMessage
 from core import callLater
 from core import callLater
 from tones import beep
@@ -16,6 +15,7 @@ import treeInterceptorHandler, textInfos
 import sharedVars
 import utis
 import utils115 as utils
+from utils115 import message
 import textDialog
 addonHandler.initTranslation()
 
@@ -113,7 +113,7 @@ class QuoteNav() :
 					# self.sayDraftText()
 					break
 				elif result == 3 :  # after  an exception with IAccessible.queryInterface
-					message(self.text)
+					message(self.text, True, True)
 					break
 			else : 
 				beep(150, 5)
@@ -199,7 +199,7 @@ class QuoteNav() :
 		self.text=self.regHTML.sub(" ",self.text)
 		# beep(100, 20)
 		sharedVars.debugLog = "Draft :\n" + self.text
-		callLater(500, message, self.text)
+		callLater(500, message, self.text, True, True)
 	
 	def getDocObjects(self, oDoc) :
 		o = oDoc.firstChild
@@ -311,20 +311,20 @@ class QuoteNav() :
 			subject = self.truncateSubj(subject, 25)
 			text = self.iTranslate.translateAndCache(self.text.split("")[1]  , "auto", self.langTo).translation
 			if self.browseTranslation or self.browsePreview and not self.fromSpellCheck : self.displayMessage(subject, text)
-			else : message(msg + subject + text)
+			else : message(msg + subject + text, True, True)
 		else : # no translation
 			if self.browsePreview and not self.fromSpellCheck  : 
 				subject = cleanSubject(sharedVars.curWinTitle)
 				subject = self.truncateSubj(subject, 25)
 				self.displayMessage(subject, self.text)
 			else : 
-				message(msg + self.text)
+				message(msg + self.text, True, True)
 
 	def speakQuote(self, quote) :
 		if self.translate : 
 			quote  = self.iTranslate.translateAndCache(quote, "auto", self.langTo).translation
 		if self.browseTranslation and not self.fromSpellCheck : self.displayMessage("", quote) 
-		else : message(quote)
+		else : message(quote, True, True)
 
 	def deleteMetas(self) :
 		lbl = "<meta "
@@ -574,7 +574,7 @@ class QuoteNav() :
 			self.curQuote = 0  if self.curQuote == lastQuote  else self.curQuote + 1
 
 		self.curItem = self.lQuotes[self.curQuote]
-		# return message(" curquote {},  curItem {}".format(self.curQuote, self.curItem))
+		# return message(" curquote {},  curItem {}".format(self.curQuote, self.curItem), True, True)
 		self.speakQuote(str(self.curQuote+1) + ":" + self.lItems[self.curItem])
 
 	def findItem(self, expr) :

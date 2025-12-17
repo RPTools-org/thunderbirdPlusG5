@@ -4,7 +4,7 @@
 import api
 from time import sleep
 from NVDAObjects.IAccessible import IAccessible
-from ui import message, browseableMessage
+from ui import browseableMessage
 import speech
 import controlTypes
 from wx import CallAfter, Menu, EVT_MENU
@@ -18,6 +18,7 @@ _curAddon=addonHandler.getCodeAddon()
 sharedPath=os.path.join(_curAddon.path,"AppModules", "shared")
 sys.path.append(sharedPath)
 import  utis, sharedVars, utils115 as utils
+from utils115 import message
 del sys.path[-1]
 from re import  compile,IGNORECASE
 

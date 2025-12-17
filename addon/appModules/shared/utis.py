@@ -2,17 +2,17 @@
 
 import controlTypes
 # controlTypes module compatibility with old versions of NVDA
-if not hasattr(controlTypes, "Role"):
-	setattr(controlTypes, "Role", type('Enum', (), dict(
-	[(x.split("ROLE_")[1], getattr(controlTypes, x)) for x in dir(controlTypes) if x.startswith("ROLE_")])))
-	setattr(controlTypes, "State", type('Enum', (), dict(
-	[(x.split("STATE_")[1], getattr(controlTypes, x)) for x in dir(controlTypes) if x.startswith("STATE_")])))
-	setattr(controlTypes, "role", type("role", (), {"_roleLabels": controlTypes.roleLabels}))
+# if not hasattr(controlTypes, "Role"):
+	# setattr(controlTypes, "Role", type('Enum', (), dict(
+	# [(x.split("ROLE_")[1], getattr(controlTypes, x)) for x in dir(controlTypes) if x.startswith("ROLE_")])))
+	# setattr(controlTypes, "State", type('Enum', (), dict(
+	# [(x.split("STATE_")[1], getattr(controlTypes, x)) for x in dir(controlTypes) if x.startswith("STATE_")])))
+	# setattr(controlTypes, "role", type("role", (), {"_roleLabels": controlTypes.roleLabels}))
 # End of compatibility fixes
 from tones import beep
 from re import compile
 from datetime import datetime
-from ui import message, browseableMessage
+from ui import browseableMessage
 from gui import mainFrame  
 from keyboardHandler import KeyboardInputGesture
 import globalVars
@@ -34,6 +34,7 @@ GetPreviousSiblingElement = clientObject.RawViewWalker.GetPreviousSiblingElement
 GetFirstChildElement  = clientObject.RawViewWalker.GetFirstChildElement
 GetNextSiblingElement =clientObject.RawViewWalker.GetNextSiblingElement
 import sharedVars
+from utils115 import message
 import globalVars
 addonHandler.initTranslation()
 
