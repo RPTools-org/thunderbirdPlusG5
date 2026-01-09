@@ -6,7 +6,7 @@ starting = True
 regExp_nameListGroup, regExp_AnnotationResponse, regExp_mailAddress  = compile ("\[.*\]|\{.*\}"), compile("re[ ]*:[ ]", IGNORECASE), compile("\S+?@\S+?\.\S+")
 regExp_mailAddr = compile("\s*<[^>]+>") # v2512.01
 # regExp_listGroupName = compile ("\[(.*)\]") # |\{?*\}") # first occurrence of the list group name
-regExp_removeMultiBlank =compile (" {2,}")
+regExp_removeMultiBlank =compile(" {2,}")
 regExp_removeSymDigits =compile ("\d+|&|_|@.+|=|\.| via .*")
 regExp_removeSymbols =compile (r"&|_|@.+|=|\. | via .*")
 
@@ -29,7 +29,7 @@ curWinTitle = ""
 curTTRow = ""  # current thread tree row
 oQuoteNav = None
 oEditing = None
-msgOpened = False
+msgOpened = ""
 prevObj = ""
 chichi = None
 menuCommands = {} # parallel to some menu items

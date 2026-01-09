@@ -1,0 +1,29 @@
+{
+	"addonId": "thunderbirdPlusG5",
+	"displayName": "Thunderbird+G5 (TB >= 140)",
+	"URL": "",
+	"description": "This add-on significantly increases the efficiency and comfort of using Thunderbird with NVDA.\nFor more information, visit :\nhttps://www.rptools.org/NVDA-Thunderbird/get.php?pg=manual&v=g5&lang=en\nFor old releases, visit: \nhttps://www.rptools.org/ntbp/",
+	"sha256": "e4a5c800d7e9ccf3cd615d115d32de1c94bc8132b4b45a6d7cd63cc55138dba3",
+	"homepage": "https://www.rptools.org/NVDA-Thunderbird/get.php?pg=manual-changelog&v=g5&lang=auto",
+	"addonVersionName": "2512.19.00",
+	"addonVersionNumber": {
+		"major": 2512,
+		"minor": 19,
+		"patch": 0
+	},
+	"minNVDAVersion": {
+		"major": 2024,
+		"minor": 1,
+		"patch": 0
+	},
+	"lastTestedVersion": {
+		"major": 2025,
+		"minor": 3,
+		"patch": 0
+	},
+	"channel": "None",
+	"publisher": "",
+	"sourceURL": "https://github.com/RPTools-org/thunderbirdPlusG5",
+	"license": null,
+	"licenseURL": null
+}

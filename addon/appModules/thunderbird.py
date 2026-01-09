@@ -469,13 +469,15 @@ class AppModule(thunderbird.AppModule):
 				self.timer = callLater(300, KeyboardInputGesture.fromName("control+space").send)
 			return nextHandler()
 		elif sharedVars.msgOpened and role == controlTypes.Role.DOCUMENT  and controlTypes.State.READONLY in obj.states :
-			sharedVars.msgOpened = False
-			sharedVars.curTab = "message"
+			# sharedVars.msgOpened contains "read" or "noread"
 			speech.cancelSpeech()
+			sharedVars.curTab = "message"
 			# below : Separate reading window: do not read the cleaned version of the message when the window is opened.
-			if sharedVars.oSettings.getOption("deactiv", "SWRnoRead") :
+			if sharedVars.msgOpened == "noRead" :
+				sharedVars.msgOpened = ""
 				return nextHandler()
-			return wx.CallAfter(sharedVars.oQuoteNav.readMail, obj, obj, False)
+			sharedVars.msgOpened = ""
+			return wx.CallAfter(sharedVars.oQuoteNav.readMail, obj, obj, rev=False, spkMode=10) # spkMode=10 with ui.message
 		if sharedVars.curTab == "sp:addressbook" and sharedVars.TBMajor > 127 :
 			messengerWindow.tabAddressBook.abGainFocus(obj)
 
@@ -1399,6 +1401,8 @@ class AppModule(thunderbird.AppModule):
 
 def debugShow(appMod, auto) :
 	sharedVars.debugLog += "Debug mode : {}, TB branch : {}".format(str(sharedVars.debug), utis.TBMajor()) + "\n" + "\n" + "\n" + sharedVars.debugLog
+	utils.setBrailleMode()
+	sharedVars.logte("Braille Mode after setBrailleMode: " + str(utils.getBrailleParam("mode")))
 	sharedVars.test(None, "curTab={}, curFrame={}, objLooping={}".format(sharedVars.curTab, sharedVars.curFrame, str(sharedVars.objLooping)))
 	# sharedVars.test(utils.getPropertyPage(True), "Test getPropertyPage forced")
 	# sharedVars.test(utils.getFolderTreeFromFG(False, True), "Test getFolderTree forced")

@@ -1,9 +1,15 @@
 #-*- coding:utf-8 -*
 import addonHandler		
 import controlTypes, api
-from speech import  speakMessage, speakSpelling, cancelSpeech, setSpeechMode, SpeechMode
+from speech import  speakMessage, speakText, speakSpelling, cancelSpeech, setSpeechMode, SpeechMode
 
 import braille
+import config
+from config.configFlags import (
+	ShowMessages,
+	BrailleMode,
+	OutputMode,
+)
 from time import time, sleep
 from tones import beep
 from wx  import  CallLater, CallAfter
@@ -20,6 +26,17 @@ gRegFTI = re.compile("all-|unread-|smart-|favorite-|recent-|tags-")
 gRegTags = re.compile(r'<.*?>')
 
 prevSpeechMode = ""
+
+def getBrailleParam(param="mode") :
+	return config.conf["braille"][param] 
+	
+def setBrailleMode(value="speechOutput") :
+	# the two possible values are : followCursors (default) and  speechOutput
+	prevValue = config.conf["braille"]["mode"] 
+	if not value or  value == prevValue :
+		return prevValue
+	config.conf["braille"]["mode"]  = value
+	return prevValue
 
 def brailleClear() :
 		if braille.handler :
@@ -63,30 +80,44 @@ def brailleMessagePersistent(msg):
 
 
 def message(text, speech=True, braillePersists=False):
-	"""say a message and Display a persistant message to the user 
-	@postcondition: The message is displayed.
+	"""say a short message and Display a persistant message to the user 
 	"""
 	if text is None :
 		return
-	if speech :
+	if speech:
 		speakMessage(text)
 	if braillePersists or       sharedVars.braillePersists  :
 		brailleMessagePersistent(text)
 	else :
 		braille.handler.message(text)
 
-def braillePersistent_old(text) : 
-	# function derived from braille.py
-	brHandler =   braille.handler
-	if brHandler.buffer is brHandler.messageBuffer:
-		brHandler.buffer.clear()
-	else:
-		brHandler.buffer = brHandler.messageBuffer
-	region = braille.TextRegion(text)
-	region.update()
-	brHandler.buffer.regions.append(region)
-	brHandler.buffer.update()
-	brHandler.update()
+def longText(text, speech=True, braillePersists=False):
+	"""say a long text and Display a persistant message to the user 
+	"""
+	if text is None :
+		return
+		
+	text = text.replace(chr(30), "").replace("", "").strip()
+	if speech:
+		speakText(text.strip()) # strip is very important for sapi5 neural voices
+	if braillePersists or       sharedVars.braillePersists  :
+		brailleMessagePersistent(text)
+	else :
+		braille.handler.message(text)
+
+
+# def braillePersistent_old(text) : 
+	# # function derived from braille.py
+	# brHandler =   braille.handler
+	# if brHandler.buffer is brHandler.messageBuffer:
+		# brHandler.buffer.clear()
+	# else:
+		# brHandler.buffer = brHandler.messageBuffer
+	# region = braille.TextRegion(text)
+	# region.update()
+	# brHandler.buffer.regions.append(region)
+	# brHandler.buffer.update()
+	# brHandler.update()
 
 # def brailleMessage(text, speak=False) : 
 	# if speak : 

@@ -159,7 +159,8 @@ class MessageListItem(IAccessible):
 				elif ID == "flaggedcol" : 
 					if _("Starred") + ", " in oRow.name : s = _("Starred")
 				elif ID == "subjectcol" :
-					s=self.removeResponseMention (t,1).strip (" -_*#").replace(" - "," ")
+					s = t.replace("*** SPAM ***", "") 
+					s=self.removeResponseMention (s,1).strip (" -_*#").replace(" - "," ")
 					if  sharedVars.listGroupName :
 						s= sharedVars.regExp_nameListGroup.sub (" ",s)
 					# # # sharedVars.curSubject = s
@@ -200,7 +201,7 @@ class MessageListItem(IAccessible):
 			# l += ", duration : " + str(ms) 
 			if not l :
 				return "Card, " + str(oRow.name)
-			return l  # + ", Original : " + oRow.name
+			return sharedVars.regExp_removeMultiBlank.sub(" ", l) 
 		finally :
 			sharedVars.objLooping = False
 		
@@ -454,8 +455,12 @@ class MessageListItem(IAccessible):
 
 	def script_openMessage(self, gesture) :
 		if not sharedVars.oQuoteNav : sharedVars.initQuoteNav()
-		utils.setMLIState(self)
-		sharedVars.msgOpened = True
+		utils.setMLIState(self) # select and expand
+		if sharedVars.oSettings.getOption("deactiv", "SWRnoRead") :
+			sharedVars.msgOpened = "noRead"
+		else :
+			# msgOpened will no longer contain the current brailleMode
+			sharedVars.msgOpened = "read" # utils.setBrailleMode("speechOutput")
 		return gesture.send()
 		
 	def isUnifiedRow(self, oRow) :

@@ -15,7 +15,7 @@ import treeInterceptorHandler, textInfos
 import sharedVars
 import utis
 import utils115 as utils
-from utils115 import message
+from ui import message
 import textDialog
 addonHandler.initTranslation()
 
@@ -99,6 +99,7 @@ class QuoteNav() :
 		self.browsePreview = not   self.browsePreview
 		message(msgEnab if self.browsePreview else msgDisab)
 	def readMail(self, oFocus, oDoc, rev = False, spkMode=1): 
+		# spkMode : 1 with utils.longText, 2=copyToClip, 10 with ui.message
 		speech.cancelSpeech()
 		for i in range(0, 20) :
 			if oDoc.role == controlTypes.Role.DOCUMENT :
@@ -113,7 +114,7 @@ class QuoteNav() :
 					# self.sayDraftText()
 					break
 				elif result == 3 :  # after  an exception with IAccessible.queryInterface
-					message(self.text, True, True)
+					utils.longText(self.text, speech=True, braillePersists=True)
 					break
 			else : 
 				beep(150, 5)
@@ -199,7 +200,7 @@ class QuoteNav() :
 		self.text=self.regHTML.sub(" ",self.text)
 		# beep(100, 20)
 		sharedVars.debugLog = "Draft :\n" + self.text
-		callLater(500, message, self.text, True, True)
+		callLater(500, utils.longText, self.text, True, True)
 	
 	def getDocObjects(self, oDoc) :
 		o = oDoc.firstChild
@@ -208,6 +209,7 @@ class QuoteNav() :
 	
 
 	def setText(self, speakMode=1) : 
+		# speakMode : 1 with utils.longText, 2=copyToClip, 10 with ui.message
 		# textDialog.showText("code HTML", self.text) ; return
 		self.deleteBlocks()
 		# replace \n and <br> with 
@@ -278,11 +280,15 @@ class QuoteNav() :
 			if str(self.lItems[self.curItem]).strip() != "" :
 				break
 			self.curItem += 1
-		if speakMode  > 0 :
-			message(msg + self.lItems[self.curItem])
+		if speakMode  == 1 : # with utils115.message
+			utils.longText(msg + self.lItems[self.curItem])
+		elif speakMode  == 10 : # with ui.message
+			speech.speakMessage(msg + self.lItems[self.curItem])
+			utils.setBrailleMode(sharedVars.msgOpened)
 
 	def displayMessage(self, subj, body) :
 		if subj == "" : subj = _("Translation")
+		body = body.replace(chr(31), "").strip()
 		textDialog.showText(title=subj, text=body, label="-")
 
 	def truncateSubj(self, text, wantedLen) :
@@ -307,24 +313,33 @@ class QuoteNav() :
 			msg = _("Preview copied: ")
 		
 		if self.translate : 
+			beep(500, 100) # same sound as in InstantTranslate
 			subject =   self.iTranslate.translateAndCache(cleanSubject(sharedVars.curWinTitle), "auto", self.langTo).translation
-			subject = self.truncateSubj(subject, 25)
+			subject = self.truncateSubj(subject, 35)
 			text = self.iTranslate.translateAndCache(self.text.split("")[1]  , "auto", self.langTo).translation
 			if self.browseTranslation or self.browsePreview and not self.fromSpellCheck : self.displayMessage(subject, text)
-			else : message(msg + subject + text, True, True)
+			else : 
+				if speakMode == 1 : utils.longText(msg + subject + text, True, True)
+				elif speakMode == 10 : 
+					speech.speakMessage(msg + subject + text)
+					utils.setBrailleMode(sharedVars.msgOpened)
 		else : # no translation
 			if self.browsePreview and not self.fromSpellCheck  : 
 				subject = cleanSubject(sharedVars.curWinTitle)
 				subject = self.truncateSubj(subject, 25)
 				self.displayMessage(subject, self.text)
 			else : 
-				message(msg + self.text, True, True)
+				if speakMode == 1 : utils.longText(msg + self.text, True, True)
+				elif speakMode == 10 : 
+					speech.speakMessage(msg + self.text)
+					utils.setBrailleMode(sharedVars.msgOpened)
 
 	def speakQuote(self, quote) :
 		if self.translate : 
 			quote  = self.iTranslate.translateAndCache(quote, "auto", self.langTo).translation
 		if self.browseTranslation and not self.fromSpellCheck : self.displayMessage("", quote) 
-		else : message(quote, True, True)
+		else : 
+			utils.longText(quote, True, True)
 
 	def deleteMetas(self) :
 		lbl = "<meta "
