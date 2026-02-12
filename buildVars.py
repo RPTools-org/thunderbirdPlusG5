@@ -18,7 +18,7 @@ addon_info = AddonInfo(
 	# Add-on summary/title, usually the user visible name of the add-on
 	# Translators: Summary/title for this add-on
 	# to be shown on installation and add-on information found in add-on store
-	addon_summary=_("Thunderbird+ G6 (TB >= 140)"),
+	addon_summary=_("Thunderbird+ G5.1 (TB >= 140)"),
 	# Add-on description
 	# Translators: Long description to be shown for this add-on on add-on information from add-on store
 	addon_description=_("This add-on significantly increases the efficiency and comfort of using Thunderbird with NVDA.\nFor more information, visit :\nhttps://www.rptools.org/NVDA-Thunderbird/get.php?pg=manual&v=g5&lang=en") + "\n" + _("For old releases, visit:") + " \nhttps://www.rptools.org/ntbp/",
