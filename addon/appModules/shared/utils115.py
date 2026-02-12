@@ -17,6 +17,7 @@ import sharedVars
 import globalVars
 import utis
 # from utis import utis.findParentByID # , utis.inputBox, utis.wordsMatchWord, utis.getSpeechMode
+import keyboardHandler
 from keyboardHandler import KeyboardInputGesture
 import re
 
@@ -68,9 +69,10 @@ def brailleClear() :
 	
 	# # OPTIONNEL: Annoncer le texte vocalement pour les utilisateurs n'utilisant pas le braille
 
-def brailleMessagePersistent(msg):
+def brailleMessagePersistent(msg, scrollMsg=""):
 	# function by André from AccessSolutions France
-	region = braille.TextRegion(msg)
+	beep(700, 10)
+	region = braille.TextRegion(scrollMsg + msg)
 	region.obj = None
 	region.update()
 	braille.handler.mainBuffer.clear()
@@ -78,20 +80,37 @@ def brailleMessagePersistent(msg):
 	braille.handler.mainBuffer.update()
 	braille.handler.update()
 
+def messageBraille(text) :
+	# works  even if message in Braille is disabled in Braille options in NVDA
+	if text is None :
+		return
+	if braille.handler.buffer is braille.handler.messageBuffer:
+		braille.handler.buffer.clear()
+	else:
+		braille.handler.buffer = braille.handler.messageBuffer
+	region = braille.TextRegion(text)
+	region.update()
+	braille.handler.buffer.regions.append(region)
+	braille.handler.buffer.update()
+	braille.handler.update()
+	braille.handler._resetMessageTimer()
+	braille.handler._keyCountForLastMessage = keyboardHandler.keyCounter
 
-def message(text, speech=True, braillePersists=False):
-	"""say a short message and Display a persistant message to the user 
+
+
+def message(text, speech=True, brailleScrollShort=False):
+	"""say a short message and Display a scrollable  message to the user 
 	"""
 	if text is None :
 		return
 	if speech:
 		speakMessage(text)
-	if braillePersists or       sharedVars.braillePersists  :
+	if sharedVars.brailleScrollShort  :
 		brailleMessagePersistent(text)
 	else :
-		braille.handler.message(text)
+		messageBraille(text)
 
-def longText(text, speech=True, braillePersists=False):
+def sayLongText(text, speech=True):
 	"""say a long text and Display a persistant message to the user 
 	"""
 	if text is None :
@@ -100,10 +119,10 @@ def longText(text, speech=True, braillePersists=False):
 	text = text.replace(chr(30), "").replace("", "").strip()
 	if speech:
 		speakText(text.strip()) # strip is very important for sapi5 neural voices
-	if braillePersists or       sharedVars.braillePersists  :
-		brailleMessagePersistent(text)
+	if sharedVars.brailleScrollLong  :
+		brailleMessagePersistent(text, "Scrollable: ")
 	else :
-		braille.handler.message(text)
+		messageBraille(text)
 
 
 # def braillePersistent_old(text) : 

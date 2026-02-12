@@ -1,2 +1,0 @@
-scons pot
-pause

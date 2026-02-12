@@ -95,11 +95,11 @@ class  Settings() :
 	}
 
 	#  2025-12-11  : deactivations is now General
-		self.option_deactiv = {
-			"braillePersists" : _("Display Braille messages persistently."),
-			"TTnoTags" : _("Message list : deactivate  tag management   to improve responsiveness."),
+		self.option_deactiv = { 
+			"brailleScrollLong" : _("Braille: display email previews or their translation as a scrollable message"),
+			"brailleScrollShort" : _("Braille: display other messages as scrollable messages"),"TTnoTags" : _("Message list : deactivate  tag management   to improve responsiveness."),
 			"TTnoFilterSnd" : _("Message list : do not play sound when list is filtered and gets focus."),
-			"SWRnoRead" : _("Separate reading window: do not read the cleaned version of the message when the window is opened."),
+			# "SWRnoRead" : _("Separate reading window: do not read the cleaned version of the message when the window is opened."),
 			"noAddressBook" : _("Address book : disable additional features of Thunderbird+G5."),
 		}
 
@@ -188,7 +188,8 @@ class  Settings() :
 			# elif  section == "msgComposeWindow" : 
 				# pass
 		elif  section == "deactiv" : 
-			sharedVars.braillePersists  = pSection.as_bool ("braillePersists")
+			sharedVars.brailleScrollShort  = pSection.as_bool ("brailleScrollShort")
+			sharedVars.brailleScrollLong  = pSection.as_bool ("brailleScrollLong")
 			sharedVars.TTnoTags = pSection.as_bool ("TTnoTags")
 			sharedVars.noAddressBook = pSection.as_bool ("noAddressBook")
 		# CallLater(1000, message, "setSharedVars section : " + section) 

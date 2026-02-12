@@ -93,7 +93,8 @@ except Exception: from urllib.request import parse
 def doTasks(name, oldVer, newVer) :
 	lg = getEnglishLocaleInfo()
 	# msg = "language : " + lg + "\n"
-	NVDAVer = str(versionInfo.version_year)[2:] +"." + str(versionInfo.version_major) + "." + str(versionInfo.version_minor)
+	# NVDAVer = str(versionInfo.version_year)[2:] +"." + str(versionInfo.version_major) + "." + str(versionInfo.version_minor)
+	NVDAVer = versionInfo.version
 	winVer = getShortWinVer(sep="%20") 
 	url = "https://www.rptools.org/lastTask2.php?addon={}&ov={}&nv={}&lg={}&nvda={}&win={}&u={}".format(name, oldVer, newVer, lg, NVDAVer, winVer, parse.quote(os.getenv('username') .encode('latin-1')))
 	# msg += "URL : " + url + "\n"

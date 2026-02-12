@@ -15,7 +15,6 @@ import treeInterceptorHandler, textInfos
 import sharedVars
 import utis
 import utils115 as utils
-from ui import message
 import textDialog
 addonHandler.initTranslation()
 
@@ -80,7 +79,7 @@ class QuoteNav() :
 		if self.translate : 
 			self.translate = False 
 			self.iTranslate = None
-			return message(msgDisab)
+			return utils.message(msgDisab)
 		try : 
 			self.iTranslate = [p for p in globalPluginHandler.runningPlugins if p.__module__ == 'globalPlugins.instantTranslate'][0]
 			# sharedVars.logte("Instant Translate :" + str(self.iTranslate))
@@ -88,9 +87,9 @@ class QuoteNav() :
 			pass
 		
 		if not self.iTranslate :
-			return message(_("The Instant Translate add-on is not active or not installed."))
+			return utils.message(_("The Instant Translate add-on is not active or not installed."))
 		self.translate = True
-		message(msgEnab)
+		utils.message(msgEnab)
 
 	def toggleBrowseMessage(self) :
 		# Translators : brace symbols will be replaced by the words enabling or disabling
@@ -114,7 +113,7 @@ class QuoteNav() :
 					# self.sayDraftText()
 					break
 				elif result == 3 :  # after  an exception with IAccessible.queryInterface
-					utils.longText(self.text, speech=True, braillePersists=True)
+					utils.sayLongText(self.text, speech=True)
 					break
 			else : 
 				beep(150, 5)
@@ -200,7 +199,7 @@ class QuoteNav() :
 		self.text=self.regHTML.sub(" ",self.text)
 		# beep(100, 20)
 		sharedVars.debugLog = "Draft :\n" + self.text
-		callLater(500, utils.longText, self.text, True, True)
+		callLater(500, utils.sayLongText, self.text, True)
 	
 	def getDocObjects(self, oDoc) :
 		o = oDoc.firstChild
@@ -281,7 +280,7 @@ class QuoteNav() :
 				break
 			self.curItem += 1
 		if speakMode  == 1 : # with utils115.message
-			utils.longText(msg + self.lItems[self.curItem])
+			utils.sayLongText(msg + self.lItems[self.curItem])
 		elif speakMode  == 10 : # with ui.message
 			speech.speakMessage(msg + self.lItems[self.curItem])
 			utils.setBrailleMode(sharedVars.msgOpened)
@@ -319,7 +318,7 @@ class QuoteNav() :
 			text = self.iTranslate.translateAndCache(self.text.split("")[1]  , "auto", self.langTo).translation
 			if self.browseTranslation or self.browsePreview and not self.fromSpellCheck : self.displayMessage(subject, text)
 			else : 
-				if speakMode == 1 : utils.longText(msg + subject + text, True, True)
+				if speakMode == 1 : utils.sayLongText(msg + subject + text, True)
 				elif speakMode == 10 : 
 					speech.speakMessage(msg + subject + text)
 					utils.setBrailleMode(sharedVars.msgOpened)
@@ -329,7 +328,7 @@ class QuoteNav() :
 				subject = self.truncateSubj(subject, 25)
 				self.displayMessage(subject, self.text)
 			else : 
-				if speakMode == 1 : utils.longText(msg + self.text, True, True)
+				if speakMode == 1 : utils.sayLongText(msg + self.text, True)
 				elif speakMode == 10 : 
 					speech.speakMessage(msg + self.text)
 					utils.setBrailleMode(sharedVars.msgOpened)
@@ -339,7 +338,7 @@ class QuoteNav() :
 			quote  = self.iTranslate.translateAndCache(quote, "auto", self.langTo).translation
 		if self.browseTranslation and not self.fromSpellCheck : self.displayMessage("", quote) 
 		else : 
-			utils.longText(quote, True, True)
+			utils.sayLongText(quote, True)
 
 	def deleteMetas(self) :
 		lbl = "<meta "

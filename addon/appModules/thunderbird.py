@@ -469,15 +469,13 @@ class AppModule(thunderbird.AppModule):
 				self.timer = callLater(300, KeyboardInputGesture.fromName("control+space").send)
 			return nextHandler()
 		elif sharedVars.msgOpened and role == controlTypes.Role.DOCUMENT  and controlTypes.State.READONLY in obj.states :
-			# sharedVars.msgOpened contains "read" or "noread"
 			speech.cancelSpeech()
+			sharedVars.msgOpened = False
 			sharedVars.curTab = "message"
-			# below : Separate reading window: do not read the cleaned version of the message when the window is opened.
-			if sharedVars.msgOpened == "noRead" :
-				sharedVars.msgOpened = ""
+			if not sharedVars.oQuoteNav.translate :
 				return nextHandler()
-			sharedVars.msgOpened = ""
-			return wx.CallAfter(sharedVars.oQuoteNav.readMail, obj, obj, rev=False, spkMode=10) # spkMode=10 with ui.message
+			else :
+				return wx.CallAfter(sharedVars.oQuoteNav.readMail, obj, obj, rev=False, spkMode=1) # spkMode=1 : with utils.sayLongText,  =10 with ui.message
 		if sharedVars.curTab == "sp:addressbook" and sharedVars.TBMajor > 127 :
 			messengerWindow.tabAddressBook.abGainFocus(obj)
 

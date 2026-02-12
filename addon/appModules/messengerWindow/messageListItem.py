@@ -456,11 +456,7 @@ class MessageListItem(IAccessible):
 	def script_openMessage(self, gesture) :
 		if not sharedVars.oQuoteNav : sharedVars.initQuoteNav()
 		utils.setMLIState(self) # select and expand
-		if sharedVars.oSettings.getOption("deactiv", "SWRnoRead") :
-			sharedVars.msgOpened = "noRead"
-		else :
-			# msgOpened will no longer contain the current brailleMode
-			sharedVars.msgOpened = "read" # utils.setBrailleMode("speechOutput")
+		sharedVars.msgOpened = True 
 		return gesture.send()
 		
 	def isUnifiedRow(self, oRow) :
@@ -507,12 +503,14 @@ class MessageListItem(IAccessible):
 		self.name = ""
 		gesture.send() # sends delete to thunderbird
 		utils.brailleClear()
-		message(rowName, speech=False, braillePersists=True)
+		# below : utils.message
+		message(rowName, speech=False, brailleScrollShort=True)
 		CallAfter(speech.speakMessage, rowName)
 		if parent.childCount == 0 :
 			speech.cancelSpeech()
 		# end 2512.10		
 
+	
 	def script_deleteWithMenu(self,gesture):
 		if controlTypes.State.COLLAPSED in self.states :
 			return gesture.send()
