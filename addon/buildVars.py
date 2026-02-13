@@ -9,6 +9,14 @@ from site_scons.site_tools.NVDATool.typings import AddonInfo, BrailleTables, Sym
 # To avoid initializing translations in this module we simply import a "fake" `_` function
 # which returns whatever is given to it as an argument.
 from site_scons.site_tools.NVDATool.utils import _
+gLang = "en"
+
+def getLang() :
+	global gLang
+	from languageHandler import getLanguage
+	l = getLanguage() 
+	if "pt" in l : return l # pt_PT
+	return l.split("_")[0]
 
 
 # Add-on information variables
@@ -24,11 +32,11 @@ addon_info = AddonInfo(
 	addon_description=_("This add-on significantly increases the efficiency and comfort of using Thunderbird with NVDA.\nFor more information, visit :\nhttps://www.rptools.org/NVDA-Thunderbird/get.php?pg=manual&v=g5&lang=en") + "\n" + _("For old releases, visit:") + " \nhttps://www.rptools.org/ntbp/",
 
 	# version
-	addon_version="2602.12",
+	addon_version="2602.13",
 	# Brief changelog for this version
 	# Translators: what's new content for the add-on version to be shown in the add-on store
 	addon_changelog=_("""* Adds compatibility with NVDA 2026.1 x64.
-	* link for full changelog"""),
+* [See full changelog](https://www.rptools.org/NVDA-Thunderbird/get.php?pg=changes&v=g5&lang=auto)"""),
 	# Author(s)
 	addon_author="Pierre-Louis Renaud <plr.listes@rptools.org>",
 	# URL for the add-on documentation support

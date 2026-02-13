@@ -1,5 +1,5 @@
 #-*- coding:utf-8 -*
-# Thunderbird+ 4.x, context menu for main Window
+# Thunderbird+ G5, context menu for main Window
 
 import controlTypes
 # controlTypes module compatibility with old versions of NVDA
@@ -73,7 +73,7 @@ class MainMenu() :
 		elif ID == 11 :
 			lang = utis.getLang()
 			return CallAfter(os.startfile, "http://www.rptools.org/Outils-DV/thunderbird-chichi-" + lang + ".html")
-		elif ID == 12 : #history
+		elif ID == 12 : #changelog
 			return CallAfter(showTranslatedHTML, "TB+G5-history.html")
 		elif ID == 13 : # notifications
 			return CallAfter(showTranslatedHTML, "notificationsG5.html")
