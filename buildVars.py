@@ -18,7 +18,7 @@ from site_scons.site_tools.NVDATool.utils import _
 
 def getChangelog() :
 	lbl = _("Visit the full changelog")
-	return "[{0}](https://www.rptools.org/NVDA-Thunderbird/get.php?pg=changes&v=g5&lang=auto".format(lbl)
+	return "[{0}](https://www.rptools.org/NVDA-Thunderbird/get.php?pg=changes&v=g5&lang=auto)".format(lbl)
 # addonDesc = _("This add-on significantly increases the efficiency and comfort of using Thunderbird with NVDA.") + _("More information via the context menu, 'Web site' item.")
 # Add-on information variables
 addon_info = AddonInfo(
@@ -32,7 +32,7 @@ addon_info = AddonInfo(
 	# Translators: Long description to be shown for this add-on on add-on information from add-on store
 	addon_description=_("This add-on significantly increases the efficiency and comfort of using Thunderbird with NVDA."),
 	# version
-	addon_version="2602.16",
+	addon_version="2602.17",
 	# Brief changelog for this version
 	# Translators: what's new content for the add-on version to be shown in the add-on store
 	addon_changelog= getChangelog(), 
