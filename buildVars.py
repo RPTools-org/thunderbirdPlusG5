@@ -9,16 +9,17 @@ from site_scons.site_tools.NVDATool.typings import AddonInfo, BrailleTables, Sym
 # To avoid initializing translations in this module we simply import a "fake" `_` function
 # which returns whatever is given to it as an argument.
 from site_scons.site_tools.NVDATool.utils import _
-gLang = "en"
-
-def getLang() :
-	global gLang
-	from languageHandler import getLanguage
-	l = getLanguage() 
-	if "pt" in l : return l # pt_PT
-	return l.split("_")[0]
 
 
+# To avoid initializing translations in this module we simply roll our own "fake" `_` function
+# which returns whatever is given to it as an argument.
+# def _(arg):
+	# return arg
+
+def getChangelog() :
+	lbl = _("Visit the full changelog")
+	return "[{0}](https://www.rptools.org/NVDA-Thunderbird/get.php?pg=changes&v=g5&lang=auto".format(lbl)
+# addonDesc = _("This add-on significantly increases the efficiency and comfort of using Thunderbird with NVDA.") + _("More information via the context menu, 'Web site' item.")
 # Add-on information variables
 addon_info = AddonInfo(
 	# add-on Name/identifier, internal for NVDA
@@ -26,17 +27,15 @@ addon_info = AddonInfo(
 	# Add-on summary/title, usually the user visible name of the add-on
 	# Translators: Summary/title for this add-on
 	# to be shown on installation and add-on information found in add-on store
-	addon_summary=_("Thunderbird+ G5.1 (TB >= 140)"),
+	addon_summary="Thunderbird+ G5.1 (TB >= 140)",
 	# Add-on description
 	# Translators: Long description to be shown for this add-on on add-on information from add-on store
-	addon_description=_("This add-on significantly increases the efficiency and comfort of using Thunderbird with NVDA.\nFor more information, visit :\nhttps://www.rptools.org/NVDA-Thunderbird/get.php?pg=manual&v=g5&lang=en") + "\n" + _("For old releases, visit:") + " \nhttps://www.rptools.org/ntbp/",
-
+	addon_description=_("This add-on significantly increases the efficiency and comfort of using Thunderbird with NVDA."),
 	# version
-	addon_version="2602.13",
+	addon_version="2602.16",
 	# Brief changelog for this version
 	# Translators: what's new content for the add-on version to be shown in the add-on store
-	addon_changelog=_("""* Adds compatibility with NVDA 2026.1 x64.
-* [See full changelog](https://www.rptools.org/NVDA-Thunderbird/get.php?pg=changes&v=g5&lang=auto)"""),
+	addon_changelog= getChangelog(), 
 	# Author(s)
 	addon_author="Pierre-Louis Renaud <plr.listes@rptools.org>",
 	# URL for the add-on documentation support
@@ -52,7 +51,7 @@ addon_info = AddonInfo(
 	# Add-on update channel (default is None, denoting stable releases,
 	# and for development releases, use "dev".)
 	# Do not change unless you know what you are doing!
-	addon_updateChannel="dev",
+	addon_updateChannel="beta",
 	# Add-on license such as GPL 2
 	addon_license=None,
 	# URL for the license document the ad-on is licensed under

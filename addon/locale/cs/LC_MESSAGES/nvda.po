@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Thunderbird+G5\n"
-"POT-Creation-Date: 2025-12-11 08:21+0100\n"
+"POT-Creation-Date: 2026-02-14 15:09+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Pierre-Louis R. <plr.listes@rptools.org>\n"
 "Language-Team: Jarek Krcmar\n"
@@ -10,27 +10,27 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.6\n"
-"X-Poedit-Basepath: ../../..\n"
+"X-Generator: Poedit 3.8\n"
+"X-Poedit-Basepath: ../../../..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: appModules/messengerWindow/folderTreeItem.py:27
+#: addon/appModules/messengerWindow/folderTreeItem.py:27
 msgid "Drafts|Deleted"
 msgstr "Koncepty|Smazány"
 
-#: appModules/messengerWindow/folderTreeItem.py:72
+#: addon/appModules/messengerWindow/folderTreeItem.py:72
 msgid "selects the first unread message in the list from the folder tree."
 msgstr "vybere první nepřečtenou zprávu v seznamu ze stromu složek."
 
-#: appModules/messengerWindow/folderTreeItem.py:77
+#: addon/appModules/messengerWindow/folderTreeItem.py:77
 msgid ""
 "Folders : displays a menu allowing you to reach a subfolder of your choice."
 msgstr ""
 "Složky: zobrazí nabídku, která vám umožní dostat se do podsložky podle "
 "vašeho výběru."
 
-#: appModules/messengerWindow/folderTreeItem.py:82
+#: addon/appModules/messengerWindow/folderTreeItem.py:82
 msgid ""
 "Folders : displays a menu allowing you to reach an unread folder of the "
 "current account."
@@ -38,158 +38,158 @@ msgstr ""
 "Složky: zobrazí nabídku, která vám umožní přejít do nepřečtené složky "
 "aktuálního účtu."
 
-#: appModules/messengerWindow/folderTreeItem.py:90
+#: addon/appModules/messengerWindow/folderTreeItem.py:90
 msgid "Folders : display a menu  of all accounts and folders."
 msgstr "Složky : zobrazení nabídky všech účtů a složek."
 
-#: appModules/messengerWindow/folderTreeItem.py:99
+#: addon/appModules/messengerWindow/folderTreeItem.py:99
 msgid "Folders : display a menu of all unread accounts and folders."
 msgstr "Složky : zobrazí nabídku všech nepřečtených účtů a složek."
 
-#: appModules/messengerWindow/folderTreeItem.py:129
+#: addon/appModules/messengerWindow/folderTreeItem.py:129
 msgid "Unified folders"
 msgstr "Sjednocené složky"
 
-#: appModules/messengerWindow/folderTreeItem.py:135
-#: appModules/messengerWindow/messageListItem.py:371
-#: appModules/messengerWindow/messageListItem.py:376
+#: addon/appModules/messengerWindow/folderTreeItem.py:135
+#: addon/appModules/messengerWindow/messageListItem.py:372
+#: addon/appModules/messengerWindow/messageListItem.py:377
 msgid "Tags"
 msgstr "Štítky"
 
-#: appModules/messengerWindow/folderTreeItem.py:207
+#: addon/appModules/messengerWindow/folderTreeItem.py:207
 #, fuzzy
 #| msgid "No unread folders for this account."
 msgid "No unread Inbox folder  found"
 msgstr "Pro tento účet nejsou žádné nepřečtené složky."
 
-#: appModules/messengerWindow/folderTreeItem.py:210
+#: addon/appModules/messengerWindow/folderTreeItem.py:210
 #, fuzzy
 #| msgid "unread folders view"
 msgid "Unread inbox Folders, menu"
 msgstr "zobrazení nepřečtených složek"
 
-#: appModules/messengerWindow/folderTreeItem.py:212
+#: addon/appModules/messengerWindow/folderTreeItem.py:212
 #, fuzzy
 #| msgid "All folders view"
 msgid "All inbox Folders, menu"
 msgstr "Zobrazení všech složek"
 
-#: appModules/messengerWindow/folderTreeItem.py:265
-#: appModules/messengerWindow/messageListItem.py:133
+#: addon/appModules/messengerWindow/folderTreeItem.py:265
+#: addon/appModules/messengerWindow/messageListItem.py:133
 msgid "Collapsed"
 msgstr "Zhroucený"
 
-#: appModules/messengerWindow/folderTreeItem.py:269
-#: appModules/messengerWindow/folderTreeItem.py:335
+#: addon/appModules/messengerWindow/folderTreeItem.py:269
+#: addon/appModules/messengerWindow/folderTreeItem.py:335
 msgid "Inbox"
 msgstr "Doručená pošta"
 
-#: appModules/messengerWindow/folderTreeItem.py:272
+#: addon/appModules/messengerWindow/folderTreeItem.py:272
 msgid "Account"
 msgstr "účet"
 
-#: appModules/messengerWindow/folderTreeItem.py:272
-#: appModules/messengerWindow/folderTreeItem.py:273
+#: addon/appModules/messengerWindow/folderTreeItem.py:272
+#: addon/appModules/messengerWindow/folderTreeItem.py:273
 msgid "Unified"
 msgstr "Jednotný"
 
-#: appModules/messengerWindow/folderTreeItem.py:315
+#: addon/appModules/messengerWindow/folderTreeItem.py:315
 msgid "Choose an account with unread"
 msgstr "Vyberte účet s nepřečtenými"
 
-#: appModules/messengerWindow/folderTreeItem.py:318
+#: addon/appModules/messengerWindow/folderTreeItem.py:318
 msgid "Choose an account"
 msgstr "Vyberte účet"
 
-#: appModules/messengerWindow/folderTreeItem.py:367
+#: addon/appModules/messengerWindow/folderTreeItem.py:367
 msgid "Accounts, menu"
 msgstr "Účty, nabídka"
 
-#: appModules/messengerWindow/folderTreeItem.py:369
+#: addon/appModules/messengerWindow/folderTreeItem.py:369
 msgid "Accounts with unread, menu"
 msgstr "Účty s nepřečtenými, nabídka"
 
-#: appModules/messengerWindow/folderTreeItem.py:372
+#: addon/appModules/messengerWindow/folderTreeItem.py:372
 msgid "Menu, Unread folders of"
 msgstr "Nabídka, Nepřečtené složky z"
 
-#: appModules/messengerWindow/folderTreeItem.py:374
+#: addon/appModules/messengerWindow/folderTreeItem.py:374
 msgid "Menu, folders of "
 msgstr "Nabídka, složky"
 
-#: appModules/messengerWindow/folderTreeItem.py:378
-#: appModules/messengerWindow/folderTreeItem.py:400
+#: addon/appModules/messengerWindow/folderTreeItem.py:378
+#: addon/appModules/messengerWindow/folderTreeItem.py:400
 #, fuzzy
 #| msgid "Please select  the message list and try again."
 msgid "First select the folder tree then try again."
 msgstr "Vyberte prosím seznam zpráv a zkuste to znovu."
 
-#: appModules/messengerWindow/menuMain.py:41
+#: addon/appModules/messengerWindow/menuMain.py:41
 msgid "Help\tCtrlF1"
 msgstr "Nápověda\tCtrlF1"
 
-#: appModules/messengerWindow/menuMain.py:43
+#: addon/appModules/messengerWindow/menuMain.py:43
 msgid "Change log"
 msgstr "Změnit protokol"
 
-#: appModules/messengerWindow/menuMain.py:44
+#: addon/appModules/messengerWindow/menuMain.py:44
 msgid "Notification page"
 msgstr "Stránka oznámení"
 
-#: appModules/messengerWindow/menuMain.py:45
+#: addon/appModules/messengerWindow/menuMain.py:45
 msgid "Donate"
 msgstr "darovat "
 
-#: appModules/messengerWindow/menuMain.py:48
+#: addon/appModules/messengerWindow/menuMain.py:48
 msgid "Write to support (after reading the manual and the change history)"
 msgstr "Napište na podporu (po přečtení manuálu a historie změn)"
 
-#: appModules/messengerWindow/menuMain.py:49
+#: addon/appModules/messengerWindow/menuMain.py:49
 msgid "Join the thunderbird-dv mailing list (French)"
 msgstr "Připojte se k mailing listu thunderbird-dv (francouzsky)"
 
-#: appModules/messengerWindow/menuMain.py:96
+#: addon/appModules/messengerWindow/menuMain.py:96
 msgid "Please select  the message list and try again."
 msgstr "Vyberte prosím seznam zpráv a zkuste to znovu."
 
-#: appModules/messengerWindow/menuMain.py:115
+#: addon/appModules/messengerWindow/menuMain.py:115
 msgid "No attachment to save"
 msgstr "Žádná příloha k uložení"
 
-#: appModules/messengerWindow/menuMain.py:120
+#: addon/appModules/messengerWindow/menuMain.py:120
 msgid "Open attachments toolbar"
 msgstr "Otevřete panel nástrojů pro přílohy"
 
-#: appModules/messengerWindow/menuMain.py:137
-#: appModules/messengerWindow/menuMain.py:155
+#: addon/appModules/messengerWindow/menuMain.py:137
+#: addon/appModules/messengerWindow/menuMain.py:155
 msgid "Open"
 msgstr "otevřít"
 
-#: appModules/messengerWindow/menuMain.py:138
+#: addon/appModules/messengerWindow/menuMain.py:138
 msgid "More options \tControl+alt+p"
 msgstr "Více možností \tControl+alt+p"
 
-#: appModules/messengerWindow/menuMain.py:139
+#: addon/appModules/messengerWindow/menuMain.py:139
 msgid "attachment \""
 msgstr "příloha \""
 
-#: appModules/messengerWindow/menuMain.py:142
+#: addon/appModules/messengerWindow/menuMain.py:142
 msgid "attached"
 msgstr "připojený"
 
-#: appModules/messengerWindow/menuMain.py:147
+#: addon/appModules/messengerWindow/menuMain.py:147
 msgid "All ... \tControl+Alt+p. "
 msgstr "Vše ... Control+Alt+p."
 
-#: appModules/messengerWindow/menuMain.py:148
+#: addon/appModules/messengerWindow/menuMain.py:148
 msgid "move to list alt+p"
 msgstr "přejít na seznam alt+p"
 
-#: appModules/messengerWindow/menuMain.py:156
+#: addon/appModules/messengerWindow/menuMain.py:156
 msgid "More options"
 msgstr "Více možností"
 
-#: appModules/messengerWindow/menuMain.py:256
+#: addon/appModules/messengerWindow/menuMain.py:256
 msgid ""
 "To get all headers, please open the View Menu, go down to 'Headers' and then "
 "press Enter on 'All'  in the submenu. Then display the grave menu again."
@@ -198,43 +198,43 @@ msgstr ""
 "položku \"Hlavičky\" a v podnabídce stiskněte klávesu Enter na položce "
 "\"Vše\". Poté znovu zobrazte nabídku."
 
-#: appModules/messengerWindow/messageListItem.py:154
-#: appModules/shared/menuSettings.py:180
+#: addon/appModules/messengerWindow/messageListItem.py:154
+#: addon/appModules/shared/menuSettings.py:180
 msgid "Unread"
 msgstr "Nepřečtený"
 
-#: appModules/messengerWindow/messageListItem.py:155
-#: appModules/messengerWindow/messageListItem.py:751
+#: addon/appModules/messengerWindow/messageListItem.py:155
+#: addon/appModules/messengerWindow/messageListItem.py:754
 msgid "Read"
 msgstr "přečtené "
 
-#: appModules/messengerWindow/messageListItem.py:160
+#: addon/appModules/messengerWindow/messageListItem.py:160
 msgid "Starred"
 msgstr "s hvězdou"
 
-#: appModules/messengerWindow/messageListItem.py:174
+#: addon/appModules/messengerWindow/messageListItem.py:175
 msgid "attachment"
 msgstr "příloha"
 
-#: appModules/messengerWindow/messageListItem.py:176
+#: addon/appModules/messengerWindow/messageListItem.py:177
 msgid " not marked as"
 msgstr " není označeno jako"
 
-#: appModules/messengerWindow/messageListItem.py:184
-#: appModules/messengerWindow/messageListItem.py:185
-#: appModules/messengerWindow/messageListItem.py:748
+#: addon/appModules/messengerWindow/messageListItem.py:185
+#: addon/appModules/messengerWindow/messageListItem.py:186
+#: addon/appModules/messengerWindow/messageListItem.py:751
 msgid "unread"
 msgstr "nepřečteno"
 
-#: appModules/messengerWindow/messageListItem.py:213
+#: addon/appModules/messengerWindow/messageListItem.py:214
 msgid "Re "
 msgstr "Re "
 
-#: appModules/messengerWindow/messageListItem.py:221
+#: addon/appModules/messengerWindow/messageListItem.py:222
 msgid "Line details"
 msgstr "Podrobnosti řádku"
 
-#: appModules/messengerWindow/messageListItem.py:225
+#: addon/appModules/messengerWindow/messageListItem.py:226
 msgid ""
 "Message list : One press announces the current line, two presses displays "
 "the line text in a window."
@@ -242,54 +242,54 @@ msgstr ""
 "Seznam zpráv: Jedno stisknutí oznámí aktuální řádek, dvě stisknutí zobrazí "
 "text řádku v okně."
 
-#: appModules/messengerWindow/messageListItem.py:278
+#: addon/appModules/messengerWindow/messageListItem.py:279
 msgid "No column "
 msgstr "Žádný sloupec"
 
-#: appModules/messengerWindow/messageListItem.py:289
+#: addon/appModules/messengerWindow/messageListItem.py:290
 msgid "No"
 msgstr "Ne"
 
-#: appModules/messengerWindow/messageListItem.py:296
+#: addon/appModules/messengerWindow/messageListItem.py:297
 #, python-brace-format
 msgid "{columnText} copied to clipboard"
 msgstr "{columnText} zkopírován do schránky"
 
-#: appModules/messengerWindow/messageListItem.py:371
-#: appModules/messengerWindow/messageListItem.py:378
+#: addon/appModules/messengerWindow/messageListItem.py:372
+#: addon/appModules/messengerWindow/messageListItem.py:379
 msgid "No tag."
 msgstr "Bez štítku."
 
-#: appModules/messengerWindow/messageListItem.py:375
+#: addon/appModules/messengerWindow/messageListItem.py:376
 msgid "No tag on a collapsed discussion"
 msgstr "Žádná značka o zhroucené diskusi"
 
-#: appModules/messengerWindow/messageListItem.py:383
+#: addon/appModules/messengerWindow/messageListItem.py:384
 msgid "No More tag."
 msgstr "Žádný další štítek"
 
-#: appModules/messengerWindow/messageListItem.py:384
-#: appModules/messengerWindow/messageListItem.py:404
+#: addon/appModules/messengerWindow/messageListItem.py:385
+#: addon/appModules/messengerWindow/messageListItem.py:405
 msgid "added"
 msgstr "přidáno"
 
-#: appModules/messengerWindow/messageListItem.py:385
+#: addon/appModules/messengerWindow/messageListItem.py:386
 msgid " removed"
 msgstr "odstraněno"
 
-#: appModules/messengerWindow/messageListItem.py:402
+#: addon/appModules/messengerWindow/messageListItem.py:403
 msgid "tag"
 msgstr "štítek"
 
-#: appModules/messengerWindow/messageListItem.py:403
+#: addon/appModules/messengerWindow/messageListItem.py:404
 msgid "No more tag."
 msgstr "Žádný další štítek"
 
-#: appModules/messengerWindow/messageListItem.py:405
+#: addon/appModules/messengerWindow/messageListItem.py:406
 msgid "removed"
 msgstr "odstraněno"
 
-#: appModules/messengerWindow/messageListItem.py:411
+#: addon/appModules/messengerWindow/messageListItem.py:412
 msgid ""
 "Shift + 1 to 8: announces the additions or removals of tags, Shift+0 "
 "announces the tags of the message"
@@ -297,307 +297,309 @@ msgstr ""
 "Shift + 1 až 8: oznámí přidání nebo odebrání štítků, Shift+0 oznámí štítky "
 "zprávy"
 
-#: appModules/messengerWindow/messageListItem.py:416
+#: addon/appModules/messengerWindow/messageListItem.py:417
 msgid "No tag to remove."
 msgstr "Žádný štítek k odstranění."
 
-#: appModules/messengerWindow/messageListItem.py:423
+#: addon/appModules/messengerWindow/messageListItem.py:424
 msgid "Press this command twice quickly to delete the"
 msgstr "Stisknutím tohoto příkazu dvakrát rychle vymažete"
 
-#: appModules/messengerWindow/messageListItem.py:429
+#: addon/appModules/messengerWindow/messageListItem.py:430
 msgid "All tags have been removed from this message."
 msgstr "Z této zprávy byly odstraněny všechny štítky."
 
-#: appModules/messengerWindow/messageListItem.py:431
+#: addon/appModules/messengerWindow/messageListItem.py:432
 msgid "Removes all tags from the selected message."
 msgstr "Odebere všechny štítky z vybrané zprávy."
 
-#: appModules/messengerWindow/messageListItem.py:452
+#: addon/appModules/messengerWindow/messageListItem.py:453
 msgid "Filtered reading of the message preview pane without leaving the list."
 msgstr "Filtrované čtení podokna náhledu zprávy bez opuštění seznamu."
 
-#: appModules/messengerWindow/messageListItem.py:500
-#: appModules/messengerWindow/tabAddressBook.py:100
-#: appModules/messengerWindow/tabAddressBook.py:488
+#: addon/appModules/messengerWindow/messageListItem.py:501
+#: addon/appModules/messengerWindow/tabAddressBook.py:100
+#: addon/appModules/messengerWindow/tabAddressBook.py:488
 msgid "blank"
 msgstr "prázdný"
 
-#: appModules/messengerWindow/messageListItem.py:539
+#: addon/appModules/messengerWindow/messageListItem.py:542
 msgid "Deleted"
 msgstr "Smazánad"
 
-#: appModules/messengerWindow/messageListItem.py:539
+#: addon/appModules/messengerWindow/messageListItem.py:542
 msgid "Archived"
 msgstr "Archivováno"
 
-#: appModules/messengerWindow/messageListItem.py:540
+#: addon/appModules/messengerWindow/messageListItem.py:543
 msgid "Current row"
 msgstr "Aktuální řádek"
 
-#: appModules/messengerWindow/messageListItem.py:553
+#: addon/appModules/messengerWindow/messageListItem.py:556
 msgid "Press this command twice to mark all messages as read in the folder:"
 msgstr ""
 "Dvojím stisknutím tohoto příkazu označíte všechny zprávy ve složce jako "
 "přečtené:"
 
-#: appModules/messengerWindow/messageListItem.py:556
+#: addon/appModules/messengerWindow/messageListItem.py:559
 #, python-brace-format
 msgid "the {name} folder no longer contains unread messages."
 msgstr "složka {name} již neobsahuje nepřečtené zprávy."
 
-#: appModules/messengerWindow/messageListItem.py:558
+#: addon/appModules/messengerWindow/messageListItem.py:561
 msgid "not junk"
 msgstr "Není spam"
 
-#: appModules/messengerWindow/messageListItem.py:558
+#: addon/appModules/messengerWindow/messageListItem.py:561
 msgid "junk"
 msgstr "Spam"
 
-#: appModules/messengerWindow/messageListItem.py:561
+#: addon/appModules/messengerWindow/messageListItem.py:564
+#, python-brace-format
 msgid "{} applied. "
 msgstr "{} použito."
 
-#: appModules/messengerWindow/messageListItem.py:563
+#: addon/appModules/messengerWindow/messageListItem.py:566
+#, python-brace-format
 msgid "{} applied to: "
 msgstr "{} aplikován na: "
 
-#: appModules/messengerWindow/messageListItem.py:571
+#: addon/appModules/messengerWindow/messageListItem.py:574
 msgid "Shows the quick filter bar from the message list."
 msgstr "Zobrazí panel rychlého filtru ze seznamu zpráv."
 
-#: appModules/messengerWindow/messageListItem.py:600
+#: addon/appModules/messengerWindow/messageListItem.py:603
 msgid "Reverses the read and unread status of the selected message"
 msgstr "Obrátí stav přečtené a nepřečtené vybrané zprávy"
 
-#: appModules/messengerWindow/messageListItem.py:965
-#: appModules/messengerWindow/tabAddressBook.py:474
-#: appModules/messengerWindow/tabAddressBook.py:475
-#: appModules/messengerWindow/tabAddressBook.py:479
+#: addon/appModules/messengerWindow/messageListItem.py:968
+#: addon/appModules/messengerWindow/tabAddressBook.py:474
+#: addon/appModules/messengerWindow/tabAddressBook.py:475
+#: addon/appModules/messengerWindow/tabAddressBook.py:479
 msgid " of "
 msgstr " z "
 
-#: appModules/messengerWindow/tabAddressBook.py:95
-#: appModules/messengerWindow/tabAddressBook.py:484
+#: addon/appModules/messengerWindow/tabAddressBook.py:95
+#: addon/appModules/messengerWindow/tabAddressBook.py:484
 msgid "Address book"
 msgstr "Adresář"
 
-#: appModules/messengerWindow/tabAddressBook.py:103
-#: appModules/messengerWindow/tabAddressBook.py:491
+#: addon/appModules/messengerWindow/tabAddressBook.py:103
+#: addon/appModules/messengerWindow/tabAddressBook.py:491
 msgid "Press Alt + down arrow to open the context menu."
 msgstr "Stisknutím Alt + šipky dolů otevřete kontextovou nabídku."
 
-#: appModules/messengerWindow/tabAddressBook.py:178
-#: appModules/messengerWindow/tabAddressBook.py:517
+#: addon/appModules/messengerWindow/tabAddressBook.py:178
+#: addon/appModules/messengerWindow/tabAddressBook.py:517
 msgid "Go to &address books and mailing lists tree"
 msgstr "Přejděte do &adresáře a stromu seznamů adresátů"
 
-#: appModules/messengerWindow/tabAddressBook.py:185
-#: appModules/messengerWindow/tabAddressBook.py:525
+#: addon/appModules/messengerWindow/tabAddressBook.py:185
+#: addon/appModules/messengerWindow/tabAddressBook.py:525
 msgid "Go to &contact table"
 msgstr "Vstupte do tabulky &kontaktů"
 
-#: appModules/messengerWindow/tabAddressBook.py:208
-#: appModules/messengerWindow/tabAddressBook.py:548
+#: addon/appModules/messengerWindow/tabAddressBook.py:208
+#: addon/appModules/messengerWindow/tabAddressBook.py:548
 msgid "Press Alt + down arrow to open the popup menu"
 msgstr "Stisknutím Alt + šipky dolů otevřete vyskakovací nabídku"
 
-#: appModules/messengerWindow/tabAddressBook.py:292
-#: appModules/messengerWindow/tabAddressBook.py:624
+#: addon/appModules/messengerWindow/tabAddressBook.py:292
+#: addon/appModules/messengerWindow/tabAddressBook.py:624
 msgid "Destinations from "
 msgstr "Cíl z"
 
-#: appModules/messengerWindow/tabAddressBook.py:324
-#: appModules/messengerWindow/tabAddressBook.py:424
-#: appModules/messengerWindow/tabAddressBook.py:656
-#: appModules/messengerWindow/tabAddressBook.py:756
+#: addon/appModules/messengerWindow/tabAddressBook.py:324
+#: addon/appModules/messengerWindow/tabAddressBook.py:424
+#: addon/appModules/messengerWindow/tabAddressBook.py:656
+#: addon/appModules/messengerWindow/tabAddressBook.py:756
 msgid "list in "
 msgstr "seznam v"
 
-#: appModules/messengerWindow/tabs.py:23
+#: addon/appModules/messengerWindow/tabs.py:23
 #, python-brace-format
 msgid "Tab {0} of {1} {2}"
 msgstr "Karta {0} z {1} {2}"
 
-#: appModules/messengerWindow/tabs.py:88
+#: addon/appModules/messengerWindow/tabs.py:88
 msgid "There is only one tab open."
 msgstr "Otevřená je pouze jedna karta."
 
-#: appModules/messengerWindow/tabs.py:119
+#: addon/appModules/messengerWindow/tabs.py:119
 #, python-brace-format
 msgid "Active tab {0} of {1} : {2}, "
 msgstr "Aktivní karta {0} z {1}: {2},"
 
-#: appModules/msgComposeWindow/menuCompose.py:50
+#: addon/appModules/msgComposeWindow/menuCompose.py:50
 msgid "lower than"
 msgstr "nižší než"
 
-#: appModules/msgComposeWindow/menuCompose.py:50
+#: addon/appModules/msgComposeWindow/menuCompose.py:50
 msgid "semicolon"
 msgstr "středník"
 
-#: appModules/msgComposeWindow/menuCompose.py:50
+#: addon/appModules/msgComposeWindow/menuCompose.py:50
 msgid "colon"
 msgstr "dvojtečka"
 
-#: appModules/msgComposeWindow/menuCompose.py:50
+#: addon/appModules/msgComposeWindow/menuCompose.py:50
 msgid "equal"
 msgstr "stejný "
 
-#: appModules/msgComposeWindow/menuCompose.py:52
+#: addon/appModules/msgComposeWindow/menuCompose.py:52
 msgid "Disabled"
 msgstr "Zakázáno"
 
-#: appModules/msgComposeWindow/menuCompose.py:52
+#: addon/appModules/msgComposeWindow/menuCompose.py:52
 msgid "Enabled"
 msgstr "Povoleno"
 
-#: appModules/msgComposeWindow/menuCompose.py:63
+#: addon/appModules/msgComposeWindow/menuCompose.py:63
 msgid "TB Mail Toolbar"
 msgstr "Panel nástrojů pošty TB"
 
-#: appModules/msgComposeWindow/menuCompose.py:64
+#: addon/appModules/msgComposeWindow/menuCompose.py:64
 msgid "Text formatting"
 msgstr "Formátování textu"
 
-#: appModules/msgComposeWindow/menuCompose.py:95
+#: addon/appModules/msgComposeWindow/menuCompose.py:95
 #, python-format
 msgid "%s unavailable"
 msgstr "%s nedostupné"
 
-#: appModules/msgComposeWindow/menuCompose.py:101
+#: addon/appModules/msgComposeWindow/menuCompose.py:101
 msgid " Activated, Déactivated"
 msgstr "Aktivováno, Deaktivováno"
 
-#: appModules/msgComposeWindow/menuCompose.py:122
+#: addon/appModules/msgComposeWindow/menuCompose.py:122
 msgid "Paragraph,&font"
 msgstr "Vzhled Odstavce,&"
 
-#: appModules/msgComposeWindow/msgComposeWindow.py:61
+#: addon/appModules/msgComposeWindow/msgComposeWindow.py:61
 msgid "void, From, To, Attachement, CC, BCC, Subject, Reply to"
 msgstr "neplatné, Od, Komu, Příloha, Kopie, Skrytá kopie, Předmět, Odpovědět"
 
-#: appModules/msgComposeWindow/msgComposeWindow.py:101
+#: addon/appModules/msgComposeWindow/msgComposeWindow.py:101
 msgid "No header."
 msgstr "Bez záhlaví."
 
-#: appModules/msgComposeWindow/msgComposeWindow.py:113
+#: addon/appModules/msgComposeWindow/msgComposeWindow.py:113
 #, python-brace-format
 msgid "The field {0} is missing, type this command twice quickly to show it."
 msgstr ""
 "Chybí pole {0}. Chcete-li jej zobrazit, zadejte tento příkaz dvakrát rychle."
 
-#: appModules/msgComposeWindow/msgComposeWindow.py:116
+#: addon/appModules/msgComposeWindow/msgComposeWindow.py:116
 msgid ""
 "You will find this field by pressing the button: Other addressing fields to "
 "show"
 msgstr ""
 "Toto pole najdete stisknutím tlačítka: Další pole adresování k zobrazení"
 
-#: appModules/msgComposeWindow/msgComposeWindow.py:137
+#: addon/appModules/msgComposeWindow/msgComposeWindow.py:137
 msgid ""
 "The attachments area is missing. Press Control+Shift+A to add attachements."
 msgstr ""
 "Chybí oblast příloh. Chcete-li přidat přílohy, stiskněte Control+Shift+A."
 
-#: appModules/msgComposeWindow/msgComposeWindow.py:219
+#: addon/appModules/msgComposeWindow/msgComposeWindow.py:219
 #, fuzzy
 #| msgid "To: "
 msgid "To"
 msgstr "Do: "
 
-#: appModules/msgComposeWindow/spellCheckDlg.py:144
+#: addon/appModules/msgComposeWindow/spellCheckDlg.py:144
 msgid "i"
 msgstr "i"
 
-#: appModules/msgComposeWindow/spellCheckDlg.py:145
+#: addon/appModules/msgComposeWindow/spellCheckDlg.py:145
 msgid "l"
 msgstr "l"
 
-#: appModules/msgComposeWindow/spellCheckDlg.py:146
+#: addon/appModules/msgComposeWindow/spellCheckDlg.py:146
 msgid "d"
 msgstr "d"
 
-#: appModules/msgComposeWindow/spellCheckDlg.py:147
+#: addon/appModules/msgComposeWindow/spellCheckDlg.py:147
 msgid "a"
 msgstr "A"
 
-#: appModules/msgComposeWindow/spellCheckDlg.py:148
+#: addon/appModules/msgComposeWindow/spellCheckDlg.py:148
 msgid "r"
 msgstr "r"
 
-#: appModules/msgComposeWindow/spellCheckDlg.py:194
+#: addon/appModules/msgComposeWindow/spellCheckDlg.py:194
 msgid ", copied to clipboard"
 msgstr ", zkopírováno do schránky"
 
-#: appModules/msgComposeWindow/spellCheckDlg.py:195
+#: addon/appModules/msgComposeWindow/spellCheckDlg.py:195
 msgid "Announce or spell the misspelled word and the suggested word."
 msgstr "Oznamte nebo vyhláskujte špatně napsané slovo a navrhované slovo."
 
-#: appModules/shared/checkListMenu.py:23
+#: addon/appModules/shared/checkListMenu.py:23
 msgid "List of choices"
 msgstr "Seznam možností"
 
-#: appModules/shared/checkListMenu.py:74
+#: addon/appModules/shared/checkListMenu.py:74
 msgid "The options below cannot be checked at the same time :\n"
 msgstr "Níže uvedené možnosti nelze zkontrolovat současně:\\n\n"
 
-#: appModules/shared/checkListMenu.py:77
+#: addon/appModules/shared/checkListMenu.py:77
 msgid "Press escape to return to the option list"
 msgstr "Stisknutím klávesy Escape se vrátíte do seznamu možností"
 
-#: appModules/shared/checkListMenu.py:78
+#: addon/appModules/shared/checkListMenu.py:78
 msgid "Error in two  options - Thunderbird+G5"
 msgstr "Chyba ve dvou možnostech - Thunderbird+G5"
 
-#: appModules/shared/menuSettings.py:68
+#: addon/appModules/shared/menuSettings.py:68
 msgid "custom vocalization of rows."
 msgstr "vlastní vokalizace řádků."
 
-#: appModules/shared/menuSettings.py:70
+#: addon/appModules/shared/menuSettings.py:70
 #, fuzzy
 #| msgid "Press Alt + down arrow to open the context menu."
 msgid "Message deletion: emulate the context menu."
 msgstr "Stisknutím Alt + šipky dolů otevřete kontextovou nabídku."
 
-#: appModules/shared/menuSettings.py:71
+#: addon/appModules/shared/menuSettings.py:71
 msgid "Do not say the window and folder names when entering the list."
 msgstr "Při vstupu do seznamu nevyslovujte názvy oken a složek."
 
-#: appModules/shared/menuSettings.py:71
+#: addon/appModules/shared/menuSettings.py:71
 msgid "Combine multiple 'RE' mentions into one"
 msgstr "Zkombinujte více zmínek „RE“ do jedné"
 
-#: appModules/shared/menuSettings.py:72
+#: addon/appModules/shared/menuSettings.py:72
 msgid "Delete the 'Re' mentions in the subject column"
 msgstr "Odstraňte zmínky „Znovu“ ve sloupci Předmět"
 
-#: appModules/shared/menuSettings.py:73
+#: addon/appModules/shared/menuSettings.py:73
 msgid "Delete the colons  in the 'Re:' mentions"
 msgstr "Odstraňte dvojtečky ve zmínkách „Re:“."
 
-#: appModules/shared/menuSettings.py:74
+#: addon/appModules/shared/menuSettings.py:74
 msgid "Delete digits and dots from the name of the correspondents"
 msgstr "Odstraňte číslice a tečky ze jmen korespondentů"
 
-#: appModules/shared/menuSettings.py:75
+#: addon/appModules/shared/menuSettings.py:75
 msgid "Hide mailing list names"
 msgstr "Skrýt názvy seznamů adresátů"
 
-#: appModules/shared/menuSettings.py:76
+#: addon/appModules/shared/menuSettings.py:76
 msgid "Announce 'junk' if displayed in the 'junk Status' column"
 msgstr ""
 "Vyslov 'SPAM' pokud je ve sloupci 'Druh zprávy' označena jako nevyžádaná."
 
-#: appModules/shared/menuSettings.py:80
+#: addon/appModules/shared/menuSettings.py:80
 msgid "Folder tree: escape does not bring focus to the message list"
 msgstr "Strom složek: escape nepřenese fokus do seznamu zpráv"
 
-#: appModules/shared/menuSettings.py:81
+#: addon/appModules/shared/menuSettings.py:81
 msgid "message list: escape does not bring focus to the folder tree"
 msgstr "seznam zpráv: escape nepřenese fokus do stromu složek"
 
-#: appModules/shared/menuSettings.py:82
+#: addon/appModules/shared/menuSettings.py:82
 msgid ""
 "Access the first unread message when first activating the first tab, "
 "otherwise the last message."
@@ -605,11 +607,11 @@ msgstr ""
 "Přístup k první nepřečtené zprávě při první aktivaci první karty, jinak k "
 "poslední zprávě."
 
-#: appModules/shared/menuSettings.py:83
+#: addon/appModules/shared/menuSettings.py:83
 msgid "Ignore acknowledgment requests"
 msgstr "Ignorovat požadavky na potvrzení"
 
-#: appModules/shared/menuSettings.py:84
+#: addon/appModules/shared/menuSettings.py:84
 msgid ""
 "Partially purify the message when reading it with Space or F4, otherwise "
 "purify it completely."
@@ -617,273 +619,275 @@ msgstr ""
 "Částečně vyčistěte zprávu při čtení pomocí mezerníku nebo F4, jinak ji "
 "vyčistěte úplně."
 
-#: appModules/shared/menuSettings.py:85
+#: addon/appModules/shared/menuSettings.py:85
 msgid "Always display the  cleaned messages when reading them with Space or F4"
 msgstr ""
 "Vždy zobrazte vyčištěné zprávy při jejich čtení pomocí mezerníku nebo F4"
 
-#: appModules/shared/menuSettings.py:86
+#: addon/appModules/shared/menuSettings.py:86
 msgid ""
 "Always display the translation of messages when reading them with Space or F4"
 msgstr "Vždy zobrazit překlad zpráv při jejich čtení pomocí mezerníku nebo F4"
 
-#: appModules/shared/menuSettings.py:90
+#: addon/appModules/shared/menuSettings.py:90
 msgid "Spell Check: Spell the misspelled word and the suggested word."
 msgstr "Kontrola pravopisu: Napiš chybně napsané slovo a navrhované slovo."
 
-#: appModules/shared/menuSettings.py:91
+#: addon/appModules/shared/menuSettings.py:91
 msgid "Spell Check: Cancel speech before announcing and spelling these words"
 msgstr ""
 "Kontrola pravopisu: přerušování řeči před oznámením a napsáním těchto slov"
 
-#: appModules/shared/menuSettings.py:93
+#: addon/appModules/shared/menuSettings.py:93
 msgid "The Esc key closes the message being written"
 msgstr "Klávesou Esc se zapisuje zpráva"
 
-#: appModules/shared/menuSettings.py:94
+#: addon/appModules/shared/menuSettings.py:94
 msgid ""
 "Single press on Shift+the key above the tab key to show the option menus, "
 "double press to write the corresponding printable character."
 msgstr "Výchozí (nedělat nic)"
 
-#: appModules/shared/menuSettings.py:99
-msgid "Display Braille messages persistently."
-msgstr "Trvale zobrazovat zprávy v Braillově písmu."
+#: addon/appModules/shared/menuSettings.py:99
+#, fuzzy
+#| msgid "Enables or disables  the translation mode of a message."
+msgid ""
+"Braille: display email previews or their translation as a scrollable message"
+msgstr "Povolí nebo zakáže režim překladu zprávy."
 
-#: appModules/shared/menuSettings.py:100
+#: addon/appModules/shared/menuSettings.py:100
+msgid "Braille: display other messages as scrollable messages"
+msgstr ""
+
+#: addon/appModules/shared/menuSettings.py:100
 msgid "Message list : deactivate  tag management   to improve responsiveness."
 msgstr "Seznam zpráv: deaktivujte správu značek, abyste zlepšili odezvu."
 
-#: appModules/shared/menuSettings.py:101
+#: addon/appModules/shared/menuSettings.py:101
 msgid "Message list : do not play sound when list is filtered and gets focus."
 msgstr "Seznam zpráv: nepřehrávat zvuk, když je seznam filtrován a je aktivní."
 
-#: appModules/shared/menuSettings.py:102
-msgid ""
-"Separate reading window: do not read the cleaned version of the message when "
-"the window is opened."
-msgstr ""
-"Samostatné okno pro čtení: při otevření okna nečíst vyčištěnou verzi zprávy."
-
-#: appModules/shared/menuSettings.py:103
+#: addon/appModules/shared/menuSettings.py:103
 msgid "Address book : disable additional features of Thunderbird+G5."
 msgstr "Adresář: deaktivuje další funkce Thunderbird+G5."
 
-#: appModules/shared/menuSettings.py:198
+#: addon/appModules/shared/menuSettings.py:199
 msgid "Words separated by semicolons :"
 msgstr "Slova oddělená středníkem:"
 
-#: appModules/shared/menuSettings.py:198
+#: addon/appModules/shared/menuSettings.py:199
 msgid "Edit words to hide in the subject of messages"
 msgstr "Úprava slov pro skrytí v předmětu zpráv"
 
-#: appModules/shared/menuSettings.py:201
+#: addon/appModules/shared/menuSettings.py:202
 msgid "Delay before document focusing, 20 to 2000 ms::"
 msgstr "Prodleva před zaostřením dokumentu, 20 až 2000 ms::"
 
-#: appModules/shared/menuSettings.py:201
+#: addon/appModules/shared/menuSettings.py:202
 msgid "Special tabs"
 msgstr "Speciální záložky"
 
-#: appModules/shared/menuSettings.py:205
+#: addon/appModules/shared/menuSettings.py:206
 msgid "Delay 1 space Delay 2 in ms:"
 msgstr "Zpoždění 1 zpoždění prostoru 2 v MS:"
 
-#: appModules/shared/menuSettings.py:205
+#: addon/appModules/shared/menuSettings.py:206
 msgid "Focusing delays after deleting a message"
 msgstr "Zaměření zpoždění po odstranění zprávy"
 
-#: appModules/shared/menuSettings.py:226
+#: addon/appModules/shared/menuSettings.py:227
 msgid "Backup file does not exist."
 msgstr "Záložní soubor neexistuje."
 
-#: appModules/shared/menuSettings.py:237
+#: addon/appModules/shared/menuSettings.py:238
 msgid "The configuration has been reset to its default values"
 msgstr "Konfigurace byla obnovena na výchozí hodnoty"
 
-#: appModules/shared/menuSettings.py:280
+#: addon/appModules/shared/menuSettings.py:281
 msgid "MessageList"
 msgstr "Seznam zpráv"
 
-#: appModules/shared/menuSettings.py:281
+#: addon/appModules/shared/menuSettings.py:282
 msgid "Edit words to hide in message subject"
 msgstr "Upravte slova, která se mají skrýt v předmětu zprávy"
 
-#: appModules/shared/menuSettings.py:282
+#: addon/appModules/shared/menuSettings.py:283
 msgid "Other Options"
 msgstr "Jiné možnosti"
 
-#: appModules/shared/menuSettings.py:283
+#: addon/appModules/shared/menuSettings.py:284
 msgid "Main window options"
 msgstr "Možnosti hlavního okna"
 
-#: appModules/shared/menuSettings.py:294 appModules/shared/menuSettings.py:364
+#: addon/appModules/shared/menuSettings.py:295
+#: addon/appModules/shared/menuSettings.py:365
 msgid "Write window options"
 msgstr "Možnosti okna pro zápis"
 
-#: appModules/shared/menuSettings.py:317 appModules/shared/menuSettings.py:386
+#: addon/appModules/shared/menuSettings.py:318
+#: addon/appModules/shared/menuSettings.py:387
 msgid "General"
 msgstr "Generál"
 
-#: appModules/shared/menuSettings.py:319
+#: addon/appModules/shared/menuSettings.py:320
 msgid "&Focus and Startup Options"
 msgstr "&Zaměření a možnosti spuštění"
 
-#: appModules/shared/menuSettings.py:320
+#: addon/appModules/shared/menuSettings.py:321
 msgid "Open sound folder..."
 msgstr "Otevřít složku se zvukem..."
 
-#: appModules/shared/menuSettings.py:321
+#: addon/appModules/shared/menuSettings.py:322
 msgid "Backup current configuration file"
 msgstr "Zálohování aktuálního konfiguračního souboru"
 
-#: appModules/shared/menuSettings.py:322
+#: addon/appModules/shared/menuSettings.py:323
 msgid "Restore backed up configuration file"
 msgstr "Obnovení zálohovaného konfiguračního souboru"
 
-#: appModules/shared/menuSettings.py:323
+#: addon/appModules/shared/menuSettings.py:324
 msgid "Reset configuration"
 msgstr "Obnovení konfigurace"
 
-#: appModules/shared/menuSettings.py:341
+#: addon/appModules/shared/menuSettings.py:342
 msgid "Message list options"
 msgstr "Možnosti seznamu zpráv"
 
-#: appModules/shared/menuSettings.py:351
+#: addon/appModules/shared/menuSettings.py:352
 msgid "Other  options"
 msgstr "Jiné možnosti"
 
-#: appModules/shared/menuSettings.py:393
+#: addon/appModules/shared/menuSettings.py:394
 msgid "Focus and Startup Options"
 msgstr "Možnosti zaměření a spuštění"
 
-#: appModules/shared/quoteNav.py:43
+#: addon/appModules/shared/quoteNav.py:42
 msgid "On|Le%date_sender%wrote|écrit"
 msgstr "Dne|on%date_sender%napsal|wrote"
 
-#: appModules/shared/quoteNav.py:77
+#: addon/appModules/shared/quoteNav.py:76
 msgid "Enabling message translation mode, ready."
 msgstr "Povolení režimu překladu zpráv, připraveno."
 
-#: appModules/shared/quoteNav.py:78
+#: addon/appModules/shared/quoteNav.py:77
 msgid "Disabling message translation mode, ready."
 msgstr "Zakázání režimu překladu zpráv, připraveno."
 
-#: appModules/shared/quoteNav.py:91
+#: addon/appModules/shared/quoteNav.py:90
 msgid "The Instant Translate add-on is not active or not installed."
 msgstr "Doplněk Okamžitý překlad není aktivní nebo není nainstalován."
 
-#: appModules/shared/quoteNav.py:97
+#: addon/appModules/shared/quoteNav.py:96
 msgid "Enabling message display mode, ready."
 msgstr "Povolení režimu zobrazení zpráv, připraveno."
 
-#: appModules/shared/quoteNav.py:98
+#: addon/appModules/shared/quoteNav.py:97
 msgid "Disabling message display mode, ready."
 msgstr "Deaktivace režimu zobrazení zpráv, připraveno."
 
-#: appModules/shared/quoteNav.py:187
+#: addon/appModules/shared/quoteNav.py:187
 msgid "Please wait"
 msgstr "Čekejte prosím"
 
-#: appModules/shared/quoteNav.py:250
+#: addon/appModules/shared/quoteNav.py:251
 #, python-brace-format
 msgid "{0} messages in chronological order, "
 msgstr "{0} zpráv v chronologickém pořadí,"
 
-#: appModules/shared/quoteNav.py:256
+#: addon/appModules/shared/quoteNav.py:257
 #, python-brace-format
 msgid "{0} messages, {1} lines, "
 msgstr "{0} zpráv, {1} řádků,"
 
-#: appModules/shared/quoteNav.py:285
+#: addon/appModules/shared/quoteNav.py:289
 msgid "Translation"
 msgstr "Překlad"
 
-#: appModules/shared/quoteNav.py:307
+#: addon/appModules/shared/quoteNav.py:312
 msgid "Preview copied: "
 msgstr "Náhled zkopírován:"
 
-#: appModules/shared/quoteNav.py:349
+#: addon/appModules/shared/quoteNav.py:363
 msgid "Original Message|E-mail d'origine|Message d'origine"
 msgstr "Původní zpráva"
 
-#: appModules/shared/quoteNav.py:375
+#: addon/appModules/shared/quoteNav.py:389
 msgid "You are receiving this message because you are subscribed to the group"
 msgstr "Tuto zprávu jste obdrželi, protože jste přihlášeni k odběru skupiny"
 
-#: appModules/shared/quoteNav.py:404
+#: addon/appModules/shared/quoteNav.py:418
 #, python-format
 msgid " link %s "
 msgstr " link %s "
 
-#: appModules/shared/quoteNav.py:480
+#: addon/appModules/shared/quoteNav.py:494
 msgid "From|De|Expéditeur"
 msgstr "Od|Od|Odesilatel"
 
-#: appModules/shared/quoteNav.py:505
+#: addon/appModules/shared/quoteNav.py:519
 msgid "wrote"
 msgstr "napsal"
 
-#: appModules/shared/startupDlg.py:22
+#: addon/appModules/shared/startupDlg.py:22
 msgid "Do not change focus"
 msgstr "Neměňte zaostření"
 
-#: appModules/shared/startupDlg.py:23
+#: addon/appModules/shared/startupDlg.py:23
 msgid "Apply options below"
 msgstr "Níže použijte možnosti"
 
-#: appModules/shared/startupDlg.py:24
+#: addon/appModules/shared/startupDlg.py:24
 #, fuzzy
 #| msgid "All folders view"
 msgid "Show All inboxes menu"
 msgstr "Zobrazení všech složek"
 
-#: appModules/shared/startupDlg.py:25
+#: addon/appModules/shared/startupDlg.py:25
 #, fuzzy
 #| msgid "unread folders view"
 msgid "Show all unread inboxes menu"
 msgstr "zobrazení nepřečtených složek"
 
-#: appModules/shared/startupDlg.py:26
+#: addon/appModules/shared/startupDlg.py:26
 #, fuzzy
 #| msgid "All folders view"
 msgid "Show All unread folders menu"
 msgstr "Zobrazení všech složek"
 
-#: appModules/shared/startupDlg.py:27
+#: addon/appModules/shared/startupDlg.py:27
 #, fuzzy
 #| msgid "All folders view"
 msgid "Show all folders menu"
 msgstr "Zobrazení všech složek"
 
-#: appModules/shared/startupDlg.py:28
+#: addon/appModules/shared/startupDlg.py:28
 #, fuzzy
 #| msgid "Thunderbird Startup Options"
 msgid "On Thunderbird startup"
 msgstr "Možnosti spuštění Thunderbirdu"
 
-#: appModules/shared/startupDlg.py:35
+#: addon/appModules/shared/startupDlg.py:35
 msgid "Default (do nothing)"
 msgstr "Výchozí (nedělat nic)"
 
-#: appModules/shared/startupDlg.py:36
+#: addon/appModules/shared/startupDlg.py:36
 msgid "Last message in message list"
 msgstr "Poslední zpráva v seznamu zpráv"
 
-#: appModules/shared/startupDlg.py:37
+#: addon/appModules/shared/startupDlg.py:37
 msgid "First message"
 msgstr "První zpráva"
 
-#: appModules/shared/startupDlg.py:38
+#: addon/appModules/shared/startupDlg.py:38
 msgid "First unread message"
 msgstr "První nepřečtená zpráva"
 
-#: appModules/shared/startupDlg.py:39
+#: addon/appModules/shared/startupDlg.py:39
 msgid "Folder tree"
 msgstr "Strom složek"
 
-#: appModules/shared/startupDlg.py:94
-#, fuzzy
+#: addon/appModules/shared/startupDlg.py:94
+#, fuzzy, python-brace-format
 #| msgid ""
 #| "With the {} key in the main window or Space in the folder tree, bring the "
 #| "&focus to:"
@@ -893,129 +897,132 @@ msgstr ""
 "Pomocí klávesy {} v hlavním okně nebo prostoru ve stromu složek přesuňte "
 "&fokus na:"
 
-#: appModules/shared/textDialog.py:40
+#: addon/appModules/shared/textDialog.py:40
 msgid "Informations"
 msgstr "Informace"
 
-#: appModules/shared/textDialog.py:73
+#: addon/appModules/shared/textDialog.py:73
 msgid "Co&py to Clipboard"
 msgstr "&Zkopírovat do schránky"
 
-#: appModules/shared/textDialog.py:78
+#: addon/appModules/shared/textDialog.py:78
 msgid "Close"
 msgstr "Zavřít"
 
-#: appModules/shared/textDialog.py:99 appModules/shared/utis.py:633
+#: addon/appModules/shared/textDialog.py:99 addon/appModules/shared/utis.py:633
 msgid "Copied"
 msgstr "Zkopírováno"
 
-#: appModules/shared/textDialog.py:106
+#: addon/appModules/shared/textDialog.py:106
 msgid "Error, the information cannot be copied to the clipboard"
 msgstr "Chyba, informace nelze zkopírovat do schránky"
 
-#: appModules/shared/utils115.py:820
+#: addon/appModules/shared/utils115.py:885
 msgid "Filtered : "
 msgstr "Filtrováno: "
 
-#: appModules/shared/utils115.py:839
+#: addon/appModules/shared/utils115.py:904
 msgid "Filter : "
 msgstr "Filtr: "
 
-#: appModules/shared/utils115.py:878
+#: addon/appModules/shared/utils115.py:943
 msgid "message list header is hiddend."
 msgstr "Záhlaví seznamu zpráv je skryto."
 
-#: appModules/shared/utils115.py:947 appModules/shared/utils115.py:1465
+#: addon/appModules/shared/utils115.py:1012
+#: addon/appModules/shared/utils115.py:1530
 msgid "The preview pane is not displayed. Press F8 and try again please"
 msgstr "Podokno náhledu se nezobrazuje. Stiskněte F8 a zkuste to znovu"
 
-#: appModules/shared/utils115.py:1167 appModules/thunderbird.py:1004
+#: addon/appModules/shared/utils115.py:1232
+#: addon/appModules/thunderbird.py:1004
 msgid "Press right arrow and retry, please."
 msgstr "Stiskněte šipku vpravo a zkuste to znovu, prosím."
 
-#: appModules/shared/utils115.py:1179 appModules/thunderbird.py:1177
+#: addon/appModules/shared/utils115.py:1244
+#: addon/appModules/thunderbird.py:1177
 msgid "The headers pane is not displayed. Please press F8 then try again"
 msgstr ""
 "Podokno záhlaví se nezobrazuje. Stiskněte prosím klávesu F8 a zkuste to znovu"
 
-#: appModules/shared/utils115.py:1187
+#: addon/appModules/shared/utils115.py:1252
 msgid "The headers are not available"
 msgstr "Záhlaví nejsou k dispozici"
 
-#: appModules/shared/utils115.py:1282
+#: addon/appModules/shared/utils115.py:1347
 msgid "void,From,Subject: ,Date,To,CC,BCC,Reply to"
 msgstr "neplatné,Od,Předmět: ,Datum,Komu,CC,BCC,Odpovědět"
 
-#: appModules/shared/utils115.py:1283
+#: addon/appModules/shared/utils115.py:1348
 #, python-brace-format
 msgid "The {0} header is missing from this message."
 msgstr "V této zprávě chybí záhlaví {0}."
 
-#: appModules/shared/utils115.py:1294
+#: addon/appModules/shared/utils115.py:1359
 msgid "Copy to clipboard"
 msgstr "Vložit do schránky"
 
-#: appModules/shared/utils115.py:1326
+#: addon/appModules/shared/utils115.py:1391
 msgid "No attachment."
 msgstr "Bez přílohy."
 
-#: appModules/shared/utils115.py:1358
+#: addon/appModules/shared/utils115.py:1423
 msgid "Two presses to reach the list."
 msgstr "Dvěma stisknutími se dostanete na seznam."
 
-#: appModules/shared/utis.py:534
+#: addon/appModules/shared/utis.py:534
 msgid "The status bar is not displayed."
 msgstr "Stavový řádek se nezobrazuje."
 
-#: appModules/shared/utis.py:657
+#: addon/appModules/shared/utis.py:657
 msgid "No Attachement."
 msgstr "Žádná příloha."
 
-#: appModules/shared/utis.py:721
+#: addon/appModules/shared/utis.py:721
 msgid "File not found"
 msgstr "Soubor nenalezen"
 
-#: appModules/thunderbird.py:758
+#: addon/appModules/thunderbird.py:758
 msgid "draft"
 msgstr "návrh"
 
-#: appModules/thunderbird.py:761
+#: addon/appModules/thunderbird.py:761
 msgid "bird thinks this message is Junk"
 msgstr "bird si myslí, že tato zpráva je Spam"
 
-#: appModules/thunderbird.py:765
+#: addon/appModules/thunderbird.py:765
 msgid "remote content"
 msgstr "vzdálený obsah"
 
-#: appModules/thunderbird.py:768
+#: addon/appModules/thunderbird.py:768
 msgid "notified when you"
 msgstr "upozornění na to, že jste"
 
-#: appModules/thunderbird.py:909
+#: addon/appModules/thunderbird.py:909
 msgid "Blank"
 msgstr "Prázdný"
 
-#: appModules/thunderbird.py:913
+#: addon/appModules/thunderbird.py:913
 msgid "Status line without data"
 msgstr "Stavový řádek bez dat"
 
-#: appModules/thunderbird.py:915
+#: addon/appModules/thunderbird.py:915
 msgid ""
 "Announces abbreviated status line and message filtering information if "
 "applicable"
 msgstr ""
 "oznamuje zkrácený stavový řádek a případné informace o filtrování zpráv."
 
-#: appModules/thunderbird.py:931
+#: addon/appModules/thunderbird.py:931
 msgid "Smart reply : replies to the sender or to the  group"
 msgstr "Inteligentní odpověď: Odpovědi na odesílatele nebo skupině"
 
-#: appModules/thunderbird.py:936
+#: addon/appModules/thunderbird.py:936
 msgid "Smart reply : with Shift,  replies to all or to the sender in a group"
 msgstr ""
 "Inteligentní odpověď: Se shiftem odpovídá všem nebo na odesílatele ve skupině"
 
-#: appModules/thunderbird.py:943
+#: addon/appModules/thunderbird.py:943
 #, fuzzy
 #| msgid ""
 #| "Shows the context menu of actions available in the various Thunderbird "
@@ -1024,15 +1031,15 @@ msgid "Tabs: Displays the context menu of the selected tab in the main window."
 msgstr ""
 "Zobrazí kontextovou nabídku akcí dostupných v různých oknech Thunderbirdu."
 
-#: appModules/thunderbird.py:950
+#: addon/appModules/thunderbird.py:950
 msgid "Tabs: Displays the open tabs menu in the main window."
 msgstr "Záložky: Zobrazí nabídku otevřených záložek v hlavním okně."
 
-#: appModules/thunderbird.py:960
+#: addon/appModules/thunderbird.py:960
 msgid "Sends Control+F4 to the current window."
 msgstr "Odešle Control+F4 do aktuálního okna."
 
-#: appModules/thunderbird.py:987
+#: addon/appModules/thunderbird.py:987
 msgid ""
 "In the main window, 1 press: Alt+1 to 8: reads the message header, Alt+9 "
 "announces the number of attachments, 2 presses: displays the header in an "
@@ -1045,7 +1052,7 @@ msgstr ""
 "dosáhne seznamu příloh, 3 stisky: dosáhne záhlaví v oblasti záhlaví. V okně "
 "pro zápis Alt1 až 4 čte záhlaví, 2 stisky dosáhne záhlaví."
 
-#: appModules/thunderbird.py:1055
+#: addon/appModules/thunderbird.py:1055
 msgid ""
 "Filtered reading of the document in the preview pane, reading tab, reading "
 "or Write window, from the list of messages or the document."
@@ -1053,43 +1060,43 @@ msgstr ""
 "Filtrované čtení dokumentu v podokně náhledu, kartě čtení, okně čtení nebo "
 "zápisu ze seznamu zpráv nebo dokumentu."
 
-#: appModules/thunderbird.py:1061
+#: addon/appModules/thunderbird.py:1061
 msgid "Enables or disables  the translation mode of a message."
 msgstr "Povolí nebo zakáže režim překladu zprávy."
 
-#: appModules/thunderbird.py:1067
+#: addon/appModules/thunderbird.py:1067
 msgid ""
 "Enables or disables the display of the cleaned or translated   message in a "
 "window."
 msgstr "Povolí nebo zakáže zobrazení vyčištěné nebo přeložené zprávy v okně."
 
-#: appModules/thunderbird.py:1074
+#: addon/appModules/thunderbird.py:1074
 msgid ""
 "Folders : displays the accounts menu then  the folders menu for the chosen "
 "account."
 msgstr "Složky: zobrazí nabídku účtů a poté nabídku složek pro vybraný účet."
 
-#: appModules/thunderbird.py:1080
+#: addon/appModules/thunderbird.py:1080
 msgid "Folders : displays the menu of all inbox folders"
 msgstr "Složky: Zobrazuje nabídku všech složek doručené pošty"
 
-#: appModules/thunderbird.py:1086
+#: addon/appModules/thunderbird.py:1086
 #, fuzzy
 #| msgid "Folders : displays the menu of all inbox folders"
 msgid "Folders :, displays the menu of all folders"
 msgstr "Složky: Zobrazuje nabídku všech složek doručené pošty"
 
-#: appModules/thunderbird.py:1092
+#: addon/appModules/thunderbird.py:1092
 #, fuzzy
 #| msgid "Folders : displays the menu of all inbox folders"
 msgid "Folders :, displays the menu of all unread folders"
 msgstr "Složky: Zobrazuje nabídku všech složek doručené pošty"
 
-#: appModules/thunderbird.py:1099
+#: addon/appModules/thunderbird.py:1099
 msgid "Folders : displays the menu of unread inbox folders"
 msgstr "Složky: Zobrazuje nabídku nepřečtených složek doručené pošty"
 
-#: appModules/thunderbird.py:1107
+#: addon/appModules/thunderbird.py:1107
 msgid ""
 "Folders : displays the accounts menu then the unread folders menu for the "
 "chosen account."
@@ -1097,7 +1104,7 @@ msgstr ""
 "Složky: zobrazí nabídku účtů a poté nabídku nepřečtených složek pro vybraný "
 "účet."
 
-#: appModules/thunderbird.py:1120
+#: addon/appModules/thunderbird.py:1120
 msgid ""
 "Focus : 1 press select the current folder in the folder tree, 2 presesses "
 "display a menu  allowings to choose an mail account to reach in the folder "
@@ -1107,36 +1114,36 @@ msgstr ""
 "stisknutím zobrazíte nabídku umožňující vybrat poštovní účet, do kterého se "
 "chcete dostat ve stromu složek"
 
-#: appModules/thunderbird.py:1160
+#: addon/appModules/thunderbird.py:1160
 msgid ""
 "Focus : selects a message in the message list from anywhere in the main "
 "window."
 msgstr "Focus : vybere zprávu ze seznamu zpráv odkudkoli v hlavním okně."
 
-#: appModules/thunderbird.py:1194
+#: addon/appModules/thunderbird.py:1194
 msgid "Attachments : announces or displays the attachment pane."
 msgstr "Přílohy: oznamuje nebo zobrazuje selhání přílohy."
 
-#: appModules/thunderbird.py:1202
+#: addon/appModules/thunderbird.py:1202
 msgid "Press alt+upArrow before navigating through quotes in a message."
 msgstr "Před procházením uvozovek ve zprávě stiskněte alt+šipku nahoru."
 
-#: appModules/thunderbird.py:1211
+#: addon/appModules/thunderbird.py:1211
 msgid "Navigates through quotes in a message"
 msgstr "Prochází uvozovkami ve zprávě"
 
-#: appModules/thunderbird.py:1227
+#: addon/appModules/thunderbird.py:1227
 msgid ""
 "Shows the context menu of actions available in the various Thunderbird "
 "windows."
 msgstr ""
 "Zobrazí kontextovou nabídku akcí dostupných v různých oknech Thunderbirdu."
 
-#: appModules/thunderbird.py:1247
+#: addon/appModules/thunderbird.py:1247
 msgid "Shows the Options context menu of Thunderbird+"
 msgstr "Zobrazí kontextovou nabídku Možnosti aplikace Thunderbird+"
 
-#: appModules/thunderbird.py:1255
+#: addon/appModules/thunderbird.py:1255
 msgid ""
 "Shows the dialog for editing the delay before reading the message of the "
 "separate reading window."
@@ -1144,7 +1151,7 @@ msgstr ""
 "Zobrazí dialogové okno pro úpravu prodlevy před přečtením zprávy "
 "samostatného okna pro čtení."
 
-#: appModules/thunderbird.py:1263
+#: addon/appModules/thunderbird.py:1263
 #, fuzzy
 #| msgid ""
 #| "Shows the dialog for editing the delay before reading the message of the "
@@ -1156,64 +1163,47 @@ msgstr ""
 "Zobrazí dialogové okno pro úpravu prodlevy před přečtením zprávy "
 "samostatného okna pro čtení."
 
-#: appModules/thunderbird.py:1273
+#: addon/appModules/thunderbird.py:1273
 msgid "Present: Headers and message pane."
 msgstr "Přítomni: Záhlaví a panel zpráv."
 
-#: appModules/thunderbird.py:1275
+#: addon/appModules/thunderbird.py:1275
 msgid "Missing : headers and message pane."
 msgstr "Chybí : záhlaví a podokno zpráv."
 
-#: appModules/thunderbird.py:1276
+#: addon/appModules/thunderbird.py:1276
 msgid "Turn on or off the preview messages panel"
 msgstr "Zapnutí nebo vypnutí panelu náhledu zpráv"
 
-#: appModules/thunderbird.py:1281
+#: addon/appModules/thunderbird.py:1281
 msgid "Shows the add-on help in a web page"
 msgstr "Zobrazí nápovědu doplňku na webové stránce"
 
-#: appModules/thunderbird.py:1506
+#: addon/appModules/thunderbird.py:1508
 msgid "No messages displayed"
 msgstr "Nejsou zobrazeny žádné zprávy"
 
-#: appModules/thunderbird.py:1510
+#: addon/appModules/thunderbird.py:1512
 msgid "Filter removed"
 msgstr "Filtr odstraněn"
 
-#: buildVars.py:27
-msgid ""
-"This add-on significantly increases the efficiency and comfort of using "
-"Thunderbird with NVDA.\n"
-"For more information, visit :\n"
-"https://www.rptools.org/NVDA-Thunderbird/get.php?pg=manual&v=g5&lang=en"
-msgstr ""
-"Tento doplněk výrazně zvyšuje efektivitu a komfort používání Thunderbirdu  s "
-"NVDA.\\n\n"
-"Další informace naleznete na adrese:\n"
-"\n"
-"https://www.rptools.org/NVDA-Thunderbird/get.php?pg=manual&v=G5&lang=cs"
-
-#: buildVars.py:27
-msgid "For old releases, visit:"
-msgstr "Pro stará vydání navštivte:"
-
-#: globalPlugins/ThunderbirdGlob.py:133
+#: addon/globalPlugins/ThunderbirdGlob.py:133
 msgid "Thunderbird.exe not found in C:\\Program files"
 msgstr "Thunderbird.exe nebyl nalezen v C:\\Program files"
 
-#: globalPlugins/ThunderbirdGlob.py:138
+#: addon/globalPlugins/ThunderbirdGlob.py:138
 msgid "Starts Thunderbird"
 msgstr "Spouští Thunderbird"
 
-#: globalPlugins/ThunderbirdGlob.py:267
+#: addon/globalPlugins/ThunderbirdGlob.py:267
 msgid "Enable automatic update"
 msgstr "Povolit automatickou aktualizaci"
 
-#: globalPlugins/ThunderbirdGlob.py:268
+#: addon/globalPlugins/ThunderbirdGlob.py:268
 msgid "Disable automatic update"
 msgstr "Zakázat automatickou aktualizaci"
 
-#: globalPlugins/ThunderbirdGlob.py:276
+#: addon/globalPlugins/ThunderbirdGlob.py:276
 msgid ""
 "Automatic update has been enabled. You can restart NVDA to check for an "
 "update."
@@ -1221,19 +1211,19 @@ msgstr ""
 "Automatická aktualizace byla povolena. Můžete restartovat NVDA a "
 "zkontrolovat aktualizaci."
 
-#: globalPlugins/ThunderbirdGlob.py:286
+#: addon/globalPlugins/ThunderbirdGlob.py:286
 msgid "Error saving update settings file."
 msgstr "Chyba při ukládání souboru s nastavením aktualizace."
 
-#: globalPlugins/ThunderbirdGlob.py:287
+#: addon/globalPlugins/ThunderbirdGlob.py:287
 msgid "Automatic update has been disabled."
 msgstr "Automatická aktualizace byla zakázána."
 
-#: globalPlugins/shared/notif.py:123
+#: addon/globalPlugins/shared/notif.py:123
 msgid "Error saving of :\n"
 msgstr "Chybné uložení :\n"
 
-#: installTasks.py:35
+#: addon/installTasks.py:35
 msgid ""
 "Mozilla Apps Enhancements has been detected on your NVDA installation. In "
 "order for thunderbirdPlus to work without conflicts, the thunderbird module "
@@ -1247,15 +1237,15 @@ msgstr ""
 "Chcete tak učinit nyní a nainstalovat ThunderbirdPlus?\n"
 "Pokud odpovíte Ne, instalace bude zrušena."
 
-#: installTasks.py:37
+#: addon/installTasks.py:37
 msgid "Running Mozilla Apps Enhancements detected"
 msgstr "Bylo zjištěno spuštění MozillaAppsEnhancements"
 
-#: installTasks.py:44 installTasks.py:188
+#: addon/installTasks.py:44 addon/installTasks.py:189
 msgid "Installation cancelled"
 msgstr "Instalace zrušena"
 
-#: installTasks.py:180
+#: addon/installTasks.py:181
 msgid ""
 "Please first close all Thunderbird's windows then press the yes button to "
 "continue the installation of Thunderbird+G5."
@@ -1263,11 +1253,36 @@ msgstr ""
 "Nejprve zavřete všechna okna Thunderbird a poté stiskněte tlačítko ANO a "
 "pokračujte v instalaci Thunderbird+G5."
 
-#: installTasks.py:182
+#: addon/installTasks.py:183
 #, fuzzy
 #| msgid "Starting Thunderbird."
 msgid "Running Thunderbird  detected"
 msgstr "Spuštění Thunderbirdu."
+
+#: buildVars.py:20
+msgid "Visit the full changelog"
+msgstr ""
+
+#: buildVars.py:33
+msgid ""
+"This add-on significantly increases the efficiency and comfort of using "
+"Thunderbird with NVDA."
+msgstr ""
+"Tento doplněk výrazně zvyšuje efektivitu a komfort používání Thunderbirdu  s "
+"NVDA."
+
+#~ msgid "Display Braille messages persistently."
+#~ msgstr "Trvale zobrazovat zprávy v Braillově písmu."
+
+#~ msgid ""
+#~ "Separate reading window: do not read the cleaned version of the message "
+#~ "when the window is opened."
+#~ msgstr ""
+#~ "Samostatné okno pro čtení: při otevření okna nečíst vyčištěnou verzi "
+#~ "zprávy."
+
+#~ msgid "For old releases, visit:"
+#~ msgstr "Pro stará vydání navštivte:"
 
 #~ msgid "The reading status has been changed."
 #~ msgstr "Stav čtení byl změněn."

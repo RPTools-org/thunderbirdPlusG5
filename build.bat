@@ -11,4 +11,5 @@ call scons -s
 move *.nvda-addon ..
 echo cleaning
 call scons -c
+cd ..
 set /p r=Press enter to close
