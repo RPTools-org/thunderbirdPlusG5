@@ -275,7 +275,7 @@ def setFocusTo(frame, propertyPage, curTab) :
 			callLater(500, message, str(oCurTab.name))
 	elif curTab == "sp:addonsearch" :
 		obj = findControl(propertyPage, controlTypes.Role.SECTION, "pjax-results", getNextLink=True, removeURL=True)
-		sharedVars.log(obj, "obj after findControl")
+		# sharedVars.log(obj, "obj after findControl")
 		if obj :
 			obj.value = ""
 			if obj.firstChild :

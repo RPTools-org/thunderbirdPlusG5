@@ -71,33 +71,56 @@ class MsgComposeWindow():
 		obj = utis.findChildByID(obj, "MsgHeadersToolbar") 
 		self.headersToolbar = obj
 		return
-
+		
+	def getAllCorresp(self, obj, label) :
+		# obj is a textframe
+		corresp = label
+		while obj and  obj.role == controlTypes.Role.TEXTFRAME :
+			corresp += obj.name if obj.childCount == 0 else obj.firstChild.name + ", "
+			obj = obj.next
+		return corresp
+		
 	def getMsgHeader(self, oToolbar, idx, noText) :
+		debug = False
+		# oToolbar must have ID : MsgHeadersToolbar
 		findID = self.labelsID[idx]
-		sharedVars.debugLog = ""
+		if debug : 
+			sharedVars.debugLog = "msgCompose getMsgHeader\n"
+			sharedVars.log(oToolbar, "oToolbar")
 		lbl = ""
 		o = oToolbar.firstChild 
-		# sharedVars.log(o, "toolbar firstChild, ID a trouver : " + findID) 
+		if debug : sharedVars.log(o, "toolbar firstChild, ID a trouver : " + findID) 
 		while o :
+			if debug : sharedVars.log(o, "toolbar child in loop")
 			if o.role == controlTypes.Role.LABEL :
 				if str(utis.getIA2Attribute(o)) == findID :
-					# sharedVars.log(o, "Label") 
+					if debug : sharedVars.log(o, "Label found") 
 					lbl = o.name + " : "
 					oFocus = o
 					o = o.next
-					if not o : return None, "no obj"
+					if not o : 
+						if debug : sharedVars.logte("return None no next  obj")
+						return None, "no next  obj"
 					if o.role in (controlTypes.Role.EDITABLETEXT, controlTypes.Role.COMBOBOX) :
-						return o, lbl + (" vide"if not o.value else o.value)
+						if debug : sharedVars.log(o, "returned obj " + lbl)  
+						# Translators : blank is already translated in NVDA
+						val = _("blank") if not o.value else o.value
+						return o, lbl + val
+					elif o.role == controlTypes.Role.TEXTFRAME :
+						if debug : sharedVars.log(o.parent, "returned o.parent " + lbl) 
+						return o, self.getAllCorresp(o, lbl)
 					elif o.role in (controlTypes.Role.UNKNOWN, controlTypes.Role.PANE) :  # TB115, TB128
+						if debug : sharedVars.log(o, "TB 115 and 128 case")
 						oFocus = o
 						loopRole = o.role
 						val = ""
 						while o and o.role == loopRole :
-							# sharedVars.log(o, "objet inconnu") 
+							if debug : sharedVars.log(o, "objet inconnu") 
 							val +=  o.name.split(">")[0] + ">, "
 							o = o.next
 						return oFocus, lbl + val
 			o = o.next # caution : 3 tabs 
+		if debug : sharedVars.logte("getMsgHeader end, return none, no header")
 		return None, _("No header.")
 
 	def readField(self, mainKeyName, repeats) :
@@ -196,24 +219,32 @@ def getComposeHeader(o, key, repeats=0) :
 	oCompose.update()
 	oCompose.readField(key, repeats)
 
-def announceFildTo(fg) :
+
+def sayAllRecipients(fg=None) :
 	# IA2ID = composeContentBox in , Role.SECTION
-	if fg : o = utils.getChildByRoleIDName(fg, controlTypes.Role.SECTION, ID="composeContentBox", name="", idx=12)
+	if not fg : 
+		fg = api.getForegroundObject()
+	o = utils.getChildByRoleIDName(fg, controlTypes.Role.SECTION, ID="composeContentBox", name="", idx=10)
 	# IA2ID = MsgHeadersToolbar in , Role.TOOLBAR
 	if o : o = utils.getChildByRoleIDName(o, controlTypes.Role.TOOLBAR, ID="MsgHeadersToolbar", name="", idx=0)
-	# Translators: Jean-François C <jfcolas2a@gmail.com>, 1 sur 2 : appuyez sur Entrée pour modifier, ou Supprimer pour retirer.
-	try : o = o.firstChild
-	except : return
-	names = ""
+	if o and not utils.hasID(o, "MsgHeadersToolbar") :
+		beep(100, 30)
+		return
+	# sharedVars.log(o, "AnnouncefildTo,  toolbar")
+	o = o.firstChild
+	recipients = ""
 	while o :
-		if o.role == controlTypes.Role.PANE :
-			nm = o.name
-			if ">" in nm :
-				pos = nm.rfind(">")
-				nm = nm[0:pos+1]
-			else :
-				pos = nm.find(" ")
-				nm = nm[0:pos+1]
-			names += nm + ", "
+		role = o.role
+		if  role == controlTypes.Role.LABEL :
+			ID = str(utils.getIA2Attr(o))
+			if ID in ("toAddrLabel", "ccAddrLabel", "bccAddrLabel") : recipients += o.name + ": "
+		elif role == controlTypes.Role.TEXTFRAME :
+			name = o.name if o.childCount == 0 else o.firstChild.name
+			if name :
+				if "groups" in name or "list" in name :
+					recipients += name + ", "
+				else :
+					recipients  += name.split("<")[0] + ", "
+		# sharedVars.log(o, "toolbar child")
 		o = o.next
-	message(_("To") + " " + names)
+	message(recipients)

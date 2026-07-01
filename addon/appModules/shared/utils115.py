@@ -1648,6 +1648,8 @@ def smartReplyV3(shift, repeats=0) :
 		gest = "control+shift+r"
 	else :
 		gest = "control+r"
+	#  message("SmartReply gest=" + gest)
+	# avoid double announcement  of the write windows title
 	setSpeechMode(SpeechMode.off)
 	return KeyboardInputGesture.fromName(gest).send()
 	

@@ -480,12 +480,12 @@ class MessageListItem(IAccessible):
 	# def focusNewRow(self) :
 		# if self.unifiedNextRow : # if  sharedVars.delContextMenu :
 			# KeyboardInputGesture.fromName("control+space").send()
-			# speech.setSpeechMode(speech.SpeechMode.talk)
+			# speech.setSpeechMode(globalVars.TBDefaultSpeechMode)
 			# sharedVars.rowAfterDelete = None
 			# CallLater(50, KeyboardInputGesture.fromName("control+space").send)
 			# return
 
-		# speech.setSpeechMode(speech.SpeechMode.talk)
+		# speech.setSpeechMode(globalVars.TBDefaultSpeechMode)
 		# if not sharedVars.rowAfterDelete : 
 			# msg = _("No message selected, press Escape or Shift+Tab")
 		# else :
@@ -659,8 +659,8 @@ class MessageListItem(IAccessible):
 		if  colIndex == -1 :
 			return gesture.send()
 		n =getThreadMsgCount(self, colIndex)
-		sharedVars.logInit("* go first grouped ")
-		sharedVars.logte("returned by getThreadMsgCount ={}".format(n))
+		# sharedVars.logInit("* go first grouped ")
+		# sharedVars.logte("returned by getThreadMsgCount ={}".format(n))
 		if n == 1 : return gesture.send()
 		if  n > 1 and controlTypes.State.COLLAPSED in self.states :
 			KeyboardInputGesture.fromName("rightArrow").send()
@@ -813,14 +813,15 @@ class GetDescObject() :
 			if obj.childCount > 0 :
 				self.run(obj)
 			obj = obj.next
-def closeMenu(startTime) :
-	# if time() - startTime > 2.0 : return beep(100, 40)
-	# if  api.getFocusObject() .role != controlTypes.Role.MENUITEM :
-		# beep(120, 10)
-		# return CallLater(100, closeMenu, startTime)
-	if sharedVars.debug : beep(440, 40)
-	KeyboardInputGesture.fromName("tab").send()
-	speech.setSpeechMode(speech.SpeechMode.talk)
+
+# def closeMenu(startTime) :
+	# # if time() - startTime > 2.0 : return beep(100, 40)
+	# # if  api.getFocusObject() .role != controlTypes.Role.MENUITEM :
+		# # beep(120, 10)
+		# # return CallLater(100, closeMenu, startTime)
+	# if sharedVars.debug : beep(440, 40)
+	# KeyboardInputGesture.fromName("tab").send()
+	# speech.setSpeechMode(globalVars.TBDefaultSpeechMode)
 # def reportFocusedLine() :
 	# #speech.cancelSpeech()
 	# fo = api.getFocusObject()
@@ -884,7 +885,7 @@ def nextRow(oRow) :
 	# CallLater(50, sayNewRow, name) 
 	
 def sayNewRow(msg, later) :
-	speech.setSpeechMode(speech.SpeechMode.talk)
+	speech.setSpeechMode(globalVars.TBDefaultSpeechMode)
 	if msg :
 		if later : CallLater(200, message, msg)
 		else : message(msg)
@@ -899,7 +900,7 @@ def sayNewRow(msg, later) :
 		# if nextRow.role == controlTypes.Role.UNKNOWN :
 			# KeyboardInputGesture.fromName("downArrow").send()
 			# sleep(delay2)
-			# speech.setSpeechMode(speech.SpeechMode.talk)
+			# speech.setSpeechMode(globalVars.TBDefaultSpeechMode)
 
 			# KeyboardInputGesture.fromName("upArrow").send()
 	# if not nextRow and prevRow :
@@ -908,14 +909,14 @@ def sayNewRow(msg, later) :
 		# if prevRow.role == controlTypes.Role.UNKNOWN :
 			# KeyboardInputGesture.fromName("upArrow").send()
 			# sleep(delay2)
-			# speech.setSpeechMode(speech.SpeechMode.talk)
+			# speech.setSpeechMode(globalVars.TBDefaultSpeechMode)
 			# KeyboardInputGesture.fromName("downArrow").send()
 	# elif nextRow :
 		# sharedVars.log(nextRow, "NextRow")
 		# if nextRow.role == controlTypes.Role.UNKNOWN :
 			# KeyboardInputGesture.fromName("upArrow").send()
 			# sleep(delay2)
-			# speech.setSpeechMode(speech.SpeechMode.talk)
+			# speech.setSpeechMode(globalVars.TBDefaultSpeechMode)
 			# KeyboardInputGesture.fromName("downArrow").send()
 		# name = nextRow.name
 	# elif prevRow :
@@ -923,11 +924,11 @@ def sayNewRow(msg, later) :
 		# if prevRow.role == controlTypes.Role.UNKNOWN :
 			# KeyboardInputGesture.fromName("upArrow").send()
 			# sleep(delay2)
-			# speech.setSpeechMode(speech.SpeechMode.talk)
+			# speech.setSpeechMode(globalVars.TBDefaultSpeechMode)
 			# KeyboardInputGesture.fromName("downArrow").send()
 		# name = prevRow.name
 	# # sayNewRow(name, later=False)
-	# speech.setSpeechMode(speech.SpeechMode.talk)d
+	# speech.setSpeechMode(globalVars.TBDefaultSpeechMode)
 
 def saySmartNewRow128(nextRow, prevRow) :
 	delay1 = sharedVars.deleteDelays[0] /1000 
@@ -946,7 +947,7 @@ def saySmartNewRow128(nextRow, prevRow) :
 		KeyboardInputGesture.fromName("upArrow").send()
 		sleep(delay2)
 		KeyboardInputGesture.fromName("downArrow").send()
-	speech.setSpeechMode(speech.SpeechMode.talk)
+	speech.setSpeechMode(globalVars.TBDefaultSpeechMode)
 	message(name)
 
 
@@ -972,7 +973,7 @@ def saySmartNewRow138(nextRow, prevRow) :
 			KeyboardInputGesture.fromName("upArrow").send()
 			sleep(delay2)
 			KeyboardInputGesture.fromName("downArrow").send()
-	speech.setSpeechMode(speech.SpeechMode.talk)
+	speech.setSpeechMode(globalVars.TBDefaultSpeechMode)
 
 
 def getPositionString(oRow, add) :

@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 # globalPlugins/ThunderbirdGlob.py
+# 2026.05.23 :  cleaned version of this file. The notification feature is in previous versions.
 # Thunderbird+G5
 
 import controlTypes
 import globalPluginHandler
 import addonHandler
-from scriptHandler import getLastScriptRepeatCount
+from scriptHandler import script, getLastScriptRepeatCount
 
 ADDON_NAME = addonHandler.getCodeAddon().manifest["name"]
 ADDON_SUMMARY = addonHandler.getCodeAddon().manifest["summary"]
@@ -13,15 +14,15 @@ ADDON_VERSION = addonHandler.getCodeAddon().manifest["version"]
 import api
 import ui
 import speech
-import wx
-# from .shared import notif
+# import wx
 from .shared import winUtils
-from .shared import utilGlob  as ut
+# from .shared import utilGlob  as ut
 from time import time, sleep
 import winUser
 from winUser import getKeyNameText, setCursorPos 
 from tones import beep
 import globalVars
+import globalCommands
 import os, sys
 addonHandler.initTranslation()
 
@@ -43,42 +44,20 @@ def gestureFromScanCode(sc, prefix) :
 class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	scriptCategory = ADDON_SUMMARY
 
-	focusNothing = False
-	timer = None
-	timerStartedAt = 0
+	# timer = None
+	# timerStartedAt = 0
 
 	def __init__(self, *args, **kwargs):
 		super (GlobalPlugin, self).__init__(*args, **kwargs)
+		globalVars.TBDefaultSpeechMode =  speech.getState().speechMode
 		hTaskBar = ctypes.windll.user32.FindWindowExA(None, None, b"Shell_TrayWnd", None)
 		if not hTaskBar or  globalVars.appArgs.launcher : 
 			return
-		# if notif.	checkNotif() :
-			# beep(440, 30)
-			# wx.CallLater(200, notif.showNotif)
-		# # else :
-			# # wx.CallLater(3000, updateLite.checkUpdate, True) # auto
-		scriptDir  = os.path.dirname(os.path.abspath(__file__))
-		iniFile =  scriptDir + f"\showChangelog.ini"
-		if os.path.exists(iniFile) :
-			wx.CallLater(5000, showChangelog) 
-			try:
-				os.remove(iniFile)
-			except FileNotFoundError:
-				ui.message("The followingficherd could not be deleted because not found:\n" + iniFile)
-
-	def RestoreSpeechAndSay(msg, focusName=False) :
-		if focusName :
-			o = api.getFocusObject()
-			msg = str(o.name) + ", " + o.role.displayString + ", " + msg 
-		if self.prevSpeechMode :
-			speech.setSpeechMode(self.TprevSpeechMode)
-			self.prevSpeechMode = None
-		ui.message(msg)
 		
-	def initTimer(self):
-		if self.timer is not None:
-			self.timer.Stop()
-			self.timer = None
+	# def initTimer(self):
+		# if self.timer is not None:
+			# self.timer.Stop()
+			# self.timer = None
 
 
 	def event_foreground(self, obj, nextHandler) :
@@ -99,19 +78,20 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		nextHandler()
 	
 
-	# def notifyAppmodule(self):
-		# obj=api.getForegroundObject()
-		# globalVars.TBExited=True
-		# ui.message("fglobalVars.TBExited" + str(globalVars.TBExited))
-		# appMod =  obj.appModule
-		# if appMod and hasattr(appMod, "TBExited") :
-			# # beep(200, 20)
-			# appMod.TBExited() 
-			# return True
-		# return  False
-		# if time() - self.timerStartedAt < 30.0 : # secondes
-			# self.timer.Start()
-			
+	@script(
+		gesture="kb:nvda+s",
+		description=_("Toggles NVDA speech modes and notifies Thunderbird+G5"),
+		category = "thunderbirdPlusG51, do not change"
+	)
+	def script_toggleSpeechMode(self, gesture) :
+		globalCommands.commands.script_speechMode(gesture)
+		globalVars.TBDefaultSpeechMode =  speech.getState().speechMode
+
+	@script(
+		gesture=gestureFromScanCode(41, "kb:control+alt+"),
+		description=_("Starts Thunderbird"),
+		category=ADDON_SUMMARY
+	)
 	def script_startTB(self, gesture) :
 		forced = False if getLastScriptRepeatCount() == 0 else True
 		if not forced :
@@ -135,35 +115,8 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		startProgramMaximized(tbPaths[idx])
 		# wx.CallLater(300, setTBOnTop)
 		return
-	script_startTB.__doc__ = _("Starts Thunderbird")
-	script_startTB.category= ADDON_SUMMARY
 
-	# def  script_searchUpdate(self, gesture) :
-		# self.updateMenu = wx.Menu()
-		# # self.updateMenu.Append(0, _("Check for an update"))
-		# # self.updateMenu.Append(1, getUpdateLabel())
-		# lbl =  _("Install version {}")
-		# lbl = lbl.format(updateLite.getLatestVersion())
-		# self.updateMenu.Append(2, lbl)
-		# self.updateMenu.Bind (wx.EVT_MENU,self.onMenu)
-		# wx.CallLater(20, ui.message, ADDON_NAME +" " + ADDON_VERSION)
-		# showNVDAMenu  (self.updateMenu)
 
-	# def onMenu(self, evt):
-		# if evt.Id == 0 :
-			# # wx.CallLater(20, updateLite.checkUpdate, False)
-			# updateLite.checkUpdate(False)
-		# elif evt.Id == 1 :
-			# toggleUpdateState()
-		# elif evt.Id == 2 :
-			# wx.CallLater(20, updateLite.forceUpdate)
-	# script_searchUpdate.__doc__ = _("Update : shows an update menu")
-	# script_searchUpdate.category=ADDON_SUMMARY
-
-	__gestures={
-		gestureFromScanCode(41, "kb:control+alt+"): "startTB",
-		# gestureFromScanCode(41, "kb:control+alt+shift+"): "searchUpdate",
-	}
 	
 def startProgramMaximized(exePath):
 	import subprocess
@@ -191,29 +144,6 @@ def focusTaskButton():
 	oAttribs = AccessibleObjectFromWindow(hButton, winUser.OBJID_WINDOW) # winUser.OBJID_WINDOW ou   winUser.OBJID_CLIENT) = -4
 	oAttribs.accSelect(1) # set focus
 	return True
-
-# new speechMode functions by Paulber19 for NVDA 2021.1+ ander previous 
-def getSpeechMode():
-	try:
-		# for nvda version >= 2021.1
-		return speech.getState().speechMode
-	except AttributeError:
-		return speech.speechMode
-
-def setSpeechMode(mode):
-	try:
-		# for nvda version >= 2021.1
-		speech.setSpeechMode(mode)
-	except AttributeError:
-		speech.speechMode = mode
-
-def setSpeechMode_off():
-	#print(u"Fonction setSpeechMode_off")
-	try:
-		# for nvda version >= 2021.1
-		speech.setSpeechMode(speech.SpeechMode.off)
-	except AttributeError:
-		speech.speechMode = speech.speechMode_off
 
 
 # class processEntry32W(ctypes.Structure):
@@ -248,52 +178,14 @@ def getPidByName(process_name):
 			pass
 	return pids
 
-def showNVDAMenu (menu):
-	setCursorPos(100,100)
-	sleep(0.03)
-	wx.CallAfter (displayMenu,menu)
-from gui import mainFrame  
-def displayMenu (menu):
-	mainFrame.prePopup ()
-	mainFrame.PopupMenu (menu)
-	mainFrame.postPopup ()
-
-
-def getUpdateLabel() :
-	global ADDON_NAME
-	nextUpdateFile = api.config.getUserDefaultConfigPath()+"\\addons\\" +  ADDON_NAME + "-nextUpdate.pickle"
-	exists =  (True if  os.path.exists(nextUpdateFile) else False)
-	if exists and  os.path.getsize(nextUpdateFile) < 5 : # mise à jour désactivée # maj désactivée
-		return  _("Enable automatic update")
-	return _("Disable automatic update")
-
-def toggleUpdateState() :
-	global ADDON_NAME
-	nextUpdateFile = api.config.getUserDefaultConfigPath()+"\\addons\\" +  ADDON_NAME + "-nextUpdate.pickle"
-	if  os.path.exists(nextUpdateFile) and   os.path.getsize(nextUpdateFile) < 5 : 
-		os.remove(nextUpdateFile) # réactive la maj
-		speech.cancelSpeech()
-		wx.CallAfter(ui.message, _("Automatic update has been enabled. You can restart NVDA to check for an update."))
-		return 1
-	# désactivation maj : écrit le fichier de longueur < 5 et contenant 0
-	speech.cancelSpeech()
-	try :
-		ut = "0"
-		with open(nextUpdateFile, mode="w") as fileObj :
-			#pickle.dump(ut, fileObj)  #, protocol=0
-			fileObj.write(ut)
-	except :
-		return wx.CallAfter(ui.message, _("Error saving update settings file."))
-	wx.CallAfter(ui.message, _("Automatic update has been disabled."))
-
-def showChangelog() :
-	pageName = "TB+G5-history.html"
-	from languageHandler import getLanguage
-	lang = getLanguage()
-	if "fr" in lang :
-		url = "https://www.rptools.org/NVDA-Thunderbird/" + pageName
-	else :
-		url = "https://www-rptools-org.translate.goog/NVDA-Thunderbird/" + pageName + "?_x_tr_sl=fr&_x_tr_tl=@lg&_x_tr_hl=@lg&_x_tr_pto=sc"
-		url = url.replace("@lg", lang)
-	#  the translated content is displayeed via javascript so it cannot be displayed with ui.browseableMessage()
-	os.startfile (url)
+# def showChangelog() :
+	# pageName = "TB+G5-history.html"
+	# from languageHandler import getLanguage
+	# lang = getLanguage()
+	# if "fr" in lang :
+		# url = "https://www.rptools.org/NVDA-Thunderbird/" + pageName
+	# else :
+		# url = "https://www-rptools-org.translate.goog/NVDA-Thunderbird/" + pageName + "?_x_tr_sl=fr&_x_tr_tl=@lg&_x_tr_hl=@lg&_x_tr_pto=sc"
+		# url = url.replace("@lg", lang)
+	# #  the translated content is displayeed via javascript so it cannot be displayed with ui.browseableMessage()
+	# os.startfile (url)

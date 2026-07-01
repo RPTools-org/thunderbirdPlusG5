@@ -17,6 +17,7 @@ import 	os, sys
 from keyboardHandler import KeyboardInputGesture
 from tones import  beep
 from scriptHandler import getLastScriptRepeatCount
+import globalVars
 _curAddon=addonHandler.getCodeAddon()
 sharedPath=os.path.join(_curAddon.path,"AppModules", "shared")
 sys.path.append(sharedPath)
@@ -369,7 +370,7 @@ class DragDropper() :
 		sleep(.05)
 		if self.dbg: self.logInfos("End Drag drop")
 		beep(440, 40)
-		callLater(100, speech.setSpeechMode, speech.SpeechMode.talk)
+		callLater(100, speech.setSpeechMode, globalVars.TBDefaultSpeechMode)
 		callLater(150, KeyboardInputGesture.fromName("shift+f6").send)
 		callLater(200, KeyboardInputGesture.fromName("control+a").send)
 		# release left button
@@ -701,7 +702,7 @@ class DragDropper() :
 		sleep(.05)
 		if self.dbg: self.logInfos("End Drag drop")
 		beep(440, 40)
-		callLater(100, speech.setSpeechMode, speech.SpeechMode.talk)
+		callLater(100, speech.setSpeechMode, globalVars.TBDefaultSpeechMode)
 		callLater(150, KeyboardInputGesture.fromName("shift+f6").send)
 		callLater(200, KeyboardInputGesture.fromName("control+a").send)
 		# release left button
@@ -739,17 +740,17 @@ class DragDropper() :
 		s+= "location : left {} width {} top {} height {}".format(loc.left, loc.width, loc.top, loc.height)
 		return s
 	def logInfos(self, msg="") :
-		sharedVars.logte("\n" + msg + " : ")
+		# sharedVars.logte("\n" + msg + " : ")
 		self.logObjUnderCursor(0, 0, "")
 		if winUser.getKeyState(winUser.VK_LBUTTON)&32768:
 			label = "* left button is Down"
 		else :
 			label = "* left button is Up"
-		sharedVars.logte(label)
+		# sharedVars.logte(label)
 		hwFG = winUser.getForegroundWindow()
 		title = winUser.getWindowText(hwFG)
-		sharedVars.logte("* Foreground window : " + str(title))
-		sharedVars.logte("* Focus Object : " + self.getObjectProps(api.getFocusObject()))
+		# sharedVars.logte("* Foreground window : " + str(title))
+		# sharedVars.logte("* Focus Object : " + self.getObjectProps(api.getFocusObject()))
 
 def getParentBook(obj) :
 		obj = obj.parent
@@ -770,7 +771,7 @@ class ContactLine() :
 		while obj :
 			if obj.role == controlTypes.Role.STATICTEXT :
 				self.line +=  obj.name + ", "
-				sharedVars.logte("contact line : " + self.line)
+				# sharedVars.logte("contact line : " + self.line)
 			if obj.childCount :
 				self.buildLine(obj)
 			obj = obj.next

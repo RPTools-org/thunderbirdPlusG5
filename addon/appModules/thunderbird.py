@@ -1,5 +1,4 @@
-# ThunderbirdPlusG5 for Thunderbird 115+
-# ThunderbirdPlusG5 for Thunderbird 115+
+# ThunderbirdPlusG5 for Thunderbird >= 115
 
 import addonHandler
 addonHandler.initTranslation()
@@ -107,7 +106,7 @@ def applyFocusMode() :
 				gest = "n"
 		callLater(50, KeyboardInputGesture.fromName(gest).send)
 	finally :
-		speech.setSpeechMode(speech.SpeechMode.talk)
+		speech.setSpeechMode(globalVars.TBDefaultSpeechMode)
 
 # def handleFirstFocus(oTreeItem, focusMode) :
 	# ID = str(utils.getIA2Attr(oTreeItem))
@@ -191,6 +190,7 @@ class AppModule(thunderbird.AppModule):
 		if self.logEvents : sharedVars.logte("Thunderbird+G5 _init")
 		utis.disableOvl(True) # set objLooping = True
 		speech.cancelSpeech()
+		globalVars.TBDefaultSpeechMode = utis.getSpeechMode()
 		self.disabMode = 0
 		# self.columnID= []
 		sharedVars.initSettingsMenu(self) # then use  sharedVars.oSettings.*
@@ -210,7 +210,7 @@ class AppModule(thunderbird.AppModule):
 				sleep(0.2)
 		callLater(1500, self.tbStartup)
 
-	# ====
+	
 	def waitForTree(self, oFrame) :
 		dbg = False
 		if sharedVars.loopCount == 10 : 
@@ -281,7 +281,7 @@ class AppModule(thunderbird.AppModule):
 		sharedVars.starting = False
 		sharedVars.mainTabInit = True 
 		sharedVars.objLooping = False
-		utis.setSpeech(True)
+		utis.setSpeechMode(globalVars.TBDefaultSpeechMode) # defaultSpeechMode saved in __init__()
 
 	def tbStartup(self) :
 		dbg = False
@@ -363,18 +363,19 @@ class AppModule(thunderbird.AppModule):
 		role = obj.role
 		if self.logEvents : sharedVars.log(obj, "* Event foreground start :" )
 		if role == controlTypes.Role.FRAME and  sharedVars.replyTo :
+			# for smartReply
 			sharedVars.replyTo = False
-			speech.setSpeechMode(speech.SpeechMode.talk)			
-			msgComposeWindow.msgComposeWindow.announceFildTo(obj)
+			speech.setSpeechMode(globalVars.TBDefaultSpeechMode)			
+			msgComposeWindow.msgComposeWindow.sayAllRecipients(obj)
 			return # nextHandler()
 		# set context  
-		# if not sharedVars.starting and role == controlTypes.Role.FRAME :
 		if role == controlTypes.Role.FRAME :
 			if obj.windowClassName == "MozillaDialogClass" :
 				ID = str(utils.getIA2Attr(obj.firstChild))
+				# 1: dialog  spellcheck
 				if ID == "MisspelledWordLabel" :
 					sharedVars.curFrame = sharedVars.curTab = "spellcheckDlg"
-				# filterRules
+				# 2: dialog filterRules
 				elif utils.hasID(obj.firstChild, "filterNameBox") :
 					sharedVars.curFrame = sharedVars.curTab = "filterRules"
 				return nextHandler()
@@ -442,12 +443,11 @@ class AppModule(thunderbird.AppModule):
 			# sharedVars.log(obj, "FRAME, curframe = " +  sharedVars.curFrame) 
 		nextHandler()
 
-
 	def event_gainFocus (self,obj,nextHandler):
 		if self.logEvents : sharedVars.log(obj, "Event gainFocus start: ")
-		if sharedVars.speechOff :
-			speech.setSpeechMode(speech.SpeechMode.talk)
-			sharedVars.speechOff = False
+		# if sharedVars.speechOff :
+			# speech.setSpeechMode(globalVars.TBDefaultSpeechMode)
+			# sharedVars.speechOff = False
 		if  sharedVars.curTab == "comp" :
 			return nextHandler()
 		role = obj.role
@@ -537,13 +537,14 @@ class AppModule(thunderbird.AppModule):
 			# prevSpeak = config.conf["keyboard"]["speakTypedCharacters"]
 			# config.conf["keyboard"]["speakTypedCharacters"] = False
 			speech.cancelSpeech()
+			prevSpeechMode =  utis.getSpeechMode()
 			speech.setSpeechMode(speech.SpeechMode.off)
 			KeyboardInputGesture.fromName("control+space").send()
 			# sleep(0.02)
 			api.processPendingEvents()
 			o = api.getFocusObject()
 			KeyboardInputGesture.fromName("control+space").send()
-			speech.setSpeechMode(speech.SpeechMode.talk)
+			speech.setSpeechMode(prevSpeechMode)
 			message(o.name)
 			# config.conf["keyboard"]["speakTypedCharacters"] = prevSpeak
 			
@@ -970,8 +971,10 @@ class AppModule(thunderbird.AppModule):
 		category=sharedVars.scriptCategory
 	)
 	def  script_sharedAltEqual(self, gesture) : # native context menu of active tab
-		if sharedVars.curFrame != "messengerWindow" : return
-		messengerWindow.tabs.tabContextMenu(self, sharedVars.oCurFrame)
+		if sharedVars.curFrame == "messengerWindow" :
+			messengerWindow.tabs.tabContextMenu(self, sharedVars.oCurFrame)
+		if sharedVars.curFrame == "msgcomposeWindow" :
+			msgComposeWindow.msgComposeWindow.sayAllRecipients()
 
 	@script(
 		gesture="kb:f5",
@@ -1023,7 +1026,7 @@ class AppModule(thunderbird.AppModule):
 		fo = api.getFocusObject()
 		ID = str(utils.getIA2Attr(fo))
 		parID = str(utils.getIA2Attr(fo.parent))
-		# sharedVars.logte("parentID=" + parID)
+		# sharedVars.logte("SharedAltN parentID=" + parID)
 		rc = int(getLastScriptRepeatCount())
 		mk = int(gesture.mainKeyName)
 		if parID in ("MsgHeadersToolbar", "messageEditor") :
@@ -1118,6 +1121,17 @@ class AppModule(thunderbird.AppModule):
 				return gesture.send()
 			else : return sharedVars.oQuoteNav.readMail(fo, o, ("shift" in gesture.modifierNames))
 		else : return gesture.send()
+
+	# @script(
+		# gesture="kb:nvda+s",
+		# description=_("Toggles NVDA speech modes and notifies Thunderbird+G5"),
+		# category = sharedVars.scriptCategory
+	# )
+	# def script_toggSpeechMode(self, gesture) :
+		# globalCommands.commands.script_speechMode(gesture)
+		# globalVars.TBDefaultSpeechMode =  utis.getSpeechMode()
+		# beep(440, 40)
+
 	@script(
 		gesture="kb:scrolllock",
 		description=_("Enables or disables  the translation mode of a message."),
@@ -1351,11 +1365,13 @@ class AppModule(thunderbird.AppModule):
 			return
 
 	@script(
-		gesture="kb:alt+d",
-		description=_("Shows the dialog for editing the delay before reading the message of the separate reading window."),
+		# gesture="kb:alt+d",
+		description="\u9fff" + "Reserved, edit a timeout to tests",
 		category = sharedVars.scriptCategory
 	)
 	def script_sharedAltD(self,gesture):
+		# Remark : this script cannot be renamed because this will deactivate all other scripts.
+		desc = _("Shows the dialog for editing the delay before reading the message of the separate reading window.")
 		if sharedVars.curFrame == "messengerWindow" :
 			wx.CallLater(10, sharedVars.oSettings.editDelay)
 			return
@@ -1425,30 +1441,21 @@ class AppModule(thunderbird.AppModule):
 		description ="Thunderbird+G5, initialize debug",
 	)
 	def script_initDebug(self, gesture) :
-		if self.logEvents :
-			self.logEvents = False
-			message("logEvents mode is disabled")
+		if not sharedVars.oQuoteNav : sharedVars.initQuoteNav()
+		if sharedVars.oQuoteNav.debug :
+			sharedVars.oQuoteNav.debug = False
+			message("Debug Microsoft Headers    is disabled")
 		else :
-			self.logEvents = True
-			message("logEvents mode is enabled")
-			sharedVars.debugLog = "logEvents = True\n"
-		# if sharedVars.debug :
-			# sharedVars.debug = False
-			# message("Debug mode is disabled")
-		# else :
-			# sharedVars.debug = True
-			# message("Debug mode is enabled")
-		# sharedVars.debugLog = "New log\n"
-		# # disabModes : 0 nothing, 1 choose overlay, 2 : object init, 3 gainFocus 
-		# self.disabMode +=1
-		# if self.disabMode > 3 : self.disabMode = 0	
-		# if self.disabMode == 0 : mode = u"Aucune désactivation"
-		# elif self.disabMode == 1 : mode = u"Désactivation de l'intercepteur."
-		# elif self.disabMode == 2 : mode = u"Désactivation de l'initialisation des objets NVDA."
-		# elif self.disabMode == 3 : mode = u"Désactivation de  gain focus."
-		# else : mode = "disabMode = " + str(self.disabMode)
+			sharedVars.oQuoteNav.debug = True
+			message("Debug Microsoft Headers    is  enabled")
 
-		# message(mode)
+
+		# if self.logEvents :
+			# self.logEvents = False
+			# message("logEvents mode is disabled")
+		# else :
+			# self.logEvents = True
+			# message("logEvents mode is enabled")
 
 	__gestures = {
 		# utis.gestureFromScanCode(41, "kb:") :"showContextMenu", # 41 is the scancode of the key above Tab
@@ -1497,8 +1504,8 @@ class AppModule(thunderbird.AppModule):
 
 def debugShow(appMod, auto) :
 	sharedVars.debugLog += "Debug mode : {}, TB branch : {}".format(str(sharedVars.debug), utis.TBMajor()) + "\n" + "\n" + "\n" + sharedVars.debugLog
-	utils.setBrailleMode()
-	sharedVars.logte("Braille Mode after setBrailleMode: " + str(utils.getBrailleParam("mode")))
+	# utils.setBrailleMode()
+	# sharedVars.logte("Braille Mode after setBrailleMode: " + str(utils.getBrailleParam("mode")))
 	sharedVars.test(None, "curTab={}, curFrame={}, objLooping={}".format(sharedVars.curTab, sharedVars.curFrame, str(sharedVars.objLooping)))
 	# sharedVars.test(utils.getPropertyPage(True), "Test getPropertyPage forced")
 	# sharedVars.test(utils.getFolderTreeFromFG(False, True), "Test getFolderTree forced")
@@ -1516,7 +1523,7 @@ def debugShow(appMod, auto) :
 		# utils.listDescendants(no, 0, "* Nav object   descendants")
 		# textDialog.showText(title="Log", text=sharedVars.debugLog)
 		# return
-	# provisoire
+
 	# textDialog.showText(title="Log", text=sharedVars.debugLog)
 	# sharedVars.test(no, "Nav object")
 	# if utils.hasID(fo, "threadTree-row"	) :
@@ -1620,7 +1627,7 @@ def activateMenuItem(o, ID) :
 				return
 			o = o.next
 	finally :
-		speech.setSpeechMode(speech.speech.SpeechMode.talk)
+		speech.setSpeechMode(globalVars.TBDefaultSpeechMode)
 
 def getComposingDoc() :
 	errMsg = _("NVDA Object  not found:")

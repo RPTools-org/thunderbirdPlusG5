@@ -115,30 +115,19 @@ def setSpeechMode_off():
 	except AttributeError:
 		speech.speechMode = speech.speechMode_off
 
-# def setSpeech(enable) :
-	# global  prevSpeechMode
-	# if enable and prevSpeechMode :
-		# setSpeechMode(prevSpeechMode)
-		# prevSpeechMode = None
-	# elif enable and not prevSpeechMode :
-		# speech.setSpeechMode(speech.SpeechMode.talk)
-	# elif not enable :
-		# prevSpeechMode = getSpeechMode()
-# speech.setSpeechMode(speech.SpeechMode.off)
 
 def setSpeech(enable) :
 	if enable :
-		speech.setSpeechMode(speech.SpeechMode.talk)
+		speech.setSpeechMode(globalVars.TBDefaultSpeechMode)
 		sharedVars.objLooping = False # in case it was forgotten
 	else :
 		speech.setSpeechMode(speech.SpeechMode.off)
-		
-	
+
 def enableSpeechAndSay(msg, focusName=False) :
 	if focusName :
 		o = api.getFocusObject()
 		msg = str(o.name) + ", " + o.role.displayString + ", " + msg 
-		speech.setSpeechMode(speech.SpeechMode.talk)
+		speech.setSpeechMode(globalVars.TBDefaultSpeechMode)
 	message(msg)
 
 

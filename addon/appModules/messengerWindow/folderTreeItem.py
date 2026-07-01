@@ -112,8 +112,8 @@ class FolderTreeItem (IAccessible):
 # functions version 5
 import globalVars
 def fMenuFolders(o, unread=False) :
-	sharedVars.log(globalVars.TBPropertyPage, "fMenuFolders, globalVars.TBPropertyPage")
-	sharedVars.log(globalVars.TBFolderTree, "fMenuFolders, globalVars.TBFolderTree")
+	# sharedVars.log(globalVars.TBPropertyPage, "fMenuFolders, globalVars.TBPropertyPage")
+	# sharedVars.log(globalVars.TBFolderTree, "fMenuFolders, globalVars.TBFolderTree")
 	sharedVars.TBWnd = winUser.getForegroundWindow()
 	ID = str(utils.getIA2Attr(o)).split("-")[0]
 	# sharedVars.logte("fMenuFolders ID : " + ID)
@@ -229,7 +229,7 @@ class InboxesMenu() :
 
 	def onIbMenu(self, evt):
 		o = self.ibFolders[evt.Id]
-		utis.setSpeech(False)
+		# 2026.05.22 utis.setSpeech(False)
 		if sharedVars.TBWnd :
 			winUser.setForegroundWindow(sharedVars.TBWnd)
 		sharedVars.menuClosing = True 
@@ -328,9 +328,10 @@ class FolderMenu() :
 		# if len(self.nodes) :
 		self.fMenu.Bind (EVT_MENU,self.onMenu)
 		# self.debugMenu()
-		if sharedVars.speechOff :
-			speech.setSpeechMode(speech.SpeechMode.talk)
-			sharedVars.speechOff = False
+		# 2026.05.22 3 lines below deactivated
+		# if sharedVars.speechOff :
+			# speech.setSpeechMode(globalVars.TBDefaultSpeechMode)
+			# sharedVars.speechOff = False
 		callLater(50, self.sayMenuTitle, self.unread, title)
 		utis.showNVDAMenu  (self.fMenu)
 		# else : message(_("No unread folders for this account."))
@@ -442,14 +443,14 @@ def focusFirstInbox(oFolderTree) :
 	oFolderTree.setFocus()
 	KeyboardInputGesture.fromName("home")
 	return
-	sharedVars.log(oFolderTree,  "getFirstInbox, oFolderTree")
+	# sharedVars.log(oFolderTree,  "getFirstInbox, oFolderTree")
 	# level 6,       1 of 1, Role.TREEVIEW, IA2ID : folderTree 
 	# level 7,        0 of 0, Role.TREEVIEWITEM Tag: li, 
 	# level 8,         0 of 0, Role.GROUPING Tag: ul, 
 	# level 9,          0 of 10, name : RPTools, Role.TREEVIEWITEM, IA2ID : all-bWFpbGJveDovL3Bsci5saXN0ZXMlNDBycHRvb2xzLm9yZ0Bwb3AzLnJwdG9vbHMub3Jn Tag: li
 	for g in range(0, 3) : # 3 passes
 		o = o.firstChild
-		sharedVars.log(o, "folderTree descendant g=" + str(g))
+		# sharedVars.log(o, "folderTree descendant g=" + str(g))
 		if not o : break
 	if not o : 
 		if focus : oFolderTree.setFocus()
@@ -460,12 +461,12 @@ def focusFirstInbox(oFolderTree) :
 	# o = o.getChild(1)
 	i = 0
 	for c in o.recursiveDescendants :
-		sharedVars.log(c, "child " + str(i))
+		# sharedVars.log(c, "child " + str(i))
 		if c.role == controlTypes.Role.TREEVIEWITEM : 
 			break
 		i += 1
 	if focus and c :
-		sharedVars.log(c, "SetFocus to")
+		# sharedVars.log(c, "SetFocus to")
 		c.scrollIntoView()
 		c.setFocus()
 		sleep(.1)

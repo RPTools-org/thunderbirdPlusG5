@@ -19,7 +19,7 @@ replyTo = ""
 delPressed = False
 TBMajor = 0
 objLooping = menuClosing =  False
-speechOff = False
+defaultSpeechMode = None
 gTimer = None
 lastKey = ""
 oCurFrame = None
