@@ -954,7 +954,7 @@ class AppModule(thunderbird.AppModule):
 		category=sharedVars.scriptCategory
 	)
 	def 	script_smartReplyToSender(self, gesture) :
-		wx.CallLater(25, utils.smartReplyV3,False, 0)
+		wx.CallLater(25, utils.smartReplyV4,False, 0)
 
 	@script(
 		gesture="kb:shift+control+t",
@@ -962,7 +962,7 @@ class AppModule(thunderbird.AppModule):
 		category=sharedVars.scriptCategory
 	)
 	def script_smartReplyToAll(self, gesture) :
-		wx.CallLater(25, utils.smartReplyV3, True, 0)
+		wx.CallLater(25, utils.smartReplyV4, True, 0)
 	
 
 	@script(

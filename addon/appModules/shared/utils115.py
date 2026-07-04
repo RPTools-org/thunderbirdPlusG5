@@ -1604,167 +1604,71 @@ def getSenderNames(obj, ID) :
 	# sharedVars.logte(names)
 	return names
 
-def smartReplyV3(shift, repeats=0) :
-	oPane = getMessagePane()
-	if not oPane :
-		return message(_("The preview pane is not displayed. Press F8 and try again please"))
-	fo = api.getFocusObject()
-	if  fo.role == controlTypes.Role.TREEVIEWITEM  and controlTypes.State.COLLAPSED in fo.states :
-		KeyboardInputGesture.fromName("rightArrow").send()
-		sleep(0.1)
-	if  fo.role in (controlTypes.Role.LISTITEM, controlTypes.Role.TREEVIEWITEM) and controlTypes.State.SELECTED not in fo.states :
-		fo.doAction()
-		sleep(0.1)
-	# sharedVars.debugLog = ""
-	# IA2ID = messageBrowser in , Role.INTERNALFRAME
-	o = getChildByRoleIDName(oPane, controlTypes.Role.INTERNALFRAME, ID="messageBrowser", name="", idx=0)
-	# sharedVars.log(o, "Message Browser ? ")
-	if o : o = getChildByRoleIDName(o, controlTypes.Role.GROUPING, ID="", name="", idx=0)
-	# sharedVars.log(o, "Grouping  ? ")
-	# IA2ID = messageHeader in , Role.LANDMARK
-	if o : o = getChildByRoleIDName(o, controlTypes.Role.LANDMARK, ID="messageHeader", name="", idx=14)
-	# sharedVars.log(o, "messageHeader ? ")
+def smartReplyV4(shift, repeats=0) :
+	debug = False
+	o = None
+	if sharedVars.curTab == "main" :
+		oPane = getMessagePane()
+		if not oPane :
+			return message(_("The preview pane is not displayed. Press F8 and try again please"))
+		fo = api.getFocusObject()
+		if  fo.role == controlTypes.Role.TREEVIEWITEM  and controlTypes.State.COLLAPSED in fo.states :
+			KeyboardInputGesture.fromName("rightArrow").send()
+			sleep(0.1)
+		if  fo.role in (controlTypes.Role.LISTITEM, controlTypes.Role.TREEVIEWITEM) and controlTypes.State.SELECTED not in fo.states :
+			fo.doAction()
+			sleep(0.1)
+		if debug : sharedVars.debugLog = ""
+		# IA2ID = messageBrowser in , Role.INTERNALFRAME
+		o = getChildByRoleIDName(oPane, controlTypes.Role.INTERNALFRAME, ID="messageBrowser", name="", idx=0)
+		# sharedVars.log(o, "Message Browser ? ")
+		if o : o = getChildByRoleIDName(o, controlTypes.Role.GROUPING, ID="", name="", idx=0)
+		# sharedVars.log(o, "Grouping  ? ")
+		# IA2ID = messageHeader in , Role.LANDMARK
+		if o : o = getChildByRoleIDName(o, controlTypes.Role.LANDMARK, ID="messageHeader", name="", idx=14)
+	elif sharedVars.curTab == "message" : # separate reading window 
+		# IA2ID = messageBrowser in , Role.INTERNALFRAME
+		o = getChildByRoleIDName(api.getForegroundObject(), controlTypes.Role.INTERNALFRAME, ID="messageBrowser", name="", idx=4)
+		if o : o = getChildByRoleIDName(o, controlTypes.Role.GROUPING, ID="", name="", idx=0)
+		# IA2ID = messageHeader in , Role.LANDMARK
+		if o : o = getChildByRoleIDName(o, controlTypes.Role.LANDMARK, ID="messageHeader", name="", idx=14)
 
-	listID = ""
-	#  the string below is reverted to avoid  a security warning from the sarif system when submitting the addon in the add-on store 
-	groupsIO = "oi.spuorg"
-	groupsIO = groupsIO[::-1]
-	try : 	o = o.firstChild
-	except : o = None
-	while o :
-		# sharedVars.log(o, "child")			
-		ID = str(getIA2Attr(o))
-		if 		ID == "expandedlist-id" :
-			listID = getSenderNames(o, ID)
-			break
-		o = o.next
-
-	sharedVars.replyTo = True
-	if listID and not shift  :
-		gest = "control+r" if groupsIO in listID else "control+shift+l"
-	elif listID and shift :
-		gest = "shift+control+r" if groupsIO in listID else "control+r"
-	elif shift :
-		gest = "control+shift+r"
+	if not o :
+		return
+	if debug : sharedVars.log(o, "messageHeader ? ")
+	# process reply buttons 
+	gest = "control+r"
+	# groups = ""
+	for child in   o.recursiveDescendants :
+		if debug : sharedVars.log(child, "Descendant")	
+		role = child.role
+		if role == controlTypes.Role.BUTTON : 
+			IA2ID = str(getIA2Attr(child))
+			match IA2ID : 
+				case "hdrReplyListButton" :
+					if not shift :
+						gest = "control+shift+l"
+						break
+				case "hdrReplyAllButton" :
+					if shift : 
+						gest = "control+shift+r"
+						break
+				case "hdrArchiveButton" :
+					# default exit condition 
+					break
+		# elif role == controlTypes.Role.LISTITEM :
+			# if hasID(child, "toRecipient") :
+				# name = child.name
+				# if "groups"  in name  or "list" in name :
+					# groups += name + "," 
+					# sharedVars.log(child, "Recipient")	
+	if debug : 
+		message("gest=" + gest + ", pressez Alt+f12 pour voir les objets descendants")
 	else :
-		gest = "control+r"
-	#  message("SmartReply gest=" + gest)
-	# avoid double announcement  of the write windows title
-	setSpeechMode(SpeechMode.off)
-	return KeyboardInputGesture.fromName(gest).send()
-	
-# def smartReplyV2(shift, repeats=0) :
-	# global gRegTags
-	# # sharedVars.debugLog = "reply buttons\n"
-	# oToolbar, oMsgHeader = getReplyToolbarFromMsgWindow() 
-	# if not oToolbar :
-		# # main window
-		# oPane = getMessagePane()
-		# if not oPane :
-			# return message(_("The preview pane is not displayed. Press F8 and try again please"))
-		# fo = api.getFocusObject()
-		# if  fo.role == controlTypes.Role.TREEVIEWITEM  and controlTypes.State.COLLAPSED in fo.states :
-			# KeyboardInputGesture.fromName("rightArrow").send()
-			# sleep(0.1)
-		# if  fo.role in (controlTypes.Role.LISTITEM, controlTypes.Role.TREEVIEWITEM) and controlTypes.State.SELECTED not in fo.states :
-			# fo.doAction()
-			# sleep(0.1)
-
-		# oToolbar, oMsgHeader = getReplyToolbarFromMain(oPane) 
-		# if not oToolbar :
-			# beep(700, 40)
-			# sleep(0.1)
-			# oToolbar, oMsgHeader = getReplyToolbarFromMain(oPane) 
-		
-	# if  not oToolbar or oToolbar.role != controlTypes.Role.TOOLBAR:
-		# return beep(100, 40)
-	# # sharedVars.log(oToolbar, "Is it toolbar ?")
-	# oBtnSender = oBtnAll  = oBtnList = None
-	# senderType = "sender"
-	# for b in oToolbar.recursiveDescendants : 
-		# ID = str(getIA2Attr(b))
-		# if ID == "hdrForwardButton" :
-			# break
-		# # sharedVars.logte("Button ID=" + ID)
-		# if ID == "hdrReplyButton" :
-			# oBtnSender = b
-		# elif ID == "hdrReplyToSenderButton" :
-			# oBtnSender = b
-			# if not shift : senderType = "senderIfNotGroup"
-		# elif ID =="hdrReplyListButton" :
-			# oBtnList = b
-			# if not shift : senderType = "recip"
-		# elif ID == "hdrReplyAllButton":
-			# oBtnAll = b
-	# # end for
-	# senderDesc  = ""
-	# o = None
-	# if senderType in ("sender", "senderIfNotGroup") :
-		# # IA2ID = headerSenderToolbarContainer in , Role.SECTION
-		# if oMsgHeader : o = getChildByRoleIDName(oMsgHeader, controlTypes.Role.SECTION, ID="headerSenderToolbarContainer", name="", idx=0)
-		# # IA2ID = expandedfromRow in , Role.SECTION
-		# if o : o = getChildByRoleIDName(o, controlTypes.Role.SECTION, ID="expandedfromRow", name="", idx=1)
-		# # IA2ID = expandedfromBox in , Role.SECTION
-		# if o : o = getChildByRoleIDName(o, controlTypes.Role.SECTION, ID="expandedfromBox", name="", idx=1)
-		# if o : o = getChildByRoleIDName(o, controlTypes.Role.LIST, ID="", name="", idx=0)
-		# # IA2ID = fromRecipient0 in , Role.LISTITEM
-		# if o : o = getChildByRoleIDName(o, controlTypes.Role.LISTITEM, ID="fromRecipient0", name="", idx=0)
-		# # IA2ID = fromRecipient0Display in , Role.TEXTFRAME
-		# if o : o = getChildByRoleIDName(o, controlTypes.Role.TEXTFRAME, ID="fromRecipient0Display", name="", idx=0)
-		# if o : o = getChildByRoleIDName(o, controlTypes.Role.STATICTEXT, ID="", name="", idx=0)
-		# if o :
-			# senderDesc = _("To") + str(o.name)
-			# if senderType == "senderIfNotGroup" :
-				# if "groups." in senderDesc or "lists." in senderDesc :
-					# senderType = "recip"
-	# if senderType == "recip" :
-		# # IA2ID = expandedtoRow in , Role.SECTION
-		# if oMsgHeader : o = getChildByRoleIDName(oMsgHeader, controlTypes.Role.SECTION, ID="expandedtoRow", name="", idx=1)
-		# # IA2ID = expandedtoBox in , Role.SECTION
-		# if o : o = getChildByRoleIDName(o, controlTypes.Role.SECTION, ID="expandedtoBox", name="", idx=1)
-		# if o : o = getChildByRoleIDName(o, controlTypes.Role.LIST, ID="", name="", idx=0)
-		# if o: senderDesc =  o.name
-		# # address of the recipient
-		# if o : o = getChildByRoleIDName(o, controlTypes.Role.LISTITEM, ID="toRecipient0", name="", idx=0)
-		# if o :
-			# senderDesc += str(o.name)
-
-	# # sharedVars.logte("SenderDesc : " + senderDesc)
-	# label = ""
-	# # Translators : Reply is the verb to remove from button names
-	# verb = _("Reply")
-	# gest = ""
-	# if  oBtnList :
-		# if not shift: 
-			# gest  = "control+shift+l"
-			# label = senderDesc
-		# else : 
-			# gest = "control+r" 
-			# label = senderDesc
-	# elif oBtnAll:
-		# if shift :
-			# gest = "control+shift+r"
-			# label = oBtnAll.name
-		# else :
-			# gest = "control+r"
-			# label  = senderDesc
-	# elif  oBtnSender and not shift :
-		# gest = "control+r"
-		# label = senderDesc
-	# else :
-		# beep(250, 40)
-		# return
-	# # api.copyToClip(sharedVars.debugLog)
-	# sharedVars.replyTo = ""
-	# if label : 
-		# label = label.replace(verb, "")
-		# if "<" in label :
-			# label = gRegTags.sub("", label)
-		# if "@" in label :
-			# label = label.split(" ")[0]
-		# sharedVars.replyTo = label
-	# if gest : 
-		# return KeyboardInputGesture.fromName(gest).send()
+		# avoid double announcement  of the write windows title
+		setSpeechMode(SpeechMode.off)
+		sharedVars.replyTo = True
+		return KeyboardInputGesture.fromName(gest).send()
 
 def getTotalColIdx(oTT):
 	try : # finally

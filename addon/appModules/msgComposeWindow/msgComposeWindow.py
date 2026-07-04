@@ -231,7 +231,9 @@ def sayAllRecipients(fg=None) :
 		beep(100, 30)
 		return
 	# sharedVars.log(o, "AnnouncefildTo,  toolbar")
-	o = o.firstChild
+	# try is sometimes necessary when  this function is called from  event_foreground in Thunderbird.py
+	try : o = o.firstChild
+	except : return
 	recipients = ""
 	while o :
 		role = o.role
