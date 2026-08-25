@@ -349,13 +349,13 @@ langs = [
 "isiZulu|zu-ZA|0435:00000409"
 ]
 
-def getPHPTable() :
+def getPHPTable():
 	global langs
 	t ="['0409:0409' => 'en-US', \n"
-	for item in langs :
+	for item in langs:
 		print("langUtils item=" + str(item)) 
 		parts = item.split("|") 
-		if parts[2] != "0409:00000409" :
+		if parts[2] != "0409:00000409":
 			part2 = str(parts[2]).replace(":0000", ":")
 			t += "'" + part2 + "' => '" + parts[1] + "', \n"
 	t += "]\n"

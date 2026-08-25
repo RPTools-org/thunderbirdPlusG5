@@ -2,11 +2,25 @@
 # globalPlugins/ThunderbirdGlob.py
 # 2026.05.23 :  cleaned version of this file. The notification feature is in previous versions.
 # Thunderbird+G5
+import sys
+import addonHandler
+addonHandler.initTranslation()
+import os
+addon_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if addon_dir not in sys.path:
+    sys.path.insert(0, addon_dir)
+import commonVars
 
+# Get the path of the root directory of the extension (monExtension)
+addonDir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if addonDir not in sys.path:
+	sys.path.insert(0, addonDir)
+# Now the import will work properly
+from shutils import tbLogger
 import controlTypes
 import globalPluginHandler
-import addonHandler
 from scriptHandler import script, getLastScriptRepeatCount
+from shutils import tbLogger
 
 ADDON_NAME = addonHandler.getCodeAddon().manifest["name"]
 ADDON_SUMMARY = addonHandler.getCodeAddon().manifest["summary"]
@@ -23,9 +37,6 @@ from winUser import getKeyNameText, setCursorPos
 from tones import beep
 import globalVars
 import globalCommands
-import os, sys
-addonHandler.initTranslation()
-
 def gestureFromScanCode(sc, prefix) :
 	# sc stands for the scanCode  of the key
 	# prefix is "kb:modifiers"
@@ -49,7 +60,6 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def __init__(self, *args, **kwargs):
 		super (GlobalPlugin, self).__init__(*args, **kwargs)
-		globalVars.TBDefaultSpeechMode =  speech.getState().speechMode
 		hTaskBar = ctypes.windll.user32.FindWindowExA(None, None, b"Shell_TrayWnd", None)
 		if not hTaskBar or  globalVars.appArgs.launcher : 
 			return
@@ -63,20 +73,34 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def event_foreground(self, obj, nextHandler) :
 		if obj.role != controlTypes.Role.FRAME : # not in (controlTypes.Role.PANE, controlTypes.Role.FRAME, controlTypes.Role.WINDOW) :
 			return nextHandler()
-		if not hasattr(globalVars, "TBPropertyPage") :
-			globalVars.TBPropertyPage = None
-		if not hasattr(globalVars, "TBGrouping") :
-			globalVars.TBGrouping = None
 
-		if globalVars.TBPropertyPage  and not winUtils.findWindowByPartialTitle(" - Mozilla Thunderbird") : # Thunderbird was closed
-			# wx.CallLater(1000, ui.message, "Reset of globalVars, Eventt foreground role={}, class={}, name={}".format(obj.role.name, obj.windowClassName, "" if not obj.name else obj.name))
-			globalVars.TBGrouping = None
-			globalVars.TBPropertyPage = None
-			globalVars.TBFolderTree = None
-			globalVars.TBThreadTree = None
-			globalVars.TBThreadPane = None
+		if commonVars.cv.propertyPage  and not winUtils.findWindowByPartialTitle(" - Mozilla Thunderbird") : # Thunderbird was closed
+			commonVars.cv.reset()
 		nextHandler()
 	
+
+	@script(
+		gesture="kb:alt+windows+f12",
+		description="z Starts or stops the internal logger",
+		category = "thunderbirdPlusG51, global plugin"
+	)
+	def script_toggleLogger(self, gesture) :
+		if commonVars.cv.logger 	is not None:
+			ui.message("disabled : log startup")
+			commonVars.cv.logger.terminate()
+			commonVars.cv.logger = None
+		else :
+			commonVars.cv.logger = tbLogger.createLogger(show=True)
+			if commonVars.cv.logger :
+				commonVars.cv.logger.add("TB logger started from globalPlugin")
+				commonVars.cv.logger.add("commonVars.cv.defaultSpeechMode = " + str(commonVars.cv.defaultSpeechMode.displayString))
+				ui.message("enabled : log Thunderbird startup.")
+			else :
+				ui.message("TB logger creation failed")
+
+		
+
+
 
 	@script(
 		gesture="kb:nvda+s",
@@ -85,7 +109,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	)
 	def script_toggleSpeechMode(self, gesture) :
 		globalCommands.commands.script_speechMode(gesture)
-		globalVars.TBDefaultSpeechMode =  speech.getState().speechMode
+		commonVars.cV.defaultSpeechMode =  speech.getState().speechMode
 
 	@script(
 		gesture=gestureFromScanCode(41, "kb:control+alt+"),

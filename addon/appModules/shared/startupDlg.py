@@ -1,14 +1,12 @@
 # thunderbirdPlusG5/appModules/shared/checkListMenu.py.
+import addonHandler 
+addonHandler.initTranslation()
 
 import wx
 # from gui import guiHelper, nvdaControls
 from tones import beep
 
-import addonHandler
-
 import utis
-
-addonHandler.initTranslation()
 
 class StartupDialog(wx.Dialog):
 
@@ -79,16 +77,16 @@ _("Show All unread folders menu"),
 
 	def onKey(self, event):
 		kc =  event.GetKeyCode()
-		if kc == wx.WXK_RETURN :
+		if kc == wx.WXK_RETURN:
 			obj = str(event.GetEventObject())
-			if ".RadioButton " in obj :
+			if ".RadioButton " in obj:
 				wx.CallAfter(self.onOK, event)
 		elif kc == wx.WXK_ESCAPE:
 			self.Destroy()
-		else : 
+		else: 
 			event.Skip()
 
-def getFirstLabel() :
+def getFirstLabel():
 	key = utis.gestureFromScanCode(41, "") 
 	key = '"' + key + '"'
 	lbl = _("On startup or   With the {} key in the main window, bring the &focus to:") 

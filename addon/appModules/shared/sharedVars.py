@@ -2,6 +2,7 @@
 from re import compile, IGNORECASE
 debug = False
 logEvents = False
+logSpeech = False
 starting = True
 regExp_nameListGroup, regExp_AnnotationResponse, regExp_mailAddress  = compile ("\[.*\]|\{.*\}"), compile("re[ ]*:[ ]", IGNORECASE), compile("\S+?@\S+?\.\S+")
 regExp_mailAddr = compile("\s*<[^>]+>") # v2512.01
@@ -44,7 +45,7 @@ debugLog = ""
 from tones import beep
 from utils115 import message
 import quoteNav
-def initQuoteNav() :
+def initQuoteNav():
 	global oQuoteNav
 	oQuoteNav = quoteNav.QuoteNav()
 	
@@ -52,93 +53,99 @@ import inspect
 oSettings = None # options menu
 import menuSettings
 import controlTypes
-import globalVars
 
-def initSettingsMenu(appMod) :
+def initSettingsMenu(appMod):
 	global oSettings
 	oSettings = menuSettings.Settings(appMod)
 
-def setLooping(value) :
+def setLooping(value):
 	global objLooping, debug, debugLog
 	objLooping = value
-	if not debug : return
+	if not debug: return
 	lastFunction = inspect.stack()[1][3]
-	debugLog = debugLog + "setLooping fonction :{0}, valeur : {1}".format(lastFunction, str(value)) + "\n"
-def logInit(msg="") : 
+	debugLog = debugLog + "setLooping fonction:{0}, valeur: {1}".format(lastFunction, str(value)) + "\n"
+def logInit(msg=""): 
 	global debugLog
-	if msg :
+	if msg:
 		debugLog = msg + "\n"
-	else :
+	else:
 			debugLog = ""
-def logte(msg, init=False) :
+def logte(msg, init=False):
 	global debugLog
 	# for test
 	init = False
 	# end texst
-	if init :
+	if init:
 		debugLog = msg + "\n"
-	else :
+	else:
 		debugLog += msg + "\n" 
-def getObjAttrs(o) :
+def getObjAttrs(o):
 	states = " Busy, " if controlTypes.State.BUSY in o.states else " "
 	states += " OffSCREEN, " if controlTypes.State.OFFSCREEN in o.states else " In screen "
 	states += " INVISIBLE, " if controlTypes.State.INVISIBLE in o.states else " "
-	if controlTypes.State.FOCUSED in  o.states :
+	if controlTypes.State.FOCUSED in  o.states:
 		states += " Focused"
-	else :
+	else:
 			states += " Focusable" if controlTypes.State.FOCUSABLE in o.states else ""
 	states +=  (" focused, " if hasattr(o, "hasFocus") and o.hasFocus else " ")
 	states += (", selected" if controlTypes.State.SELECTED in o.states else "")
-	if o.role == controlTypes.Role.TREEVIEWITEM :
+	if o.role == controlTypes.Role.TREEVIEWITEM:
 		states += (",Collapsed" if controlTypes.State.COLLAPSED in o.states else ", Expanded")
 
 	nm = (o.name if hasattr(o, "name") else "")
-	if  not nm : nm =""
-	else : nm = "\n  name : " + str(nm )
+	if not nm: nm =""
+	else: nm = "\n  name: " + str(nm )
 	val = (o.value if hasattr(o, "value") else "")
-	if  not val  : val =""
-	else : val = "\n value : " + str(val)
-	if hasattr(o, "IA2Attributes") :
+	if not val: val =""
+	else: val = "\n value: " + str(val)
+	if hasattr(o, "IA2Attributes"):
 		ID = str(o.IA2Attributes.get("id"))
-	else : ID = ""
-	t =  " {}, ID : {}, States : {}, childCount : {}{},  class : {},".format(o.role.name, ID, states, o.childCount, str(o.windowClassName), nm + val)
+	else: ID = ""
+	t =  " {}, ID: {}, States: {}, childCount: {}{},  class: {},".format(o.role.name, ID, states, o.childCount, str(o.windowClassName), nm + val)
 	return t
 
 
 def log(o, msg="Objet", withStep=False):
 	global debugLog
-	if withStep :
-		step = ", Stack : "
+	if withStep:
+		step = ", Stack: "
 		curFunc = inspect.stack()[1][3] 
 		prevFunc = inspect.stack()[2][3]
-		lastFunction = " fonk {0}, {1} : ".format(curFunc, prevFunc)
-	else :
+		lastFunction = " fonk {0}, {1}: ".format(curFunc, prevFunc)
+	else:
 		step = lastFunction = ""
-	if not o : 
-		debugLog = debugLog + step + msg + " : objet None, " + lastFunction + "\n"
+	if o is None: 
+		debugLog = debugLog + step + msg + ": objet None, " + lastFunction + "\n"
 		return
 	t = getObjAttrs(o)
 	debugLog = debugLog + step + lastFunction + msg + t + "\n"
 
-def debugMess(o, msg="Objet") :
+def debugMess(o, msg="Objet"):
 	lastFunc = inspect.stack()[1][3]
 	foc =  ("focused, " if o.hasFocus else "")
 	sel = u"Etat sélectionné" # (", selected" if controlTypes.State.SELECTED in o.states else "non selected")
-	# if o.role == controlTypes.TREEVIEWITEM :
+	# if o.role == controlTypes.TREEVIEWITEM:
 	sel += (",Collapsed" if controlTypes.State.COLLAPSED in o.states else ", Expanded")
 	nm = str(o.name)
 	ID = str(o.IA2Attributes.get("id"))
-	t =  foc + sel + " : role : {0}, ID : {1}, childCount : {2}name : {3}".format(o.role.name, ID, o.childCount, nm[:15])
+	t =  foc + sel + ": role: {0}, ID: {1}, childCount: {2}name: {3}".format(o.role.name, ID, o.childCount, nm[:15])
 	message(lastFunc + msg + t )
 
-def error(obj, msg, sound=False) : 
-	if sound : beep(100, 30)
+def error(obj, msg, sound=False): 
+	if sound: beep(100, 30)
 	log(obj, msg, withStep=True) 
 	
-def test(obj, msg) :
+def test(obj, msg):
 	msg = "test, " + msg 
 
-	if not obj :
+	if obj is None:
 		logte(msg)
-	else :	
+	else:	
 		log(obj, msg, withStep=True)
+
+def getProperties(obj, label):		
+	if obj is None: return label + ": object is None"
+	focused = ", Focused, " if controlTypes.State.FOCUSED  in obj.states else ""
+	name = "no name" if not hasattr(obj, "name") else str(obj.name)
+	return label + ": role: {}, ID: {}{}, name: {}".format(obj.role.displayString, str(utils.getiA2Attr(obj)), focused, name)  
+		

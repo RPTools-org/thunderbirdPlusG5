@@ -5,15 +5,16 @@
 # See the file COPYING for more details.
 
 import addonHandler
+addonHandler.initTranslation()
+
 import api
 import ui
 import wx
 import time
 from gui import guiHelper, mainFrame
 # from ..utils.NVDAStrings import NVDAString
-# not needed here : from ..utils import isOpened, makeAddonWindowTitle
+# not needed here: from ..utils import isOpened, makeAddonWindowTitle
 from utils115 import message 
-addonHandler.initTranslation()
 
 
 class InformationDialog(wx.Dialog):
@@ -38,7 +39,7 @@ class InformationDialog(wx.Dialog):
 		if dialogTitle == "":
 			# Translators: this is the default title of Information dialog.
 			dialogTitle = _("Informations")
-		title = dialogTitle # original : title = InformationDialog.title = makeAddonWindowTitle(dialogTitle)
+		title = dialogTitle # original: title = InformationDialog.title = makeAddonWindowTitle(dialogTitle)
 		super(InformationDialog, self).__init__(parent, wx.ID_ANY, title)
 		self.insertionPointOnLastLine = insertionPointOnLastLine
 		self.informationLabel = informationLabel
@@ -74,7 +75,7 @@ class InformationDialog(wx.Dialog):
 		closeButton = bHelper.addButton(
 			self,
 			id=wx.ID_CLOSE,
-			# original : label=NVDAString("&Close"))
+			# original: label=NVDAString("&Close"))
 			label = _("Close"))
 		mainSizer.Add(
 			sHelper.sizer,
@@ -106,8 +107,8 @@ class InformationDialog(wx.Dialog):
 			text = _("Error, the information cannot be copied to the clipboard")
 			message(text)
 	@classmethod
-	def newInstance(cls) :
-		# if  InformationDialog._instance  is None : return
+	def newInstance(cls):
+		# if InformationDialog._instance  is None: return
 		InformationDialog._instance = None
 		# super(InformationDialog, self).Destroy()
 	@classmethod
@@ -130,7 +131,7 @@ class InformationDialog(wx.Dialog):
 		if parent is None:
 			mainFrame.postPopup()
 
-def showText(title, text, label=" - Thunderbird+G5") :
+def showText(title, text, label=" - Thunderbird+G5"):
 	InformationDialog.newInstance()
 	InformationDialog.run(
 			None, title, "-", text, False)

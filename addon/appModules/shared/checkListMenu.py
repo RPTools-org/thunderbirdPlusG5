@@ -1,11 +1,12 @@
 # thunderbirdPlusG5/appModules/shared/checkListMenu.py.
 # Written by Abdelkrimt  ALIAS  Abdel
+import addonHandler
+addonHandler.initTranslation()
+
 import wx
 from gui import guiHelper, nvdaControls
 from tones import beep
 
-import addonHandler
-addonHandler.initTranslation()
 
 class CheckListMenu(wx.Dialog):
 
@@ -47,12 +48,12 @@ class CheckListMenu(wx.Dialog):
 	def onOk(self, evt):
 		#  self.frame is the section name in the ini file
 		choices = self.choicesBox.CheckedItems
-		if self.fakeRadioGroups : # list of tuples with indexes 
-			for tuple in self.fakeRadioGroups : 
+		if self.fakeRadioGroups: # list of tuples with indexes 
+			for tuple in self.fakeRadioGroups: 
 				lChecked = []
-				for t in tuple :
-					if t in choices : lChecked.append(t)
-					if len(lChecked) > 1 : 
+				for t in tuple:
+					if t in choices: lChecked.append(t)
+					if len(lChecked) > 1: 
 						self.choicesBox.Select(t)
 						self.choicesBox.SetFocus()
 						return self.displayError(lChecked)
@@ -65,14 +66,14 @@ class CheckListMenu(wx.Dialog):
 			else:
 				self.options.options[self.frame][key] = False
 		self.options.options.write()
-		if self.postFunc :
+		if self.postFunc:
 			self.postFunc(self.frame)
 		self.Close()
 
-	def displayError(self, lstOptions) :
+	def displayError(self, lstOptions):
 		from ui import  browseableMessage
-		msg = _("The options below cannot be checked at the same time :\n")
-		for e in lstOptions :
+		msg = _("The options below cannot be checked at the same time:\n")
+		for e in lstOptions:
 			msg += self._elements[e] + " ; \n"
 		msg += _("Press escape to return to the option list")
 		return browseableMessage (message=msg, title=_("Error in two  options - Thunderbird+G5"), isHtml = False)
