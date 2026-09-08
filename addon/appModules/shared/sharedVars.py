@@ -43,7 +43,7 @@ deleteDelays = [50, 50]
 debugLog = "" 
 
 from tones import beep
-from utils115 import message
+from utils115 import message, getAllIA2Attrs
 import quoteNav
 def initQuoteNav():
 	global oQuoteNav
@@ -101,7 +101,7 @@ def getObjAttrs(o):
 	if hasattr(o, "IA2Attributes"):
 		ID = str(o.IA2Attributes.get("id"))
 	else: ID = ""
-	t =  " {}, ID: {}, States: {}, childCount: {}{},  class: {},".format(o.role.name, ID, states, o.childCount, str(o.windowClassName), nm + val)
+	t =  " {}, ID: {}, States: {}, childCount: {}{},  class: {},".format(o.role.name, ID, states, o.childCount, str(o.windowClassName), nm + val + getAllIA2Attrs(o))
 	return t
 
 

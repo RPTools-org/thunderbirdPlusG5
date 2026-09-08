@@ -133,7 +133,8 @@ def getEnglishLocaleInfo(space="%20") : # iType 1 = country 2=language
 		lcType = languageHandler.LOCALE_SENGLISHCOUNTRYNAME if hasattr(languageHandler, "LOCALE_SENGLISHCOUNTRYNAME") else languageHandler.LOCALE.SENGLISHCOUNTRYNAME
 		ctypes.windll.kernel32.GetLocaleInfoW(lID, lcType,buf, 1024)
 		country = buf.value
-		country = country + " " + lang
+		# %2C is a comma
+		country = country + "%2C" + lang
 		return country.replace(" ", space)
 
 def getMAEUrl() :

@@ -191,6 +191,16 @@ def getIA2Attr(obj,attribute_value=False,attribute_name ="id"):
 	r =obj.IA2Attributes[attribute_name]
 	return r if not attribute_value  else r ==attribute_value
 
+def getAllIA2Attrs(obj) :
+	if not  hasattr (obj,"IA2Attributes") : return ""
+	tAttrs = ""
+	for attrKey, attrValue in obj.IA2Attributes.items():
+		if "id" not in attrKey and "explicit" not in attrKey and "draggable" not in attrKey and "margin" not in attrKey and "text-" not in attrKey :
+			tAttrs = tAttrs + str(attrKey) + " : " + str(attrValue) + ", " 
+	if tAttrs : 
+		return "\n   AllIA2Attrs : " + tAttrs
+	return ""
+
 def setCurFrameTabFromFO(obj):
 	sharedVars.curFrame = "" ; sharedVars.curTab = ""
 	fg = api.getForegroundObject()
@@ -1167,44 +1177,99 @@ def setMLIState(obj):
 	if role == controlTypes.Role.TREEVIEWITEM   and controlTypes.State.EXPANDED not in obj.states:
 		setState(obj, controlTypes.State.EXPANDED)
 # Headers pane utils
-class RecurseHeaders():
-	def	 __init__(self,IDObj, IDLabel, IDName):
-		self.IDObj = IDObj
-		self.IDLabel = IDLabel
-		self.IDName = IDName
-		self.outObj = None
-		self.outLabel = self.outName = ""
-	def run(self,obj): 
-		if obj is None: return
-		obj = obj.firstChild
-		if obj is None: return 
-		while obj is not None:
-			ID =  str(getIA2Attr(obj))
-			if ID.startswith(self.IDObj):
-				if obj.role == controlTypes.Role.LISTITEM: 
-					self.outObj = obj # .parent
-					self.outLabel =  obj.parent.name
-					o = obj
-					while o is not None:
-						n =  self.cleanAddr(o.name)
-						if n: self.outName += n + ";"
-						o = o.next
-					self.outName = self.outName[:-1]
-					return
-				else: # not listitem 
-					self.outObj = obj
-			if ID.startswith(self.IDLabel):
-				self.outLabel = obj.name  
-			if ID.startswith(self.IDName):
-				self.outName = str(obj.name)
-			self.run(obj)
-			obj = obj.next
-		return
-	def cleanAddr(self, nm):
-		sep = " "
-		if "<" in nm and ">" in nm:
-			sep = ">"
-		return  nm.split(sep)[0] + ">"				
+# class RecurseHeaders():
+	# def	 __init__(self,IDObj, IDLabel, IDName):
+		# self.IDObj = IDObj
+		# self.IDLabel = IDLabel
+		# self.IDName = IDName
+		# self.outObj = None
+		# self.outLabel = self.outName = ""
+	# def run(self,obj): 
+		# if obj is None: return
+		# obj = obj.firstChild
+		# if obj is None: return 
+		# while obj is not None:
+			# ID =  str(getIA2Attr(obj))
+			# if ID.startswith(self.IDObj):
+				# if obj.role == controlTypes.Role.LISTITEM: 
+					# self.outObj = obj # .parent
+					# self.outLabel =  obj.parent.name
+					# o = obj
+					# while o is not None:
+						# n =  self.cleanAddr(o.name)
+						# if n: self.outName += n + ";"
+						# o = o.next
+					# self.outName = self.outName[:-1]
+					# return
+				# else: # not listitem 
+					# self.outObj = obj
+			# if ID.startswith(self.IDLabel):
+				# self.outLabel = obj.name  
+			# if ID.startswith(self.IDName):
+				# self.outName = str(obj.name)
+			# self.run(obj)
+			# obj = obj.next
+		# return
+	# def cleanAddr(self, nm):
+		# sep = " "
+		# if "<" in nm and ">" in nm:
+			# sep = ">"
+		# return  nm.split(sep)[0] + ">"				
+
+def trimAddr(addr) : # truncate mail address after >
+	pos = addr.rfind(">")
+	if pos != -1 :
+		return addr[:pos+1]
+	pos = addr.rfind("@")
+	if pos == -1 :
+		return addr
+	pos = addr.find(" ", pos+1)
+	if pos != -1 : 
+		return addr[:pos]
+	return addr
+def getRecipientHeader(oRoot, labelID, objID):
+	if oRoot is None :
+		return "", "", None
+	# attention : objID without de ending digits 
+	firstObjID = objID + "0"
+	label = ""
+	firstObj = None
+	for c in oRoot.recursiveDescendants : 
+		if label and firstObj is not None: break
+		ID = str(getIA2Attr(c))
+		if ID == labelID: label = str(c.name) +": "
+		elif  ID == firstObjID: firstObj = c
+	# end for
+	if firstObj is None: return "", "", None
+	# sharedVars.logte("Label" + label)
+	c = firstObj
+	name = ""
+	while c is not None :
+		if hasID(c, objID) : 
+			# sharedVars.log(c, "toRecipient")
+			name += trimAddr(str(c.name)) + ";"
+		c = c.next
+	# end while
+	return label, name[:-1], firstObj
+
+def getSimpleHeader(oRoot, labelID, objID):
+	if oRoot is None :
+		return "", ""
+	label = ""
+	obj = None
+	for c in oRoot.recursiveDescendants : 
+		if label and obj is not None: break
+		ID = str(getIA2Attr(c))
+		if ID == labelID: label = str(c.name) +": "
+		elif  ID == objID: obj = c
+	# end for
+	if obj is None: return "", "", None
+	# sharedVars.logte("Label" + label)
+	name = ""
+	if hasID(obj, objID) : 
+		# sharedVars.log(c, "toRecipient")
+		name = str(obj.name)
+	return label, name, obj
 
 def getHeader(o, key, repeats=0, say=True):
 	if o is None: return"", ""
@@ -1234,79 +1299,53 @@ def getHeader(o, key, repeats=0, say=True):
 	if o is None:  
 		message(_("The headers are not available"))
 		return "", ""
+	dbg = False if commonVars.cv.logger is None else True
+	import tbLogger
+	
 	role = controlTypes.Role.SECTION
 	ran = False
+	hdrLabel = "" 
+	hdrName = ""
+	hdrObj = None
 	if key == 1: #  from
 		# level 1, idx 0 of 2: Role.SECTION, ID: headerSenderToolbarContainer, childCount: 2
 		o = findChildByRoleID(o, role, "headerSenderToolbarContainer", 0) 
-		# level 2, idx 1 of 8: Role.SECTION, ID: expandedfromRow, childCount: 2
-		# level 3, idx 0 of 1: Role.LABEL, ID: expandedfromLabel, childCount: 1
-		# name: From
-		# level 3, idx 1 of 1: Role.SECTION, ID: expandedfromBox, childCount: 1
-		# level 4, idx 0 of 1: Role.LIST, ID: None, childCount: 1
-		# name: From
-		# level 5, idx 0 of 2: Role.LISTITEM, ID: fromRecipient0, childCount: 2
-		# name: Lav <progliste@framalistes.org> Not in the Address Book
-		oHeader = RecurseHeaders("fromRecipient0", "dummy", "dummy")
-	elif key == 3: # date 
-		o = findChildByRoleID(o, role, "expandedtoRow", 1) 
-
-		oHeader = RecurseHeaders("dateLabel", "dummy", "dummy")
-		oHeader.run(o)
-		oHeader.outName =str(oHeader.outObj.firstChild.name) 
-		return message(oHeader.outName)
-	elif key == 4: # to
-		o = findChildByRoleID(o, role, "expandedtoRow", 1) 
-		oHeader = RecurseHeaders("toRecipient0", "expandedtoLabel", "dummy")
-		# level 1, idx 1 of 2: Role.SECTION, ID: expandedtoRow, childCount: 3
-		# level 2, idx 0 of 1: Role.LABEL, ID: expandedtoLabel, childCount: 1
-		# name: To
-		# level 3, idx 0 of 0: Role.STATICTEXT, ID: None, childCount: 0
-		# name: To
-		# level 2, idx 1 of 1: Role.SECTION, ID: expandedtoBox, childCount: 1
-		# level 3, idx 0 of 1: Role.LIST, ID: None, childCount: 1
-		# name: To
-		# level 4, idx 0 of 2: Role.LISTITEM, ID: toRecipient0, childCount: 2
-		# name: Yannick  <progliste@framalistes.org> Not in the Address Book
-	elif key == 5: # CC:
-		o = findChildByRoleID(o, role, "expandedccRow", 2) 
-		oHeader = RecurseHeaders("ccRecipient0", "expandedccLabel", "dummy")
-		# level 1, idx 2 of 2: Role.SECTION, ID: expandedccRow, childCount: 2
-		# level 2, idx 0 of 1: Role.LABEL, ID: expandedccLabel, childCount: 1
-		# name: Cc
-		# level 3, idx 0 of 0: Role.STATICTEXT, ID: None, childCount: 0
-		# name: Cc
-		# level 2, idx 1 of 1: Role.SECTION, ID: expandedccBox, childCount: 1
-		# level 3, idx 0 of 2: Role.LIST, ID: None, childCount: 2
-		# name: Cc
-		# level 4, idx 0 of 3: Role.LISTITEM, ID: ccRecipient0, childCount: 3
-		# name: Vincent  <vincent@xx> In the Address Book
-	elif key == 6: # BCC:
-		o = findChildByRoleID(o, role, "expandedbccRow", 2) 
-		oHeader = RecurseHeaders("bccRecipient0", "expandedbccLabel", "dummy")
+		if dbg: commonVars.cv.logger.addobj(o, "getHeader from, headerSenderToolbarContainer") 
+		# new version 2026-09-03 
+		hdrLabel, hdrName, hdrObj = getRecipientHeader(o, "expandedfromLabel", "fromRecipient")
 	elif key == 2: # subject
 		o = findChildByRoleID(o, role, "headerSubjectSecurityContainer", 0) 
-		if o is None:
-			beep(100, 20)
-			return None
-		oHeader = RecurseHeaders("expandedsubjectBox", "expandedsubjectLabel", "dummy")
-		oHeader.run(o)
-		temp  = str(oHeader.outObj.name)
-		pos =  temp.find(":")
-		if pos > -1: oHeader.outName = temp[pos+1:].strip()
-		else: oHeader.outName = temp
-		ran =  True
-		# level 1, idx 2 of 2: Role.SECTION, ID: headerSubjectSecurityContainer, childCount: 1
-		# level 2, idx 0 of 2: Role.SECTION, ID: expandedsubjectRow, childCount: 2
-		# level 3, idx 0 of 1: Role.LABEL, ID: expandedsubjectLabel, childCount: 1
-		# name: Subject
-		# level 4, idx 0 of 0: Role.STATICTEXT, ID: None, childCount: 0
-		# name: Subject
-		# level 3, idx 1 of 1: Role.SECTION, ID: expandedsubjectBox, childCount: 1
-		# name: Subject: Re: [progliste] application trop complexe dès le départ
-		# level 4, idx 0 of 0: Role.STATICTEXT, ID: None, childCount: 0
-		# name: Re: [progliste] application trop complexe dès le départ
-	# elif key == 9: # attachments
+		hdrLabel, hdrName, hdrObj = getSimpleHeader(o, "expandedsubjectLabel", "expandedsubjectBox")
+		# remove "subject:" from the subject
+		pos =  hdrName.find(":")
+		if pos > -1:  hdrName = hdrName[pos+1:].strip()
+		# subject has no doAction attribute
+		if repeats == 2:
+			hdrObj.setFocus()
+			wx.CallAfter(message, hdrName)
+			KeyboardInputGesture.fromName("applications").send()
+			return ""
+	elif key == 3: # date 
+		o = findChildByRoleID(o, role, "expandedtoRow", 1) 
+		# hdrLabel= ""
+		# hdrName = ""
+		if  o : 
+			for c in o.recursiveDescendants :
+				if hdrName : break
+				if hasID(c, "dateLabel"): hdrName = str(c.firstChild.name)
+			# end for
+		return message(hdrLabel + hdrName)
+	elif key == 4: # to
+		o = findChildByRoleID(o, role, "expandedtoRow", 1) 
+		# new version 2026-09-03 
+		hdrLabel, hdrName, hdrObj = getRecipientHeader(o, "expandedtoLabel", "toRecipient")
+	elif key == 5: # CC:
+		o = findChildByRoleID(o, role, "expandedccRow", 2) 
+		hdrLabel, hdrName, hdrObj = getRecipientHeader(o, "expandedccLabel", "ccRecipient")
+	elif key == 6: # BCC:
+		o = findChildByRoleID(o, role, "expandedbccRow", 2) 
+		hdrLabel, hdrName, hdrObj = getRecipientHeader(o, "expandedbccLabel", "bccRecipient")
+	# elif key == 9: # attachments: not implemented here
 	elif key == 0: # tags
 		# level 9,          4 of 10, Role.SECTION, IA2ID: expandedtagsRow, left:232 Tag: div, States: , childCount: 1 Path: Role-FRAME| i31, Role-GROUPING, , IA2ID: tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID: mail3PaneTab1 | i0, Role-INTERNALFRAME, , IA2ID: mail3PaneTabBrowser1 | i0, Role-GROUPING,  | i4, Role-SECTION, , IA2ID: messagePane | i0, Role-INTERNALFRAME, , IA2ID: messageBrowser | i0, Role-GROUPING,  | i13, Role-LANDMARK, , IA2ID: messageHeader | i4, Role-SECTION, , IA2ID: expandedtagsRow , IA2Attr: id: expandedtagsRow, display: flex, class: message-header-row, tag: div,  ;
 		o = findChildByRoleID(o,controlTypes.Role.SECTION, "expandedtagsRow")
@@ -1320,29 +1359,25 @@ def getHeader(o, key, repeats=0, say=True):
 			o = o.next
 		return message(t)
 	else: # extra headers
-		return message(u"entête non encore implémenté")
-		# level 1, idx 3 of 2: Role.SECTION, ID: extraHeadersArea, childCount: 0
+		return message(_("blank"))
 		# End of Header list
-	# execution
-	if not ran:
-		oHeader.run(o)
-	if not oHeader.outObj: 
+	if not hdrName: 
 		headerLabels = _("void,From,Subject: ,Date,To,CC,BCC,Reply to") 
 		headerNotFound = _("The {0} header is missing from this message.")
 		if say: message(headerNotFound.format(headerLabels.split(",")[key]))
-		try: return  oHeader.outLabel, oHeader.outName
-		except: return "", ""
+		return  hdrLabel, hdrName
 	if repeats == 0:
 		if say:
-			oHeader.outLabel += ("" if not oHeader.outLabel else ": ") 
-			message(oHeader.outLabel + oHeader.outName)
+			message(hdrLabel + hdrName)
 		else:
-			return oHeader.outLabel, oHeader.outName
+			return hdrLabel, hdrName, hdrObj
 	elif repeats == 1:
-		CallLater(100, utis.inputBox , label=oHeader.outLabel, title= oHeader.outLabel + ": " + _("Copy to clipboard"), postFunction=None, startValue=oHeader.outName)
+		CallLater(100, utis.inputBox , label=hdrLabel, title=hdrLabel + ": " + _("Copy to clipboard"), postFunction=None, startValue=hdrName)
 	else:
-		try: oHeader.outObj.doAction()
-		except: clickObject(oHeader.outObj, False) # right click
+		try: 
+			hdrObj.doAction()
+		except: 
+			clickObject(hdrObj, False) # right click
 	return  ""
 
 def getAttachment(oFocus=None, repeats=0):
@@ -1382,6 +1417,10 @@ def getAttachment(oFocus=None, repeats=0):
 					oList = o.parent.lastChild
 				break
 			o = o.next
+		if oList is None :
+			# message("No attachment")
+			return
+
 	# 2: search again from oStart
 	text =  ""
 	o = oStart
@@ -1395,6 +1434,7 @@ def getAttachment(oFocus=None, repeats=0):
 		o = o.next
 	if repeats == 0:
 		text += ", "
+				
 		o = oList.firstChild
 		while o is not None: 
 			text += str(o.name) + ", "

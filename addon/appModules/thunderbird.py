@@ -330,7 +330,7 @@ class AppModule(thunderbird.AppModule):
 
 	# ====
 	def initTimer(self):
-		if self.timer is not None:
+		if self.timer is not None and self.timer.IsRunning():
 			self.timer.Stop()
 			self.timer = None
 
@@ -511,6 +511,13 @@ class AppModule(thunderbird.AppModule):
 				return nextHandler()
 			else:
 				return wx.CallAfter(sharedVars.oQuoteNav.readMail, obj, obj, rev=False, spkMode=1) # spkMode=1: with utils.sayLongText,  =10 with ui.message
+		# column headers  on top of message list
+		if sharedVars.curTab == "main" :
+			if role == controlTypes.Role.BUTTON :
+				ID = str(utils.getIA2Attr(obj))
+				if "Col" in ID :
+					wx.CallAfter(sayColumnOrder, obj, ID)
+					return nextHandler()
 		if sharedVars.curTab == "sp:addressbook" and sharedVars.TBMajor > 127:
 			messengerWindow.tabAddressBook.abGainFocus(obj)
 
@@ -1051,11 +1058,14 @@ class AppModule(thunderbird.AppModule):
 	)
 	def script_sharedAltN(self, gesture):
 		fo = api.getFocusObject()
+		if fo and fo.role == controlTypes.Role.MENU: return
+		self.initTimer () # cancels running timer
+		rc = int(getLastScriptRepeatCount())
 		ID = str(utils.getIA2Attr(fo))
 		parID = str(utils.getIA2Attr(fo.parent))
 		# sharedVars.logte("SharedAltN parentID=" + parID)
-		rc = int(getLastScriptRepeatCount())
 		mk = int(gesture.mainKeyName)
+		# compose window
 		if parID in ("MsgHeadersToolbar", "messageEditor"):
 			# self.initTimer ()
 			if rc > 0:
@@ -1064,15 +1074,12 @@ class AppModule(thunderbird.AppModule):
 				self.timer = wx.CallLater(10, msgComposeWindow.msgComposeWindow.getComposeHeader, fo, mk, rc)
 			return
 		elif ID.startswith("threadTree") or parID == "messagepane":
+			# message list
 			if ID.startswith("threadTree") and controlTypes.State.SELECTED not in fo.states: # for TB 128
 				fo.doAction()
-			self.initTimer ()
-			if rc> 1: # 3 press, force update
-				self.timer = wx.CallLater(10, utils.getHeader, fo, mk, rc)
-			elif rc == 1: # 1 press: search new update 
-				self.timer = wx.CallLater(300, utils.getHeader, fo, mk, rc)
-			elif rc == 0: # 1 press: search new update 
-				self.timer = wx.CallLater(10, utils.getHeader, fo, mk, rc)
+				sleep(0.1)
+			delay = 10 if rc == 0 else 300
+			self.timer = wx.CallLater(delay, utils.getHeader, fo, mk, rc)
 
 	@script(
 		description= _("Thunderbird+G5: alt arrow gestures, do not change"),
@@ -1673,3 +1680,22 @@ def getComposingDoc():
 	o = utils.getChildByRoleIDName(o, controlTypes.Role.DOCUMENT, ID="", name="", idx=0)
 	if o is None: return None, errMsg + " document."
 	return o, "document found"
+
+def sayColumnOrder(oCol, colID) :
+	if oCol is None : return
+	# Different roles between old and new version of TB :
+	# TB < 155 :  level -1 TABLECOLUMNHEADER, ID: statusCol, States:   In screen   , childCount: 2MozillaWindowClass,  TB < 155 :  level -1 TABLECOLUMNHEADER, ID: statusCol, States:   In screen   , childCount: 2MozillaWindowClass, name: Statut
+	# TB 155: level -1 TEXTFRAME, ID: statusCol, States:   In screen   , childCount: 2MozillaWindowClass, name: Statut
+	# in old versions, the index of moved col is announced, not from versions 15x
+	if  oCol.parent.role == controlTypes.Role.TABLECOLUMNHEADER : return
+	# TB 155 : level -2 TOOLBAR, ID: None, States:   In screen   , childCount: 8MozillaWindowClass,  class: ,
+	oTextFrame = oCol.parent.parent.firstChild
+	i = 1
+	while oTextFrame is not None:
+		tfID = str(utils.getIA2Attr(oTextFrame))
+		if tfID in colID :
+			message(str(i))
+			return
+		i += 1
+		oTextFrame = oTextFrame.next
+	# end for

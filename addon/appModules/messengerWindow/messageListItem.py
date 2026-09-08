@@ -637,10 +637,15 @@ class MessageListItem(IAccessible):
 	# script_toggleJunk.category=sharedVars.scriptCategory
 
 	def script_goGroupedFirst(self, gesture):
-		colIndex = getTotalCol(self)
-		if colIndex == -1:
+		if self.role != controlTypes.Role.TREEVIEWITEM :
 			return gesture.send()
-		n =getThreadMsgCount(self, colIndex)
+		colIndex = getColIndex(self, "totalcol")
+		if colIndex == -2: # a new attribute does not exist 
+			# we call the old version
+			colIndex = getTotalCol(self)
+		if colIndex == -1:
+			return beep(100, 30)# gesture.send()
+		n = getThreadMsgCount(self, colIndex)
 		if n == 1: return gesture.send()
 		# if n > 1 and  controlTypes.State.COLLAPSED in self.states:
 			# self.doAction() # expand
@@ -658,7 +663,14 @@ class MessageListItem(IAccessible):
 			oFound.doAction()
 
 	def script_goGroupedLast(self, gesture):
-		colIndex = getTotalCol(self)
+		if self.role != controlTypes.Role.TREEVIEWITEM :
+			return gesture.send()
+		colIndex = getColIndex(self, "totalcol")
+		if colIndex == -2: # a new attribute does not exist 
+			# we call the old version
+			colIndex = getTotalCol(self)
+		if colIndex == -1:
+			return beep(100, 30)# gesture.send()
 		if colIndex == -1:
 			return gesture.send()
 		n =getThreadMsgCount(self, colIndex)
@@ -992,21 +1004,41 @@ def getTotalCol(oCurRow):
 		return -1
 	oRows = None
 	o = commonVars.cv.threadTree .firstChild
+	sharedVars.log(o, "begin loop 1 in") 
 	while o is not None:
-		# sharedVars.log(o, "getTotalCol first child=")
+		sharedVars.log(o, "getTotalCol loop1, first child=")
+		# if utils.hasID(o, "totalCol") :
 		if o.role == controlTypes.Role.TABLEROW:
 			oRows = o
 			break
 		o = o.firstChild
 	if not oRows: return -1
+	sharedVars.log(o, "loop 2 in row descendants")
 	o = oRows.firstChild
 	i = 0
 	while o is not None:
-		# sharedVars.log(o, "getTotalCol tableRow child=")
+		sharedVars.log(o, "getTotalCol loop 2 tableRow child=")
 		if utils.hasID(o, "totalCol"): 
 			return i
 		o = o.next
 		i += 1
-
 	return -1
 	
+def getColIndex(oRow, colID):
+	col = oRow.firstChild
+	# check if the "table-cell-index" attribute exists. It  exists from TB 128 and does not exist in older versions of TB.
+	if not  hasattr (col,"IA2Attributes") and "table-cell-index" in col.IA2Attributes.keys ():
+		return -2
+	idx = 0
+	while col is not None:
+		# colName = col.name
+		# colIdx = str(utils.getIA2Attr(col, False, "table-cell-index"))
+		colClass = str(utils.getIA2Attr(col, False, "class"))
+		# s = "Columns, colName: {}, colIdx: {}, colClass: {}".format(colName, colIdx, colClass)
+		# sharedVars.logte(s)
+		if colID in colClass : 
+			# sharedVars.logte("returned=" + str(idx))
+			return idx
+		idx +=1 
+		col = col.next
+	return -1
