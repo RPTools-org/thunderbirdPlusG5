@@ -1,9 +1,11 @@
 #-*- coding:utf-8 -*
 from re import compile, IGNORECASE
+startFromPasswordDlg = False
 debug = False
 logEvents = False
 logSpeech = False
 starting = True
+disabMode =  0
 regExp_nameListGroup, regExp_AnnotationResponse, regExp_mailAddress  = compile ("\[.*\]|\{.*\}"), compile("re[ ]*:[ ]", IGNORECASE), compile("\S+?@\S+?\.\S+")
 regExp_mailAddr = compile("\s*<[^>]+>") # v2512.01
 # regExp_listGroupName = compile ("\[(.*)\]") # |\{?*\}") # first occurrence of the list group name

@@ -60,9 +60,6 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 	def __init__(self, *args, **kwargs):
 		super (GlobalPlugin, self).__init__(*args, **kwargs)
-		hTaskBar = ctypes.windll.user32.FindWindowExA(None, None, b"Shell_TrayWnd", None)
-		if not hTaskBar or  globalVars.appArgs.launcher : 
-			return
 		
 	# def initTimer(self):
 		# if self.timer is not None:
@@ -71,11 +68,13 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 
 
 	def event_foreground(self, obj, nextHandler) :
-		if obj.role != controlTypes.Role.FRAME : # not in (controlTypes.Role.PANE, controlTypes.Role.FRAME, controlTypes.Role.WINDOW) :
-			return nextHandler()
+		# if obj.role == controlTypes.Role.FRAME and obj.name.endswith("- Mozilla Thunderbird"):
+			# return nextHandler()
 
-		if commonVars.cv.propertyPage  and not winUtils.findWindowByPartialTitle(" - Mozilla Thunderbird") : # Thunderbird was closed
-			commonVars.cv.reset()
+		if commonVars.cv.propertyPage  : # TB main window was displayed  before 
+			if winUtils.findWindowByProcessName("thunderbird.exe") == 0: # Thunderbird was closed
+				# beep(80, 50)
+				commonVars.cv.reset()
 		nextHandler()
 	
 
@@ -109,7 +108,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	)
 	def script_toggleSpeechMode(self, gesture) :
 		globalCommands.commands.script_speechMode(gesture)
-		commonVars.cV.defaultSpeechMode =  speech.getState().speechMode
+		commonVars.cv.defaultSpeechMode =  speech.getState().speechMode
 
 	@script(
 		gesture=gestureFromScanCode(41, "kb:control+alt+"),
@@ -119,10 +118,14 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 	def script_startTB(self, gesture) :
 		forced = False if getLastScriptRepeatCount() == 0 else True
 		if not forced :
-			hWindowList = winUtils.findWindowByPartialTitle(" - Mozilla Thunderbird")
-			if hWindowList :
-				hWindowList.sort(reverse=False)				
-				winUser.setForegroundWindow(hWindowList[0])
+			objList = winUtils.findTBWindowObjects(winTitle=" - Mozilla Thunderbird", mainOnly=True)
+			hwnd = 0
+			if objList and len(objList) > 0: 
+				hwnd = objList[0].windowHandle
+			
+			if hwnd:
+				winUtils.restoreAndFocusWindow(hwnd)
+				# commonVars.cv.reset()
 				# ui.message("Title : {}, hWindow : {}".format(winUser.getWindowText(hWindow), hWindow))
 				return
 			# focusTaskButton()

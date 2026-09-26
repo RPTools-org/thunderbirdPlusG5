@@ -75,6 +75,8 @@ def  selectTab(oFrame, index):
 	#  returns True if tab is changd 
 	if not oFrame:
 		oFrame = 	getForegroundObject()
+	# default curtab and curFrame for the case the tabs are not displayed
+	sharedVars.curTab = "main" ; sharedVars.curFrame = "messengerWindow"
 	oTab , idx, lastIdx = findCurTab(oFrame)
 	if not oTab or idx == -1: # not in main window
 			return False # tab not changed

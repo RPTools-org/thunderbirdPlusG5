@@ -1,4 +1,4 @@
-# ThunderbirdPlusG5 for Thunderbird >= 115
+ # ThunderbirdPlusG5 for Thunderbird >= 115
 import sys
 import addonHandler
 addonHandler.initTranslation()
@@ -91,7 +91,7 @@ def sayWinTitle():
 	speech.setSpeechMode(commonVars.cv.defaultSpeechMode)
 	speech.cancelSpeech()
 	message(utis.getWinTitle(appName=False))
-	sleep(0.8)
+	sleep(1.5)
 	speech.setSpeechMode(prevSpeechMode)
 
 def applyFocusModeFromThreadTree(focusMode):
@@ -144,24 +144,28 @@ def applyFocusMode():
 		# role = controlTypes.Role.TREEVIEW
 		# applyFocusModeFromFolderTree(focusMode)
 
-def processTrees(oFolders, oThreads):
-	if sharedVars.mainTabInit: return
-	sharedVars.mainTabInit= True
-	sharedVars.starting = False
-	onStartupAction  = sharedVars.oSettings.getOption("messengerWindow","onStartupAction", kind="i")
-	match onStartupAction:
-		case 0: # do nothing
-			return
-		case 1: # apply option below
-			focusMode  = sharedVars.oSettings.getOption("messengerWindow","focusMode", kind="i")
-		case 2: # Show All inboxes menu
-			callLater(100, messengerWindow.folderTreeItem.fMenuInboxes, unread=False)
-		case 3: # Show all unread inboxes menu
-			callLater(100, messengerWindow.folderTreeItem.fMenuInboxes, unread=True)
-		case 4: # Show All unread folders menu
-			wx.CallLater(50, messengerWindow.folderTreeItem.fMenuAllFolders, unRead=True)
-		case 5: # Show all folders menu 
-			wx.CallLater(50, messengerWindow.folderTreeItem.fMenuAllFolders, unRead=False)
+# def processTrees(oFolders, oThreads):
+	# if sharedVars.mainTabInit: return
+	# sharedVars.mainTabInit= True
+	# sharedVars.starting = False
+	# fo = api.getFocusObject()
+	# sharedVars.log(fo, "ProcessTree begin")
+	# if utils.hasID(fo, "threadTree-row") or utils.isFolderTree(fo):
+		# return
+	# onStartupAction  = sharedVars.oSettings.getOption("messengerWindow","onStartupAction", kind="i")
+	# match onStartupAction:
+		# case 0: # do nothing
+			# return
+		# case 1: # apply option below
+			# focusMode  = sharedVars.oSettings.getOption("messengerWindow","focusMode", kind="i")
+		# case 2: # Show All inboxes menu
+			# callLater(100, messengerWindow.folderTreeItem.fMenuInboxes, unread=False)
+		# case 3: # Show all unread inboxes menu
+			# callLater(100, messengerWindow.folderTreeItem.fMenuInboxes, unread=True)
+		# case 4: # Show All unread folders menu
+			# wx.CallLater(50, messengerWindow.folderTreeItem.fMenuAllFolders, unRead=True)
+		# case 5: # Show all folders menu 
+			# wx.CallLater(50, messengerWindow.folderTreeItem.fMenuAllFolders, unRead=False)
 
 class ListTreeView(IAccessible):
 	def initOverlayClass (self):
@@ -212,29 +216,28 @@ class AppModule(thunderbird.AppModule):
 	counter = 0
 
 	def __init__(self, *args, **kwargs):
-		speech.cancelSpeech()
 		super(thunderbird.AppModule, self).__init__(*args, **kwargs)
-		self.logEvents = False
-		# Thunderbird+G5
-		if self.logEvents: sharedVars.logte("Thunderbird+G5 _init")
-		utis.disableOvl(True) # set objLooping = True
-		commonVars.cv.defaultSpeechMode = utis.getSpeechMode()
-		self.disabMode = 0
-		# self.columnID= []
-		sharedVars.initSettingsMenu(self) # then use  sharedVars.oSettings.*
-		# initQuotenav  will be run at first use of quote Navigator >sharedVars.initQuoteNav() # then use  sharedVars.oQuoteNav.*		self.regExp_date =compile ("^(\d\d/\d\d/\d{4} \d\d:\d\d|\d\d:\d\d)$")
-		# all  self.regExp moved to sharedVars
-		commonVars.cv.reset() # grouping, folderTree, threadTree, etc.
-		sharedVars.curFrame = "unknown"
-		sharedVars.curTab = "unknown"
-		self.startupAction = sharedVars.oSettings.getOption("messengerWindow","onStartupAction", kind="i") 
-		self.startupFocusMode = sharedVars.oSettings.getOption("messengerWindow","focusMode", kind="i") 
-		if self.logEvents: 
+		# note : api.getForegroundObject returns  the window that is actually in the foreground right now
+		processName =  utis.getProcessName(api.getForegroundObject().windowHandle)
+		# sharedVars.logte("processName=" + str(processName))
+
+		if processName != "thunderbird.exe":	
+			# beep(600, 50)
+			sharedVars.logEvents = False
+			if sharedVars.logEvents: sharedVars.logte("Thunderbird+G5 _init")
+			utis.disableOvl(True) # set objLooping = True
+			commonVars.cv.defaultSpeechMode = utis.getSpeechMode()
+			sharedVars.initSettingsMenu(self) # then use  sharedVars.oSettings.*
+			commonVars.cv.reset() # grouping, folderTree, threadTree, etc.
+			sharedVars.curFrame = "unknown"
+			sharedVars.curTab = "unknown"
+			self.startupAction = sharedVars.oSettings.getOption("messengerWindow","onStartupAction", kind="i") 
+			self.startupFocusMode = sharedVars.oSettings.getOption("messengerWindow","focusMode", kind="i") 
+			if sharedVars.logEvents: 
 				sharedVars.logte("Call of self.tbStartup")
 				sleep(0.2)
-		callLater(1500, self.tbStartup)
+			callLater(1500, self.tbStartup)
 
-	
 	def waitForTree(self, oFrame):
 		dbg = False if commonVars.cv.logger is None else True
 		if dbg: commonVars.cv.logger.add("waitForTree pass=" + str(sharedVars.loopCount))
@@ -276,6 +279,14 @@ class AppModule(thunderbird.AppModule):
 			commonVars.cv.logger.addobj(oFrame, "processTrees, Frame")
 			commonVars.cv.logger.addobj(oFolders, "processTrees, FolderTree")
 			commonVars.cv.logger.addobj(oThreads, "processTrees, ThreadTree")
+
+		fo = api.getFocusObject()
+		# sharedVars.log(fo, "ProcessTree begin")
+		if utils.hasID(fo, "threadTree-row") or utils.isFolderTreeItem(fo):
+			self.endStartup()
+			utils.message(fo.name)
+			return
+
 		match self.startupAction:
 			case 0: # do nothing
 				return self.endStartup()
@@ -306,20 +317,34 @@ class AppModule(thunderbird.AppModule):
 		sharedVars.starting = False
 		sharedVars.mainTabInit = True 
 		sharedVars.objLooping = False
-		# utis.setSpeechMode(commonVars.cv.defaultSpeechMode) # defaultSpeechMode saved in __init__()
-		utis.setSpeech(True)
+		utis.setSpeechMode(commonVars.cv.defaultSpeechMode) # defaultSpeechMode saved in __init__()
 
 	def tbStartup(self):
 		dbg = False
+		oFrame = api.getForegroundObject()
+		oFocused = None
+		sharedVars.startFromPasswordDlg = False
+		if str(oFrame.parent.windowClassName) == "MozillaDialogClass":
+			sharedVars.curFrame = "firstDlg"
+			sharedVars.curTab = "firstDlg"
+			for c in oFrame.recursiveDescendants: 
+				if c.role == controlTypes.Role.EDITABLETEXT:
+					c.setFocus()
+					oFocused = c
+					break
+			if oFocused and oFocused.role == controlTypes.Role.EDITABLETEXT and utils.hasID(oFocused, "password1Textbox"):
+				sharedVars.startFromPasswordDlg = True
+				sharedVars.curFrame = "passwordDlg"
+				sharedVars.curTab = "passwordDlg"
+				sharedVars.log(oFocused, "Dialog before main window, focusObject")
+				# wx.CallAfter(utils.message, oFocused.role.displayString)
+				return
+		# normal window
 		oFocused = api.getFocusObject()
-		if self.logEvents: sharedVars.log(oFocused, "tbStartup oFocused, curTab=" + sharedVars.curTab) 
-		# # if oFocused.role !=  controlTypes.Role.FRAME:
-			# return
-		# message(controlTypes.State.BUSY.displayString)
-		# if sharedVars.curFrame != "unknown" and sharedVars.curTab != "unknown":
-			# return
-
-		utis.setSpeech(False)
+		if sharedVars.logEvents: 
+			sharedVars.log(oFocused, "tbStartup oFocused, curTab=" + sharedVars.curTab) 
+			if dbg: sharedVars.log(api.getForegroundObject().parent, "tbStartup foreground.parent, curTab=" + sharedVars.curTab) 
+		# utis.setSpeech(False)
 		if dbg: sharedVars.debugLog = "Start of Thunderbird+G5\n"
 		
 		# sharedVars.logte("Before first waitForTree")
@@ -328,14 +353,13 @@ class AppModule(thunderbird.AppModule):
 		oFrame = api.getForegroundObject()
 		callLater(300, self.waitForTree, oFrame)  
 
-	# ====
 	def initTimer(self):
 		if self.timer is not None and self.timer.IsRunning():
 			self.timer.Stop()
 			self.timer = None
 
 	def chooseNVDAObjectOverlayClasses(self, obj, clsList):
-		if sharedVars.objLooping  or self.disabMode == 1: return
+		if sharedVars.objLooping  or sharedVars.disabMode == 1: return
 		role = obj.role
 		ID = str(utils.getIA2Attr(obj))
 		# write or spellCheck dialog
@@ -386,8 +410,16 @@ class AppModule(thunderbird.AppModule):
 				clsList.insert (0, TabAddons)
 
 	def event_foreground(self, obj,nextHandler):
+		if sharedVars.startFromPasswordDlg:
+			# beep(300, 40)
+			speech.cancelSpeech()
+			# utils.message("Thunderbird") # utis.getWinTitle(appName=True))
+			# utis.setSpeech(False)
+			callLater(500, self.tbStartup)
+			return nextHandler()
+
 		role = obj.role
-		if self.logEvents: sharedVars.log(obj, "* Event foreground start:" )
+		if sharedVars.logEvents: sharedVars.log(obj, "* Event foreground start:" )
 		if role == controlTypes.Role.FRAME and  sharedVars.replyTo:
 			# for smartReply
 			sharedVars.replyTo = False
@@ -471,12 +503,14 @@ class AppModule(thunderbird.AppModule):
 		nextHandler()
 
 	def event_gainFocus (self,obj,nextHandler):
-		if self.logEvents: sharedVars.log(obj, "Event gainFocus start: ")
+		if sharedVars.logEvents: sharedVars.log(obj, "Event gainFocus start: ")
 		# if sharedVars.speechOff:
 			# speech.setSpeechMode(commonVars.cv.defaultSpeechMode)
 			# sharedVars.speechOff = False
 		if sharedVars.curTab == "comp":
-			return nextHandler()
+			# the try except is needed when NVDA is restarted on th writ window
+			try : return nextHandler()
+			except : pass
 		role = obj.role
 		if sharedVars.delPressed and role == controlTypes.Role.POPUPMENU and  utils.hasID(obj, "mailContext"):
 			sharedVars.delPressed = False
@@ -488,7 +522,7 @@ class AppModule(thunderbird.AppModule):
 			# if role == controlTypes.Role.TABLE:
 				# callLater(100, self.focusMessageItem, "gainFocus", time(), obj)
 			# return nextHandler()
-		# if self.disabMode == 3: return nextHandler()
+		# if sharedVars.disabMode == 3: return nextHandler()
 		# api.setNavigatorObject(obj) # 2311.12.08
 		if sharedVars.menuClosing and role == controlTypes.Role.TREEVIEWITEM:
 			sharedVars.menuClosing = False
@@ -524,7 +558,7 @@ class AppModule(thunderbird.AppModule):
 		nextHandler()
 		
 	def event_focusEntered (self,obj,nextHandler):
-		if self.logEvents: sharedVars.log(obj, "Event focusEntered start: ")
+		if sharedVars.logEvents: sharedVars.log(obj, "Event focusEntered start: ")
 		role, ID  = obj.role, str(utils.getIA2Attr(obj))
 		if role == controlTypes.Role.SECTION and  ID == "composeContentBox": 
 			sharedVars.curFrame = "msgcomposeWindow"
@@ -714,7 +748,7 @@ class AppModule(thunderbird.AppModule):
 			# sharedVars.objLooping = False
 			
 	def event_stateChange(self,obj,nextHandler):
-		if self.logEvents: sharedVars.log(obj, "Event stateChange start: ")
+		if sharedVars.logEvents: sharedVars.log(obj, "Event stateChange start: ")
 		if obj.role == controlTypes.Role.TAB and controlTypes.State.SELECTED in obj.states:
 			# sharedVars.log(api.getFocusObject(), "event_stateChange")
 			if utils.hasID(obj.parent, "tabmail-tabs"):
@@ -1339,11 +1373,12 @@ class AppModule(thunderbird.AppModule):
 
 	@script(
 		description= _("Navigates through quotes in a message"),
-		gestures=["kb:windows+downArrow", "kb:windows+upArrow", "kb:windows+leftArrow", "kb:windows+rightArrow"]
+		category=sharedVars.scriptCategory,
+		gestures=["kb:control+windows+downArrow", "kb:control+windows+upArrow", "kb:control+windows+leftArrow", "kb:control+windows+rightArrow"]
 	)
 	def script_sharedWinArrow(self, gesture):
 		# quote navigator
-		#beep(440, 5)
+		beep(440, 5)
 		mainKey = gesture.mainKeyName
 		if not sharedVars.oQuoteNav:
 			return message(_("Press alt+upArrow before navigating through quotes in a message."))
@@ -1484,11 +1519,11 @@ class AppModule(thunderbird.AppModule):
 			message("Debug Microsoft Headers    is  enabled")
 
 
-		# if self.logEvents:
-			# self.logEvents = False
+		# if sharedVars.logEvents:
+			# sharedVars.logEvents = False
 			# message("logEvents mode is disabled")
 		# else:
-			# self.logEvents = True
+			# sharedVars.logEvents = True
 			# message("logEvents mode is enabled")
 
 	__gestures = {
