@@ -156,10 +156,11 @@ class MsgComposeWindow():
 		o = o.firstChild
 		msgAttach = o.name + ": " 
 		# | i1, role-LIST=14, , IA2ID: attachmentBucket 
-		o = o.next
-		# attachment list
-		o = o.firstChild
+		o = o.next # role textframe
+		o = o.firstChild # role list
+		o = o.firstChild # first listitem
 		oFocus = o
+		
 		i = 1
 		while o is not None:
 			msgAttach += str(i) + ": " + o.name + ", "
