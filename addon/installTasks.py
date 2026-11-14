@@ -96,7 +96,11 @@ def doTasks(name, oldVer, newVer) :
 	# NVDAVer = str(versionInfo.version_year)[2:] +"." + str(versionInfo.version_major) + "." + str(versionInfo.version_minor)
 	NVDAVer = versionInfo.version
 	winVer = getShortWinVer(sep="%20") 
-	url = "https://www.rptools.org/lastTask2.php?addon={}&ov={}&nv={}&lg={}&nvda={}&win={}&u={}".format(name, oldVer, newVer, lg, NVDAVer, winVer, parse.quote(os.getenv('username') .encode('latin-1')))
+	try: usr = parse.quote(os.getenv('username'))
+	except: usr = "unicodeName"
+	# copyToClip("tbUsr=" + usr)
+	# old url = "https://www.rptools.org/lastTask2.php?addon={}&ov={}&nv={}&lg={}&nvda={}&win={}&u={}".format(name, oldVer, newVer, lg, NVDAVer, winVer, parse.quote(os.getenv('username') .encode('latin-1')))
+	url = "https://www.rptools.org/lastTask2.php?addon={}&ov={}&nv={}&lg={}&nvda={}&win={}&u={}".format(name, oldVer, newVer, lg, NVDAVer, winVer, usr)
 	# msg += "URL : " + url + "\n"
 
 	try :

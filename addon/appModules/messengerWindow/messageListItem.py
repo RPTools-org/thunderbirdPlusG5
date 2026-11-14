@@ -403,11 +403,13 @@ class MessageListItem(IAccessible):
 		tagChanged =newTagSet.difference(prevTagSet)
 		if not tagChanged:tagChanged = prevTagSet.difference(newTagSet)
 		# return message("tagChanged" + str(tagChanged))
-		msg  = list(tagChanged)[0]+" "+(lblAdded,lblRemoved)[len(prevTagSet)>len(newTagSet)]
-		msg ="{0}, {1}".format(msg, setToStr(newTagSet, lblTags, lblNoMore))
-		message(msg)
-		#message(u"Changé" + str(tagChanged))
-		#message(u"étiquettes: " + str(newTagSet))
+		# OUT OF RANGE HERE if shift lock is active
+		try:
+			msg = list(tagChanged)[0]+" "+(lblAdded,lblRemoved)[len(prevTagSet)>len(newTagSet)]
+			msg ="{0}, {1}".format(msg, setToStr(newTagSet, lblTags, lblNoMore))
+			message(msg)
+		except:
+			message("Error, shift lock is probably active")
 		return
 		# translator 
 		lblTag = _("tag")

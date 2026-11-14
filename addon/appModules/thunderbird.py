@@ -324,7 +324,9 @@ class AppModule(thunderbird.AppModule):
 		oFrame = api.getForegroundObject()
 		oFocused = None
 		sharedVars.startFromPasswordDlg = False
-		if str(oFrame.parent.windowClassName) == "MozillaDialogClass":
+		try: clsName = str(oFrame.parent.windowClassName)
+		except: clsName = ""
+		if clsName == "MozillaDialogClass":
 			sharedVars.curFrame = "firstDlg"
 			sharedVars.curTab = "firstDlg"
 			for c in oFrame.recursiveDescendants: 

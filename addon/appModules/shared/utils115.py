@@ -1414,7 +1414,81 @@ def attachSaveAllFromAttachentItem(attachItem):
 		# o = o.next
 
 	
+def getAttachmentPre159(oFocus=None, repeats=0):
+	# in  main window:name: doc_thunderbirdPlusG5_fr.md, Role.BUTTON, IA2ID: attachmentName Path: Role-FRAME| i31, Role-GROUPING, , IA2ID: tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID: mail3PaneTab1 | i0, Role-INTERNALFRAME, , IA2ID: mail3PaneTabBrowser1 | i0, Role-GROUPING,  | i4, Role-SECTION, , IA2ID: messagePane | i0, Role-INTERNALFRAME, , IA2ID: messageBrowser | i0, Role-GROUPING,  | i18, Role-BUTTON, , IA2ID: attachmentName , IA2Attr: id: attachmentName, display: flex, xml-roles: button, tag: label, , Actions: click,  ;
+	# In separate window: 18 of 20, name: doc_thunderbirdPlusG5_fr.md, Role.BUTTON, IA2ID: attachmentName, Path: Role-FRAME| i4, Role-INTERNALFRAME, IA2ID: messageBrowser | i0, Role-GROUPING,  | i18, Role-BUTTON, , IA2ID: attachmentName
+	# sharedVars.debugLog = "getAttachment, repeats: " + str(repeats) + "\n"
+	if not oFocus: oFocus = api.getFocusObject()
+	if oFocus.role in (controlTypes.Role.DOCUMENT, controlTypes.Role.LINK): 
+		# if repeats > 0 and oFocus.role == controlTypes.Role.LINK: beep(700, 40)
+		o = findParentByRole(oFocus, controlTypes.Role.GROUPING)
+		# sharedVars.log(o, "is Grouping from doc ? ")
+		if repeats > 0 and o.role != controlTypes.Role.GROUPING: return beep(100, 10)
+	elif hasID(oFocus, "threadTree"):
+		o = getMessagePane()
+		# sharedVars.log(o, "in mainWindow , expected messagePane")
+		o = o.firstChild.firstChild
+		# sharedVars.log(o, "in mainWindow , expected Grouping")
+	else: return beep(100, 30)
+	
+	# common to list and separate reading window
+	sharedVars.log(o, "Must be  Grouping with no ID")
+	# current object is grouping with no IA2ID
+	oGrouping = o
+	oAttachToggle = None
+	oMessagePane = None
+	i = 15
+	o = oGrouping.getChild(i)
+	while o is not None:
+		sharedVars.log(o, "grouping child {}".format(i))
+		if  o.role == controlTypes.Role.TOGGLEBUTTON and hasID(o, "attachmentToggle"): 
+			oAttachToggle = o	
+			break
+		# # elif o.role == controlTypes.Role.PANE:
+			# oMessagePane = o
+		i += 1
+		o = o.next
+	#  end while
+	if oAttachToggle is None:
+		return message(_("No attachment."))
+	else: 
+		if controlTypes.State.PRESSED not in oAttachToggle.states: 
+			oAttachToggle.doAction() # this will also give focus to the first listItem  of attachments
+			sleep(0.2)
+	sharedVars.log(oAttachToggle, "oAttachToggle")
+	# search for attachmentList
+	oAttachList = None
+	text = ""
+	o = oAttachToggle
+	while o is not None:
+		# sharedVars.log(o, "grouping descendant")
+		if o.role == controlTypes.Role.LABEL and hasID(o, "attachmentCount"):
+			text = str(o.name)
+		elif o.role == controlTypes.Role.LIST and hasID(o, "attachmentList"):
+			# sharedVars.log(o, "grouping descendant, attachList")
+			# sharedVars.log(o.parent, "attachList parent")
+			oAttachList = o
+			break
+		o = o.next
+	# sharedVars.log(oAttachList, "oAttachList")
+	# message("press alt+f12")
+	# return
+	if repeats == 0:
+		if api.getFocusObject() != oFocus:
+			oFocus.setFocus()
+		text += ", "
+		o = oAttachList.firstChild
+		while o is not None: 
+			text += str(o.name) + ", "
+			o = o.next
+		message(text + ", " + _	("Two presses to reach the list."))
+		return
+	elif repeats > 0: 
+		if oAttachList: oAttachList.setFocus()
+
 def getAttachment (oFocus=None, repeats=0):
+	if utis.TBMajor()  < 159:
+		return  getAttachmentPre159(oFocus, repeats)
 	# in  main window:name: doc_thunderbirdPlusG5_fr.md, Role.BUTTON, IA2ID: attachmentName Path: Role-FRAME| i31, Role-GROUPING, , IA2ID: tabpanelcontainer | i2, Role-PROPERTYPAGE, , IA2ID: mail3PaneTab1 | i0, Role-INTERNALFRAME, , IA2ID: mail3PaneTabBrowser1 | i0, Role-GROUPING,  | i4, Role-SECTION, , IA2ID: messagePane | i0, Role-INTERNALFRAME, , IA2ID: messageBrowser | i0, Role-GROUPING,  | i18, Role-BUTTON, , IA2ID: attachmentName , IA2Attr: id: attachmentName, display: flex, xml-roles: button, tag: label, , Actions: click,  ;
 	# In separate window: 18 of 20, name: doc_thunderbirdPlusG5_fr.md, Role.BUTTON, IA2ID: attachmentName, Path: Role-FRAME| i4, Role-INTERNALFRAME, IA2ID: messageBrowser | i0, Role-GROUPING,  | i18, Role-BUTTON, , IA2ID: attachmentName
 	dbg = False
